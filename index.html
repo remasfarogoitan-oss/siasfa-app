@@ -3171,10 +3171,10 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeC
   }
   function makeRunner(successFn, failFn) {
     const handler = {
-      withSuccessHandler: function(fn){ successFn = fn; return handler; },
-      withFailureHandler: function(fn){ failFn = fn; return handler; }
+      withSuccessHandler: function(fn){ successFn = fn; return proxy; },
+      withFailureHandler: function(fn){ failFn = fn; return proxy; }
     };
-    return new Proxy(handler, {
+    const proxy = new Proxy(handler, {
       get: function(target, prop) {
         if (prop in target) return target[prop];
         return function(arg) {
@@ -3185,6 +3185,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeC
         };
       }
     });
+    return proxy;
   }
   window.google = window.google || {};
   window.google.script = { run: makeRunner(null, null) };
