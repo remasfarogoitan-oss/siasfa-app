@@ -1412,6 +1412,12 @@ select.fc {
       </div>
       <div class="menu-lbl">Penjualan</div>
     </div>
+    <div class="menu-item" onclick="switchPage('infaqharian')">
+      <div class="menu-ico" style="background: linear-gradient(135deg,#fef3c7,#fde68a); color: #b45309;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+      </div>
+      <div class="menu-lbl">Infaq Harian</div>
+    </div>
   </div>
 
   <div class="sh">
@@ -1872,7 +1878,53 @@ select.fc {
   <button class="btn-fab" onclick="showModalJualKonsepBaru()">+</button>
 </div>
 
-<!-- ══ PROFIL ════════════════════════════ -->
+<!-- ══ INFAQ HARIAN ══════════════════════════════ -->
+<div id="page-infaqharian" class="page">
+  <div class="sh">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button onclick="switchPage('beranda')" style="background:var(--bg);border:none;border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2.3"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="sh-title">Infaq Harian</div>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr; margin:0 14px 10px;">
+    <div class="stat-card" style="cursor:default;">
+      <div class="stat-lbl">Jumlah Infaq Tunai</div>
+      <div class="stat-val g" id="infaq-stat-tunai">Rp 0</div>
+    </div>
+    <div class="stat-card" style="cursor:default;">
+      <div class="stat-lbl">Jumlah Infaq QRIS</div>
+      <div class="stat-val" id="infaq-stat-qris" style="color:var(--accent)">Rp 0</div>
+    </div>
+    <div class="stat-card" style="cursor:default;">
+      <div class="stat-lbl">Jumlah Infaq</div>
+      <div class="stat-val" id="infaq-stat-total">Rp 0</div>
+    </div>
+  </div>
+
+  <div class="form-box" style="margin:0 14px 10px;">
+    <div class="proker-link-title" style="margin-bottom:9px;">Akun Kas Penampung Default</div>
+    <div class="two-col">
+      <div class="fg" style="margin:0"><label>Kas Tunai</label><select class="fc" id="infaq-kas-tunai"></select></div>
+      <div class="fg" style="margin:0"><label>Kas QRIS</label><select class="fc" id="infaq-kas-qris"></select></div>
+    </div>
+  </div>
+
+  <div class="sh"><div class="sh-title">Rekap Harian</div></div>
+  <div style="margin:0 14px 8px;">
+    <div class="tbl-wrap">
+      <table class="j-tbl">
+        <thead><tr><th>Tanggal</th><th>Tunai (Rp)</th><th>QRIS (Rp)</th><th>Petugas</th><th style="width:70px"></th></tr></thead>
+        <tbody id="infaq-rows-body"></tbody>
+      </table>
+    </div>
+    <div class="add-row-btn" onclick="addInfaqHarianRow()">+ Tambah Baris</div>
+  </div>
+  <div style="height:20px;"></div>
+</div>
+
+<!-- ══ PROFIL ════════════════════════════════════ -->
 <div id="page-profil" class="page">
   <div class="profil-hero">
     <div class="profil-ico">
@@ -3200,6 +3252,7 @@ let appData = {
   buktiNota: [],
   iuran: { konsep: [], peserta: [], pembayaran: [] },
   jual: { konsep: [], order: [], pembayaran: [] },
+  infaqHarian: [],
   prokerDokumen: []
 };
 let editingIuranKonsepId = null;
@@ -3770,6 +3823,7 @@ function applyData(d) {
   appData.rekeningTemuan  = (d.rekening && d.rekening.temuan)  ? d.rekening.temuan  : [];
   appData.iuran = d.iuran || { konsep: [], peserta: [], pembayaran: [] };
   appData.jual = d.jual || { konsep: [], order: [], pembayaran: [] };
+  appData.infaqHarian = d.infaqHarian || [];
   appData.prokerDokumen = d.prokerDokumen || [];
   appData.tugas = d.tugas || { daftar:[], latihan:[], pg:[], progress:[] };
 
@@ -4060,6 +4114,7 @@ function renderAll() {
   updateRekeningReminder();
   renderIuranPage();
   renderJualPage();
+  renderInfaqHarianPage();
   renderTugasList();
 }
 
@@ -8071,6 +8126,121 @@ function hapusJualPembayaranUI(bayarId) {
 }
 
 // ════════════════════════════════════════════════════════
+// MODUL INFAQ HARIAN
+// ════════════════════════════════════════════════════════
+function populateInfaqKasSelect() {
+  const selT = document.getElementById('infaq-kas-tunai');
+  const selQ = document.getElementById('infaq-kas-qris');
+  if (!selT || !selQ) return;
+  const opts = getKasOpts();
+  const prevT = selT.value, prevQ = selQ.value;
+  selT.innerHTML = opts;
+  selQ.innerHTML = opts;
+  if (prevT) selT.value = prevT;
+  if (prevQ) selQ.value = prevQ;
+}
+
+function renderInfaqHarianPage() {
+  populateInfaqKasSelect();
+  const list = (appData.infaqHarian||[]).slice().sort((a,b) => (a.tanggal < b.tanggal ? 1 : -1));
+  const totalTunai = list.reduce((s,r)=>s+(r.tunai||0),0);
+  const totalQris = list.reduce((s,r)=>s+(r.qris||0),0);
+  document.getElementById('infaq-stat-tunai').textContent = fmt(totalTunai);
+  document.getElementById('infaq-stat-qris').textContent = fmt(totalQris);
+  document.getElementById('infaq-stat-total').textContent = fmt(totalTunai+totalQris);
+
+  const tbody = document.getElementById('infaq-rows-body');
+  if (!tbody) return;
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text4);padding:14px;">Belum ada data infaq harian</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(r => `
+    <tr data-infaq-id="${r.id}">
+      <td><input type="date" class="fc infaq-tgl" value="${r.tanggal}" style="font-size:11px;padding:7px 8px;"></td>
+      <td><input type="text" class="fc fc-num infaq-tunai" value="${r.tunai?fmtRaw(r.tunai):''}" placeholder="0" oninput="formatNumInput(this)" style="font-size:11px;padding:7px 8px;"></td>
+      <td><input type="text" class="fc fc-num infaq-qris" value="${r.qris?fmtRaw(r.qris):''}" placeholder="0" oninput="formatNumInput(this)" style="font-size:11px;padding:7px 8px;"></td>
+      <td><input type="text" class="fc infaq-petugas" value="${r.petugas||''}" placeholder="Nama petugas..." style="font-size:11px;padding:7px 8px;"></td>
+      <td style="white-space:nowrap;">
+        <button onclick="simpanInfaqHarianRow('${r.id}')" title="Simpan" style="background:var(--green-light);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--green);font-weight:700;">✓</button>
+        <button onclick="hapusInfaqHarianRowUI('${r.id}')" title="Hapus" style="background:var(--red-light);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--red);font-weight:700;">×</button>
+      </td>
+    </tr>`).join('');
+}
+
+function addInfaqHarianRow() {
+  const tbody = document.getElementById('infaq-rows-body');
+  if (!tbody) return;
+  if (tbody.querySelector('td[colspan]')) tbody.innerHTML = '';
+  const today = new Date().toISOString().split('T')[0];
+  const tr = document.createElement('tr');
+  tr.setAttribute('data-infaq-id', '');
+  tr.innerHTML = `
+    <td><input type="date" class="fc infaq-tgl" value="${today}" style="font-size:11px;padding:7px 8px;"></td>
+    <td><input type="text" class="fc fc-num infaq-tunai" placeholder="0" oninput="formatNumInput(this)" style="font-size:11px;padding:7px 8px;"></td>
+    <td><input type="text" class="fc fc-num infaq-qris" placeholder="0" oninput="formatNumInput(this)" style="font-size:11px;padding:7px 8px;"></td>
+    <td><input type="text" class="fc infaq-petugas" placeholder="Nama petugas..." style="font-size:11px;padding:7px 8px;"></td>
+    <td style="white-space:nowrap;">
+      <button onclick="simpanInfaqHarianRow('')" title="Simpan" style="background:var(--green-light);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--green);font-weight:700;">✓</button>
+      <button onclick="this.closest('tr').remove()" title="Batal" style="background:var(--red-light);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--red);font-weight:700;">×</button>
+    </td>`;
+  tbody.appendChild(tr);
+}
+
+function simpanInfaqHarianRow(id) {
+  const tr = id ? document.querySelector(`tr[data-infaq-id="${id}"]`) : document.querySelector('tr[data-infaq-id=""]');
+  if (!tr) return;
+  const tanggal = tr.querySelector('.infaq-tgl').value;
+  const tunai = parseRaw(tr.querySelector('.infaq-tunai').value||'0');
+  const qris = parseRaw(tr.querySelector('.infaq-qris').value||'0');
+  const petugas = tr.querySelector('.infaq-petugas').value;
+  const kodeKasTunai = document.getElementById('infaq-kas-tunai').value;
+  const kodeKasQris = document.getElementById('infaq-kas-qris').value;
+
+  if (!tanggal) { showToast('Tanggal wajib diisi!','e'); return; }
+  if (!petugas) { showToast('Nama petugas wajib diisi!','e'); return; }
+  if (tunai<=0 && qris<=0) { showToast('Isi nominal tunai atau QRIS!','e'); return; }
+  if (!kodeKasTunai || !kodeKasQris) { showToast('Pilih akun kas tunai & QRIS terlebih dahulu!','e'); return; }
+
+  const payload = { id: id||null, tanggal, tunai, qris, petugas, kodeKasTunai, kodeKasQris };
+  showLoading(id ? 'Memperbarui infaq harian...' : 'Menyimpan infaq harian...');
+  try {
+    google.script.run
+      .withSuccessHandler(res => {
+        hideLoading();
+        if (res.status === 'success') {
+          const idx = appData.infaqHarian.findIndex(x=>x.id===res.id);
+          const newRow = { id: res.id, tanggal, tunai, qris, petugas, kodeKasTunai, kodeKasQris, idJurnal: res.idJurnal };
+          if (idx>=0) appData.infaqHarian[idx] = newRow; else appData.infaqHarian.push(newRow);
+          renderInfaqHarianPage();
+          updateKas(); updateStats(); loadBukuBesar();
+          showToast(res.message||'Infaq harian tersimpan!','s');
+        } else { showToast('Gagal: '+res.message,'e'); }
+      })
+      .withFailureHandler(err => { hideLoading(); showToast('Error: '+err.message,'e'); })
+      .simpanInfaqHarian(payload);
+  } catch(e) { hideLoading(); showToast('Error: '+e.message,'e'); }
+}
+
+function hapusInfaqHarianRowUI(id) {
+  if (!id) return;
+  if (!confirm('Hapus data infaq harian ini beserta jurnal terkait?')) return;
+  showLoading('Menghapus...');
+  try {
+    google.script.run
+      .withSuccessHandler(() => {
+        hideLoading();
+        appData.infaqHarian = appData.infaqHarian.filter(x=>x.id!==id);
+        renderInfaqHarianPage();
+        updateKas(); updateStats(); loadBukuBesar();
+        showToast('Data infaq harian dihapus','s');
+      })
+      .withFailureHandler(err => { hideLoading(); showToast('Gagal: '+err.message,'e'); })
+      .hapusInfaqHarian(id);
+  } catch(e) { hideLoading(); showToast('Error: '+e.message,'e'); }
+}
+
+// ════════════════════════════════════════════════════════
 // Pemeriksaan INTERNAL ENGINE v2 — PROFESIONAL
 // ════════════════════════════════════════════════════════
 let kkpDrafts = [];
@@ -8546,6 +8716,7 @@ function switchPage(id) {
   if (id === 'cashopname') renderCashOpnamePage();
   if (id === 'iuran') renderIuranPage();
   if (id === 'penjualan') renderJualPage();
+  if (id === 'infaqharian') renderInfaqHarianPage();
   if (id === 'pelatihan') renderTugasList();
 }
 
