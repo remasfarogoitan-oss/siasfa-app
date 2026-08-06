@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b1220">
+<link rel="apple-touch-icon" href="/icon-512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SIASFA">
 <title>SIASFA — Remasfa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1232,6 +1238,19 @@ select.fc {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+
+<!-- SPLASH SCREEN -->
+<div id="siasfaSplash" style="position:fixed;inset:0;z-index:99999;background:#ffffff;display:flex;align-items:center;justify-content:center;transition:opacity 0.45s ease;">
+  <img src="/icon-512.png" alt="SIASFA" style="width:110px;height:110px;border-radius:26px;box-shadow:0 12px 34px rgba(15,23,42,0.18);">
+</div>
+<script>
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      var s = document.getElementById('siasfaSplash');
+      if (s) { s.style.opacity = '0'; setTimeout(function(){ s.remove(); }, 450); }
+    }, 900);
+  });
+</script>
 
 <!-- LOADING -->
 <div class="loading-overlay" id="loadingOverlay">
@@ -3132,6 +3151,45 @@ select.fc {
 // ════════════════════════════════════════════════════════
 // DATA STORE
 // ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// KONEKSI KE GOOGLE APPS SCRIPT (BACKEND)
+// ══════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeCAunwsQCWG5ekurWwIH9qiDVOwjJwewtSKusDtAeRoQPIafe35seM/exec';
+
+(function(){
+  function callAppsScript(fn, argsArray) {
+    return fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ fn: fn, args: argsArray })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res && res.__error) { throw new Error(res.__error); }
+      return res ? res.__result : null;
+    });
+  }
+  function makeRunner(successFn, failFn) {
+    const handler = {
+      withSuccessHandler: function(fn){ successFn = fn; return handler; },
+      withFailureHandler: function(fn){ failFn = fn; return handler; }
+    };
+    return new Proxy(handler, {
+      get: function(target, prop) {
+        if (prop in target) return target[prop];
+        return function(arg) {
+          const argsArray = (arg === undefined) ? [] : [arg];
+          callAppsScript(prop, argsArray)
+            .then(function(result){ if (successFn) successFn(result); })
+            .catch(function(err){ if (failFn) failFn(err); else console.error('Apps Script error:', err); });
+        };
+      }
+    });
+  }
+  window.google = window.google || {};
+  window.google.script = { run: makeRunner(null, null) };
+})();
+
 let appData = {
   proker: [], bendahara: [],
   kas: { umum:0, kecil:0, infaq:0, donasi:0, zakat:0, lain:0 },
@@ -8474,6 +8532,7 @@ function switchPemeriksaanTahap(n) {
 }
 
 function switchPage(id) {
+  if (!window.__siasfaSkipPush) { try { history.pushState({siasfaNav:true}, '', ''); } catch(e){} }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const p = document.getElementById('page-'+id);
@@ -11533,6 +11592,61 @@ function submitKerjakanPG(tugasId) {
       .withFailureHandler(err => { hideLoading(); showToast('Gagal: '+err.message,'e'); })
       .submitProgressPG({ tugasId, nama, jawaban, skor });
   } catch(e) { hideLoading(); showToast('Error: '+e.message,'e'); }
+}
+<script>
+// ══════════════════════════════════════════════
+// TOMBOL BACK ANDROID / PWA — supaya tidak keluar aplikasi
+// ══════════════════════════════════════════════
+(function(){
+  var modalStack = [];
+  var backExitArmed = false;
+
+  history.pushState({ siasfaNav:true }, '', '');
+
+  document.querySelectorAll('.modal-overlay, .pin-overlay').forEach(function(el){
+    var obs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if (m.attributeName === 'class') {
+          var isShown = el.classList.contains('show');
+          var idx = modalStack.indexOf(el.id);
+          if (isShown && idx === -1) { modalStack.push(el.id); }
+          else if (!isShown && idx !== -1) { modalStack.splice(idx, 1); }
+        }
+      });
+    });
+    obs.observe(el, { attributes:true });
+  });
+
+  window.addEventListener('popstate', function(){
+    if (modalStack.length > 0) {
+      var lastId = modalStack[modalStack.length - 1];
+      var el = document.getElementById(lastId);
+      if (el) el.classList.remove('show');
+      modalStack.pop();
+      history.pushState({ siasfaNav:true }, '', '');
+      return;
+    }
+    var activePage = document.querySelector('.page.active');
+    var activeId = activePage ? activePage.id.replace('page-','') : 'beranda';
+    if (activeId !== 'beranda') {
+      window.__siasfaSkipPush = true;
+      switchPage('beranda');
+      window.__siasfaSkipPush = false;
+      history.pushState({ siasfaNav:true }, '', '');
+      return;
+    }
+    if (backExitArmed) { return; }
+    backExitArmed = true;
+    showToast('Tekan sekali lagi untuk keluar aplikasi', 'w');
+    history.pushState({ siasfaNav:true }, '', '');
+    setTimeout(function(){ backExitArmed = false; }, 2000);
+  });
+})();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+  });
 }
 </script>
 </body>
