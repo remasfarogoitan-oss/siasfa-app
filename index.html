@@ -7920,19 +7920,19 @@ function submitIuranBayar(pesertaId) {
   const bayarId = 'IB'+Date.now();
   const data = { id: bayarId, konsepId: k.id, pesertaId: p.id, tanggal, nominal, kodeKas: k.kodeKas, namaKegiatan: k.nama, namaPeserta: p.nama, bendahara: 'Sistem (Iuran)' };
 
-  showLoading('Mencatat pembayaran...');
+  appData.iuran.pembayaran.push({ konsepId: k.id, pesertaId: p.id, id: bayarId, tanggal, nominal, idJurnal: '' });
+  renderIuranPesertaList();
+  renderIuranPage();
+  showToast('Tersimpan! Menyinkron ke server...', 's');
   try {
     google.script.run
       .withSuccessHandler(res => {
-        hideLoading();
-        appData.iuran.pembayaran.push({ konsepId: k.id, pesertaId: p.id, id: bayarId, tanggal, nominal, idJurnal: res.idJurnal||'' });
-        renderIuranPesertaList();
-        renderIuranPage();
-        showToast('Pembayaran iuran tercatat & jurnal otomatis dibuat!', 's');
+        const rec = appData.iuran.pembayaran.find(x => x.id === bayarId);
+        if (rec && res.idJurnal) rec.idJurnal = res.idJurnal;
       })
-      .withFailureHandler(err => { hideLoading(); showToast('Gagal: '+err.message, 'e'); })
+      .withFailureHandler(err => { showToast('Gagal sinkron: '+err.message, 'e'); })
       .simpanIuranPembayaran(data);
-  } catch(e) { hideLoading(); showToast('Error: '+e.message, 'e'); }
+  } catch(e) { showToast('Error: '+e.message, 'e'); }
 }
 
 function hapusIuranPembayaranUI(bayarId) {
