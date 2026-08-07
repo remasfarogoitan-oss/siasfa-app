@@ -1232,6 +1232,32 @@ select.fc {
   cursor: pointer; padding: 8px; transition: var(--t-fast);
 }
 .pin-cancel-btn:hover { color: var(--red); }
+
+/* ══════════════════════════════════════════════
+   PATCH KERAPIAN UI — mencegah teks/kotak keluar batas
+   ══════════════════════════════════════════════ */
+.stats-grid > *, .menu-grid > *, .laporan-grid > *, .two-col > *,
+.kas-detail > *, .rab-summary > *, .filter-chips > * { min-width: 0; }
+
+.proker-name, .kelola-name, .jurnal-ket, .info-val, .nota-title,
+.calk-title, .lap-name, .sh-title, .menu-lbl, .stat-lbl,
+.Pemeriksaan-check-lbl, .Pemeriksaan-check-sub, .pill {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+table.j-tbl td, table.r-tbl td, table.bb-tbl td, table.rab-tbl td,
+table.bendahara-tbl td, table.restrict-table-inner td, table.co-tbl td {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.stat-val, .proker-rab-val, .jurnal-nom, .kas-row-val, .proker-sisa-val {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+input.fc, select.fc, textarea.fc { box-sizing: border-box; max-width: 100%; }
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -3776,27 +3802,35 @@ function setToday() {
 }
 
 function loadData() {
-  showLoading('Memuat data...');
+  let hasCache = false;
+  try {
+    const cached = localStorage.getItem('siasfa_cache_v1');
+    if (cached) { applyData(JSON.parse(cached)); hasCache = true; }
+  } catch(e) {}
+  if (!hasCache) showLoading('Memuat data...');
+  else showToast('Memperbarui data terbaru...', 'w');
+
   try {
     google.script.run
       .withSuccessHandler(d => { 
         if (d && d.error) {
           hideLoading();
-          // Ini akan memunculkan popup besar di tengah layar jika database bermasalah
-          alert('⚠ ERROR DATABASE:\n\n' + d.error); 
+          if (!hasCache) alert('⚠ ERROR DATABASE:\n\n' + d.error);
         } else {
           applyData(d); 
-          hideLoading(); 
+          hideLoading();
+          try { localStorage.setItem('siasfa_cache_v1', JSON.stringify(d)); } catch(e) {}
         }
       })
       .withFailureHandler(err => { 
         hideLoading(); 
-        alert('⚠ GAGAL KONEKSI:\n\n' + err.message); 
+        if (!hasCache) alert('⚠ GAGAL KONEKSI:\n\n' + err.message);
+        else showToast('Gagal sinkron, menampilkan data tersimpan terakhir.', 'e');
       })
       .getAllData();
   } catch(e) { 
     hideLoading(); 
-    alert('⚠ ERROR SISTEM:\n\n' + e.message); 
+    if (!hasCache) alert('⚠ ERROR SISTEM:\n\n' + e.message); 
   }
 }
 
@@ -4675,16 +4709,16 @@ function submitJurnal(type) {
   const notaFileInput = document.getElementById(prefixMap[type] + '-nota-file');
   const notaFile = notaFileInput && notaFileInput.files.length ? notaFileInput.files[0] : null;
 
-  showLoading('Menyimpan jurnal...');
+  showToast('Tersimpan! Menyinkron ke server...', 's');
   try {
     google.script.run
       .withSuccessHandler(r => {
-        hideLoading(); showToast(r.message||'Jurnal disimpan!','s'); renderJurnalList(); loadBukuBesar();
+        renderJurnalList(); loadBukuBesar();
         if (notaFile) uploadNotaLangsung(data.id, notaFile, data);
       })
-      .withFailureHandler(() => { hideLoading(); showToast('Disimpan lokal (demo mode)','s'); renderJurnalList(); loadBukuBesar(); })
+      .withFailureHandler(() => { showToast('Gagal sinkron ke server, cek koneksi lalu buka ulang menu Riwayat.','e'); renderJurnalList(); loadBukuBesar(); })
       .simpanJurnal(data);
-  } catch(e) { hideLoading(); showToast('Jurnal disimpan (demo)!','s'); renderJurnalList(); loadBukuBesar(); }
+  } catch(e) { renderJurnalList(); loadBukuBesar(); }
 }
 
 function uploadNotaLangsung(jid, file, jurnalData) {
@@ -7669,11 +7703,9 @@ function submitUploadNota() {
       const base64 = e.target.result.split(',')[1];
       const payload = { id_jurnal: jid, fileName: customFileName, mimeType: file.type, base64 };
 
-      showLoading(`Mengupload nota ${nomor} dari ${filesToUpload.length}...`);
       try {
         google.script.run
           .withSuccessHandler(res => {
-            hideLoading();
             if (res.status === 'success') {
               appData.buktiNota.push({
                 id_jurnal: jid, timestamp: new Date().toISOString(),
@@ -7695,14 +7727,12 @@ function submitUploadNota() {
             }
           })
           .withFailureHandler(err => {
-            hideLoading();
             btn.innerHTML = originalText;
             btn.disabled = false;
             showToast('Koneksi Error: ' + err.message, 'e');
           })
           .uploadBuktiNota(payload);
       } catch(e) {
-        hideLoading();
         btn.innerHTML = originalText;
         btn.disabled = false;
         showToast('Error: ' + e.message, 'e');
