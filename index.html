@@ -3239,7 +3239,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeC
     return fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ fn: fn, args: argsArray })
+      body: JSON.stringify({ fn: fn, args: argsArray, token: 'GANTI_DENGAN_TOKEN_RAHASIA_SESUAI_SCRIPT_PROPERTIES' })
     })
     .then(function(r){ return r.json(); })
     .then(function(res){
@@ -3789,7 +3789,49 @@ document.addEventListener('DOMContentLoaded', () => {
   setToday();
   loadData();
   populateRestrictTable();
+  startAutoSyncPolling();
 });
+
+// ══════════════════════════════════════════════
+// AUTO-SYNC — mengatasi keluhan "transaksi tidak muncul di device lain"
+// ══════════════════════════════════════════════
+let __autoSyncInterval = null;
+let __isSyncing = false;
+
+function isUserBusyInputting() {
+  if (document.querySelector('.modal-overlay.show, .pin-overlay.show')) return true;
+  const activePage = document.querySelector('.page.active');
+  return activePage && activePage.id === 'page-catat'; // jangan ganggu user yang sedang isi form transaksi
+}
+
+function syncFromServer(silent) {
+  if (__isSyncing) return;
+  if (isUserBusyInputting()) return;
+  __isSyncing = true;
+  const jumlahJurnalSebelum = allJurnal.length;
+  try {
+    google.script.run
+      .withSuccessHandler(d => {
+        __isSyncing = false;
+        if (!d || d.error) return;
+        applyData(d);
+        try { localStorage.setItem('siasfa_cache_v1', JSON.stringify(d)); localStorage.setItem('siasfa_cache_v1_ts', String(Date.now())); } catch(e) {}
+        const selisih = allJurnal.length - jumlahJurnalSebelum;
+        if (selisih > 0) showToast(`🔄 ${selisih} transaksi baru tersinkron dari device lain`, 's');
+      })
+      .withFailureHandler(() => { __isSyncing = false; })
+      .getAllData(true); // true = mode ringan (lihat TEMUAN 8)
+  } catch(e) { __isSyncing = false; }
+}
+
+function startAutoSyncPolling() {
+  if (__autoSyncInterval) clearInterval(__autoSyncInterval);
+  __autoSyncInterval = setInterval(() => syncFromServer(true), 20000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') syncFromServer(false);
+  });
+  window.addEventListener('focus', () => syncFromServer(false));
+}
 
 function setToday() {
   const t = new Date().toISOString().split('T')[0];
@@ -3805,7 +3847,9 @@ function loadData() {
   let hasCache = false;
   try {
     const cached = localStorage.getItem('siasfa_cache_v1');
-    if (cached) { applyData(JSON.parse(cached)); hasCache = true; }
+    const cachedAt = parseInt(localStorage.getItem('siasfa_cache_v1_ts')||'0');
+    const umurCacheMenit = (Date.now() - cachedAt) / 60000;
+    if (cached && umurCacheMenit < 30) { applyData(JSON.parse(cached)); hasCache = true; }
   } catch(e) {}
   if (!hasCache) showLoading('Memuat data...');
   else showToast('Memperbarui data terbaru...', 'w');
@@ -3819,7 +3863,7 @@ function loadData() {
         } else {
           applyData(d); 
           hideLoading();
-          try { localStorage.setItem('siasfa_cache_v1', JSON.stringify(d)); } catch(e) {}
+          try { localStorage.setItem('siasfa_cache_v1', JSON.stringify(d)); localStorage.setItem('siasfa_cache_v1_ts', String(Date.now())); } catch(e) {}
         }
       })
       .withFailureHandler(err => { 
@@ -4697,7 +4741,7 @@ function submitJurnal(type) {
     if (!data.nominal) { showToast('Nominal tidak boleh 0','e'); return; }
   }
 
-  data.id = 'JRN' + Date.now();
+  data.id = 'JRN' + Date.now() + Math.floor(Math.random()*1000);
   allJurnal.push({...data});
   updateKas(); updateStats(); renderBerandaProker();
 
@@ -4716,9 +4760,20 @@ function submitJurnal(type) {
         renderJurnalList(); loadBukuBesar();
         if (notaFile) uploadNotaLangsung(data.id, notaFile, data);
       })
-      .withFailureHandler(() => { showToast('Gagal sinkron ke server, cek koneksi lalu buka ulang menu Riwayat.','e'); renderJurnalList(); loadBukuBesar(); })
+      .withFailureHandler((err) => {
+        // ROLLBACK: transaksi GAGAL tersimpan di server, jangan tampil seolah berhasil
+        allJurnal = allJurnal.filter(j => j.id !== data.id);
+        if (type === 'masuk') { (data.rows||[]).forEach(r => { if (r.kasAkun) appData.kas[r.kasAkun] = (appData.kas[r.kasAkun]||0) - r.nominal; }); }
+        if (type === 'keluar') { (data.rows||[]).forEach(r => { if (r.kasAkun) appData.kas[r.kasAkun] = (appData.kas[r.kasAkun]||0) + r.nominal; }); }
+        updateKas(); updateStats(); renderBerandaProker(); renderJurnalList(); loadBukuBesar();
+        alert('⚠ GAGAL MENYIMPAN TRANSAKSI KE SERVER!\n\nKeterangan: ' + data.keterangan + '\nNominal: ' + fmt(data.nominal||0) + '\n\nPenyebab: ' + (err && err.message ? err.message : 'Koneksi terputus') + '\n\nTransaksi ini TIDAK tersimpan. Silakan periksa koneksi dan input ulang.');
+      })
       .simpanJurnal(data);
-  } catch(e) { renderJurnalList(); loadBukuBesar(); }
+  } catch(e) {
+    allJurnal = allJurnal.filter(j => j.id !== data.id);
+    renderJurnalList(); loadBukuBesar();
+    alert('⚠ Transaksi gagal disimpan (error sistem): ' + e.message);
+  }
 }
 
 function uploadNotaLangsung(jid, file, jurnalData) {
@@ -4959,6 +5014,9 @@ function loadPosAnggaranJD() {
 }
 
 function enableEditMode() {
+  // AUDIT FIX: tarik data terbaru dari server sebelum edit dimulai,
+  // agar tidak menimpa perubahan yang baru saja dibuat bendahara lain
+  syncFromServer(false);
   // Buka kuncian semua input (ubah ke warna putih)
   document.querySelectorAll('.jd-field').forEach(el => {
     el.disabled = false;
