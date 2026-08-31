@@ -1260,6 +1260,7 @@ table.bendahara-tbl td, table.restrict-table-inner td, table.co-tbl td {
 input.fc, select.fc, textarea.fc { box-sizing: border-box; max-width: 100%; }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -3230,12 +3231,23 @@ input.fc, select.fc, textarea.fc { box-sizing: border-box; max-width: 100%; }
 // DATA STORE
 // ════════════════════════════════════════════════════════
 // ══════════════════════════════════════════════
-// KONEKSI KE GOOGLE APPS SCRIPT (BACKEND)
+// KONEKSI HYBRID: SUPABASE (data inti, cepat & realtime)
+// + APPS SCRIPT LAMA (fallback untuk modul yg belum dipindah)
 // ══════════════════════════════════════════════
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeCAunwsQCWG5ekurWwIH9qiDVOwjJwewtSKusDtAeRoQPIafe35seM/exec';
+const SUPABASE_URL = 'https://cnppivqvrwibbnwazogo.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_fzYTANfnVxLvXbYFR5ZbqQ_QJha0k5W';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Kumpulan nama fungsi yang SUDAH dipindah ke Supabase.
+// Fungsi lain otomatis fallback ke Apps Script lama (tidak error).
+const SUPABASE_FUNCTIONS = new Set([
+  'getAllData','simpanJurnal','updateJurnal','hapusJurnal',
+  'simpanProker','simpanRAB','simpanBendahara','simpanCALK'
+]);
 
 (function(){
-  function callAppsScript(fn, argsArray) {
+  function callAppsScriptLama(fn, argsArray) {
     return fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -3247,6 +3259,138 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeC
       return res ? res.__result : null;
     });
   }
+
+  function groupAndSortJurnal(jUmum, jKas) {
+    const groupedKas = {};
+    (jKas||[]).forEach(r => {
+      const id = r.id_jurnal;
+      if (!groupedKas[id]) groupedKas[id] = { id, tipe:r.tipe, tanggal:r.tanggal, bendahara:r.bendahara, keterangan:r.keterangan, proker:r.id_proker, posAnggaran:r.id_pos_anggaran||'', rows:[], nominal:0 };
+      groupedKas[id].rows.push({ kasAkun:r.kode_akun_kas, sumberAkun:r.kode_akun_lawan, bebanAkun:r.kode_akun_lawan, nominal:parseFloat(r.nominal)||0 });
+      groupedKas[id].nominal += parseFloat(r.nominal)||0;
+    });
+    const groupedUmum = {};
+    (jUmum||[]).forEach(r => {
+      const id = r.id_jurnal;
+      if (!groupedUmum[id]) groupedUmum[id] = { id, type:'umum', tipe: r.paje_log ? 'PAJE' : 'Umum', tanggal:r.tanggal, bendahara:r.bendahara, keterangan:r.keterangan, proker:r.id_proker, posAnggaran:r.id_pos_anggaran||'', rows:[], PemeriksaanLog:r.paje_log||'' };
+      groupedUmum[id].rows.push({ akun:r.kode_akun, debit:parseFloat(r.debit)||0, kredit:parseFloat(r.kredit)||0 });
+    });
+    return [...Object.values(groupedKas), ...Object.values(groupedUmum)].sort((a,b) => (a.tanggal < b.tanggal ? 1 : -1));
+  }
+
+  async function callSupabase(fn, argsArray) {
+    if (fn === 'getAllData') {
+      const [akunR, jUmumR, jKasR, prokerR, rabBR, rabTR, bendR, calkR] = await Promise.all([
+        sb.from('chart_of_accounts').select('*').order('kode_akun'),
+        sb.from('jurnal_umum').select('*').order('timestamp', { ascending:false }),
+        sb.from('jurnal_kas').select('*').order('timestamp', { ascending:false }),
+        sb.from('program_kerja').select('*'),
+        sb.from('rab_belanja').select('*'),
+        sb.from('rab_penerimaan').select('*'),
+        sb.from('daftar_bendahara').select('*'),
+        sb.from('calk').select('*'),
+      ]);
+      [akunR,jUmumR,jKasR,prokerR,rabBR,rabTR,bendR,calkR].forEach(r=>{ if(r.error) throw new Error(r.error.message); });
+
+      const akun = (akunR.data||[]).map(a => ({ kode:a.kode_akun, nama:a.nama_akun, kategori:a.kategori, normal:a.normal_balance, deskripsi:a.deskripsi||'' }));
+      const proker = (prokerR.data||[]).map(p => ({ id:p.id_proker, nama:p.nama_proker, bulan:p.bulan, tahun:p.tahun, tanggal:p.tanggal_pelaksanaan||'', ketua:p.ketua_pelaksana, bendahara:p.bendahara, status:p.status||'Aktif' }));
+      const bendahara = (bendR.data||[]).map(b => ({ no:b.no, nama:b.nama_bendahara, jabatan:b.jabatan }));
+      const rab = {};
+      (rabBR.data||[]).forEach(r => { if(!rab[r.id_proker]) rab[r.id_proker]={belanja:[],terima:[]}; rab[r.id_proker].belanja.push({ nama:r.nama_kebutuhan, qty:r.qty, satuan:r.satuan, harga:r.harga_satuan, total:r.harga_total }); });
+      (rabTR.data||[]).forEach(r => { if(!rab[r.id_proker]) rab[r.id_proker]={belanja:[],terima:[]}; rab[r.id_proker].terima.push({ sumber:r.sumber_penerimaan, nominal:r.rencana_nominal }); });
+      const cRows = calkR.data||[];
+      const findC = (b) => cRows.find(c=>c.bagian===b)?.konten || '';
+      const calk = { c1:findC('I'), c2:findC('II'), c3:findC('III'), c4:findC('IV') };
+
+      return {
+        akun, proker, bendahara, rab, calk,
+        jurnal: groupAndSortJurnal(jUmumR.data, jKasR.data),
+        kas:{}, restrict:{}, buktiNota:[], cashOpname:[], kkp:[],
+        rekening:{laporan:[],temuan:[]}, iuran:{konsep:[],peserta:[],pembayaran:[]},
+        jual:{konsep:[],order:[],pembayaran:[]}, infaqHarian:[], prokerDokumen:[],
+        tugas:{daftar:[],latihan:[],pg:[],progress:[]}
+      };
+    }
+
+    if (fn === 'simpanJurnal') {
+      const data = argsArray[0];
+      const timestamp = new Date().toISOString();
+      if (data.type === 'umum') {
+        const id = 'JU' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        const akunMap = {}; (await sb.from('chart_of_accounts').select('kode_akun,nama_akun')).data.forEach(a=>akunMap[a.kode_akun]=a.nama_akun);
+        const rows = (data.rows||[]).map((r,i) => ({ id_jurnal:id, no_urut:i+1, timestamp, tanggal:data.tanggal, bendahara:data.bendahara, keterangan:data.keterangan, kode_akun:r.akun, nama_akun:akunMap[r.akun]||r.akun, debit:parseFloat(r.debit)||0, kredit:parseFloat(r.kredit)||0, id_proker:data.proker||null, id_pos_anggaran:data.posAnggaran||null }));
+        const ins = await sb.from('jurnal_umum').insert(rows);
+        if (ins.error) throw new Error(ins.error.message);
+        return { status:'success', message:'Jurnal umum tersimpan!' };
+      } else {
+        const id = 'JK' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        const tipe = data.tipe || (data.type==='masuk'?'Masuk':'Keluar');
+        const akunMap = {}; (await sb.from('chart_of_accounts').select('kode_akun,nama_akun')).data.forEach(a=>akunMap[a.kode_akun]=a.nama_akun);
+        const rows = (data.rows||[]).map((r,i) => {
+          const kasKode = r.kasAkun||''; const lawanKode = r.sumberAkun||r.bebanAkun||'';
+          return { id_jurnal:id, row_no:i+1, timestamp, tanggal:data.tanggal, tipe, bendahara:data.bendahara, keterangan:data.keterangan, kode_akun_kas:kasKode, nama_akun_kas:akunMap[kasKode]||kasKode, kode_akun_lawan:lawanKode, nama_akun_lawan:akunMap[lawanKode]||lawanKode, nominal:parseFloat(r.nominal)||0, id_proker:data.proker||null, id_pos_anggaran:data.posAnggaran||null };
+        });
+        const ins = await sb.from('jurnal_kas').insert(rows);
+        if (ins.error) throw new Error(ins.error.message);
+        return { status:'success', message:'Jurnal kas tersimpan!' };
+      }
+    }
+
+    if (fn === 'updateJurnal') {
+      const data = argsArray[0];
+      await sb.from('jurnal_umum').delete().eq('id_jurnal', data.id);
+      await sb.from('jurnal_kas').delete().eq('id_jurnal', data.id);
+      const akunMap = {}; (await sb.from('chart_of_accounts').select('kode_akun,nama_akun')).data.forEach(a=>akunMap[a.kode_akun]=a.nama_akun);
+      const rows = (data.rows||[]).map((r,i) => ({ id_jurnal:data.id, no_urut:i+1, timestamp:new Date().toISOString(), tanggal:data.tanggal, bendahara:data.bendahara, keterangan:data.keterangan, kode_akun:r.akun, nama_akun:akunMap[r.akun]||r.akun, debit:parseFloat(r.debit)||0, kredit:parseFloat(r.kredit)||0, id_proker:data.proker||null, id_pos_anggaran:data.posAnggaran||null, paje_log:data.PemeriksaanLog||null }));
+      const ins = await sb.from('jurnal_umum').insert(rows);
+      if (ins.error) throw new Error(ins.error.message);
+      return { status:'success', message:'Jurnal diperbarui!' };
+    }
+
+    if (fn === 'hapusJurnal') {
+      const id = argsArray[0];
+      await sb.from('jurnal_umum').delete().eq('id_jurnal', id);
+      await sb.from('jurnal_kas').delete().eq('id_jurnal', id);
+      return { status:'success' };
+    }
+
+    if (fn === 'simpanProker') {
+      const p = argsArray[0];
+      const up = await sb.from('program_kerja').upsert({ id_proker:p.id, nama_proker:p.nama, bulan:p.bulan, tahun:p.tahun, tanggal_pelaksanaan:p.tanggal||null, ketua_pelaksana:p.ketua, bendahara:p.bendahara, status:p.status||'Aktif' });
+      if (up.error) throw new Error(up.error.message);
+      return { status:'success', message:'Proker tersimpan!' };
+    }
+
+    if (fn === 'simpanRAB') {
+      const d = argsArray[0];
+      await sb.from('rab_belanja').delete().eq('id_proker', d.prokerId);
+      await sb.from('rab_penerimaan').delete().eq('id_proker', d.prokerId);
+      const belanja = (d.belanja||[]).map((b,i) => ({ id_rab:'OUT_'+d.prokerId+'_'+i, id_proker:d.prokerId, nama_kebutuhan:b.nama, qty:b.qty, satuan:b.satuan, harga_satuan:b.harga, harga_total:b.total }));
+      const terima = (d.terima||[]).map((t,i) => ({ id_rab:'IN_'+d.prokerId+'_'+i, id_proker:d.prokerId, sumber_penerimaan:t.sumber, rencana_nominal:t.nominal }));
+      if (belanja.length) await sb.from('rab_belanja').insert(belanja);
+      if (terima.length) await sb.from('rab_penerimaan').insert(terima);
+      return { status:'success', message:'RAB tersimpan!' };
+    }
+
+    if (fn === 'simpanBendahara') {
+      const list = argsArray[0];
+      await sb.from('daftar_bendahara').delete().neq('nama_bendahara','');
+      const rows = list.map((b,i) => ({ no:i+1, nama_bendahara:b.nama, jabatan:b.jabatan }));
+      if (rows.length) { const ins = await sb.from('daftar_bendahara').insert(rows); if (ins.error) throw new Error(ins.error.message); }
+      return { status:'success', message:'Bendahara tersimpan!' };
+    }
+
+    if (fn === 'simpanCALK') {
+      const c = argsArray[0];
+      await sb.from('calk').upsert([
+        { bagian:'I', konten:c.c1||'' }, { bagian:'II', konten:c.c2||'' },
+        { bagian:'III', konten:c.c3||'' }, { bagian:'IV', konten:c.c4||'' }
+      ]);
+      return { status:'success', message:'CALK tersimpan!' };
+    }
+
+    throw new Error('Fungsi Supabase belum diimplementasi: ' + fn);
+  }
+
   function makeRunner(successFn, failFn) {
     const handler = {
       withSuccessHandler: function(fn){ successFn = fn; return proxy; },
@@ -3257,9 +3401,10 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeC
         if (prop in target) return target[prop];
         return function(arg) {
           const argsArray = (arg === undefined) ? [] : [arg];
-          callAppsScript(prop, argsArray)
+          const runner = SUPABASE_FUNCTIONS.has(prop) ? callSupabase(prop, argsArray) : callAppsScriptLama(prop, argsArray);
+          runner
             .then(function(result){ if (successFn) successFn(result); })
-            .catch(function(err){ if (failFn) failFn(err); else console.error('Apps Script error:', err); });
+            .catch(function(err){ if (failFn) failFn(err); else console.error('Backend error:', err); });
         };
       }
     });
@@ -3267,6 +3412,13 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcWUO9KadEkHeC
   }
   window.google = window.google || {};
   window.google.script = { run: makeRunner(null, null) };
+
+  // ══ REALTIME: auto refresh semua device tanpa perlu di-refresh manual ══
+  sb.channel('siasfa-realtime')
+    .on('postgres_changes', { event:'*', schema:'public', table:'jurnal_umum' }, () => { if (typeof syncFromServer==='function') syncFromServer(true); })
+    .on('postgres_changes', { event:'*', schema:'public', table:'jurnal_kas' }, () => { if (typeof syncFromServer==='function') syncFromServer(true); })
+    .on('postgres_changes', { event:'*', schema:'public', table:'program_kerja' }, () => { if (typeof syncFromServer==='function') syncFromServer(true); })
+    .subscribe();
 })();
 
 let appData = {
