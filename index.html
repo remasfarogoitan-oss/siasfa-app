@@ -3243,7 +3243,11 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // Fungsi lain otomatis fallback ke Apps Script lama (tidak error).
 const SUPABASE_FUNCTIONS = new Set([
   'getAllData','simpanJurnal','updateJurnal','hapusJurnal',
-  'simpanProker','simpanRAB','simpanBendahara','simpanCALK'
+  'simpanProker','simpanRAB','simpanBendahara','simpanCALK',
+  'simpanRestrict','simpanCashOpname','updateCashOpname',
+  'simpanIuranKonsep','hapusIuranKonsep','simpanIuranPembayaran','hapusIuranPembayaran',
+  'simpanJualKonsep','hapusJualKonsep','simpanJualPembayaran','hapusJualPembayaran',
+  'simpanInfaqHarian','hapusInfaqHarian'
 ]);
 
 (function(){
@@ -3277,9 +3281,21 @@ const SUPABASE_FUNCTIONS = new Set([
     return [...Object.values(groupedKas), ...Object.values(groupedUmum)].sort((a,b) => (a.tanggal < b.tanggal ? 1 : -1));
   }
 
+  async function getAkunMapSB() {
+    const r = await sb.from('chart_of_accounts').select('kode_akun,nama_akun');
+    const m = {}; (r.data||[]).forEach(a => m[a.kode_akun] = a.nama_akun); return m;
+  }
+
+  async function insertJurnalUmumSB(id, tanggal, bendahara, keterangan, entries, proker, posAnggaran) {
+    const akunMap = await getAkunMapSB();
+    const rows = entries.map((e,i) => ({ id_jurnal:id, no_urut:i+1, timestamp:new Date().toISOString(), tanggal, bendahara, keterangan, kode_akun:e.akun, nama_akun:akunMap[e.akun]||e.akun, debit:e.debit||0, kredit:e.kredit||0, id_proker:proker||null, id_pos_anggaran:posAnggaran||null }));
+    const ins = await sb.from('jurnal_umum').insert(rows);
+    if (ins.error) throw new Error(ins.error.message);
+  }
+
   async function callSupabase(fn, argsArray) {
     if (fn === 'getAllData') {
-      const [akunR, jUmumR, jKasR, prokerR, rabBR, rabTR, bendR, calkR] = await Promise.all([
+      const [akunR, jUmumR, jKasR, prokerR, rabBR, rabTR, bendR, calkR, restrictR, coR, ikR, ipR, ibR, jkR, joR, jbR, infR] = await Promise.all([
         sb.from('chart_of_accounts').select('*').order('kode_akun'),
         sb.from('jurnal_umum').select('*').order('timestamp', { ascending:false }),
         sb.from('jurnal_kas').select('*').order('timestamp', { ascending:false }),
@@ -3288,8 +3304,17 @@ const SUPABASE_FUNCTIONS = new Set([
         sb.from('rab_penerimaan').select('*'),
         sb.from('daftar_bendahara').select('*'),
         sb.from('calk').select('*'),
+        sb.from('pembatasan_akun').select('*'),
+        sb.from('cash_opname').select('*').order('timestamp', { ascending:false }),
+        sb.from('iuran_konsep').select('*'),
+        sb.from('iuran_peserta').select('*'),
+        sb.from('iuran_pembayaran').select('*'),
+        sb.from('jual_konsep').select('*'),
+        sb.from('jual_order').select('*'),
+        sb.from('jual_pembayaran').select('*'),
+        sb.from('infaq_harian').select('*'),
       ]);
-      [akunR,jUmumR,jKasR,prokerR,rabBR,rabTR,bendR,calkR].forEach(r=>{ if(r.error) throw new Error(r.error.message); });
+      [akunR,jUmumR,jKasR,prokerR,rabBR,rabTR,bendR,calkR,restrictR,coR,ikR,ipR,ibR,jkR,joR,jbR,infR].forEach(r=>{ if(r.error) throw new Error(r.error.message); });
 
       const akun = (akunR.data||[]).map(a => ({ kode:a.kode_akun, nama:a.nama_akun, kategori:a.kategori, normal:a.normal_balance, deskripsi:a.deskripsi||'' }));
       const proker = (prokerR.data||[]).map(p => ({ id:p.id_proker, nama:p.nama_proker, bulan:p.bulan, tahun:p.tahun, tanggal:p.tanggal_pelaksanaan||'', ketua:p.ketua_pelaksana, bendahara:p.bendahara, status:p.status||'Aktif' }));
@@ -3301,12 +3326,28 @@ const SUPABASE_FUNCTIONS = new Set([
       const findC = (b) => cRows.find(c=>c.bagian===b)?.konten || '';
       const calk = { c1:findC('I'), c2:findC('II'), c3:findC('III'), c4:findC('IV') };
 
+      const restrict = {};
+      (restrictR.data||[]).forEach(r => { restrict[r.kode_akun] = { kas:r.kas_penampung||'', jenis:r.jenis_pembatasan||'tidak_terikat' }; });
+
+      const cashOpname = (coR.data||[]).map(c => ({ id:c.id, tanggal:c.tanggal, Pemeriksa:c.pemeriksa, bendahara:c.bendahara, kasKey:c.kas_key, kasName:c.kas_name, saldoBuku:parseFloat(c.saldo_buku)||0, totalFisik:parseFloat(c.total_fisik)||0, fisikTotal:parseFloat(c.fisik_total)||0, bank:c.bank||[], selisih:parseFloat(c.selisih)||0, penjelasan:c.penjelasan||'', rincianTunai:c.rincian_tunai||[], timestamp:c.timestamp }));
+
+      const iuran = { konsep:[], peserta:[], pembayaran:[] };
+      iuran.konsep = (ikR.data||[]).map(k => ({ id:k.id, nama:k.nama, tanggal:k.tanggal, kodeKas:k.kode_kas, status:k.status||'Aktif' }));
+      iuran.peserta = (ipR.data||[]).map(p => ({ konsepId:p.konsep_id, id:p.id, nama:p.nama, target:parseFloat(p.target)||0 }));
+      iuran.pembayaran = (ibR.data||[]).map(b => ({ konsepId:b.konsep_id, pesertaId:b.peserta_id, id:b.id, tanggal:b.tanggal, nominal:parseFloat(b.nominal)||0, idJurnal:b.id_jurnal||'' }));
+
+      const jual = { konsep:[], order:[], pembayaran:[] };
+      jual.konsep = (jkR.data||[]).map(k => ({ id:k.id, nama:k.nama, hargaBeli:parseFloat(k.harga_beli)||0, hargaJual:parseFloat(k.harga_jual)||0, kodeKas:k.kode_kas, status:k.status||'Aktif' }));
+      jual.order = (joR.data||[]).map(o => ({ konsepId:o.konsep_id, id:o.id, nama:o.nama, qty:parseFloat(o.qty)||0, total:parseFloat(o.total)||0 }));
+      jual.pembayaran = (jbR.data||[]).map(b => ({ konsepId:b.konsep_id, orderId:b.order_id, id:b.id, tanggal:b.tanggal, nominal:parseFloat(b.nominal)||0, idJurnal:b.id_jurnal||'' }));
+
+      const infaqHarian = (infR.data||[]).map(i => ({ id:i.id, tanggal:i.tanggal, tunai:parseFloat(i.tunai)||0, qris:parseFloat(i.qris)||0, petugas:i.petugas||'', kodeKasTunai:i.kode_kas_tunai||'', kodeKasQris:i.kode_kas_qris||'', idJurnal:i.id_jurnal||'' }));
+
       return {
-        akun, proker, bendahara, rab, calk,
+        akun, proker, bendahara, rab, calk, restrict, cashOpname, iuran, jual, infaqHarian,
         jurnal: groupAndSortJurnal(jUmumR.data, jKasR.data),
-        kas:{}, restrict:{}, buktiNota:[], cashOpname:[], kkp:[],
-        rekening:{laporan:[],temuan:[]}, iuran:{konsep:[],peserta:[],pembayaran:[]},
-        jual:{konsep:[],order:[],pembayaran:[]}, infaqHarian:[], prokerDokumen:[],
+        kas:{}, buktiNota:[], kkp:[],
+        rekening:{laporan:[],temuan:[]}, prokerDokumen:[],
         tugas:{daftar:[],latihan:[],pg:[],progress:[]}
       };
     }
@@ -3386,6 +3427,144 @@ const SUPABASE_FUNCTIONS = new Set([
         { bagian:'III', konten:c.c3||'' }, { bagian:'IV', konten:c.c4||'' }
       ]);
       return { status:'success', message:'CALK tersimpan!' };
+    }
+
+    if (fn === 'simpanRestrict') {
+      const restrictData = argsArray[0];
+      const rows = Object.keys(restrictData).map(kode => ({ kode_akun:kode, kas_penampung:restrictData[kode].kas||'', jenis_pembatasan:restrictData[kode].jenis||'tidak_terikat' }));
+      if (rows.length) { const up = await sb.from('pembatasan_akun').upsert(rows); if (up.error) throw new Error(up.error.message); }
+      return { status:'success' };
+    }
+
+    if (fn === 'simpanCashOpname' || fn === 'updateCashOpname') {
+      const d = argsArray[0];
+      const row = { id:d.id, tanggal:d.tanggal, pemeriksa:d.Pemeriksa, bendahara:d.bendahara, kas_key:d.kasKey, kas_name:d.kasName, saldo_buku:d.saldoBuku||0, total_fisik:d.totalFisik||0, fisik_total:d.fisikTotal||0, bank:d.bank||[], selisih:d.selisih||0, penjelasan:d.penjelasan||'', rincian_tunai:d.rincianTunai||[], timestamp:d.timestamp||new Date().toISOString() };
+      const up = await sb.from('cash_opname').upsert(row);
+      if (up.error) throw new Error(up.error.message);
+      return { status:'success' };
+    }
+
+    if (fn === 'simpanIuranKonsep') {
+      const d = argsArray[0];
+      const up = await sb.from('iuran_konsep').upsert({ id:d.id, nama:d.nama, tanggal:d.tanggal||new Date().toISOString().split('T')[0], kode_kas:d.kodeKas||'1-001', status:d.status||'Aktif' });
+      if (up.error) throw new Error(up.error.message);
+      await sb.from('iuran_peserta').delete().eq('konsep_id', d.id);
+      const peserta = (d.peserta||[]).map(p => ({ konsep_id:d.id, id:p.id, nama:p.nama, target:parseFloat(p.target)||0 }));
+      if (peserta.length) { const insP = await sb.from('iuran_peserta').insert(peserta); if (insP.error) throw new Error(insP.error.message); }
+      return { status:'success', message:'Konsep iuran berhasil disimpan!' };
+    }
+
+    if (fn === 'hapusIuranKonsep') {
+      const konsepId = argsArray[0];
+      const bayarR = await sb.from('iuran_pembayaran').select('id_jurnal').eq('konsep_id', konsepId);
+      for (const b of (bayarR.data||[])) { if (b.id_jurnal) await sb.from('jurnal_umum').delete().eq('id_jurnal', b.id_jurnal); }
+      await sb.from('iuran_pembayaran').delete().eq('konsep_id', konsepId);
+      await sb.from('iuran_peserta').delete().eq('konsep_id', konsepId);
+      await sb.from('iuran_konsep').delete().eq('id', konsepId);
+      return { status:'success' };
+    }
+
+    if (fn === 'simpanIuranPembayaran') {
+      const d = argsArray[0];
+      const id = 'IB' + Date.now();
+      const jurnalId = 'JU' + Date.now();
+      const kodeKas = d.kodeKas || '1-001';
+      const ket = `Pembayaran Iuran ${d.namaKegiatan||''} — ${d.namaPeserta||''}`;
+      await insertJurnalUmumSB(jurnalId, d.tanggal, d.bendahara||'Sistem (Iuran)', ket, [
+        { akun:kodeKas, debit:d.nominal, kredit:0 },
+        { akun:'4-40400', debit:0, kredit:d.nominal }
+      ]);
+      const ins = await sb.from('iuran_pembayaran').insert({ id, konsep_id:d.konsepId, peserta_id:d.pesertaId, tanggal:d.tanggal, nominal:d.nominal, id_jurnal:jurnalId });
+      if (ins.error) throw new Error(ins.error.message);
+      return { status:'success', id, idJurnal:jurnalId, message:'Pembayaran iuran dicatat!' };
+    }
+
+    if (fn === 'hapusIuranPembayaran') {
+      const payload = argsArray[0];
+      const r = await sb.from('iuran_pembayaran').select('id_jurnal').eq('id', payload.id).single();
+      if (r.data && r.data.id_jurnal) await sb.from('jurnal_umum').delete().eq('id_jurnal', r.data.id_jurnal);
+      await sb.from('iuran_pembayaran').delete().eq('id', payload.id);
+      return { status:'success' };
+    }
+
+    if (fn === 'simpanJualKonsep') {
+      const d = argsArray[0];
+      const up = await sb.from('jual_konsep').upsert({ id:d.id, nama:d.nama, harga_beli:d.hargaBeli||0, harga_jual:d.hargaJual||0, kode_kas:d.kodeKas||'1-001', status:d.status||'Aktif' });
+      if (up.error) throw new Error(up.error.message);
+      await sb.from('jual_order').delete().eq('konsep_id', d.id);
+      const order = (d.order||[]).map(o => ({ konsep_id:d.id, id:o.id, nama:o.nama, qty:parseFloat(o.qty)||0, total:parseFloat(o.total)||0 }));
+      if (order.length) { const insO = await sb.from('jual_order').insert(order); if (insO.error) throw new Error(insO.error.message); }
+      return { status:'success', message:'Konsep penjualan berhasil disimpan!' };
+    }
+
+    if (fn === 'hapusJualKonsep') {
+      const konsepId = argsArray[0];
+      const bayarR = await sb.from('jual_pembayaran').select('id_jurnal').eq('konsep_id', konsepId);
+      for (const b of (bayarR.data||[])) { if (b.id_jurnal) await sb.from('jurnal_umum').delete().eq('id_jurnal', b.id_jurnal); }
+      await sb.from('jual_pembayaran').delete().eq('konsep_id', konsepId);
+      await sb.from('jual_order').delete().eq('konsep_id', konsepId);
+      await sb.from('jual_konsep').delete().eq('id', konsepId);
+      return { status:'success' };
+    }
+
+    if (fn === 'simpanJualPembayaran') {
+      const d = argsArray[0];
+      const id = 'JB' + Date.now();
+      const jurnalId = 'JU' + Date.now();
+      const kodeKas = d.kodeKas || '1-001';
+      const ket = `Penjualan ${d.namaProduk||''} — ${d.namaPembeli||''}`;
+      const entries = [
+        { akun:kodeKas, debit:d.nominal, kredit:0 },
+        { akun:'4-40500', debit:0, kredit:d.nominal }
+      ];
+      if (d.hpp && d.hpp > 0) {
+        entries.push({ akun:'5-50000', debit:d.hpp, kredit:0 });
+        entries.push({ akun:'1-10200', debit:0, kredit:d.hpp });
+      }
+      await insertJurnalUmumSB(jurnalId, d.tanggal, d.bendahara||'Sistem (Penjualan)', ket, entries);
+      const ins = await sb.from('jual_pembayaran').insert({ id, konsep_id:d.konsepId, order_id:d.orderId, tanggal:d.tanggal, nominal:d.nominal, id_jurnal:jurnalId });
+      if (ins.error) throw new Error(ins.error.message);
+      return { status:'success', id, idJurnal:jurnalId, message:'Pembayaran penjualan dicatat!' };
+    }
+
+    if (fn === 'hapusJualPembayaran') {
+      const payload = argsArray[0];
+      const r = await sb.from('jual_pembayaran').select('id_jurnal').eq('id', payload.id).single();
+      if (r.data && r.data.id_jurnal) await sb.from('jurnal_umum').delete().eq('id_jurnal', r.data.id_jurnal);
+      await sb.from('jual_pembayaran').delete().eq('id', payload.id);
+      return { status:'success' };
+    }
+
+    if (fn === 'simpanInfaqHarian') {
+      const d = argsArray[0];
+      const tunai = parseFloat(d.tunai)||0, qris = parseFloat(d.qris)||0;
+      if (tunai <= 0 && qris <= 0) return { status:'error', message:'Nominal tunai/QRIS wajib diisi!' };
+      const isEdit = !!d.id;
+      const id = isEdit ? d.id : ('INF' + Date.now());
+      if (isEdit) {
+        const old = await sb.from('infaq_harian').select('id_jurnal').eq('id', id).single();
+        if (old.data && old.data.id_jurnal) await sb.from('jurnal_umum').delete().eq('id_jurnal', old.data.id_jurnal);
+      }
+      const jurnalId = 'JU' + Date.now();
+      const kodeKasTunai = d.kodeKasTunai || '1-10002';
+      const kodeKasQris = d.kodeKasQris || '1-10002';
+      const ket = `Infaq Harian — ${d.petugas||'-'} (${d.tanggal})`;
+      const entries = [];
+      if (tunai > 0) entries.push({ akun:kodeKasTunai, debit:tunai, kredit:0 });
+      if (qris > 0) entries.push({ akun:kodeKasQris, debit:qris, kredit:0 });
+      entries.push({ akun:'4-40100', debit:0, kredit:tunai+qris });
+      await insertJurnalUmumSB(jurnalId, d.tanggal, d.petugas||'Sistem (Infaq)', ket, entries);
+      const up = await sb.from('infaq_harian').upsert({ id, tanggal:d.tanggal, tunai, qris, petugas:d.petugas||'', kode_kas_tunai:kodeKasTunai, kode_kas_qris:kodeKasQris, id_jurnal:jurnalId });
+      if (up.error) throw new Error(up.error.message);
+      return { status:'success', id, idJurnal:jurnalId, message: isEdit ? 'Infaq harian berhasil diperbarui!' : 'Infaq harian berhasil dicatat!' };
+    }
+
+    if (fn === 'hapusInfaqHarian') {
+      const id = argsArray[0];
+      const r = await sb.from('infaq_harian').select('id_jurnal').eq('id', id).single();
+      if (r.data && r.data.id_jurnal) await sb.from('jurnal_umum').delete().eq('id_jurnal', r.data.id_jurnal);
+      await sb.from('infaq_harian').delete().eq('id', id);
+      return { status:'success' };
     }
 
     throw new Error('Fungsi Supabase belum diimplementasi: ' + fn);
