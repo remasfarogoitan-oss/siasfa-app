@@ -622,6 +622,7 @@
             font-size: 0.95rem;
         }
         .report-dl-btn:active { background: var(--paper-soft); }
+.laporan-detail-box { display:none; margin: -6px 0 8px; }
 
         .btn-download-all {
             width: 100%;
@@ -1433,12 +1434,7 @@
                                 <div class="cash-amount">Rp -</div>
                             </div>
                         </div>
-                        <div class="detail-content" style="display:block; margin-top:14px;">
-                            <div class="ledger-row"><span class="left-part"><i class="ph ph-wallet"></i> Kas Administrasi Umum</span><span class="amt">Rp -</span></div>
-                            <div class="ledger-row"><span class="left-part"><i class="ph ph-coins"></i> Kas Infaq Harian Ramadhan</span><span class="amt">Rp -</span></div>
-                            <div class="ledger-row"><span class="left-part"><i class="ph ph-hand-coins"></i> Kas Donasi Ramadhan</span><span class="amt">Rp -</span></div>
-                            <div class="ledger-row"><span class="left-part"><i class="ph ph-bank"></i> Kas Unit Pengumpul Zakat</span><span class="amt">Rp -</span></div>
-                            <div class="ledger-row"><span class="left-part"><i class="ph ph-dots-three-circle"></i> Kas Lainnya</span><span class="amt">Rp -</span></div>
+                        <div class="detail-content" style="display:block; margin-top:14px;" id="guestDetailKas">
                         </div>
                     </div>
                 </div>
@@ -1584,14 +1580,14 @@
                         <div class="stat-box in">
                             <div class="stat-icon"><i class="ph ph-arrow-down-left"></i></div>
                             <div class="stat-label">Total Masuk</div>
-                            <div class="stat-amount">Rp 18.750.000</div>
-                            <div class="stat-delta up"><i class="ph-fill ph-arrow-up"></i> 8% dari bulan lalu</div>
+                            <div class="stat-amount" id="statMasukAmount">Rp 0</div>
+                            <div class="stat-delta up" id="statMasukDelta"><i class="ph-fill ph-arrow-up"></i> 0% dari bulan lalu</div>
                         </div>
                         <div class="stat-box out">
                             <div class="stat-icon"><i class="ph ph-arrow-up-right"></i></div>
                             <div class="stat-label">Total Keluar</div>
-                            <div class="stat-amount">Rp 12.300.000</div>
-                            <div class="stat-delta down"><i class="ph-fill ph-arrow-down"></i> 3% dari bulan lalu</div>
+                            <div class="stat-amount" id="statKeluarAmount">Rp 0</div>
+                            <div class="stat-delta down" id="statKeluarDelta"><i class="ph-fill ph-arrow-down"></i> 0% dari bulan lalu</div>
                         </div>
                     </div>
 
@@ -1656,62 +1652,8 @@
                             <div class="ledger-link" onclick="alert('Menampilkan semua Program Kerja akan datang segera')">Lihat semua</div>
                         </div>
 
-                        <div style="display:flex; flex-direction:column; gap:9px;">
-                            <div class="proker-card tier-mid" onclick="bukaBukuProker('ramadhan-fest')">
-                                <i class="ph-fill ph-tent proker-deco-icon"></i>
-                                <div class="proker-top-row">
-                                    <span class="proker-status">Berjalan</span>
-                                    <span class="proker-ketua"><i class="ph ph-user-circle"></i> Ahmad Fauzi</span>
-                                </div>
-                                <div class="proker-title">Ramadhan Fest 2026</div>
-                                <div class="proker-rab-row"><span>Total RAB</span><strong>Rp 25.000.000</strong></div>
-                                <div class="proker-progress-row">
-                                    <div class="proker-progress-bar"><div class="proker-progress-fill level-mid" style="width:68%;"></div></div>
-                                    <div class="proker-progress-label">68%</div>
-                                </div>
-                            </div>
-
-                            <div class="proker-card tier-mid" onclick="bukaBukuProker('santunan')">
-                                <i class="ph-fill ph-hand-heart proker-deco-icon"></i>
-                                <div class="proker-top-row">
-                                    <span class="proker-status">Berjalan</span>
-                                    <span class="proker-ketua"><i class="ph ph-user-circle"></i> Siti Nurhaliza</span>
-                                </div>
-                                <div class="proker-title">Santunan Yatim & Dhuafa</div>
-                                <div class="proker-rab-row"><span>Total RAB</span><strong>Rp 15.000.000</strong></div>
-                                <div class="proker-progress-row">
-                                    <div class="proker-progress-bar"><div class="proker-progress-fill level-mid" style="width:42%;"></div></div>
-                                    <div class="proker-progress-label">42%</div>
-                                </div>
-                            </div>
-
-                            <div class="proker-card tier-high" onclick="bukaBukuProker('pelatihan')">
-                                <i class="ph-fill ph-graduation-cap proker-deco-icon"></i>
-                                <div class="proker-top-row">
-                                    <span class="proker-status">Berjalan</span>
-                                    <span class="proker-ketua"><i class="ph ph-user-circle"></i> Rizky Pratama</span>
-                                </div>
-                                <div class="proker-title">Pelatihan Kepemimpinan Remaja</div>
-                                <div class="proker-rab-row"><span>Total RAB</span><strong>Rp 8.500.000</strong></div>
-                                <div class="proker-progress-row">
-                                    <div class="proker-progress-bar"><div class="proker-progress-fill level-high" style="width:90%;"></div></div>
-                                    <div class="proker-progress-label">90%</div>
-                                </div>
-                            </div>
-
-                            <div class="proker-card tier-low" onclick="bukaBukuProker('renovasi')">
-                                <i class="ph-fill ph-books proker-deco-icon"></i>
-                                <div class="proker-top-row">
-                                    <span class="proker-status">Berjalan</span>
-                                    <span class="proker-ketua"><i class="ph ph-user-circle"></i> Dewi Anggraini</span>
-                                </div>
-                                <div class="proker-title">Renovasi Perpustakaan Masjid</div>
-                                <div class="proker-rab-row"><span>Total RAB</span><strong>Rp 40.000.000</strong></div>
-                                <div class="proker-progress-row">
-                                    <div class="proker-progress-bar"><div class="proker-progress-fill level-low" style="width:15%;"></div></div>
-                                    <div class="proker-progress-label">15%</div>
-                                </div>
-                            </div>
+                        <div id="berandaProkerList" style="display:flex; flex-direction:column; gap:9px;">
+                            <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat program kerja...</div>
                         </div>
                     </div>
 
@@ -1728,26 +1670,34 @@
                     <!-- Sub: Laporan Keuangan -->
                     <div class="laporan-subpage active" id="lpage-keuangan">
                         <div>
-                            <div class="report-row">
+                            <div class="report-row" style="cursor:pointer;" onclick="toggleLaporanDetail('posisi')">
                                 <div class="report-icon"><i class="ph ph-scales"></i></div>
-                                <div><div class="report-name">Laporan Posisi Keuangan</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                                <button class="report-dl-btn" onclick="unduhLaporan('Laporan Posisi Keuangan')"><i class="ph ph-download-simple"></i></button>
+                                <div><div class="report-name">Laporan Posisi Keuangan</div><div class="report-sub">Tap untuk lihat laporan</div></div>
+                                <button class="report-dl-btn" onclick="event.stopPropagation(); unduhLaporan('Laporan Posisi Keuangan')"><i class="ph ph-download-simple"></i></button>
                             </div>
-                            <div class="report-row">
+                            <div class="laporan-detail-box" id="laporanDetail-posisi"></div>
+
+                            <div class="report-row" style="cursor:pointer;" onclick="toggleLaporanDetail('aktivitas')">
                                 <div class="report-icon"><i class="ph ph-chart-line-up"></i></div>
-                                <div><div class="report-name">Laporan Aktivitas</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                                <button class="report-dl-btn" onclick="unduhLaporan('Laporan Aktivitas')"><i class="ph ph-download-simple"></i></button>
+                                <div><div class="report-name">Laporan Penghasilan Komprehensif</div><div class="report-sub">Tap untuk lihat laporan</div></div>
+                                <button class="report-dl-btn" onclick="event.stopPropagation(); unduhLaporan('Laporan Penghasilan Komprehensif')"><i class="ph ph-download-simple"></i></button>
                             </div>
-                            <div class="report-row">
+                            <div class="laporan-detail-box" id="laporanDetail-aktivitas"></div>
+
+                            <div class="report-row" style="cursor:pointer;" onclick="toggleLaporanDetail('perubahan')">
                                 <div class="report-icon"><i class="ph ph-arrows-clockwise"></i></div>
-                                <div><div class="report-name">Laporan Perubahan Aset Netto</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                                <button class="report-dl-btn" onclick="unduhLaporan('Laporan Perubahan Aset Netto')"><i class="ph ph-download-simple"></i></button>
+                                <div><div class="report-name">Laporan Perubahan Aset Neto</div><div class="report-sub">Tap untuk lihat laporan</div></div>
+                                <button class="report-dl-btn" onclick="event.stopPropagation(); unduhLaporan('Laporan Perubahan Aset Neto')"><i class="ph ph-download-simple"></i></button>
                             </div>
-                            <div class="report-row">
-                                <div class="report-icon"><i class="ph ph-wallet"></i></div>
-                                <div><div class="report-name">Laporan Arus Kas</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                                <button class="report-dl-btn" onclick="unduhLaporan('Laporan Arus Kas')"><i class="ph ph-download-simple"></i></button>
+                            <div class="laporan-detail-box" id="laporanDetail-perubahan"></div>
+
+                            <div class="report-row" style="cursor:pointer;" onclick="toggleLaporanDetail('realisasi')">
+                                <div class="report-icon"><i class="ph ph-clipboard-text"></i></div>
+                                <div><div class="report-name">Laporan Realisasi Anggaran Proker</div><div class="report-sub">Rekap RAB vs Realisasi seluruh proker</div></div>
+                                <button class="report-dl-btn" onclick="event.stopPropagation(); unduhLaporan('Laporan Realisasi Anggaran Proker')"><i class="ph ph-download-simple"></i></button>
                             </div>
+                            <div class="laporan-detail-box" id="laporanDetail-realisasi"></div>
+
                             <div class="report-row">
                                 <div class="report-icon"><i class="ph ph-notepad"></i></div>
                                 <div><div class="report-name">CALK</div><div class="report-sub">Catatan atas Laporan Keuangan</div></div>
@@ -1984,8 +1934,8 @@
                             <span class="ct-tag-optional">Opsional</span>
                         </div>
                         <div class="ct-rab-row">
-                            <select><option>Nama Program</option></select>
-                            <select><option>Pos Anggaran</option></select>
+                            <select class="ct-nama-program" onchange="isiPosAnggaran(this)"><option value="">Nama Program</option></select>
+                            <select class="ct-pos-anggaran" disabled><option value="">Pos Anggaran</option></select>
                         </div>
                     </div>
 
@@ -2205,11 +2155,11 @@
                         <label>Kas yang Diperiksa</label>
                         <select id="coKas">
                             <option value="">— Pilih Kas —</option>
-                            <option>Kas Administrasi Umum</option>
+                            <option>Kas Umum dan Administratif</option>
                             <option>Kas Infaq Harian Ramadhan</option>
                             <option>Kas Donasi Ramadhan</option>
+                            <option>Kas Kecil Remasfa</option>
                             <option>Kas Unit Pengumpul Zakat</option>
-                            <option>Kas Lainnya</option>
                         </select>
                     </div>
 
@@ -2325,27 +2275,7 @@
             <div class="ct-body">
                 <div class="un-note-text">Pilih transaksi yang <strong>belum memiliki bukti nota</strong>. File akan otomatis tersimpan ke Google Drive Bendahara.</div>
 
-                <div id="unItemList" style="display:flex; flex-direction:column; gap:14px;">
-                    <div class="un-item-card">
-                        <div class="ct-field">
-                            <label>Pilih Transaksi</label>
-                            <select>
-                                <option>— Pilih Transaksi Tanpa Nota —</option>
-                                <option>Pembelian Konsumsi Rapat &middot; 28 Agu 2026 &middot; Rp 150.000</option>
-                                <option>Iuran Anggota &middot; 27 Agu 2026 &middot; Rp 500.000</option>
-                                <option>Sewa Sound System &middot; 25 Agu 2026 &middot; Rp 750.000</option>
-                            </select>
-                        </div>
-                        <div class="ct-field" style="margin-bottom:0;">
-                            <label>File Nota (PNG/JPG/PDF)</label>
-                            <label class="ct-upload-zone">
-                                <input type="file" hidden>
-                                <i class="ph ph-upload-simple"></i>
-                                <span>Tap untuk pilih file nota</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <div id="unItemList" style="display:flex; flex-direction:column; gap:14px;"></div>
 
                 <div class="un-add-btn" onclick="tambahUploadNota()"><i class="ph ph-plus-circle"></i> Upload Nota Lagi</div>
 
@@ -2372,73 +2302,18 @@
 
                 <!-- Sub: Riwayat Transaksi -->
                 <div class="rw-subpage active" id="rwpage-transaksi">
-                    <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="display:flex; flex-direction:column; gap:8px;">
                         <div class="search-box">
                             <i class="ph ph-magnifying-glass"></i>
                             <input type="text" id="searchTransaksi" placeholder="Cari transaksi..." oninput="filterRiwayatTransaksi()">
                         </div>
                         <select id="filterInputerTransaksi" onchange="filterRiwayatTransaksi()" style="width:100%; border:1px solid var(--line); border-radius:14px; padding:11px 14px; font-size:0.78rem; color:var(--text-dark); background:#FFFFFF; outline:none;">
                             <option value="">Semua Petugas</option>
-                            <option value="Bendahara Remasfa">Bendahara Remasfa</option>
                         </select>
                     </div>
                     <button class="btn-download-all" style="margin-top:4px;" onclick="unduhRiwayatTransaksi()"><i class="ph ph-file-pdf"></i> Download PDF Riwayat Transaksi</button>
                     <div id="riwayatTransaksiNotFound" style="display:none; text-align:center; color:var(--text-gray); font-size:0.8rem; padding:16px 0;">Transaksi tidak ditemukan.</div>
-                    <div class="rw-trx-item" data-ket="Iuran Anggota Bulan Agustus" data-akun="Kas Administrasi Umum" data-id="JU-2026-0091" data-inputer="Bendahara Remasfa">
-                        <div class="rw-trx-icon tp-in"><i class="ph ph-arrow-down-left"></i></div>
-                        <div class="rw-trx-mid">
-                            <div class="rw-trx-ket">Iuran Anggota Bulan Agustus</div>
-                            <div class="rw-trx-sub">Bendahara Remasfa &middot; 30 Agu 2026</div>
-                        </div>
-                        <div class="rw-trx-right">
-                            <div class="rw-trx-nominal in">+Rp 500.000</div>
-                            <div class="rw-trx-id">JU-2026-0091</div>
-                        </div>
-                    </div>
-                    <div class="rw-trx-item" data-ket="Pembelian Konsumsi Rapat" data-akun="Beban Konsumsi" data-id="JU-2026-0090" data-inputer="Bendahara Remasfa">
-                        <div class="rw-trx-icon tp-out"><i class="ph ph-arrow-up-right"></i></div>
-                        <div class="rw-trx-mid">
-                            <div class="rw-trx-ket">Pembelian Konsumsi Rapat</div>
-                            <div class="rw-trx-sub">Bendahara Remasfa &middot; 28 Agu 2026</div>
-                        </div>
-                        <div class="rw-trx-right">
-                            <div class="rw-trx-nominal out">-Rp 150.000</div>
-                            <div class="rw-trx-id">JU-2026-0090</div>
-                        </div>
-                    </div>
-                    <div class="rw-trx-item" data-ket="Penyesuaian Saldo Kas Infaq" data-akun="Kas Infaq Harian Ramadhan" data-id="JU-2026-0089" data-inputer="Bendahara Remasfa">
-                        <div class="rw-trx-icon tp-umum"><i class="ph ph-book-open"></i></div>
-                        <div class="rw-trx-mid">
-                            <div class="rw-trx-ket">Penyesuaian Saldo Kas Infaq</div>
-                            <div class="rw-trx-sub">Bendahara Remasfa &middot; 26 Agu 2026</div>
-                        </div>
-                        <div class="rw-trx-right">
-                            <div class="rw-trx-nominal">Rp 75.000</div>
-                            <div class="rw-trx-id">JU-2026-0089</div>
-                        </div>
-                    </div>
-                    <div class="rw-trx-item" data-ket="Sewa Sound System Ramadhan Fest" data-akun="Kas Administrasi Umum" data-id="JU-2026-0088" data-inputer="Bendahara Remasfa">
-                        <div class="rw-trx-icon tp-out"><i class="ph ph-arrow-up-right"></i></div>
-                        <div class="rw-trx-mid">
-                            <div class="rw-trx-ket">Sewa Sound System Ramadhan Fest</div>
-                            <div class="rw-trx-sub">Bendahara Remasfa &middot; 25 Agu 2026</div>
-                        </div>
-                        <div class="rw-trx-right">
-                            <div class="rw-trx-nominal out">-Rp 750.000</div>
-                            <div class="rw-trx-id">JU-2026-0088</div>
-                        </div>
-                    </div>
-                    <div class="rw-trx-item" data-ket="Donasi Ramadhan dari Hamba Allah" data-akun="Kas Donasi Ramadhan" data-id="JU-2026-0087" data-inputer="Bendahara Remasfa">
-                        <div class="rw-trx-icon tp-in"><i class="ph ph-arrow-down-left"></i></div>
-                        <div class="rw-trx-mid">
-                            <div class="rw-trx-ket">Donasi Ramadhan dari Hamba Allah</div>
-                            <div class="rw-trx-sub">Bendahara Remasfa &middot; 24 Agu 2026</div>
-                        </div>
-                        <div class="rw-trx-right">
-                            <div class="rw-trx-nominal in">+Rp 1.000.000</div>
-                            <div class="rw-trx-id">JU-2026-0087</div>
-                        </div>
-                    </div>
+                    <div id="riwayatTransaksiList"></div>
                 </div>
 
                 <!-- Sub: Riwayat Buku Besar -->
@@ -2457,62 +2332,28 @@
                         <div class="stat-box">
                             <div class="stat-icon"><i class="ph ph-receipt"></i></div>
                             <div class="stat-label">Total Nota Terkumpul</div>
-                            <div class="stat-amount">6</div>
+                            <div class="stat-amount" id="notaStatTerkumpul">0</div>
                         </div>
                         <div class="stat-box">
                             <div class="stat-icon"><i class="ph ph-book-open"></i></div>
                             <div class="stat-label">Total Transaksi Jurnal</div>
-                            <div class="stat-amount">8</div>
+                            <div class="stat-amount" id="notaStatJurnal">0</div>
                         </div>
                     </div>
                     <div class="stat-box" style="text-align:center;">
                         <div class="stat-label">Persentase Kepatuhan Bukti Transaksi</div>
-                        <div class="stat-amount" style="font-size:1.4rem; margin-top:6px;">75%</div>
+                        <div class="stat-amount" style="font-size:1.4rem; margin-top:6px;" id="notaStatPersen">0%</div>
                         <div style="font-size:0.62rem; color:rgba(255,255,255,0.75); font-weight:500; margin-top:4px;">(Nota terkumpul / transaksi jurnal) x 100%</div>
                     </div>
 
                     <div>
                         <div class="rb-section-label">Bukti Transaksi Proker</div>
-                        <div style="display:flex; flex-direction:column; gap:10px;">
-                            <div class="report-row" style="cursor:pointer;" onclick="bukaNotaProker('Ramadhan Fest 2026')">
-                                <div class="report-icon"><i class="ph ph-folder"></i></div>
-                                <div><div class="report-name">Ramadhan Fest 2026</div><div class="report-sub">2 nota terupload</div></div>
-                                <i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i>
-                            </div>
-                            <div class="report-row" style="cursor:pointer;" onclick="bukaNotaProker('Santunan Yatim & Dhuafa')">
-                                <div class="report-icon"><i class="ph ph-folder"></i></div>
-                                <div><div class="report-name">Santunan Yatim & Dhuafa</div><div class="report-sub">1 nota terupload</div></div>
-                                <i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i>
-                            </div>
-                            <div class="report-row" style="cursor:pointer;" onclick="bukaNotaProker('Pelatihan Kepemimpinan Remaja')">
-                                <div class="report-icon"><i class="ph ph-folder"></i></div>
-                                <div><div class="report-name">Pelatihan Kepemimpinan Remaja</div><div class="report-sub">0 nota terupload</div></div>
-                                <i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i>
-                            </div>
-                            <div class="report-row" style="cursor:pointer;" onclick="bukaNotaProker('Renovasi Perpustakaan Masjid')">
-                                <div class="report-icon"><i class="ph ph-folder"></i></div>
-                                <div><div class="report-name">Renovasi Perpustakaan Masjid</div><div class="report-sub">0 nota terupload</div></div>
-                                <i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i>
-                            </div>
-                        </div>
+                        <div id="notaProkerFolderList" style="display:flex; flex-direction:column; gap:10px;"></div>
                     </div>
 
                     <div>
                         <div class="rb-section-label">Bukti Transaksi Non Proker</div>
-                        <div class="nota-grid">
-                            <div class="nota-card">
-                                <div class="nota-img"><i class="ph ph-image"></i></div>
-                                <div class="nota-info"><div class="nota-ket">Konsumsi Rapat Pengurus</div><div class="nota-tgl">28 Agu 2026</div><div class="nota-nominal">Rp 150.000</div></div>
-                            </div>
-                            <div class="nota-card">
-                                <div class="nota-img"><i class="ph ph-file-pdf"></i></div>
-                                <div class="nota-info"><div class="nota-ket">Pembelian ATK Sekretariat</div><div class="nota-tgl">18 Agu 2026</div><div class="nota-nominal">Rp 85.000</div></div>
-                            </div>
-                            <div class="nota-card">
-                                <div class="nota-img"><i class="ph ph-image"></i></div>
-                                <div class="nota-info"><div class="nota-ket">Konsumsi Rapat Evaluasi</div><div class="nota-tgl">14 Agu 2026</div><div class="nota-nominal">Rp 95.000</div></div>
-                            </div>
-                        </div>
+                        <div class="nota-grid" id="notaGridNonProker"></div>
                     </div>
                 </div>
 
@@ -2608,7 +2449,13 @@
                         </div>
                         <div class="ct-field">
                             <label>Tahun</label>
-                            <input type="number" value="2026">
+                            <select>
+                                <option>2026</option>
+                                <option>2027</option>
+                                <option>2028</option>
+                                <option>2029</option>
+                                <option>2030</option>
+                            </select>
                         </div>
                     </div>
                     <div class="ct-field"><label>Ketua Pelaksana</label><input type="text" placeholder="Nama ketua..."></div>
@@ -2622,9 +2469,9 @@
                             <div id="pkRabRows">
                                 <div class="pk-table-row pk-cols-rab">
                                     <input type="text" placeholder="Nama kebutuhan...">
-                                    <input type="number" placeholder="1">
+                                    <input type="number" placeholder="1" oninput="hitungTotalRabRowPk(this)">
                                     <input type="text" placeholder="pcs">
-                                    <input type="number" placeholder="0">
+                                    <input type="number" placeholder="0" oninput="hitungTotalRabRowPk(this)">
                                     <input type="number" placeholder="0" disabled>
                                 </div>
                             </div>
@@ -2733,7 +2580,30 @@
                         <div style="font-size:0.78rem; color:var(--text-dark); line-height:1.5;" id="bpAnalisisText">Belum ada data realisasi.</div>
                     </div>
 
+                    <button class="co-btn-secondary" onclick="bukaBukuTransaksiProker()"><i class="ph ph-book-open"></i> Lihat Buku Transaksi Proker</button>
                     <button class="co-btn-secondary" onclick="unduhRealisasiPdf()"><i class="ph ph-download-simple"></i> Download PDF Realisasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL BUKU TRANSAKSI PROKER ================= -->
+        <div id="proker-buku-transaksi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Buku Transaksi Proker</div>
+                    <i class="ph ph-x" onclick="tutupBukuTransaksiProker()"></i>
+                </div>
+                <div class="co-modal-body">
+                    <div class="bb-card">
+                        <div class="bb-head" style="display:grid; grid-template-columns:52px 1.6fr 0.8fr 0.8fr 0.9fr; gap:6px;">
+                            <span class="bb-akun-name" style="font-size:0.62rem;">Tanggal</span>
+                            <span class="bb-akun-name" style="font-size:0.62rem;">Nama Akun dan Keterangan</span>
+                            <span class="bb-akun-name" style="font-size:0.62rem; text-align:right;">Debit</span>
+                            <span class="bb-akun-name" style="font-size:0.62rem; text-align:right;">Kredit</span>
+                            <span class="bb-akun-name" style="font-size:0.62rem;">Bendahara</span>
+                        </div>
+                        <div id="bpBukuTransaksiRows"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2792,22 +2662,11 @@
                 <div>
                     <div class="rb-section-label">Daftar Laporan per Bulan</div>
                     <div id="rbList" style="display:flex; flex-direction:column; gap:10px;">
-                        <div class="rb-item late" onclick="bukaModalRekBank('Januari 2026')">
-                            <div class="rb-item-icon"><i class="ph-fill ph-alarm"></i></div>
-                            <div class="rb-item-mid">
-                                <div class="rb-item-month">Januari 2026</div>
-                                <div class="rb-item-sub">Kas Infaq Harian Ramadhan &middot; Satria Rizki</div>
-                                <span class="rb-item-badge">Sudah Lapor</span>
-                            </div>
-                            <div class="rb-item-right">
-                                <div class="rb-item-nominal">Rp 90.000.000</div>
-                                <div class="rb-item-selisih">Selisih Rp 89.728.111</div>
-                            </div>
-                        </div>
+                        <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data...</div>
                     </div>
                 </div>
 
-                <button class="ct-submit-btn" onclick="bukaModalRekBank('September 2026')"><i class="ph ph-plus-circle"></i> Tambah Bulan Pelaporan</button>
+                <button class="ct-submit-btn" onclick="tambahBulanPelaporan()"><i class="ph ph-plus-circle"></i> Tambah Bulan Pelaporan</button>
             </div>
         </div>
 
@@ -2826,19 +2685,17 @@
 
                     <div class="rb-section-label" style="margin-top:2px;">📝 Isi Laporan Rekening</div>
 
-                    <div class="ct-field">
+                                        <div class="ct-field">
                         <label>Nama Bendahara</label>
-                        <select><option>— Pilih Bendahara —</option><option selected>Satria Rizki</option></select>
+                        <select id="rbBendaharaSelect"><option>— Pilih Bendahara —</option><option selected>Bendahara Remasfa</option></select>
                     </div>
                     <div class="ct-field">
                         <label>Akun Kas yang Dipegang</label>
-                        <select>
-                            <option>— Pilih Kas —</option>
-                            <option>[1-10001] Kas Administrasi Umum</option>
-                            <option selected>[1-10002] Kas Infaq Harian Ramadhan</option>
-                            <option>[1-10003] Kas Donasi Ramadhan</option>
+                        <select id="rbKasSelect" onchange="updateRbSaldoBuku()">
+                            <option value="">— Pilih Kas —</option>
                         </select>
                     </div>
+
                     <div class="ct-field">
                         <label>Saldo Bank (Ketik Manual)</label>
                         <input type="number" id="rbSaldoBankInput" placeholder="0" oninput="hitungSelisihRb()">
@@ -3286,6 +3143,7 @@
                         <div id="pmAnggotaRows" style="display:flex; flex-direction:column; gap:8px;"></div>
                     </div>
                     <div class="ct-add-row" onclick="tambahAnggotaTim()"><i class="ph ph-plus-circle"></i> Tambah Anggota Tim</div>
+                    <button class="ct-submit-btn" style="margin-top:10px;" onclick="simpanTimPemeriksa()"><i class="ph ph-floppy-disk"></i> Simpan Tim Pemeriksa</button>
                 </div>
 
                 <div>
@@ -3403,7 +3261,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         const { data: akunKas, error } = await supabaseClient
             .from('akun_kas')
             .select('*')
-            .order('id', { ascending: true });
+            .order('no_akun', { ascending: true });
 
         if (error) { alert('ERROR SUPABASE: ' + error.message); return; }
         if (!akunKas || akunKas.length === 0) { return; }
@@ -3423,10 +3281,12 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         let totalKas = 0;
         let htmlDetail = '';
+        window._saldoKasPerId = {};
 
         akunKas.forEach(akun => {
             var saldo = (parseFloat(akun.saldo_awal) || 0) + (mutasiPerAkun[akun.id] || 0);
             totalKas += saldo;
+            window._saldoKasPerId[akun.id] = saldo;
 
             let icon = 'ph-wallet';
             if (akun.nama.includes('Infaq')) icon = 'ph-coins';
@@ -3450,12 +3310,78 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         const elDetailKas = document.getElementById('detailKas');
         if (elDetailKas) { elDetailKas.innerHTML = htmlDetail; }
 
+        const elGuestDetailKas = document.getElementById('guestDetailKas');
+        if (elGuestDetailKas) { elGuestDetailKas.innerHTML = htmlDetail; }
+
         window._akunKasCache = akunKas; // dipakai buat isi <select> Kas di form-form lain
 
     } catch (e) {
         alert('ERROR SISTEM: ' + e.message);
     }
 }
+
+        // ===== Total Masuk & Keluar bulan berjalan vs bulan lalu =====
+        async function muatStatMasukKeluar() {
+            try {
+                var now = new Date();
+                var startBulanIni = new Date(now.getFullYear(), now.getMonth(), 1);
+                var startBulanLalu = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                var endBulanLalu = new Date(now.getFullYear(), now.getMonth(), 0);
+                function toISO(d) { return d.toISOString().slice(0, 10); }
+
+                const { data, error } = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .select('tanggal, jurnal_detail(debit, kredit, akun_kas_id)')
+                    .gte('tanggal', toISO(startBulanLalu));
+
+                if (error) { alert('ERROR SUPABASE (stat masuk keluar): ' + error.message); return; }
+
+                var startIniStr = toISO(startBulanIni);
+                var startLaluStr = toISO(startBulanLalu);
+                var endLaluStr = toISO(endBulanLalu);
+                var masukIni = 0, keluarIni = 0, masukLalu = 0, keluarLalu = 0;
+
+                (data || []).forEach(function (trx) {
+                    var tgl = trx.tanggal;
+                    (trx.jurnal_detail || []).forEach(function (d) {
+                        if (!d.akun_kas_id) return;
+                        var debit = parseFloat(d.debit) || 0;
+                        var kredit = parseFloat(d.kredit) || 0;
+                        if (tgl >= startIniStr) {
+                            masukIni += debit; keluarIni += kredit;
+                        } else if (tgl >= startLaluStr && tgl <= endLaluStr) {
+                            masukLalu += debit; keluarLalu += kredit;
+                        }
+                    });
+                });
+
+                function deltaPersen(skrg, lalu) {
+                    if (lalu === 0) return skrg === 0 ? 0 : 100;
+                    return Math.round(((skrg - lalu) / lalu) * 100);
+                }
+
+                var elMasukAmount = document.getElementById('statMasukAmount');
+                if (!elMasukAmount) return;
+                var elKeluarAmount = document.getElementById('statKeluarAmount');
+                var elMasukDelta = document.getElementById('statMasukDelta');
+                var elKeluarDelta = document.getElementById('statKeluarDelta');
+
+                elMasukAmount.textContent = 'Rp ' + masukIni.toLocaleString('id-ID');
+                elKeluarAmount.textContent = 'Rp ' + keluarIni.toLocaleString('id-ID');
+
+                var pMasuk = deltaPersen(masukIni, masukLalu);
+                var pKeluar = deltaPersen(keluarIni, keluarLalu);
+
+                elMasukDelta.className = 'stat-delta ' + (pMasuk >= 0 ? 'up' : 'down');
+                elMasukDelta.innerHTML = '<i class="ph-fill ph-arrow-' + (pMasuk >= 0 ? 'up' : 'down') + '"></i> ' + Math.abs(pMasuk) + '% dari bulan lalu';
+
+                elKeluarDelta.className = 'stat-delta ' + (pKeluar <= 0 ? 'up' : 'down');
+                elKeluarDelta.innerHTML = '<i class="ph-fill ph-arrow-' + (pKeluar <= 0 ? 'up' : 'down') + '"></i> ' + Math.abs(pKeluar) + '% dari bulan lalu';
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
 
         // ===== Buka-tutup rincian kas =====
         function toggleDetail() {
@@ -3478,6 +3404,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             if (navEl) navEl.classList.add('active');
 
             document.getElementById('app-body').scrollTop = 0;
+
+            if (tab === 'profil') { muatPlottingAkun(); }
         }
 
         // ===== Sub-tab halaman Laporan =====
@@ -3540,6 +3468,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                     dash.style.display = 'flex';
                     dash.classList.add('screen-in');
                     muatDataKas(); // narik saldo kas dari Supabase begitu masuk dashboard
+                    muatProgramKerja(); // narik data proker dari Supabase juga, buat kartu di Beranda
+                    muatStatMasukKeluar();
                 }, 300);
             }, 1650);
         }
@@ -3548,9 +3478,9 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         async function loadDataFormTransaksi() {
             try {
                 const [kasRes, coaRes, prokerRes] = await Promise.all([
-                    supabaseClient.from('akun_kas').select('*').order('id'),
-                    supabaseClient.from('coa_akun').select('*').order('id'),
-                    supabaseClient.from('program_kerja').select('*').eq('ditutup', false).order('id')
+                    supabaseClient.from('akun_kas').select('*').order('no_akun'),
+                    supabaseClient.from('coa_akun').select('*').order('no_akun'),
+                    supabaseClient.from('program_kerja').select('id, nama, proker_rab(id, kebutuhan)').eq('ditutup', false).order('id')
                 ]);
                 if (kasRes.error) { alert('ERROR SUPABASE (kas): ' + kasRes.error.message); return; }
                 if (coaRes.error) { alert('ERROR SUPABASE (coa): ' + coaRes.error.message); return; }
@@ -3564,7 +3494,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
         function optKasList() {
             return (window._akunKasCache || []).map(function (a) {
-                return '<option value="kas:' + a.id + '">' + a.nama + '</option>';
+                return '<option value="kas:' + a.id + '">[' + a.no_akun + '] ' + a.nama + '</option>';
             }).join('');
         }
         function optCoaList(tipe) {
@@ -3581,6 +3511,31 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             });
             return opts;
         }
+        function isiPosAnggaran(prokerSelectEl) {
+            var posSelectEl = prokerSelectEl.closest('.ct-rab-row').querySelector('.ct-pos-anggaran');
+            var prokerId = prokerSelectEl.value;
+            if (!prokerId) {
+                posSelectEl.innerHTML = '<option value="">Pos Anggaran</option>';
+                posSelectEl.disabled = true;
+                return;
+            }
+            var proker = (window._prokerCache || []).find(function (p) { return String(p.id) === String(prokerId); });
+            var opts = '<option value="">Pos Anggaran</option>';
+            opts += '<option value="nonrab">Transaksi Non RAB</option>';
+            ((proker && proker.proker_rab) || []).forEach(function (r) {
+                opts += '<option value="' + r.id + '">' + r.kebutuhan + '</option>';
+            });
+            posSelectEl.innerHTML = opts;
+            posSelectEl.disabled = false;
+        }
+        function hitungTotalRabRowPk(el) {
+            var row = el.closest('.pk-table-row');
+            var inputs = row.querySelectorAll('input');
+            var qty = parseRupiah(inputs[1].value) || 0;
+            var harga = parseRupiah(inputs[3].value) || 0;
+            var total = qty * harga;
+            inputs[4].value = total.toLocaleString('id-ID');
+        }
         async function bukaCatatTransaksi() {
             await loadDataFormTransaksi();
 
@@ -3595,8 +3550,12 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('pengeluaranRows').innerHTML = '';
             tambahBarisPengeluaran();
 
-            document.querySelectorAll('#catat-transaksi-screen .ct-rab-row select:first-of-type').forEach(function (sel) {
+            document.querySelectorAll('#catat-transaksi-screen .ct-nama-program').forEach(function (sel) {
                 sel.innerHTML = optProkerList();
+            });
+            document.querySelectorAll('#catat-transaksi-screen .ct-pos-anggaran').forEach(function (sel) {
+                sel.innerHTML = '<option value="">Pos Anggaran</option>';
+                sel.disabled = true;
             });
 
             document.getElementById('catat-transaksi-screen').style.display = 'flex';
@@ -3668,14 +3627,15 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         // ===== Simpan Transaksi ke Supabase =====
         async function simpanTransaksi(jenis) {
             try {
-                var tanggal, bendahara, keterangan, prokerSelectVal, detailRows = [];
+                var tanggal, bendahara, keterangan, prokerSelectVal, posAnggaranVal, detailRows = [];
 
                 if (jenis === 'Jurnal Umum') {
                     var container = document.getElementById('ctpage-umum');
                     tanggal = container.querySelector('input[type="date"]').value;
                     bendahara = container.querySelector('select').value;
                     keterangan = container.querySelectorAll('input[type="text"]')[0].value.trim();
-                    prokerSelectVal = container.querySelector('.ct-rab-row select').value;
+                    prokerSelectVal = container.querySelector('.ct-nama-program').value;
+                    posAnggaranVal = container.querySelector('.ct-pos-anggaran').value;
 
                     var totalDebit = 0, totalKredit = 0;
                     document.querySelectorAll('#umumRows .ct-table-row').forEach(function (row) {
@@ -3700,7 +3660,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                     tanggal = container.querySelector('input[type="date"]').value;
                     bendahara = container.querySelector('select').value;
                     keterangan = container.querySelectorAll('input[type="text"]')[0].value.trim();
-                    prokerSelectVal = container.querySelector('.ct-rab-row select').value;
+                    prokerSelectVal = container.querySelector('.ct-nama-program').value;
+                    posAnggaranVal = container.querySelector('.ct-pos-anggaran').value;
 
                     document.querySelectorAll('#penerimaanRows .ct-table-row').forEach(function (row) {
                         var selects = row.querySelectorAll('select');
@@ -3719,7 +3680,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                     tanggal = container.querySelector('input[type="date"]').value;
                     bendahara = container.querySelector('select').value;
                     keterangan = container.querySelectorAll('input[type="text"]')[0].value.trim();
-                    prokerSelectVal = container.querySelector('.ct-rab-row select').value;
+                    prokerSelectVal = container.querySelector('.ct-nama-program').value;
+                    posAnggaranVal = container.querySelector('.ct-pos-anggaran').value;
 
                     document.querySelectorAll('#pengeluaranRows .ct-table-row').forEach(function (row) {
                         var selects = row.querySelectorAll('select');
@@ -3740,6 +3702,11 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 var kode = 'JU-' + new Date(tanggal).getFullYear() + '-' + String(Date.now()).slice(-6);
                 var jenisDb = jenis === 'Jurnal Umum' ? 'umum' : (jenis === 'Penerimaan' ? 'penerimaan' : 'pengeluaran');
 
+                var prokerRabId = null;
+                if (prokerSelectVal && posAnggaranVal && posAnggaranVal !== 'nonrab') {
+                    prokerRabId = parseInt(posAnggaranVal);
+                }
+
                 var jurnalRes = await supabaseClient
                     .from('jurnal_transaksi')
                     .insert({
@@ -3748,7 +3715,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                         jenis: jenisDb,
                         bendahara: bendahara,
                         keterangan: keterangan,
-                        proker_id: prokerSelectVal ? parseInt(prokerSelectVal) : null
+                        proker_id: prokerSelectVal ? parseInt(prokerSelectVal) : null,
+                        proker_rab_id: prokerRabId
                     })
                     .select()
                     .single();
@@ -3764,6 +3732,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
                 alert('Transaksi ' + jenis + ' berhasil disimpan! Kode: ' + kode);
                 await muatDataKas();
+                await muatProgramKerja();
                 tutupCatatTransaksi();
 
             } catch (e) {
@@ -3774,11 +3743,16 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         // ===== Cash Opname: buka/tutup halaman & modal =====
         function bukaCashOpname() {
             document.getElementById('cashopname-screen').style.display = 'flex';
+            muatCashOpname();
         }
         function tutupCashOpname() {
             document.getElementById('cashopname-screen').style.display = 'none';
         }
         function bukaModalOpname() {
+            var kasSelect = document.getElementById('coKas');
+            kasSelect.innerHTML = '<option value="">— Pilih Kas —</option>' + (window._akunKasCache || []).map(function (a) {
+                return '<option>[' + a.no_akun + '] ' + a.nama + '</option>';
+            }).join('');
             document.getElementById('co-modal-overlay').style.display = 'flex';
             hitungFisik();
         }
@@ -3786,7 +3760,52 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('co-modal-overlay').style.display = 'none';
         }
 
-        var coCount = 0, coSelisihCount = 0, coSesuaiCount = 0;
+        var coHistoryCache = [];
+
+        async function muatCashOpname() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('cash_opname')
+                    .select('*, akun_kas(nama)')
+                    .order('tanggal', { ascending: false })
+                    .order('id', { ascending: false });
+                if (error) { alert('ERROR SUPABASE (cash opname): ' + error.message); return; }
+                coHistoryCache = data || [];
+                renderCoHistory();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        function renderCoHistory() {
+            var wrap = document.getElementById('coHistoryList');
+            var total = coHistoryCache.length;
+            var selisih = coHistoryCache.filter(function (o) { return o.status !== 'Sesuai'; }).length;
+            var sesuai = total - selisih;
+
+            document.getElementById('coStatTotal').textContent = total;
+            document.getElementById('coStatSelisih').textContent = selisih;
+            document.getElementById('coStatSesuai').textContent = sesuai;
+
+            if (total === 0) {
+                wrap.innerHTML = '<div class="co-empty-state" id="coEmptyState"><div class="co-empty-icon"><i class="ph-fill ph-archive"></i></div><div class="co-empty-text">Belum ada cash opname. Tap tombol + untuk memulai.</div></div>';
+                return;
+            }
+
+            var html = '';
+            coHistoryCache.forEach(function (o) {
+                var statusClass = o.status === 'Sesuai' ? 'co-item-ok' : 'co-item-warn';
+                var statusIcon = o.status === 'Sesuai' ? 'ph-check-circle' : 'ph-warning-circle';
+                var fisikBank = (parseFloat(o.total_fisik) || 0) + (parseFloat(o.total_bank) || 0);
+                html += '<div class="co-history-item ' + statusClass + '">' +
+                    '<div class="co-history-top"><span class="co-history-kas">' + (o.akun_kas ? o.akun_kas.nama : '-') + '</span>' +
+                    '<span class="co-history-status"><i class="ph ' + statusIcon + '"></i> ' + o.status + '</span></div>' +
+                    '<div class="co-history-mid">Rp ' + fisikBank.toLocaleString('id-ID') + ' &middot; Diperiksa oleh ' + o.pemeriksa + '</div>' +
+                    '<div class="co-history-bottom"><span><i class="ph ph-calendar-blank"></i> ' + formatTanggalID(o.tanggal) + '</span>' +
+                    '<span><i class="ph ph-user-circle"></i> ' + o.bendahara + '</span></div></div>';
+            });
+            wrap.innerHTML = html;
+        }
 
         // ===== Hitung total uang fisik (dari tabel pecahan) =====
         function getTotalFisik() {
@@ -3881,50 +3900,72 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         // ===== Arsipkan Cash Opname =====
-        function arsipkanOpname() {
-            var pemeriksa = document.getElementById('coPemeriksa').value.trim();
-            var bendahara = document.getElementById('coBendahara').value;
-            var kas = document.getElementById('coKas').value;
+        async function arsipkanOpname() {
+            try {
+                var pemeriksa = document.getElementById('coPemeriksa').value.trim();
+                var bendahara = document.getElementById('coBendahara').value;
+                var kasNama = document.getElementById('coKas').value;
 
-            if (!pemeriksa || !bendahara || !kas) {
-                alert('Mohon lengkapi Pemeriksa, Bendahara, dan Kas yang Diperiksa terlebih dahulu');
-                return;
+                if (!pemeriksa || !bendahara || !kasNama) {
+                    alert('Mohon lengkapi Pemeriksa, Bendahara, dan Kas yang Diperiksa terlebih dahulu');
+                    return;
+                }
+
+                var kasObj = (window._akunKasCache || []).find(function (a) { return a.nama === kasNama; });
+                if (!kasObj) { alert('Data kas belum termuat, coba buka ulang halaman ini'); return; }
+
+                var tanggal = document.getElementById('coTanggal').value;
+                var status = document.getElementById('coSelisihValue').dataset.status || 'Sesuai';
+                var totalFisik = getTotalFisik();
+                var totalBank = hitungTotalBank();
+                var saldoBuku = parseRupiah(document.getElementById('coSaldoBuku').value) || 0;
+                var selisihNum = (totalFisik + totalBank) - saldoBuku;
+                var keterangan = document.getElementById('coKeterangan').value.trim();
+
+                var opnameRes = await supabaseClient
+                    .from('cash_opname')
+                    .insert({
+                        tanggal: tanggal, pemeriksa: pemeriksa, bendahara: bendahara, kas_id: kasObj.id,
+                        total_fisik: totalFisik, total_bank: totalBank, saldo_buku: saldoBuku,
+                        selisih: selisihNum, status: status, keterangan: keterangan
+                    })
+                    .select()
+                    .single();
+
+                if (opnameRes.error) { alert('ERROR SUPABASE (simpan opname): ' + opnameRes.error.message); return; }
+                var opnameId = opnameRes.data.id;
+
+                var pecahanRows = [];
+                document.querySelectorAll('#coPecahanRows .co-table-row').forEach(function (row) {
+                    var pecahan = parseInt(row.getAttribute('data-pecahan'));
+                    var lembar = parseRupiah(row.querySelector('input').value) || 0;
+                    if (lembar > 0) pecahanRows.push({ opname_id: opnameId, pecahan: pecahan, lembar: lembar });
+                });
+                if (pecahanRows.length > 0) {
+                    var pecahanRes = await supabaseClient.from('cash_opname_pecahan').insert(pecahanRows);
+                    if (pecahanRes.error) { alert('ERROR SUPABASE (pecahan): ' + pecahanRes.error.message); return; }
+                }
+
+                var bankRows = [];
+                document.querySelectorAll('#coBankRows .co-table-row').forEach(function (row) {
+                    var inputs = row.querySelectorAll('input');
+                    var namaBank = inputs[0].value.trim();
+                    var nominal = parseRupiah(inputs[1].value) || 0;
+                    if (namaBank && nominal > 0) bankRows.push({ opname_id: opnameId, nama_bank: namaBank, nominal: nominal });
+                });
+                if (bankRows.length > 0) {
+                    var bankRes = await supabaseClient.from('cash_opname_bank').insert(bankRows);
+                    if (bankRes.error) { alert('ERROR SUPABASE (bank): ' + bankRes.error.message); return; }
+                }
+
+                alert('Cash Opname berhasil diarsipkan');
+                tutupModalOpname();
+                resetModalOpname();
+                await muatCashOpname();
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
             }
-
-            var tanggal = document.getElementById('coTanggal').value;
-            var selisihLabel = document.getElementById('coSelisihValue');
-            var status = selisihLabel.dataset.status || 'Sesuai';
-            var fisikBankText = document.getElementById('coFisikBank').textContent;
-
-            coCount++;
-            if (status === 'Sesuai') { coSesuaiCount++; } else { coSelisihCount++; }
-
-            document.getElementById('coStatTotal').textContent = coCount;
-            document.getElementById('coStatSelisih').textContent = coSelisihCount;
-            document.getElementById('coStatSesuai').textContent = coSesuaiCount;
-
-            var emptyState = document.getElementById('coEmptyState');
-            if (emptyState) emptyState.remove();
-
-            var statusClass = status === 'Sesuai' ? 'co-item-ok' : 'co-item-warn';
-            var statusIcon = status === 'Sesuai' ? 'ph-check-circle' : 'ph-warning-circle';
-
-            document.getElementById('coHistoryList').insertAdjacentHTML('afterbegin',
-                '<div class="co-history-item ' + statusClass + '">' +
-                '<div class="co-history-top">' +
-                '<span class="co-history-kas">' + kas + '</span>' +
-                '<span class="co-history-status"><i class="ph ' + statusIcon + '"></i> ' + status + '</span>' +
-                '</div>' +
-                '<div class="co-history-mid">' + fisikBankText + ' &middot; Diperiksa oleh ' + pemeriksa + '</div>' +
-                '<div class="co-history-bottom">' +
-                '<span><i class="ph ph-calendar-blank"></i> ' + formatTanggalID(tanggal) + '</span>' +
-                '<span><i class="ph ph-user-circle"></i> ' + bendahara + '</span>' +
-                '</div>' +
-                '</div>');
-
-            alert('Cash Opname berhasil diarsipkan');
-            tutupModalOpname();
-            resetModalOpname();
         }
 
         // ===== Reset form modal setelah diarsipkan =====
@@ -3946,32 +3987,123 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         // ===== Upload Nota =====
-        function bukaUploadNota() { document.getElementById('upload-nota-screen').style.display = 'flex'; }
+        var unTransaksiTanpaNota = [];
+
+        async function bukaUploadNota() {
+            document.getElementById('upload-nota-screen').style.display = 'flex';
+            await muatTransaksiTanpaNota();
+        }
         function tutupUploadNota() { document.getElementById('upload-nota-screen').style.display = 'none'; }
+
+        async function muatTransaksiTanpaNota() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .select('id, tanggal, keterangan, jurnal_detail(debit, akun_kas_id)')
+                    .is('bukti_nota_url', null)
+                    .order('tanggal', { ascending: false });
+                if (error) { alert('ERROR SUPABASE (transaksi tanpa nota): ' + error.message); return; }
+
+                unTransaksiTanpaNota = (data || []).map(function (trx) {
+                    var nominal = 0;
+                    (trx.jurnal_detail || []).forEach(function (d) { if (d.akun_kas_id) nominal += parseFloat(d.debit) || 0; });
+                    return { id: trx.id, tanggal: trx.tanggal, ket: trx.keterangan, nominal: nominal };
+                });
+
+                renderUnItemList();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        function optTransaksiTanpaNota() {
+            var opts = '<option value="">— Pilih Transaksi Tanpa Nota —</option>';
+            unTransaksiTanpaNota.forEach(function (t) {
+                opts += '<option value="' + t.id + '">' + t.ket + ' &middot; ' + formatTanggalID(t.tanggal) + ' &middot; Rp ' + t.nominal.toLocaleString('id-ID') + '</option>';
+            });
+            return opts;
+        }
+
+        function renderUnItemList() {
+            if (unTransaksiTanpaNota.length === 0) {
+                document.getElementById('unItemList').innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Semua transaksi sudah punya bukti nota 🎉</div>';
+                return;
+            }
+            document.getElementById('unItemList').innerHTML =
+                '<div class="un-item-card">' +
+                '<div class="ct-field"><label>Pilih Transaksi</label><select class="un-trx-select">' + optTransaksiTanpaNota() + '</select></div>' +
+                '<div class="ct-field" style="margin-bottom:0;"><label>File Nota (PNG/JPG/PDF)</label>' +
+                '<label class="ct-upload-zone"><input type="file" class="un-file-input" hidden accept="image/*,.pdf"><i class="ph ph-upload-simple"></i><span class="un-file-label">Tap untuk pilih file nota</span></label></div></div>';
+            bindUnFileLabels();
+        }
+
         function tambahUploadNota() {
             document.getElementById('unItemList').insertAdjacentHTML('beforeend',
                 '<div class="un-item-card"><i class="ph ph-x-circle un-item-remove" onclick="hapusUploadNota(this)"></i>' +
-                '<div class="ct-field"><label>Pilih Transaksi</label><select>' +
-                '<option>— Pilih Transaksi Tanpa Nota —</option>' +
-                '<option>Pembelian Konsumsi Rapat &middot; 28 Agu 2026 &middot; Rp 150.000</option>' +
-                '<option>Iuran Anggota &middot; 27 Agu 2026 &middot; Rp 500.000</option>' +
-                '<option>Sewa Sound System &middot; 25 Agu 2026 &middot; Rp 750.000</option>' +
-                '</select></div>' +
+                '<div class="ct-field"><label>Pilih Transaksi</label><select class="un-trx-select">' + optTransaksiTanpaNota() + '</select></div>' +
                 '<div class="ct-field" style="margin-bottom:0;"><label>File Nota (PNG/JPG/PDF)</label>' +
-                '<label class="ct-upload-zone"><input type="file" hidden><i class="ph ph-upload-simple"></i><span>Tap untuk pilih file nota</span></label></div></div>');
+                '<label class="ct-upload-zone"><input type="file" class="un-file-input" hidden accept="image/*,.pdf"><i class="ph ph-upload-simple"></i><span class="un-file-label">Tap untuk pilih file nota</span></label></div></div>');
+            bindUnFileLabels();
         }
+
+        function bindUnFileLabels() {
+            document.querySelectorAll('#unItemList .un-file-input').forEach(function (input) {
+                if (input.dataset.bound) return;
+                input.dataset.bound = '1';
+                input.addEventListener('change', function () {
+                    var label = input.closest('.ct-upload-zone').querySelector('.un-file-label');
+                    label.textContent = input.files[0] ? input.files[0].name : 'Tap untuk pilih file nota';
+                });
+            });
+        }
+
         function hapusUploadNota(el) {
-            var wrap = document.getElementById('unItemList');
-            if (wrap.children.length <= 1) { alert('Minimal harus ada 1 nota'); return; }
             el.closest('.un-item-card').remove();
         }
-        function simpanUploadNota() {
-            alert('Nota berhasil diupload & disimpan ke Google Drive Bendahara (dummy, fitur simpan permanen akan datang segera)');
-            tutupUploadNota();
+
+        async function simpanUploadNota() {
+            try {
+                var cards = document.querySelectorAll('#unItemList .un-item-card');
+                var berhasil = 0, dilewati = 0;
+
+                for (var i = 0; i < cards.length; i++) {
+                    var card = cards[i];
+                    var trxId = card.querySelector('.un-trx-select').value;
+                    var fileInput = card.querySelector('.un-file-input');
+                    var file = fileInput.files[0];
+
+                    if (!trxId || !file) { dilewati++; continue; }
+
+                    var ext = file.name.split('.').pop();
+                    var path = 'nota/' + trxId + '-' + Date.now() + '.' + ext;
+
+                    var uploadRes = await supabaseClient.storage.from('bukti-transaksi').upload(path, file);
+                    if (uploadRes.error) { alert('ERROR UPLOAD: ' + uploadRes.error.message); continue; }
+
+                    var publicUrl = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
+
+                    var updateRes = await supabaseClient.from('jurnal_transaksi').update({ bukti_nota_url: publicUrl }).eq('id', trxId);
+                    if (updateRes.error) { alert('ERROR SUPABASE (simpan url nota): ' + updateRes.error.message); continue; }
+
+                    berhasil++;
+                }
+
+                if (berhasil === 0) { alert('Tidak ada nota yang diupload. Pastikan transaksi & file sudah dipilih.'); return; }
+
+                alert(berhasil + ' nota berhasil diupload' + (dilewati > 0 ? ', ' + dilewati + ' dilewati (belum lengkap)' : ''));
+                tutupUploadNota();
+                if (typeof muatRiwayatDanBukuBesar === 'function') { await muatRiwayatDanBukuBesar(); }
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         // ===== Riwayat =====
-        function bukaRiwayat() { document.getElementById('riwayat-screen').style.display = 'flex'; renderRingkasanBukuBesar(); }
+        function bukaRiwayat() {
+            document.getElementById('riwayat-screen').style.display = 'flex';
+            muatRiwayatDanBukuBesar();
+        }
         function tutupRiwayat() { document.getElementById('riwayat-screen').style.display = 'none'; }
         function switchRiwayatTab(tab) {
             document.querySelectorAll('#riwayat-screen .ct-tab-btn').forEach(function (el) { el.classList.remove('active'); });
@@ -3980,8 +4112,131 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('rwpage-' + tab).classList.add('active');
         }
 
+                // ===== Riwayat Transaksi & Buku Besar — DATA ASLI DARI SUPABASE =====
+        var _riwayatCache = [];
+
+        async function muatRiwayatDanBukuBesar() {
+            try {
+                if (!window._akunKasCache || !window._coaAkunCache) {
+                    await loadDataFormTransaksi();
+                }
+
+                const { data, error } = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .select(`
+                        id, kode, tanggal, jenis, bendahara, keterangan,
+                        jurnal_detail (
+                            debit, kredit,
+                            akun_kas ( id, nama, no_akun ),
+                            coa_akun ( id, nama, no_akun )
+                        )
+                    `)
+                    .order('tanggal', { ascending: false })
+                    .order('id', { ascending: false });
+
+                if (error) { alert('ERROR SUPABASE (riwayat): ' + error.message); return; }
+
+                _riwayatCache = data || [];
+                renderRiwayatTransaksi();
+                buildBukuBesarCacheFromRiwayat();
+                renderRingkasanBukuBesar();
+                await muatNotaRiwayat();
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        function renderRiwayatTransaksi() {
+            var wrap = document.getElementById('riwayatTransaksiList');
+            var html = '';
+
+            _riwayatCache.forEach(function (trx) {
+                var netKas = 0;
+                var totalNominal = 0;
+                var akunNames = [];
+
+                (trx.jurnal_detail || []).forEach(function (d) {
+                    var debit = parseFloat(d.debit) || 0;
+                    var kredit = parseFloat(d.kredit) || 0;
+                    totalNominal += debit;
+                    if (d.akun_kas) {
+                        netKas += (debit - kredit);
+                        akunNames.push(d.akun_kas.nama);
+                    }
+                    if (d.coa_akun) akunNames.push(d.coa_akun.nama);
+                });
+
+                var cls = netKas > 0 ? 'tp-in' : (netKas < 0 ? 'tp-out' : 'tp-umum');
+                var arrow = netKas > 0 ? 'ph-arrow-down-left' : (netKas < 0 ? 'ph-arrow-up-right' : 'ph-book-open');
+                var nomClass = netKas > 0 ? 'in' : (netKas < 0 ? 'out' : '');
+                var prefix = netKas > 0 ? '+' : (netKas < 0 ? '-' : '');
+                var nomShow = netKas !== 0 ? Math.abs(netKas) : totalNominal;
+
+                html += '<div class="rw-trx-item" data-ket="' + trx.keterangan + '" data-akun="' + akunNames.join(' ') + '" data-id="' + trx.kode + '" data-inputer="' + trx.bendahara + '">' +
+                    '<div class="rw-trx-icon ' + cls + '"><i class="ph ' + arrow + '"></i></div>' +
+                    '<div class="rw-trx-mid"><div class="rw-trx-ket">' + trx.keterangan + '</div><div class="rw-trx-sub">' + trx.bendahara + ' &middot; ' + formatTanggalID(trx.tanggal) + '</div></div>' +
+                    '<div class="rw-trx-right"><div class="rw-trx-nominal ' + nomClass + '">' + prefix + 'Rp ' + nomShow.toLocaleString('id-ID') + '</div><div class="rw-trx-id">' + trx.kode + '</div></div>' +
+                    '</div>';
+            });
+
+            wrap.innerHTML = html;
+            document.getElementById('riwayatTransaksiNotFound').style.display = _riwayatCache.length === 0 ? 'block' : 'none';
+            populateFilterInputer();
+        }
+
+        function populateFilterInputer() {
+            var sel = document.getElementById('filterInputerTransaksi');
+            var current = sel.value;
+            var namaSet = {};
+            _riwayatCache.forEach(function (trx) { if (trx.bendahara) namaSet[trx.bendahara] = true; });
+
+            var html = '<option value="">Semua Petugas</option>';
+            Object.keys(namaSet).forEach(function (nama) {
+                html += '<option value="' + nama + '">' + nama + '</option>';
+            });
+            sel.innerHTML = html;
+            sel.value = current; // pertahankan pilihan filter kalau masih ada
+        }
+
+        function buildBukuBesarCacheFromRiwayat() {
+            var map = {};
+
+            (window._akunKasCache || []).forEach(function (a) {
+                map[a.nama] = { no: a.no_akun || '-', saldoAwal: parseFloat(a.saldo_awal) || 0, transaksi: [] };
+            });
+            (window._coaAkunCache || []).forEach(function (c) {
+                if (!map[c.nama]) map[c.nama] = { no: c.no_akun || '-', saldoAwal: 0, transaksi: [] };
+            });
+
+            var urut = _riwayatCache.slice().sort(function (a, b) {
+                return new Date(a.tanggal) - new Date(b.tanggal);
+            });
+
+            urut.forEach(function (trx) {
+                (trx.jurnal_detail || []).forEach(function (d) {
+                    var nama = d.akun_kas ? d.akun_kas.nama : (d.coa_akun ? d.coa_akun.nama : null);
+                    if (!nama) return;
+                    if (!map[nama]) map[nama] = { no: '-', saldoAwal: 0, transaksi: [] };
+
+                    var mutasi = (parseFloat(d.debit) || 0) - (parseFloat(d.kredit) || 0);
+                    if (mutasi !== 0) {
+                        map[nama].transaksi.push({ tgl: trx.tanggal, ket: trx.keterangan, mutasi: mutasi });
+                    }
+                });
+            });
+
+            bukuBesarData = map;
+            daftarAkunRingkasan = Object.keys(bukuBesarData).sort(function (a, b) {
+                return (bukuBesarData[a].no || '').localeCompare(bukuBesarData[b].no || '', undefined, { numeric: true });
+            });
+        }
+
         // ===== Program Kerja =====
-        function bukaProgramKerja() { document.getElementById('programkerja-screen').style.display = 'flex'; }
+        function bukaProgramKerja() {
+            document.getElementById('programkerja-screen').style.display = 'flex';
+            muatProgramKerja();
+        }
         function tutupProgramKerja() { document.getElementById('programkerja-screen').style.display = 'none'; }
         function bukaModalProker() { document.getElementById('pk-modal-overlay').style.display = 'flex'; }
         function tutupModalProker() { document.getElementById('pk-modal-overlay').style.display = 'none'; }
@@ -4000,50 +4255,190 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 '<input type="text" placeholder="Sumber dana...">' +
                 '<input type="number" placeholder="0"></div>');
         }
-        function simpanProker() {
-            alert('Program Kerja berhasil disimpan (dummy, fitur simpan permanen akan datang segera)');
-            tutupModalProker();
+        async function simpanProker() {
+            try {
+                var modal = document.getElementById('pk-modal-overlay');
+                var textInputs = modal.querySelectorAll('.co-modal-body > .ct-field > input[type="text"]');
+                var nama = textInputs[0] ? textInputs[0].value.trim() : '';
+                var ketua = textInputs[1] ? textInputs[1].value.trim() : '';
+                var bendahara = textInputs[2] ? textInputs[2].value.trim() : '';
+                var tanggal = modal.querySelector('input[type="date"]').value;
+
+                if (!nama) { alert('Nama Program Kerja wajib diisi'); return; }
+
+                var rabRows = [];
+                modal.querySelectorAll('#pkRabRows .pk-table-row').forEach(function (row) {
+                    var inputs = row.querySelectorAll('input');
+                    var keb = inputs[0].value.trim();
+                    var qty = parseRupiah(inputs[1].value) || 0;
+                    var satuan = inputs[2].value.trim();
+                    var harga = parseRupiah(inputs[3].value) || 0;
+                    if (keb) rabRows.push({ keb: keb, qty: qty, satuan: satuan, harga: harga });
+                });
+
+                var penRows = [];
+                modal.querySelectorAll('#pkPenRows .pk-table-row').forEach(function (row) {
+                    var inputs = row.querySelectorAll('input');
+                    var sumber = inputs[0].value.trim();
+                    var nominal = parseRupiah(inputs[1].value) || 0;
+                    if (sumber) penRows.push({ sumber: sumber, nominal: nominal });
+                });
+
+                var insertRes = await supabaseClient
+                    .from('program_kerja')
+                    .insert({ nama: nama, ketua: ketua, bendahara: bendahara, tanggal_pelaksanaan: tanggal, ditutup: false })
+                    .select()
+                    .single();
+
+                if (insertRes.error) { alert('ERROR SUPABASE (proker): ' + insertRes.error.message); return; }
+                var prokerId = insertRes.data.id;
+
+                if (rabRows.length > 0) {
+                    var rabRes = await supabaseClient.from('proker_rab').insert(
+                        rabRows.map(function (r) { return { proker_id: prokerId, kebutuhan: r.keb, qty: r.qty, satuan: r.satuan, harga: r.harga }; })
+                    );
+                    if (rabRes.error) { alert('ERROR SUPABASE (RAB): ' + rabRes.error.message); return; }
+                }
+
+                if (penRows.length > 0) {
+                    var penRes = await supabaseClient.from('proker_rencana_penerimaan').insert(
+                        penRows.map(function (r) { return { proker_id: prokerId, sumber: r.sumber, nominal: r.nominal }; })
+                    );
+                    if (penRes.error) { alert('ERROR SUPABASE (rencana penerimaan): ' + penRes.error.message); return; }
+                }
+
+                alert('Program Kerja berhasil disimpan!');
+                tutupModalProker();
+                await muatProgramKerja();
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
-        // ===== Program Kerja: data & Buku Proker =====
-        var prokerData = {
-            'ramadhan-fest': {
-                nama: 'Ramadhan Fest 2026', ketua: 'Ahmad Fauzi', bendahara: 'Bendahara Remasfa', tanggal: '1 - 30 Maret 2026',
-                ditutup: false,
-                rab: [
-                    { keb: 'Sewa Tenda & Panggung', qty: 1, satuan: 'paket', harga: 1200000 },
-                    { keb: 'Sewa Sound System', qty: 1, satuan: 'paket', harga: 750000 },
-                    { keb: 'Cetak Spanduk', qty: 2, satuan: 'pcs', harga: 160000 }
-                ],
-                realisasiManual: {},
-                dokumen: { proposal: false, lpj: false, dokumentasi: false }
-            },
-            'santunan': {
-                nama: 'Santunan Yatim & Dhuafa', ketua: 'Siti Nurhaliza', bendahara: 'Bendahara Remasfa', tanggal: '20 Maret 2026',
-                ditutup: false,
-                rab: [ { keb: 'Paket Santunan', qty: 20, satuan: 'paket', harga: 750000 } ],
-                realisasiManual: {},
-                dokumen: { proposal: false, lpj: false, dokumentasi: false }
-            },
-            'pelatihan': {
-                nama: 'Pelatihan Kepemimpinan Remaja', ketua: 'Rizky Pratama', bendahara: 'Bendahara Remasfa', tanggal: '15 Maret 2026',
-                ditutup: false,
-                rab: [ { keb: 'Konsumsi Peserta', qty: 40, satuan: 'porsi', harga: 25000 }, { keb: 'Honor Pemateri', qty: 1, satuan: 'orang', harga: 1500000 } ],
-                realisasiManual: {},
-                dokumen: { proposal: false, lpj: false, dokumentasi: false }
-            },
-            'renovasi': {
-                nama: 'Renovasi Perpustakaan Masjid', ketua: 'Dewi Anggraini', bendahara: 'Bendahara Remasfa', tanggal: 'April - Mei 2026',
-                ditutup: false,
-                rab: [ { keb: 'Rak Buku', qty: 5, satuan: 'unit', harga: 1200000 }, { keb: 'Cat & Perbaikan', qty: 1, satuan: 'paket', harga: 2500000 } ],
-                realisasiManual: {},
-                dokumen: { proposal: false, lpj: false, dokumentasi: false }
-            }
-        };
+        // ===== Program Kerja — DATA ASLI DARI SUPABASE =====
+        var prokerData = {};
         var prokerAktifId = null;
 
         function totalRabProker(p) {
             return p.rab.reduce(function (s, r) { return s + (r.qty * r.harga); }, 0);
+        }
+
+        function hitungTotalRealisasi(p) {
+            return p.totalRealisasi || 0;
+        }
+
+        async function muatProgramKerja() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('program_kerja')
+                    .select(`
+                        id, nama, ketua, bendahara, tanggal_pelaksanaan, ditutup,
+                        proker_rab ( id, kebutuhan, qty, satuan, harga ),
+                        proker_rencana_penerimaan ( id, sumber, nominal ),
+                        proker_dokumen ( id, jenis, uploaded_at )
+                    `)
+                    .order('id', { ascending: true });
+
+                if (error) { alert('ERROR SUPABASE (proker): ' + error.message); return; }
+
+                const { data: trxData, error: trxError } = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .select(`
+                        id, tanggal, keterangan, bendahara, proker_id, proker_rab_id,
+                        jurnal_detail ( debit, kredit, akun_kas_id )
+                    `)
+                    .not('proker_id', 'is', null);
+
+                if (trxError) { alert('ERROR SUPABASE (realisasi proker): ' + trxError.message); return; }
+
+                var realisasiPerProker = {};
+                (trxData || []).forEach(function (trx) {
+                    var nominal = 0;
+                    (trx.jurnal_detail || []).forEach(function (d) {
+                        if (d.akun_kas_id) {
+                            nominal += (parseFloat(d.kredit) || 0) - (parseFloat(d.debit) || 0);
+                        }
+                    });
+                    if (!realisasiPerProker[trx.proker_id]) realisasiPerProker[trx.proker_id] = { perRab: {}, nonRab: [], total: 0 };
+                    var rp = realisasiPerProker[trx.proker_id];
+                    rp.total += nominal;
+                    if (trx.proker_rab_id) {
+                        rp.perRab[trx.proker_rab_id] = (rp.perRab[trx.proker_rab_id] || 0) + nominal;
+                    } else {
+                        rp.nonRab.push({ tgl: trx.tanggal, ket: trx.keterangan, nominal: nominal, bendahara: trx.bendahara });
+                    }
+                });
+
+                prokerData = {};
+                (data || []).forEach(function (p) {
+                    var dokumen = { proposal: false, lpj: false, dokumentasi: false };
+                    (p.proker_dokumen || []).forEach(function (d) { dokumen[d.jenis] = !!d.uploaded_at; });
+
+                    var rp = realisasiPerProker[p.id] || { perRab: {}, nonRab: [], total: 0 };
+
+                    prokerData[p.id] = {
+                        id: p.id, nama: p.nama, ketua: p.ketua, bendahara: p.bendahara, tanggal: p.tanggal_pelaksanaan, ditutup: p.ditutup,
+                        rab: (p.proker_rab || []).map(function (r) {
+                            return { id: r.id, keb: r.kebutuhan, qty: parseFloat(r.qty) || 0, satuan: r.satuan, harga: parseFloat(r.harga) || 0 };
+                        }),
+                        realisasiPerRab: rp.perRab,
+                        realisasiNonRab: rp.nonRab,
+                        totalRealisasi: rp.total,
+                        dokumen: dokumen
+                    };
+                });
+
+                renderDaftarProkerScreen();
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        function renderDaftarProkerScreen() {
+            var aktifHtml = '', arsipHtml = '', countAktif = 0, countSelesai = 0;
+
+            Object.keys(prokerData).forEach(function (id) {
+                var p = prokerData[id];
+                var totalRab = totalRabProker(p);
+                var totalReal = hitungTotalRealisasi(p);
+                var persen = totalRab > 0 ? Math.round((totalReal / totalRab) * 100) : 0;
+
+                if (p.ditutup) {
+                    countSelesai++;
+                    arsipHtml += '<div class="pk-arsip-card"><div class="pk-arsip-title">' + p.nama + '</div>' +
+                        '<div class="pk-arsip-sub">Ketua: ' + (p.ketua || '-') + ' &middot; Realisasi ' + persen + '% &middot; Selesai</div></div>';
+                } else {
+                    countAktif++;
+                    aktifHtml += '<div class="proker-card tier-mid" onclick="bukaBukuProker(' + p.id + ')">' +
+                        '<i class="ph-fill ph-folder-open proker-deco-icon"></i>' +
+                        '<div class="proker-top-row"><span class="proker-status">Berjalan</span><span class="proker-ketua"><i class="ph ph-user-circle"></i> ' + (p.ketua || '-') + '</span></div>' +
+                        '<div class="proker-title">' + p.nama + '</div>' +
+                        '<div class="proker-rab-row"><span>Total RAB</span><strong>Rp ' + totalRab.toLocaleString('id-ID') + '</strong></div>' +
+                        '<div class="proker-progress-row"><div class="proker-progress-bar"><div class="proker-progress-fill level-mid" style="width:' + persen + '%;"></div></div><div class="proker-progress-label">' + persen + '%</div></div></div>';
+                }
+            });
+
+            document.getElementById('pkAktifList').innerHTML = aktifHtml || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada program kerja aktif.</div>';
+            document.getElementById('pkStatAktif').textContent = countAktif;
+            document.getElementById('pkStatSelesai').textContent = countSelesai;
+
+            var arsipContainer = document.querySelector('#programkerja-screen .ledger-head + .pk-arsip-card');
+            if (!arsipContainer) {
+                var headers = document.querySelectorAll('#programkerja-screen .ledger-title');
+                headers.forEach(function (h) {
+                    if (h.textContent.indexOf('Arsip') !== -1) arsipContainer = h.closest('.ledger-head').nextElementSibling;
+                });
+            }
+            if (arsipContainer) {
+                arsipContainer.outerHTML = arsipHtml || '<div class="pk-arsip-card"><div class="pk-arsip-sub" style="text-align:center;">Belum ada proker selesai.</div></div>';
+            }
+
+            var berandaEl = document.getElementById('berandaProkerList');
+            if (berandaEl) {
+                berandaEl.innerHTML = aktifHtml || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada program kerja aktif.</div>';
+            }
         }
 
         function bukaBukuProker(id) {
@@ -4065,6 +4460,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function tutupBukuProkerScreen() {
             document.getElementById('buku-proker-screen').style.display = 'none';
         }
+        var _updateProkerTimer = null;
         function updateProkerInfo() {
             var p = prokerData[prokerAktifId];
             if (!p || p.ditutup) return;
@@ -4072,6 +4468,15 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             p.ketua = document.getElementById('bpKetua').value.trim();
             p.bendahara = document.getElementById('bpBendahara').value.trim();
             p.tanggal = document.getElementById('bpTanggal').value.trim();
+
+            clearTimeout(_updateProkerTimer);
+            _updateProkerTimer = setTimeout(async function () {
+                var res = await supabaseClient
+                    .from('program_kerja')
+                    .update({ nama: p.nama, ketua: p.ketua, bendahara: p.bendahara, tanggal_pelaksanaan: p.tanggal })
+                    .eq('id', prokerAktifId);
+                if (res.error) alert('ERROR SUPABASE (update proker): ' + res.error.message);
+            }, 800);
         }
 
         // ---- RAB ----
@@ -4091,29 +4496,59 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 if (p.ditutup) {
                     html += '<div class="pk-table-row pk-cols-rab"><span style="font-size:0.72rem;">' + r.keb + '</span><span style="font-size:0.72rem;">' + r.qty + '</span><span style="font-size:0.72rem;">' + r.satuan + '</span><span style="font-size:0.72rem;">Rp ' + r.harga.toLocaleString('id-ID') + '</span><span style="font-size:0.72rem; font-weight:700;">Rp ' + total.toLocaleString('id-ID') + '</span></div>';
                 } else {
-                    html += '<div class="pk-table-row pk-cols-rab">' +
-                        '<input type="text" value="' + r.keb + '" oninput="ubahRabProker(' + i + ',\'keb\',this.value)">' +
-                        '<input type="number" value="' + r.qty + '" oninput="ubahRabProker(' + i + ',\'qty\',this.value)">' +
-                        '<input type="text" value="' + r.satuan + '" oninput="ubahRabProker(' + i + ',\'satuan\',this.value)">' +
-                        '<input type="number" value="' + r.harga + '" oninput="ubahRabProker(' + i + ',\'harga\',this.value)">' +
-                        '<input type="number" value="' + total + '" disabled></div>';
+                    html += '<div class="pk-table-row pk-cols-rab" data-index="' + i + '">' +
+                        '<input type="text" value="' + r.keb + '" oninput="ubahRabProkerField(' + i + ',\'keb\',this.value)">' +
+                        '<input type="number" value="' + r.qty + '" oninput="ubahRabProkerField(' + i + ',\'qty\',this.value)">' +
+                        '<input type="text" value="' + r.satuan + '" oninput="ubahRabProkerField(' + i + ',\'satuan\',this.value)">' +
+                        '<input type="number" value="' + r.harga + '" oninput="ubahRabProkerField(' + i + ',\'harga\',this.value)">' +
+                        '<input type="number" class="bp-rab-total-field" value="' + total + '" disabled></div>';
                 }
             });
             document.getElementById('bpRabRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada rincian RAB.</div>';
             document.getElementById('bpRabTotal').textContent = 'Rp ' + totalRabProker(p).toLocaleString('id-ID');
         }
-        function ubahRabProker(i, field, value) {
+        function ubahRabProkerField(i, field, value) {
             var p = prokerData[prokerAktifId];
-            p.rab[i][field] = (field === 'qty' || field === 'harga') ? (parseFloat(value) || 0) : value;
-            renderRabProkerRows();
+            p.rab[i][field] = (field === 'qty' || field === 'harga') ? (parseRupiah(value) || 0) : value;
+
+            var rowEl = document.querySelector('#bpRabRows .pk-table-row[data-index="' + i + '"]');
+            if (rowEl) {
+                var totalField = rowEl.querySelector('.bp-rab-total-field');
+                var total = p.rab[i].qty * p.rab[i].harga;
+                if (totalField) totalField.value = total.toLocaleString('id-ID');
+            }
+            document.getElementById('bpRabTotal').textContent = 'Rp ' + totalRabProker(p).toLocaleString('id-ID');
         }
         function tambahBarisRabProker() {
             prokerData[prokerAktifId].rab.push({ keb: '', qty: 1, satuan: 'pcs', harga: 0 });
             renderRabProkerRows();
         }
-        function simpanRabProker() {
-            alert('RAB berhasil disimpan');
-            tutupRabProker();
+        async function simpanRabProker() {
+            try {
+                var p = prokerData[prokerAktifId];
+                var delRes = await supabaseClient.from('proker_rab').delete().eq('proker_id', prokerAktifId);
+                if (delRes.error) { alert('ERROR SUPABASE (hapus RAB lama): ' + delRes.error.message); return; }
+
+                var validRab = p.rab.filter(function (r) { return r.keb && r.keb.trim() !== ''; });
+                if (validRab.length > 0) {
+                    var insRes = await supabaseClient.from('proker_rab').insert(
+                        validRab.map(function (r) { return { proker_id: prokerAktifId, kebutuhan: r.keb, qty: r.qty, satuan: r.satuan, harga: r.harga }; })
+                    ).select();
+                    if (insRes.error) { alert('ERROR SUPABASE (simpan RAB): ' + insRes.error.message); return; }
+                    p.rab = insRes.data.map(function (r) {
+                        return { id: r.id, keb: r.kebutuhan, qty: parseFloat(r.qty) || 0, satuan: r.satuan, harga: parseFloat(r.harga) || 0 };
+                    });
+                } else {
+                    p.rab = [];
+                }
+
+                alert('RAB berhasil disimpan');
+                renderRabProkerRows();
+                tutupRabProker();
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         // ---- Realisasi ----
@@ -4125,21 +4560,40 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function renderRealisasiProker() {
             var p = prokerData[prokerAktifId];
             var html = '', totalRab = 0, totalReal = 0;
-            p.rab.forEach(function (r, i) {
+            p.rab.forEach(function (r) {
                 var rabAmount = r.qty * r.harga;
-                var realAmount = p.realisasiManual[i] !== undefined ? p.realisasiManual[i] : rabAmount;
+                var realAmount = (p.realisasiPerRab && p.realisasiPerRab[r.id]) || 0;
                 var selisih = rabAmount - realAmount;
                 totalRab += rabAmount;
                 totalReal += realAmount;
-                var inputRealisasi = p.ditutup
-                    ? '<span style="font-size:0.72rem; font-weight:700;">Rp ' + realAmount.toLocaleString('id-ID') + '</span>'
-                    : '<input type="number" value="' + realAmount + '" oninput="ubahRealisasiProker(' + i + ', this.value)">';
                 html += '<div class="pk-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;">' +
                     '<span style="font-size:0.7rem;">' + r.keb + '</span>' +
                     '<span style="font-size:0.7rem;">Rp ' + rabAmount.toLocaleString('id-ID') + '</span>' +
-                    inputRealisasi +
+                    '<span style="font-size:0.7rem; font-weight:700;">Rp ' + realAmount.toLocaleString('id-ID') + '</span>' +
                     '<span style="font-size:0.7rem; font-weight:700; color:' + (selisih < 0 ? 'var(--maroon)' : '#16A34A') + ';">Rp ' + selisih.toLocaleString('id-ID') + '</span></div>';
             });
+
+            var nonRabList = (p.realisasiNonRab || []);
+            var nonRabTotal = 0;
+            var nonRabHtml = '';
+            nonRabList.forEach(function (t) {
+                nonRabTotal += t.nominal;
+                nonRabHtml += '<div class="pk-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;">' +
+                    '<span style="font-size:0.66rem; color:var(--text-gray); padding-left:10px;">&#8618; ' + t.ket + '</span>' +
+                    '<span style="font-size:0.66rem; color:var(--text-gray);">-</span>' +
+                    '<span style="font-size:0.66rem; font-weight:700;">Rp ' + t.nominal.toLocaleString('id-ID') + '</span>' +
+                    '<span style="font-size:0.66rem; color:var(--text-gray);">' + formatTanggalID(t.tgl) + '</span></div>';
+            });
+            if (nonRabList.length > 0) {
+                html += '<div class="pk-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr; background:var(--paper-soft);">' +
+                    '<span style="font-size:0.7rem; font-weight:700;">Transaksi Non RAB</span>' +
+                    '<span style="font-size:0.7rem;">-</span>' +
+                    '<span style="font-size:0.7rem; font-weight:700;">Rp ' + nonRabTotal.toLocaleString('id-ID') + '</span>' +
+                    '<span style="font-size:0.7rem;">-</span></div>';
+                html += nonRabHtml;
+                totalReal += nonRabTotal;
+            }
+
             document.getElementById('bpRealisasiRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada RAB untuk dibandingkan.</div>';
 
             var selisihTotal = totalRab - totalReal;
@@ -4148,24 +4602,57 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('bpSelisihRealisasi').textContent = 'Rp ' + selisihTotal.toLocaleString('id-ID');
 
             var analisis;
-            if (totalRab === 0) {
-                analisis = 'Belum ada data RAB untuk dianalisis.';
+            if (totalRab === 0 && totalReal === 0) {
+                analisis = 'Belum ada data RAB maupun realisasi untuk dianalisis.';
             } else if (selisihTotal === 0) {
                 analisis = 'Realisasi anggaran sesuai dengan RAB yang direncanakan. Tidak ditemukan selisih pada proker ini.';
             } else if (selisihTotal > 0) {
-                analisis = 'Realisasi anggaran lebih hemat Rp ' + selisihTotal.toLocaleString('id-ID') + ' (' + Math.round((selisihTotal / totalRab) * 100) + '%) dari RAB yang direncanakan.';
+                analisis = 'Realisasi anggaran lebih hemat Rp ' + selisihTotal.toLocaleString('id-ID') + (totalRab > 0 ? (' (' + Math.round((selisihTotal / totalRab) * 100) + '%)') : '') + ' dari RAB yang direncanakan.';
             } else {
-                analisis = 'Realisasi anggaran melebihi RAB sebesar Rp ' + Math.abs(selisihTotal).toLocaleString('id-ID') + ' (' + Math.round((Math.abs(selisihTotal) / totalRab) * 100) + '%). Perlu ditinjau penyebab pembengkakan biaya.';
+                analisis = 'Realisasi anggaran melebihi RAB sebesar Rp ' + Math.abs(selisihTotal).toLocaleString('id-ID') + (totalRab > 0 ? (' (' + Math.round((Math.abs(selisihTotal) / totalRab) * 100) + '%)') : '') + '. Perlu ditinjau penyebab pembengkakan biaya.';
             }
             document.getElementById('bpAnalisisText').textContent = analisis;
         }
-        function ubahRealisasiProker(i, value) {
-            var p = prokerData[prokerAktifId];
-            p.realisasiManual[i] = parseFloat(value) || 0;
-            renderRealisasiProker();
-        }
         function unduhRealisasiPdf() {
             alert('Menyiapkan unduhan PDF Realisasi Anggaran (fitur unduh akan datang segera)');
+        }
+        async function bukaBukuTransaksiProker() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .select(`
+                        id, tanggal, keterangan, bendahara,
+                        jurnal_detail ( debit, kredit, akun_kas ( nama ), coa_akun ( nama ) )
+                    `)
+                    .eq('proker_id', prokerAktifId)
+                    .order('tanggal', { ascending: true })
+                    .order('id', { ascending: true });
+
+                if (error) { alert('ERROR SUPABASE (buku transaksi proker): ' + error.message); return; }
+
+                var html = '';
+                (data || []).forEach(function (trx) {
+                    (trx.jurnal_detail || []).forEach(function (d) {
+                        var namaAkun = d.akun_kas ? d.akun_kas.nama : (d.coa_akun ? d.coa_akun.nama : '-');
+                        var debit = parseFloat(d.debit) || 0;
+                        var kredit = parseFloat(d.kredit) || 0;
+                        html += '<div class="bb-row" style="grid-template-columns:52px 1.6fr 0.8fr 0.8fr 0.9fr;">' +
+                            '<span class="bb-tgl">' + formatTanggalID(trx.tanggal) + '</span>' +
+                            '<span class="bb-ket">' + namaAkun + ' &mdash; ' + trx.keterangan + '</span>' +
+                            '<span class="bb-mutasi">' + (debit > 0 ? 'Rp ' + debit.toLocaleString('id-ID') : '-') + '</span>' +
+                            '<span class="bb-mutasi">' + (kredit > 0 ? 'Rp ' + kredit.toLocaleString('id-ID') : '-') + '</span>' +
+                            '<span class="bb-ket" style="font-size:0.66rem;">' + trx.bendahara + '</span></div>';
+                    });
+                });
+
+                document.getElementById('bpBukuTransaksiRows').innerHTML = html || '<div class="bb-row"><span class="bb-tgl"></span><span class="bb-ket" style="color:var(--text-gray);">Belum ada transaksi.</span><span class="bb-mutasi"></span><span class="bb-mutasi"></span><span class="bb-ket"></span></div>';
+                document.getElementById('proker-buku-transaksi-overlay').style.display = 'flex';
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+        function tutupBukuTransaksiProker() {
+            document.getElementById('proker-buku-transaksi-overlay').style.display = 'none';
         }
 
         // ---- Dokumen & Tutup Buku ----
@@ -4185,51 +4672,211 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             btn.disabled = !semuaLengkap || p.ditutup;
             btn.innerHTML = p.ditutup ? '<i class="ph ph-lock-key"></i> Proker Sudah Ditutup' : '<i class="ph ph-lock-key"></i> Tutup Buku Proker';
         }
-        function uploadDokumenProker(key) {
+        async function uploadDokumenProker(key) {
             var p = prokerData[prokerAktifId];
             p.dokumen[key] = true;
             renderDokumenProker();
+
+            await supabaseClient.from('proker_dokumen').delete().eq('proker_id', prokerAktifId).eq('jenis', key);
+            var res = await supabaseClient.from('proker_dokumen').insert({ proker_id: prokerAktifId, jenis: key, uploaded_at: new Date().toISOString() });
+            if (res.error) alert('ERROR SUPABASE (dokumen): ' + res.error.message);
         }
-        function tutupBukuProker() {
+        async function tutupBukuProker() {
             var p = prokerData[prokerAktifId];
             if (!confirm('Tutup buku proker ini? Seluruh pendapatan terikat akan direklasifikasi dan proker tidak dapat diedit lagi.')) return;
+
+            var res = await supabaseClient.from('program_kerja').update({ ditutup: true }).eq('id', prokerAktifId);
+            if (res.error) { alert('ERROR SUPABASE (tutup buku): ' + res.error.message); return; }
+
             p.ditutup = true;
-            alert('Buku proker berhasil ditutup. Pendapatan terikat telah direklasifikasi (dummy).');
+            alert('Buku proker berhasil ditutup. (Catatan: reklasifikasi otomatis pendapatan terikat belum diimplementasikan)');
             renderDokumenProker();
             bukaBukuProker(prokerAktifId);
+            await muatProgramKerja();
         }
 
         // ===== Rekening Bank =====
-        function bukaRekBank() { document.getElementById('rekbank-screen').style.display = 'flex'; }
+        var rekBankCache = [];
+        var rbAktifId = null;
+
+        async function bukaRekBank() {
+            document.getElementById('rekbank-screen').style.display = 'flex';
+            if (!window._akunKasCache) { await muatDataKas(); }
+            await muatRekBank();
+        }
         function tutupRekBank() { document.getElementById('rekbank-screen').style.display = 'none'; }
+
+        async function muatRekBank() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('rekening_bank_laporan')
+                    .select('*, akun_kas(nama)')
+                    .order('id', { ascending: true });
+                if (error) { alert('ERROR SUPABASE (rekening bank): ' + error.message); return; }
+                rekBankCache = data || [];
+                renderRekBankList();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        function renderRekBankList() {
+            var wrap = document.getElementById('rbList');
+            var total = rekBankCache.length;
+            var masuk = rekBankCache.filter(function (r) { return r.status === 'Sudah Lapor'; }).length;
+            var terlambat = rekBankCache.filter(function (r) { return r.status === 'Terlambat'; }).length;
+
+            document.getElementById('rbStatTotal').textContent = total;
+            document.getElementById('rbStatMasuk').textContent = masuk;
+            document.getElementById('rbStatTerlambat').textContent = terlambat;
+
+            if (total === 0) {
+                wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada laporan rekening bulanan.</div>';
+                return;
+            }
+
+            var html = '';
+            rekBankCache.forEach(function (r) {
+                var itemClass = r.status === 'Sudah Lapor' ? 'ok' : (r.status === 'Terlambat' ? 'late' : 'pending');
+                var icon = r.status === 'Sudah Lapor' ? 'ph-fill ph-check-circle' : (r.status === 'Terlambat' ? 'ph-fill ph-alarm' : 'ph-fill ph-clock');
+                var selisih = (parseFloat(r.saldo_bank) || 0) - (parseFloat(r.saldo_buku) || 0);
+                html += '<div class="rb-item ' + itemClass + '" onclick="bukaModalRekBank(\'' + r.bulan_label.replace(/'/g, "\\'") + '\')">' +
+                    '<div class="rb-item-icon"><i class="ph ' + icon + '"></i></div>' +
+                    '<div class="rb-item-mid"><div class="rb-item-month">' + r.bulan_label + '</div>' +
+                    '<div class="rb-item-sub">' + (r.akun_kas ? r.akun_kas.nama : '-') + ' &middot; ' + (r.bendahara || '-') + '</div>' +
+                    '<span class="rb-item-badge">' + r.status + '</span></div>' +
+                    '<div class="rb-item-right"><div class="rb-item-nominal">Rp ' + (parseFloat(r.saldo_bank) || 0).toLocaleString('id-ID') + '</div>' +
+                    '<div class="rb-item-selisih">Selisih Rp ' + Math.abs(selisih).toLocaleString('id-ID') + '</div></div></div>';
+            });
+            wrap.innerHTML = html;
+        }
+
+        function tambahBulanPelaporan() {
+            var label = prompt('Nama bulan pelaporan (contoh: September 2026):');
+            if (!label || !label.trim()) return;
+            bukaModalRekBank(label.trim());
+        }
+
         function bukaModalRekBank(bulan) {
             document.getElementById('rbModalTitle').textContent = bulan;
-            document.getElementById('rbSaldoBukuDisplay').textContent = 'Rp 0';
-            document.getElementById('rbSaldoBankDisplay').textContent = 'Rp 0';
-            document.getElementById('rbSaldoBankInput').value = '';
+            var existing = rekBankCache.find(function (r) { return r.bulan_label === bulan; });
+            rbAktifId = existing ? existing.id : null;
+
+            var kasSelect = document.getElementById('rbKasSelect');
+            kasSelect.innerHTML = '<option value="">— Pilih Kas —</option>' + (window._akunKasCache || []).map(function (a) {
+                var sel = existing && existing.kas_id === a.id ? ' selected' : '';
+                return '<option value="' + a.id + '"' + sel + '>[' + a.no_akun + '] ' + a.nama + '</option>';
+            }).join('');
+
+            document.getElementById('rbBendaharaSelect').value = existing ? (existing.bendahara || '') : 'Bendahara Remasfa';
+            document.getElementById('rbSaldoBankInput').value = existing ? existing.saldo_bank : '';
+            document.getElementById('rbSaldoBankDisplay').textContent = 'Rp ' + (existing ? (parseFloat(existing.saldo_bank) || 0).toLocaleString('id-ID') : '0');
+
+            updateRbSaldoBuku();
             document.getElementById('rb-modal-overlay').style.display = 'flex';
         }
         function tutupModalRekBank() { document.getElementById('rb-modal-overlay').style.display = 'none'; }
+
+        function updateRbSaldoBuku() {
+            var kasId = document.getElementById('rbKasSelect').value;
+            var saldo = kasId && window._saldoKasPerId ? (window._saldoKasPerId[parseInt(kasId)] || 0) : 0;
+            document.getElementById('rbSaldoBukuDisplay').textContent = 'Rp ' + saldo.toLocaleString('id-ID');
+        }
+
         function hitungSelisihRb() {
             var v = parseRupiah(document.getElementById('rbSaldoBankInput').value) || 0;
             document.getElementById('rbSaldoBankDisplay').textContent = 'Rp ' + v.toLocaleString('id-ID');
         }
-        function simpanLaporanRekBank() {
-            alert('Laporan rekening berhasil disimpan (dummy, fitur simpan permanen akan datang segera)');
-            tutupModalRekBank();
-        }
-        function hapusLaporanRekBank() {
-            if (confirm('Hapus laporan bulan ini?')) { tutupModalRekBank(); }
+
+        async function simpanLaporanRekBank() {
+            try {
+                var bulan = document.getElementById('rbModalTitle').textContent;
+                var bendahara = document.getElementById('rbBendaharaSelect').value;
+                var kasId = document.getElementById('rbKasSelect').value;
+                var saldoBank = parseRupiah(document.getElementById('rbSaldoBankInput').value) || 0;
+
+                if (!bendahara || !kasId) { alert('Lengkapi Bendahara dan Akun Kas terlebih dahulu'); return; }
+
+                var saldoBuku = window._saldoKasPerId ? (window._saldoKasPerId[parseInt(kasId)] || 0) : 0;
+                var payload = {
+                    bulan_label: bulan, bendahara: bendahara, kas_id: parseInt(kasId),
+                    saldo_buku: saldoBuku, saldo_bank: saldoBank, status: 'Sudah Lapor'
+                };
+
+                var res = rbAktifId
+                    ? await supabaseClient.from('rekening_bank_laporan').update(payload).eq('id', rbAktifId)
+                    : await supabaseClient.from('rekening_bank_laporan').insert(payload);
+
+                if (res.error) { alert('ERROR SUPABASE (simpan rekening bank): ' + res.error.message); return; }
+
+                alert('Laporan rekening berhasil disimpan');
+                tutupModalRekBank();
+                await muatRekBank();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
-        // ===== Iuran Kegiatan (data-driven) =====
+        async function hapusLaporanRekBank() {
+            if (!rbAktifId) { tutupModalRekBank(); return; }
+            if (!confirm('Hapus laporan bulan ini?')) return;
+            try {
+                var res = await supabaseClient.from('rekening_bank_laporan').delete().eq('id', rbAktifId);
+                if (res.error) { alert('ERROR SUPABASE (hapus rekening bank): ' + res.error.message); return; }
+                tutupModalRekBank();
+                await muatRekBank();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        // ===== Iuran Kegiatan (Supabase) =====
         var iuranData = [];
         var iuranAktifId = null;
 
-        function bukaIuran() { document.getElementById('iuran-screen').style.display = 'flex'; renderIuranList(); }
+        async function bukaIuran() {
+            document.getElementById('iuran-screen').style.display = 'flex';
+            await muatIuranKegiatan();
+        }
         function tutupIuran() { document.getElementById('iuran-screen').style.display = 'none'; }
+
+        async function muatIuranKegiatan() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('iuran_konsep')
+                    .select('id, nama_kegiatan, kas_penampung_id, akun_kas(nama), iuran_peserta(id, nama, target, iuran_pembayaran(id, tanggal, nominal))')
+                    .order('id', { ascending: true });
+                if (error) { alert('ERROR SUPABASE (iuran): ' + error.message); return; }
+
+                iuranData = (data || []).map(function (k) {
+                    return {
+                        id: k.id,
+                        nama: k.nama_kegiatan,
+                        kasId: k.kas_penampung_id,
+                        kas: k.akun_kas ? k.akun_kas.nama : '-',
+                        peserta: (k.iuran_peserta || []).map(function (p) {
+                            return {
+                                id: p.id,
+                                nama: p.nama,
+                                target: parseFloat(p.target) || 0,
+                                pembayaran: (p.iuran_pembayaran || []).map(function (b) {
+                                    return { id: b.id, tgl: b.tanggal, nominal: parseFloat(b.nominal) || 0 };
+                                })
+                            };
+                        })
+                    };
+                });
+                renderIuranList();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
         function bukaModalIuran() {
             document.querySelector('#iuran-modal-overlay input[type="text"]').value = '';
+            document.querySelector('#iuran-modal-overlay select').innerHTML = (window._akunKasCache || []).map(function (a) {
+                return '<option value="' + a.id + '">[' + a.no_akun + '] ' + a.nama + '</option>';
+            }).join('');
             document.getElementById('iuranPesertaRows').innerHTML =
                 '<div class="ip-table-row ip-cols-2"><input type="text" placeholder="Nama..."><input type="number" placeholder="0"></div>' +
                 '<div class="ip-table-row ip-cols-2"><input type="text" placeholder="Nama..."><input type="number" placeholder="0"></div>' +
@@ -4242,24 +4889,43 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 '<div class="ip-table-row ip-cols-2"><input type="text" placeholder="Nama..."><input type="number" placeholder="0"></div>');
         }
 
-        function getIuran(id) { return iuranData.find(function (k) { return k.id === id; }); }
+        function getIuran(id) { return iuranData.find(function (k) { return String(k.id) === String(id); }); }
         function totalDibayarPeserta(p) { return p.pembayaran.reduce(function (s, x) { return s + x.nominal; }, 0); }
 
-        function simpanKonsepIuran() {
-            var nama = document.querySelector('#iuran-modal-overlay input[type="text"]').value.trim();
-            if (!nama) { alert('Nama kegiatan wajib diisi'); return; }
-            var kas = document.querySelector('#iuran-modal-overlay select').value;
-            var peserta = [];
-            document.querySelectorAll('#iuranPesertaRows .ip-table-row').forEach(function (row) {
-                var inputs = row.querySelectorAll('input');
-                var namaPeserta = inputs[0].value.trim();
-                var target = parseRupiah(inputs[1].value) || 0;
-                if (namaPeserta) peserta.push({ nama: namaPeserta, target: target, pembayaran: [] });
-            });
-            iuranData.push({ id: 'IUR-' + Date.now(), nama: nama, kas: kas, peserta: peserta });
-            renderIuranList();
-            alert('Konsep iuran berhasil disimpan');
-            tutupModalIuran();
+        async function simpanKonsepIuran() {
+            try {
+                var nama = document.querySelector('#iuran-modal-overlay input[type="text"]').value.trim();
+                if (!nama) { alert('Nama kegiatan wajib diisi'); return; }
+                var kasId = document.querySelector('#iuran-modal-overlay select').value;
+
+                var pesertaRows = [];
+                document.querySelectorAll('#iuranPesertaRows .ip-table-row').forEach(function (row) {
+                    var inputs = row.querySelectorAll('input');
+                    var namaPeserta = inputs[0].value.trim();
+                    var target = parseRupiah(inputs[1].value) || 0;
+                    if (namaPeserta) pesertaRows.push({ nama: namaPeserta, target: target });
+                });
+
+                var konsepRes = await supabaseClient
+                    .from('iuran_konsep')
+                    .insert({ nama_kegiatan: nama, kas_penampung_id: kasId ? parseInt(kasId) : null })
+                    .select()
+                    .single();
+                if (konsepRes.error) { alert('ERROR SUPABASE (iuran konsep): ' + konsepRes.error.message); return; }
+
+                if (pesertaRows.length > 0) {
+                    var pesertaRes = await supabaseClient.from('iuran_peserta').insert(
+                        pesertaRows.map(function (p) { return { iuran_id: konsepRes.data.id, nama: p.nama, target: p.target }; })
+                    );
+                    if (pesertaRes.error) { alert('ERROR SUPABASE (iuran peserta): ' + pesertaRes.error.message); return; }
+                }
+
+                alert('Konsep iuran berhasil disimpan');
+                tutupModalIuran();
+                await muatIuranKegiatan();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         function hitungRekapIuran(k) {
@@ -4281,7 +4947,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             iuranData.forEach(function (k) {
                 var rekap = hitungRekapIuran(k);
                 var persen = rekap.target > 0 ? Math.round((rekap.terkumpul / rekap.target) * 100) : 0;
-                html += '<div class="ip-item-card" onclick="bukaIuranDetail(\'' + k.id + '\')">' +
+                html += '<div class="ip-item-card" onclick="bukaIuranDetail(' + k.id + ')">' +
                     '<div class="ip-item-top"><div><div class="ip-item-title">' + k.nama + '</div><div class="ip-item-kas">' + k.kas + ' &middot; ' + k.peserta.length + ' peserta</div></div></div>' +
                     '<div class="ip-item-progress-row"><div class="ip-item-progress-bar"><div class="ip-item-progress-fill" style="width:' + persen + '%;"></div></div><div class="ip-item-progress-label">' + persen + '%</div></div></div>';
             });
@@ -4293,7 +4959,10 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var k = getIuran(id);
             document.getElementById('idKonsepTitle').textContent = k.nama;
             document.getElementById('idNamaKegiatan').value = k.nama;
-            document.getElementById('idKasPenampung').value = k.kas;
+            document.getElementById('idKasPenampung').innerHTML = (window._akunKasCache || []).map(function (a) {
+                var sel = (k.kasId && String(k.kasId) === String(a.id)) ? ' selected' : '';
+                return '<option value="' + a.id + '"' + sel + '>[' + a.no_akun + '] ' + a.nama + '</option>';
+            }).join('');
             renderIuranDetail();
             document.getElementById('iuran-detail-screen').style.display = 'flex';
         }
@@ -4301,19 +4970,37 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('iuran-detail-screen').style.display = 'none';
             renderIuranList();
         }
+        var _updateIuranTimer = null;
         function updateIuranInfo() {
             var k = getIuran(iuranAktifId);
             if (!k) return;
             k.nama = document.getElementById('idNamaKegiatan').value.trim() || k.nama;
-            k.kas = document.getElementById('idKasPenampung').value;
+            k.kasId = document.getElementById('idKasPenampung').value;
+
+            clearTimeout(_updateIuranTimer);
+            _updateIuranTimer = setTimeout(async function () {
+                var res = await supabaseClient.from('iuran_konsep')
+                    .update({ nama_kegiatan: k.nama, kas_penampung_id: k.kasId ? parseInt(k.kasId) : null })
+                    .eq('id', iuranAktifId);
+                if (res.error) alert('ERROR SUPABASE (update iuran): ' + res.error.message);
+            }, 800);
         }
-        function tambahPesertaDiDetail() {
+        async function tambahPesertaDiDetail() {
             var nama = prompt('Nama peserta baru:');
             if (!nama) return;
             var target = parseFloat(prompt('Target iuran (Rp):') || '0') || 0;
-            var k = getIuran(iuranAktifId);
-            k.peserta.push({ nama: nama, target: target, pembayaran: [] });
-            renderIuranDetail();
+            try {
+                var res = await supabaseClient.from('iuran_peserta')
+                    .insert({ iuran_id: iuranAktifId, nama: nama, target: target })
+                    .select()
+                    .single();
+                if (res.error) { alert('ERROR SUPABASE (tambah peserta): ' + res.error.message); return; }
+                var k = getIuran(iuranAktifId);
+                k.peserta.push({ id: res.data.id, nama: nama, target: target, pembayaran: [] });
+                renderIuranDetail();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         function renderIuranDetail() {
@@ -4335,38 +5022,83 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('idPesertaRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada peserta.</div>';
         }
 
-        // ===== Penjualan: data model =====
+        // ===== Penjualan (Supabase) =====
         var produkData = [];
         var produkAktifId = null;
         var pembayaranAktif = { produkId: null, pembeliIndex: null };
 
-        function bukaPenjualan() { document.getElementById('penjualan-screen').style.display = 'flex'; renderPenjualanList(); hitungStatPenjualan(); }
+        async function bukaPenjualan() {
+            document.getElementById('penjualan-screen').style.display = 'flex';
+            await muatPenjualan();
+        }
         function tutupPenjualan() { document.getElementById('penjualan-screen').style.display = 'none'; }
+
+        async function muatPenjualan() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('produk')
+                    .select('id, nama, harga_jual, harga_beli, kas_penampung_id, akun_kas(nama), produk_pembeli(id, nama, qty, produk_pembayaran(id, tanggal, nominal)), produk_biaya(id, keterangan, nominal)')
+                    .order('id', { ascending: true });
+                if (error) { alert('ERROR SUPABASE (produk): ' + error.message); return; }
+
+                produkData = (data || []).map(function (p) {
+                    return {
+                        id: p.id,
+                        nama: p.nama,
+                        hargaJual: parseFloat(p.harga_jual) || 0,
+                        hargaBeli: parseFloat(p.harga_beli) || 0,
+                        kasId: p.kas_penampung_id,
+                        kas: p.akun_kas ? p.akun_kas.nama : '-',
+                        pembeli: (p.produk_pembeli || []).map(function (b) {
+                            return {
+                                id: b.id, nama: b.nama, qty: parseFloat(b.qty) || 0,
+                                pembayaran: (b.produk_pembayaran || []).map(function (x) {
+                                    return { id: x.id, tgl: x.tanggal, nominal: parseFloat(x.nominal) || 0 };
+                                })
+                            };
+                        }),
+                        biaya: (p.produk_biaya || []).map(function (b) {
+                            return { id: b.id, ket: b.keterangan, nominal: parseFloat(b.nominal) || 0 };
+                        })
+                    };
+                });
+                renderPenjualanList();
+                hitungStatPenjualan();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
 
         function bukaModalPO() {
             document.getElementById('poNamaProduk').value = '';
             document.getElementById('poHargaJual').value = '';
             document.getElementById('poHargaBeli').value = '';
+            document.getElementById('poKasPenampung').innerHTML = (window._akunKasCache || []).map(function (a) {
+                return '<option value="' + a.id + '">[' + a.no_akun + '] ' + a.nama + '</option>';
+            }).join('');
             document.getElementById('po-modal-overlay').style.display = 'flex';
         }
         function tutupModalPO() { document.getElementById('po-modal-overlay').style.display = 'none'; }
 
-        function simpanPO() {
-            var nama = document.getElementById('poNamaProduk').value.trim();
-            if (!nama) { alert('Nama produk wajib diisi'); return; }
-            var produk = {
-                id: 'PRD-' + Date.now(),
-                nama: nama,
-                hargaJual: parseRupiah(document.getElementById('poHargaJual').value) || 0,
-                hargaBeli: parseRupiah(document.getElementById('poHargaBeli').value) || 0,
-                kas: document.getElementById('poKasPenampung').value,
-                pembeli: [],
-                biaya: []
-            };
-            produkData.push(produk);
-            renderPenjualanList();
-            hitungStatPenjualan();
-            tutupModalPO();
+        async function simpanPO() {
+            try {
+                var nama = document.getElementById('poNamaProduk').value.trim();
+                if (!nama) { alert('Nama produk wajib diisi'); return; }
+                var hargaJual = parseRupiah(document.getElementById('poHargaJual').value) || 0;
+                var hargaBeli = parseRupiah(document.getElementById('poHargaBeli').value) || 0;
+                var kasId = document.getElementById('poKasPenampung').value;
+
+                var res = await supabaseClient.from('produk').insert({
+                    nama: nama, harga_jual: hargaJual, harga_beli: hargaBeli,
+                    kas_penampung_id: kasId ? parseInt(kasId) : null
+                });
+                if (res.error) { alert('ERROR SUPABASE (simpan produk): ' + res.error.message); return; }
+
+                tutupModalPO();
+                await muatPenjualan();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         function renderPenjualanList() {
@@ -4374,7 +5106,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var emptyState = document.getElementById('penjualanEmptyState');
             var html = '<div class="prod-add-card" onclick="bukaModalPO()"><i class="ph ph-plus" style="font-size:1.4rem;"></i>Tambah Produk</div>';
             produkData.forEach(function (p) {
-                html += '<div class="prod-card" onclick="bukaProdukDetail(\'' + p.id + '\')">' +
+                html += '<div class="prod-card" onclick="bukaProdukDetail(' + p.id + ')">' +
                     '<div class="prod-card-icon"><i class="ph ph-t-shirt"></i></div>' +
                     '<div class="prod-card-name">' + p.nama + '</div>' +
                     '<div class="prod-card-price">Rp ' + p.hargaJual.toLocaleString('id-ID') + '</div></div>';
@@ -4404,7 +5136,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('penjualanStatPiutang').textContent = 'Rp ' + totalPiutang.toLocaleString('id-ID');
         }
 
-        function getProduk(id) { return produkData.find(function (p) { return p.id === id; }); }
+        function getProduk(id) { return produkData.find(function (p) { return String(p.id) === String(id); }); }
 
         function bukaProdukDetail(id) {
             produkAktifId = id;
@@ -4421,6 +5153,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             renderPenjualanList();
             hitungStatPenjualan();
         }
+        var _updateProdukTimer = null;
         function updateProdukInfo() {
             var p = getProduk(produkAktifId);
             if (!p) return;
@@ -4428,6 +5161,14 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             p.hargaJual = parseRupiah(document.getElementById('pdHargaJual').value) || 0;
             p.hargaBeli = parseRupiah(document.getElementById('pdHargaBeli').value) || 0;
             renderPembeliRows();
+
+            clearTimeout(_updateProdukTimer);
+            _updateProdukTimer = setTimeout(async function () {
+                var res = await supabaseClient.from('produk').update({
+                    nama: p.nama, harga_jual: p.hargaJual, harga_beli: p.hargaBeli
+                }).eq('id', produkAktifId);
+                if (res.error) alert('ERROR SUPABASE (update produk): ' + res.error.message);
+            }, 800);
         }
 
         function renderPembeliRows() {
@@ -4453,14 +5194,25 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('pembeli-modal-overlay').style.display = 'flex';
         }
         function tutupModalTambahPembeli() { document.getElementById('pembeli-modal-overlay').style.display = 'none'; }
-        function simpanPembeli() {
-            var nama = document.getElementById('pmNama').value.trim();
-            if (!nama) { alert('Nama pemesan wajib diisi'); return; }
-            var qty = parseInt(document.getElementById('pmQty').value) || 1;
-            var p = getProduk(produkAktifId);
-            p.pembeli.push({ nama: nama, qty: qty, pembayaran: [] });
-            renderPembeliRows();
-            tutupModalTambahPembeli();
+        async function simpanPembeli() {
+            try {
+                var nama = document.getElementById('pmNama').value.trim();
+                if (!nama) { alert('Nama pemesan wajib diisi'); return; }
+                var qty = parseRupiah(document.getElementById('pmQty').value) || 1;
+
+                var res = await supabaseClient.from('produk_pembeli')
+                    .insert({ produk_id: produkAktifId, nama: nama, qty: qty })
+                    .select()
+                    .single();
+                if (res.error) { alert('ERROR SUPABASE (simpan pembeli): ' + res.error.message); return; }
+
+                var p = getProduk(produkAktifId);
+                p.pembeli.push({ id: res.data.id, nama: nama, qty: qty, pembayaran: [] });
+                renderPembeliRows();
+                tutupModalTambahPembeli();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         function renderBiayaRows() {
@@ -4480,14 +5232,25 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('biaya-modal-overlay').style.display = 'flex';
         }
         function tutupModalTambahBiaya() { document.getElementById('biaya-modal-overlay').style.display = 'none'; }
-        function simpanBiayaProduk() {
-            var ket = document.getElementById('bcKet').value.trim();
-            if (!ket) { alert('Keterangan biaya wajib diisi'); return; }
-            var nominal = parseRupiah(document.getElementById('bcNominal').value) || 0;
-            var p = getProduk(produkAktifId);
-            p.biaya.push({ ket: ket, nominal: nominal });
-            renderBiayaRows();
-            tutupModalTambahBiaya();
+        async function simpanBiayaProduk() {
+            try {
+                var ket = document.getElementById('bcKet').value.trim();
+                if (!ket) { alert('Keterangan biaya wajib diisi'); return; }
+                var nominal = parseRupiah(document.getElementById('bcNominal').value) || 0;
+
+                var res = await supabaseClient.from('produk_biaya')
+                    .insert({ produk_id: produkAktifId, keterangan: ket, nominal: nominal })
+                    .select()
+                    .single();
+                if (res.error) { alert('ERROR SUPABASE (simpan biaya): ' + res.error.message); return; }
+
+                var p = getProduk(produkAktifId);
+                p.biaya.push({ id: res.data.id, ket: ket, nominal: nominal });
+                renderBiayaRows();
+                tutupModalTambahBiaya();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         function ambilTargetPembayaran() {
@@ -4534,14 +5297,34 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('bayar-modal-overlay').style.display = 'flex';
         }
         function tutupModalTambahBayar() { document.getElementById('bayar-modal-overlay').style.display = 'none'; }
-        function simpanPembayaran() {
-            var nominal = parseRupiah(document.getElementById('byNominal').value) || 0;
-            if (nominal <= 0) { alert('Jumlah pembayaran harus lebih dari 0'); return; }
-            var tgl = document.getElementById('byTanggal').value;
-            var target = ambilTargetPembayaran();
-            target.objek.pembayaran.push({ tgl: tgl, nominal: nominal });
-            renderPembayaranRows();
-            tutupModalTambahBayar();
+        async function simpanPembayaran() {
+            try {
+                var nominal = parseRupiah(document.getElementById('byNominal').value) || 0;
+                if (nominal <= 0) { alert('Jumlah pembayaran harus lebih dari 0'); return; }
+                var tgl = document.getElementById('byTanggal').value;
+                var target = ambilTargetPembayaran();
+
+                if (pembayaranAktif.tipe === 'iuran') {
+                    var res = await supabaseClient.from('iuran_pembayaran')
+                        .insert({ peserta_id: target.objek.id, tanggal: tgl, nominal: nominal })
+                        .select()
+                        .single();
+                    if (res.error) { alert('ERROR SUPABASE (bayar iuran): ' + res.error.message); return; }
+                    target.objek.pembayaran.push({ id: res.data.id, tgl: tgl, nominal: nominal });
+                } else {
+                    var res2 = await supabaseClient.from('produk_pembayaran')
+                        .insert({ pembeli_id: target.objek.id, tanggal: tgl, nominal: nominal })
+                        .select()
+                        .single();
+                    if (res2.error) { alert('ERROR SUPABASE (bayar produk): ' + res2.error.message); return; }
+                    target.objek.pembayaran.push({ id: res2.data.id, tgl: tgl, nominal: nominal });
+                }
+
+                renderPembayaranRows();
+                tutupModalTambahBayar();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         function bukaLaporanPenjualan() {
@@ -4576,12 +5359,33 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
         function tutupLaporanPenjualan() { document.getElementById('laporan-penjualan-screen').style.display = 'none'; }
 
-        // ===== Infaq Harian (data-driven) =====
+        // ===== Infaq Harian (Supabase) =====
         var infaqData = [];
         var infaqEditIndex = -1;
 
-        function bukaInfaq() { document.getElementById('infaq-screen').style.display = 'flex'; renderInfaqRows(); }
+        async function bukaInfaq() {
+            document.getElementById('infaq-screen').style.display = 'flex';
+            await muatInfaqHarian();
+        }
         function tutupInfaq() { document.getElementById('infaq-screen').style.display = 'none'; }
+
+        async function muatInfaqHarian() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('infaq_harian')
+                    .select('*')
+                    .order('tanggal', { ascending: false })
+                    .order('id', { ascending: false });
+                if (error) { alert('ERROR SUPABASE (infaq): ' + error.message); return; }
+
+                infaqData = (data || []).map(function (d) {
+                    return { id: d.id, tgl: d.tanggal, petugas: d.petugas, tunai: parseFloat(d.tunai) || 0, qris: parseFloat(d.qris) || 0, catatan: d.catatan || '' };
+                });
+                renderInfaqRows();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
 
         function renderInfaqRows() {
             var wrap = document.getElementById('infaqRows');
@@ -4619,23 +5423,47 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function tutupModalInfaqRow() {
             document.getElementById('infaq-row-modal-overlay').style.display = 'none';
         }
-        function simpanInfaqRow() {
-            var data = {
-                tgl: document.getElementById('infaqRowTanggal').value,
-                petugas: document.getElementById('infaqRowPetugas').value.trim() || '-',
-                tunai: parseRupiah(document.getElementById('infaqRowTunai').value) || 0,
-                qris: parseRupiah(document.getElementById('infaqRowQris').value) || 0,
-                catatan: document.getElementById('infaqRowCatatan').value.trim()
-            };
-            if (infaqEditIndex === -1) { infaqData.push(data); } else { infaqData[infaqEditIndex] = data; }
-            renderInfaqRows();
-            tutupModalInfaqRow();
+
+        async function simpanInfaqRow() {
+            var tgl = document.getElementById('infaqRowTanggal').value;
+            var petugas = document.getElementById('infaqRowPetugas').value.trim() || '-';
+            var tunai = parseRupiah(document.getElementById('infaqRowTunai').value) || 0;
+            var qris = parseRupiah(document.getElementById('infaqRowQris').value) || 0;
+            var catatan = document.getElementById('infaqRowCatatan').value.trim();
+
+            if (!tgl) { alert('Tanggal wajib diisi'); return; }
+
+            try {
+                if (infaqEditIndex === -1) {
+                    var res = await supabaseClient.from('infaq_harian')
+                        .insert({ tanggal: tgl, petugas: petugas, tunai: tunai, qris: qris, catatan: catatan });
+                    if (res.error) { alert('ERROR SUPABASE (simpan infaq): ' + res.error.message); return; }
+                } else {
+                    var id = infaqData[infaqEditIndex].id;
+                    var res = await supabaseClient.from('infaq_harian')
+                        .update({ tanggal: tgl, petugas: petugas, tunai: tunai, qris: qris, catatan: catatan })
+                        .eq('id', id);
+                    if (res.error) { alert('ERROR SUPABASE (update infaq): ' + res.error.message); return; }
+                }
+                tutupModalInfaqRow();
+                await muatInfaqHarian();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
-        function hapusInfaqRow(index) {
+
+        async function hapusInfaqRow(index) {
             if (!confirm('Hapus data infaq baris ini?')) return;
-            infaqData.splice(index, 1);
-            renderInfaqRows();
+            try {
+                var id = infaqData[index].id;
+                var res = await supabaseClient.from('infaq_harian').delete().eq('id', id);
+                if (res.error) { alert('ERROR SUPABASE (hapus infaq): ' + res.error.message); return; }
+                await muatInfaqHarian();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
+
         function hitungTotalInfaq() {
             var totalTunai = 0, totalQris = 0;
             infaqData.forEach(function (d) { totalTunai += d.tunai || 0; totalQris += d.qris || 0; });
@@ -4645,8 +5473,75 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         // ===== Profil: Plotting Akun & Tutup Buku =====
-        function simpanPlottingan() {
-            alert('Plotting akun pendapatan berhasil disimpan (dummy, fitur simpan permanen akan datang segera)');
+        async function muatPlottingAkun() {
+            try {
+                if (!window._akunKasCache) { await muatDataKas(); }
+
+                const [coaRes, plotRes] = await Promise.all([
+                    supabaseClient.from('coa_akun').select('*').eq('tipe', 'pendapatan').order('no_akun'),
+                    supabaseClient.from('plotting_akun_pendapatan').select('*')
+                ]);
+                if (coaRes.error) { alert('ERROR SUPABASE (coa pendapatan): ' + coaRes.error.message); return; }
+                if (plotRes.error) { alert('ERROR SUPABASE (plotting): ' + plotRes.error.message); return; }
+
+                var plotMap = {};
+                (plotRes.data || []).forEach(function (p) { plotMap[p.coa_akun_id] = p; });
+
+                var kasOptionsBase = '<option value="">-- Kas Penampung --</option>' + (window._akunKasCache || []).map(function (a) {
+                    return '<option value="' + a.id + '">[' + a.no_akun + '] ' + a.nama + '</option>';
+                }).join('');
+
+                var html = '<div class="pf-plot-head"><span>Akun Pendapatan</span><span>Kas Penampung</span><span>Pembatasan</span></div>';
+
+                (coaRes.data || []).forEach(function (c) {
+                    var existing = plotMap[c.id];
+                    var kasOpts = kasOptionsBase;
+                    if (existing && existing.kas_penampung_id) {
+                        kasOpts = kasOpts.replace('value="' + existing.kas_penampung_id + '"', 'value="' + existing.kas_penampung_id + '" selected');
+                    }
+                    var pembatasan = existing ? existing.pembatasan : 'Tidak Terikat';
+
+                    html += '<div class="pf-plot-row" data-coa-id="' + c.id + '">' +
+                        '<span class="pf-plot-akun">[' + c.no_akun + '] ' + c.nama + '</span>' +
+                        '<select class="pf-kas-select">' + kasOpts + '</select>' +
+                        '<select class="pf-pembatasan-select">' +
+                        '<option value="Tidak Terikat"' + (pembatasan === 'Tidak Terikat' ? ' selected' : '') + '>Tidak Terikat</option>' +
+                        '<option value="Terikat"' + (pembatasan === 'Terikat' ? ' selected' : '') + '>Terikat</option>' +
+                        '</select></div>';
+                });
+
+                document.querySelector('.pf-plot-table').innerHTML = html;
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        async function simpanPlottingan() {
+            try {
+                var rows = document.querySelectorAll('.pf-plot-table .pf-plot-row');
+                var upserts = [];
+                rows.forEach(function (row) {
+                    var coaId = parseInt(row.getAttribute('data-coa-id'));
+                    var kasVal = row.querySelector('.pf-kas-select').value;
+                    var pembatasan = row.querySelector('.pf-pembatasan-select').value;
+                    upserts.push({
+                        coa_akun_id: coaId,
+                        kas_penampung_id: kasVal ? parseInt(kasVal) : null,
+                        pembatasan: pembatasan,
+                        updated_at: new Date().toISOString()
+                    });
+                });
+
+                if (upserts.length === 0) { alert('Tidak ada data untuk disimpan'); return; }
+
+                var res = await supabaseClient.from('plotting_akun_pendapatan').upsert(upserts, { onConflict: 'coa_akun_id' });
+                if (res.error) { alert('ERROR SUPABASE (simpan plottingan): ' + res.error.message); return; }
+
+                alert('Plotting akun pendapatan berhasil disimpan');
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
         function tutupBukuTahunan() {
             if (confirm('Tindakan ini akan mengosongkan seluruh riwayat jurnal dan tidak dapat dibatalkan. Lanjutkan?')) {
@@ -4657,32 +5552,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         // ====================================================================
         // ===== POIN 1 & 2: Data & Render Buku Besar per Akun (dummy) =======
         // ====================================================================
-        var bukuBesarData = {
-            'Kas Administrasi Umum': { no: '1-1001', saldoAwal: 5530000, transaksi: [
-                { tgl: '2026-08-14', ket: 'Konsumsi rapat evaluasi', mutasi: -95000 },
-                { tgl: '2026-08-24', ket: 'Donasi Ramadhan dari Hamba Allah', mutasi: 1000000 },
-                { tgl: '2026-08-25', ket: 'Sewa sound Ramadhan Fest', mutasi: -750000 },
-                { tgl: '2026-08-28', ket: 'Konsumsi rapat pengurus', mutasi: -150000 },
-                { tgl: '2026-08-30', ket: 'Iuran anggota bulan Agustus', mutasi: 500000 },
-                { tgl: '2026-09-01', ket: 'Beli snack rapat', mutasi: -20000 }
-            ]},
-            'Beban Konsumsi': { no: '5-2003', saldoAwal: 0, transaksi: [
-                { tgl: '2026-08-14', ket: 'Konsumsi rapat evaluasi', mutasi: 95000 },
-                { tgl: '2026-08-28', ket: 'Konsumsi rapat pengurus', mutasi: 150000 }
-            ]},
-            'Kas Infaq Harian Ramadhan': { no: '1-1002', saldoAwal: 0, transaksi: [] },
-            'Kas Donasi Ramadhan': { no: '1-1003', saldoAwal: 2500000, transaksi: [
-                { tgl: '2026-08-20', ket: 'Penyaluran santunan yatim', mutasi: -400000 },
-                { tgl: '2026-08-24', ket: 'Donasi dari Hamba Allah', mutasi: 1000000 }
-            ]},
-            'Kas Unit Pengumpul Zakat': { no: '1-1004', saldoAwal: 0, transaksi: [] },
-            'Kas Lainnya': { no: '1-1005', saldoAwal: 0, transaksi: [] }
-        };
-
-        // Ambil semua akun yang ada di COA, urut ascending berdasarkan No. Akun
-        var daftarAkunRingkasan = Object.keys(bukuBesarData).sort(function (a, b) {
-            return bukuBesarData[a].no.localeCompare(bukuBesarData[b].no, undefined, { numeric: true });
-        });
+        var bukuBesarData = {};
+        var daftarAkunRingkasan = [];
 
         function bulanID(m) {
             return ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'][m];
@@ -4806,39 +5677,84 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         // ====================================================================
-        // ===== POIN 4: Bukti Transaksi Proker ================================
+        // ===== Bukti Transaksi Proker & Non-Proker (data asli Supabase) =====
         // ====================================================================
-        var prokerNotaData = {
-            'Ramadhan Fest 2026': { jurnal: [
-                { tgl: '25 Agu 2026', ket: 'Sewa Sound System', nominal: 750000, bukti: true },
-                { tgl: '10 Agu 2026', ket: 'Cetak Spanduk Ramadhan Fest', nominal: 320000, bukti: true },
-                { tgl: '05 Agu 2026', ket: 'Sewa Tenda & Panggung', nominal: 1200000, bukti: false }
-            ]},
-            'Santunan Yatim & Dhuafa': { jurnal: [
-                { tgl: '20 Agu 2026', ket: 'Penyaluran Santunan Yatim', nominal: 400000, bukti: true }
-            ]},
-            'Pelatihan Kepemimpinan Remaja': { jurnal: [] },
-            'Renovasi Perpustakaan Masjid': { jurnal: [] }
-        };
+        var _notaJurnalCache = [];
+        var _prokerNotaAktifNama = null;
 
-        var prokerNotaAktif = null;
+        async function muatNotaRiwayat() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .select('id, tanggal, keterangan, bukti_nota_url, proker_id, program_kerja(nama), jurnal_detail(debit, kredit, akun_kas_id)')
+                    .order('tanggal', { ascending: false });
+                if (error) { alert('ERROR SUPABASE (nota): ' + error.message); return; }
 
-        function bukaNotaProker(nama) {
-            prokerNotaAktif = nama;
-            var data = prokerNotaData[nama] || { jurnal: [] };
+                _notaJurnalCache = (data || []).map(function (trx) {
+                    var nominal = 0;
+                    (trx.jurnal_detail || []).forEach(function (d) {
+                        if (d.akun_kas_id) nominal += Math.abs((parseFloat(d.debit) || 0) - (parseFloat(d.kredit) || 0));
+                    });
+                    return {
+                        id: trx.id, tanggal: trx.tanggal, ket: trx.keterangan, url: trx.bukti_nota_url,
+                        prokerId: trx.proker_id, prokerNama: trx.program_kerja ? trx.program_kerja.nama : null, nominal: nominal
+                    };
+                });
 
-            document.getElementById('prokerNotaTitle').textContent = 'Bukti Transaksi Proker ' + nama;
-            document.getElementById('prokerNotaJumlahJurnal').textContent = data.jurnal.length;
+                renderNotaRiwayat();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        function kartuNota(t) {
+            var isPdf = /\.pdf($|\?)/i.test(t.url || '');
+            return '<div class="nota-card" onclick="window.open(\'' + t.url + '\', \'_blank\')" style="cursor:pointer;">' +
+                '<div class="nota-img">' + (isPdf ? '<i class="ph ph-file-pdf"></i>' : '<img src="' + t.url + '" style="width:100%; height:100%; object-fit:cover;">') + '</div>' +
+                '<div class="nota-info"><div class="nota-ket">' + t.ket + '</div><div class="nota-tgl">' + formatTanggalID(t.tanggal) + '</div><div class="nota-nominal">Rp ' + t.nominal.toLocaleString('id-ID') + '</div></div></div>';
+        }
+
+        function renderNotaRiwayat() {
+            var totalJurnal = _notaJurnalCache.length;
+            var totalNota = _notaJurnalCache.filter(function (t) { return t.url; }).length;
+            var persen = totalJurnal > 0 ? Math.round((totalNota / totalJurnal) * 100) : 0;
+
+            document.getElementById('notaStatTerkumpul').textContent = totalNota;
+            document.getElementById('notaStatJurnal').textContent = totalJurnal;
+            document.getElementById('notaStatPersen').textContent = persen + '%';
+
+            var perProker = {};
+            _notaJurnalCache.forEach(function (t) {
+                if (!t.prokerId) return;
+                var nama = t.prokerNama || ('Proker #' + t.prokerId);
+                if (!perProker[nama]) perProker[nama] = 0;
+                if (t.url) perProker[nama]++;
+            });
+
+            var folderHtml = '';
+            Object.keys(perProker).forEach(function (nama) {
+                folderHtml += '<div class="report-row" style="cursor:pointer;" onclick="bukaNotaProker(\'' + nama.replace(/'/g, "\\'") + '\')">' +
+                    '<div class="report-icon"><i class="ph ph-folder"></i></div>' +
+                    '<div><div class="report-name">' + nama + '</div><div class="report-sub">' + perProker[nama] + ' nota terupload</div></div>' +
+                    '<i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i></div>';
+            });
+            document.getElementById('notaProkerFolderList').innerHTML = folderHtml || '<div style="padding:12px 0; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada proker dengan transaksi.</div>';
 
             var gridHtml = '';
-            data.jurnal.filter(function (j) { return j.bukti; }).forEach(function (j) {
-                gridHtml += '<div class="nota-card"><div class="nota-img"><i class="ph ph-image"></i></div>' +
-                    '<div class="nota-info"><div class="nota-ket">' + j.ket + '</div><div class="nota-tgl">' + j.tgl + '</div><div class="nota-nominal">Rp ' + j.nominal.toLocaleString('id-ID') + '</div></div></div>';
-            });
-            if (!gridHtml) {
-                gridHtml = '<div style="grid-column:1/-1; text-align:center; color:var(--text-gray); font-size:0.78rem; padding:20px 0;">Belum ada nota terupload.</div>';
-            }
-            document.getElementById('prokerNotaGrid').innerHTML = gridHtml;
+            _notaJurnalCache.filter(function (t) { return !t.prokerId && t.url; }).forEach(function (t) { gridHtml += kartuNota(t); });
+            document.getElementById('notaGridNonProker').innerHTML = gridHtml || '<div style="grid-column:1/-1; text-align:center; color:var(--text-gray); font-size:0.78rem; padding:16px 0;">Belum ada nota non-proker.</div>';
+        }
+
+        function bukaNotaProker(nama) {
+            _prokerNotaAktifNama = nama;
+            var jurnalProker = _notaJurnalCache.filter(function (t) { return t.prokerNama === nama; });
+
+            document.getElementById('prokerNotaTitle').textContent = 'Bukti Transaksi Proker ' + nama;
+            document.getElementById('prokerNotaJumlahJurnal').textContent = jurnalProker.length;
+
+            var gridHtml = '';
+            jurnalProker.filter(function (t) { return t.url; }).forEach(function (t) { gridHtml += kartuNota(t); });
+            document.getElementById('prokerNotaGrid').innerHTML = gridHtml || '<div style="grid-column:1/-1; text-align:center; color:var(--text-gray); font-size:0.78rem; padding:20px 0;">Belum ada nota terupload.</div>';
 
             document.getElementById('proker-nota-screen').style.display = 'flex';
         }
@@ -4847,22 +5763,19 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         function bukaBukuBesarProker() {
-            var data = prokerNotaData[prokerNotaAktif] || { jurnal: [] };
+            var jurnalProker = _notaJurnalCache.filter(function (t) { return t.prokerNama === _prokerNotaAktifNama; });
             var rowsHtml = '';
-            data.jurnal.forEach(function (j) {
-                var buktiIcon = j.bukti
+            jurnalProker.forEach(function (t) {
+                var buktiIcon = t.url
                     ? '<i class="ph ph-check-circle" style="color:#16A34A; font-size:1rem;"></i>'
                     : '<i class="ph ph-x-circle" style="color:var(--maroon); font-size:1rem;"></i>';
                 rowsHtml += '<div class="pk-table-row" style="grid-template-columns:0.8fr 1.4fr 0.9fr 0.5fr;">' +
-                    '<span style="font-size:0.68rem; color:var(--text-gray);">' + j.tgl + '</span>' +
-                    '<span style="font-size:0.72rem; color:var(--text-dark); font-weight:500;">' + j.ket + '</span>' +
-                    '<span style="font-size:0.72rem; color:var(--text-dark); font-weight:700;">Rp ' + j.nominal.toLocaleString('id-ID') + '</span>' +
+                    '<span style="font-size:0.68rem; color:var(--text-gray);">' + formatTanggalID(t.tanggal) + '</span>' +
+                    '<span style="font-size:0.72rem; color:var(--text-dark); font-weight:500;">' + t.ket + '</span>' +
+                    '<span style="font-size:0.72rem; color:var(--text-dark); font-weight:700;">Rp ' + t.nominal.toLocaleString('id-ID') + '</span>' +
                     '<span style="text-align:center;">' + buktiIcon + '</span></div>';
             });
-            if (!rowsHtml) {
-                rowsHtml = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada transaksi.</div>';
-            }
-            document.getElementById('prokerBbRows').innerHTML = rowsHtml;
+            document.getElementById('prokerBbRows').innerHTML = rowsHtml || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada transaksi.</div>';
             document.getElementById('proker-bb-overlay').style.display = 'flex';
         }
         function tutupBukuBesarProker() {
@@ -4870,14 +5783,42 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         // ===== Pemeriksaan Internal =====
-        function bukaPemeriksaan() {
-            renderAnggotaTim();
-            renderRekapPemeriksaan();
+        var timPemeriksaAktifId = null;
+
+        async function bukaPemeriksaan() {
             document.getElementById('pemeriksaan-screen').style.display = 'flex';
+            await muatTimPemeriksa();
+            renderRekapPemeriksaan();
         }
         function tutupPemeriksaan() { document.getElementById('pemeriksaan-screen').style.display = 'none'; }
 
         var anggotaTimData = [''];
+
+        async function muatTimPemeriksa() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('tim_pemeriksa')
+                    .select('id, ketua_tim, tim_pemeriksa_anggota(id, nama)')
+                    .order('id', { ascending: false })
+                    .limit(1);
+                if (error) { alert('ERROR SUPABASE (tim pemeriksa): ' + error.message); return; }
+
+                if (data && data.length > 0) {
+                    timPemeriksaAktifId = data[0].id;
+                    document.getElementById('pmKetuaTim').value = data[0].ketua_tim || '';
+                    var anggota = (data[0].tim_pemeriksa_anggota || []).map(function (a) { return a.nama; });
+                    anggotaTimData = anggota.length > 0 ? anggota : [''];
+                } else {
+                    timPemeriksaAktifId = null;
+                    document.getElementById('pmKetuaTim').value = '';
+                    anggotaTimData = [''];
+                }
+                renderAnggotaTim();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
         function renderAnggotaTim() {
             var html = '';
             anggotaTimData.forEach(function (nama, i) {
@@ -4890,39 +5831,71 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             renderAnggotaTim();
         }
 
-        function renderRekapPemeriksaan() {
-            var bulanMap = {};
+        async function simpanTimPemeriksa() {
+            try {
+                var ketua = document.getElementById('pmKetuaTim').value.trim();
+                var anggotaValid = anggotaTimData.map(function (n) { return n.trim(); }).filter(function (n) { return n !== ''; });
 
-            document.querySelectorAll('#rwpage-transaksi .rw-trx-item').forEach(function (item) {
-                var subText = item.querySelector('.rw-trx-sub') ? item.querySelector('.rw-trx-sub').textContent : '';
-                var nominalText = item.querySelector('.rw-trx-nominal') ? item.querySelector('.rw-trx-nominal').textContent : '0';
-                var nominal = parseFloat(nominalText.replace(/[^0-9]/g, '')) || 0;
-                var match = subText.match(/(Jan|Feb|Mar|Apr|Mei|Jun|Jul|Agu|Sep|Okt|Nov|Des)\s+\d{4}/);
-                var bulan = match ? match[0] : 'Lainnya';
-                if (!bulanMap[bulan]) bulanMap[bulan] = { proker: 0, nonProker: 0 };
-                bulanMap[bulan].nonProker += nominal;
-            });
+                var timId = timPemeriksaAktifId;
+                if (timId) {
+                    var upd = await supabaseClient.from('tim_pemeriksa').update({ ketua_tim: ketua }).eq('id', timId);
+                    if (upd.error) { alert('ERROR SUPABASE (update tim): ' + upd.error.message); return; }
+                    var delAnggota = await supabaseClient.from('tim_pemeriksa_anggota').delete().eq('tim_id', timId);
+                    if (delAnggota.error) { alert('ERROR SUPABASE (hapus anggota lama): ' + delAnggota.error.message); return; }
+                } else {
+                    var ins = await supabaseClient.from('tim_pemeriksa').insert({ ketua_tim: ketua }).select().single();
+                    if (ins.error) { alert('ERROR SUPABASE (simpan tim): ' + ins.error.message); return; }
+                    timId = ins.data.id;
+                    timPemeriksaAktifId = timId;
+                }
 
-            Object.keys(prokerNotaData).forEach(function (namaProker) {
-                prokerNotaData[namaProker].jurnal.forEach(function (j) {
-                    var match = j.tgl.match(/(Jan|Feb|Mar|Apr|Mei|Jun|Jul|Agu|Sep|Okt|Nov|Des)\s+\d{4}/);
-                    var bulan = match ? match[0] : 'Lainnya';
+                if (anggotaValid.length > 0) {
+                    var insAnggota = await supabaseClient.from('tim_pemeriksa_anggota').insert(
+                        anggotaValid.map(function (nama) { return { tim_id: timId, nama: nama }; })
+                    );
+                    if (insAnggota.error) { alert('ERROR SUPABASE (simpan anggota): ' + insAnggota.error.message); return; }
+                }
+
+                alert('Struktur Tim Pemeriksa berhasil disimpan');
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        async function renderRekapPemeriksaan() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .select('tanggal, proker_id, jurnal_detail(debit, kredit, akun_kas_id)')
+                    .order('tanggal', { ascending: true });
+                if (error) { alert('ERROR SUPABASE (rekap pemeriksaan): ' + error.message); return; }
+
+                var bulanMap = {};
+                (data || []).forEach(function (trx) {
+                    var nominal = 0;
+                    (trx.jurnal_detail || []).forEach(function (d) {
+                        if (d.akun_kas_id) nominal += Math.abs((parseFloat(d.debit) || 0) - (parseFloat(d.kredit) || 0));
+                    });
+                    var tglObj = new Date(trx.tanggal + 'T00:00:00');
+                    var bulan = bulanID(tglObj.getMonth()) + ' ' + tglObj.getFullYear();
                     if (!bulanMap[bulan]) bulanMap[bulan] = { proker: 0, nonProker: 0 };
-                    bulanMap[bulan].proker += j.nominal;
+                    if (trx.proker_id) { bulanMap[bulan].proker += nominal; } else { bulanMap[bulan].nonProker += nominal; }
                 });
-            });
 
-            var html = '';
-            Object.keys(bulanMap).forEach(function (bulan) {
-                var d = bulanMap[bulan];
-                var total = d.proker + d.nonProker;
-                html += '<div class="ip-table-row" style="grid-template-columns:0.9fr 1.1fr 1.1fr 0.9fr;">' +
-                    '<span style="font-size:0.72rem; font-weight:600; color:var(--text-dark);">' + bulan + '</span>' +
-                    '<span style="font-size:0.72rem; color:var(--text-dark);">Rp ' + d.proker.toLocaleString('id-ID') + '</span>' +
-                    '<span style="font-size:0.72rem; color:var(--text-dark);">Rp ' + d.nonProker.toLocaleString('id-ID') + '</span>' +
-                    '<span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">Rp ' + total.toLocaleString('id-ID') + '</span></div>';
-            });
-            document.getElementById('pmRekapRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada data transaksi untuk direkap.</div>';
+                var html = '';
+                Object.keys(bulanMap).forEach(function (bulan) {
+                    var d = bulanMap[bulan];
+                    var total = d.proker + d.nonProker;
+                    html += '<div class="ip-table-row" style="grid-template-columns:0.9fr 1.1fr 1.1fr 0.9fr;">' +
+                        '<span style="font-size:0.72rem; font-weight:600; color:var(--text-dark);">' + bulan + '</span>' +
+                        '<span style="font-size:0.72rem; color:var(--text-dark);">Rp ' + d.proker.toLocaleString('id-ID') + '</span>' +
+                        '<span style="font-size:0.72rem; color:var(--text-dark);">Rp ' + d.nonProker.toLocaleString('id-ID') + '</span>' +
+                        '<span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">Rp ' + total.toLocaleString('id-ID') + '</span></div>';
+                });
+                document.getElementById('pmRekapRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada data transaksi untuk direkap.</div>';
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         // ===== Dashboard Tamu (Publik) =====
@@ -4971,18 +5944,255 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function tutupWBS() {
             document.getElementById('wbs-modal-overlay').style.display = 'none';
         }
-        function kirimLaporanWBS() {
-            var uraian = document.getElementById('wbsUraian').value.trim();
-            if (!uraian) {
-                alert('Mohon isi uraian kejadian terlebih dahulu');
-                return;
+        async function kirimLaporanWBS() {
+            try {
+                var uraian = document.getElementById('wbsUraian').value.trim();
+                if (!uraian) { alert('Mohon isi uraian kejadian terlebih dahulu'); return; }
+
+                var nama = document.getElementById('wbsNama').value.trim();
+                var kontak = document.getElementById('wbsKontak').value.trim();
+                var kategori = document.getElementById('wbsKategori').value;
+                var pihak = document.getElementById('wbsPihak').value.trim();
+                var fileInput = document.querySelector('#wbs-modal-overlay input[type="file"]');
+                var buktiUrl = null;
+
+                if (fileInput && fileInput.files[0]) {
+                    var file = fileInput.files[0];
+                    var ext = file.name.split('.').pop();
+                    var path = 'wbs/' + Date.now() + '.' + ext;
+                    var uploadRes = await supabaseClient.storage.from('bukti-transaksi').upload(path, file);
+                    if (uploadRes.error) { alert('ERROR UPLOAD BUKTI: ' + uploadRes.error.message); return; }
+                    buktiUrl = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
+                }
+
+                var res = await supabaseClient.from('wbs_laporan').insert({
+                    nama: nama || null,
+                    kontak: kontak || null,
+                    kategori: kategori,
+                    pihak_terlibat: pihak || null,
+                    uraian: uraian,
+                    bukti_url: buktiUrl,
+                    status: 'Baru'
+                });
+                if (res.error) { alert('ERROR SUPABASE (WBS): ' + res.error.message); return; }
+
+                alert('Laporan Anda berhasil terkirim. Terima kasih atas kepedulian Anda menjaga amanah dana umat.');
+                document.getElementById('wbsNama').value = '';
+                document.getElementById('wbsKontak').value = '';
+                document.getElementById('wbsPihak').value = '';
+                document.getElementById('wbsUraian').value = '';
+                if (fileInput) fileInput.value = '';
+                tutupWBS();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
             }
-            alert('Laporan Anda berhasil terkirim. Terima kasih atas kepedulian Anda menjaga amanah dana umat. (dummy, fitur simpan permanen ke sistem akan datang segera)');
-            document.getElementById('wbsNama').value = '';
-            document.getElementById('wbsKontak').value = '';
-            document.getElementById('wbsPihak').value = '';
-            document.getElementById('wbsUraian').value = '';
-            tutupWBS();
+        }
+
+        // ====================================================================
+        // ===== LAPORAN KEUANGAN (Posisi Keuangan, Aset Neto, Aktivitas) =====
+        // ====================================================================
+        function fmtRp(n) {
+            n = n || 0;
+            return (n < 0 ? '(Rp ' + Math.abs(Math.round(n)).toLocaleString('id-ID') + ')' : 'Rp ' + Math.round(n).toLocaleString('id-ID'));
+        }
+        function tanggalLaporanHariIni() {
+            var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            var d = new Date();
+            return d.getDate() + ' ' + bulan[d.getMonth()] + ' ' + d.getFullYear();
+        }
+
+        async function hitungLaporanKeuangan() {
+            try {
+                const [kasRes, coaRes, mutasiRes, plotRes] = await Promise.all([
+                    supabaseClient.from('akun_kas').select('*').order('id'),
+                    supabaseClient.from('coa_akun').select('*').order('id'),
+                    supabaseClient.from('jurnal_detail').select('akun_kas_id, coa_akun_id, debit, kredit'),
+                    supabaseClient.from('plotting_akun_pendapatan').select('*')
+                ]);
+                if (kasRes.error) { alert('ERROR SUPABASE (laporan-kas): ' + kasRes.error.message); return null; }
+                if (coaRes.error) { alert('ERROR SUPABASE (laporan-coa): ' + coaRes.error.message); return null; }
+                if (mutasiRes.error) { alert('ERROR SUPABASE (laporan-mutasi): ' + mutasiRes.error.message); return null; }
+                if (plotRes.error) { alert('ERROR SUPABASE (laporan-plot): ' + plotRes.error.message); return null; }
+
+                var mutasiKas = {}, mutasiCoa = {};
+                (mutasiRes.data || []).forEach(function (m) {
+                    var deb = parseFloat(m.debit) || 0, kre = parseFloat(m.kredit) || 0;
+                    if (m.akun_kas_id) mutasiKas[m.akun_kas_id] = (mutasiKas[m.akun_kas_id] || 0) + (deb - kre);
+                    if (m.coa_akun_id) mutasiCoa[m.coa_akun_id] = (mutasiCoa[m.coa_akun_id] || 0) + (deb - kre);
+                });
+
+                var plotMap = {};
+                (plotRes.data || []).forEach(function (p) { plotMap[p.coa_akun_id] = p.pembatasan; });
+
+                var kasList = (kasRes.data || []).map(function (a) {
+                    var saldo = (parseFloat(a.saldo_awal) || 0) + (mutasiKas[a.id] || 0);
+                    return { nama: a.nama, saldo: saldo };
+                });
+
+                var asetCoa = [], kewajibanCoa = [], pendapatanCoa = [], bebanCoa = [];
+                (coaRes.data || []).forEach(function (c) {
+                    var net = mutasiCoa[c.id] || 0;
+                    if (c.tipe === 'aset') asetCoa.push({ nama: c.nama, saldo: net });
+                    else if (c.tipe === 'kewajiban') kewajibanCoa.push({ nama: c.nama, saldo: -net });
+                    else if (c.tipe === 'pendapatan') pendapatanCoa.push({ nama: c.nama, saldo: -net, pembatasan: plotMap[c.id] || 'Tidak Terikat' });
+                    else if (c.tipe === 'beban') bebanCoa.push({ nama: c.nama, saldo: net });
+                });
+
+                var totalKas = kasList.reduce(function (s, k) { return s + k.saldo; }, 0);
+                var totalAsetCoa = asetCoa.reduce(function (s, k) { return s + k.saldo; }, 0);
+                var totalAset = totalKas + totalAsetCoa;
+                var totalKewajiban = kewajibanCoa.reduce(function (s, k) { return s + k.saldo; }, 0);
+
+                var pendapatanTT = pendapatanCoa.filter(function (p) { return p.pembatasan !== 'Terikat'; });
+                var pendapatanT = pendapatanCoa.filter(function (p) { return p.pembatasan === 'Terikat'; });
+                var totalPendapatanTT = pendapatanTT.reduce(function (s, p) { return s + p.saldo; }, 0);
+                var totalPendapatanT = pendapatanT.reduce(function (s, p) { return s + p.saldo; }, 0);
+                var totalPendapatan = totalPendapatanTT + totalPendapatanT;
+                var totalBeban = bebanCoa.reduce(function (s, b) { return s + b.saldo; }, 0);
+
+                var surplusTT = totalPendapatanTT - totalBeban;
+                var surplusT = totalPendapatanT;
+                var totalAsetNeto = surplusTT + surplusT;
+
+                return {
+                    kasList: kasList, totalKas: totalKas,
+                    asetCoa: asetCoa, totalAsetCoa: totalAsetCoa, totalAset: totalAset,
+                    kewajibanCoa: kewajibanCoa, totalKewajiban: totalKewajiban,
+                    pendapatanTT: pendapatanTT, totalPendapatanTT: totalPendapatanTT,
+                    pendapatanT: pendapatanT, totalPendapatanT: totalPendapatanT, totalPendapatan: totalPendapatan,
+                    bebanCoa: bebanCoa, totalBeban: totalBeban,
+                    surplusTT: surplusTT, surplusT: surplusT, totalAsetNeto: totalAsetNeto
+                };
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+                return null;
+            }
+        }
+
+        async function toggleLaporanDetail(jenis) {
+            var box = document.getElementById('laporanDetail-' + jenis);
+            if (!box) return;
+            var sedangTampil = box.style.display === 'block';
+            document.querySelectorAll('.laporan-detail-box').forEach(function (el) { el.style.display = 'none'; });
+            if (sedangTampil) return;
+
+            box.style.display = 'block';
+            box.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat laporan...</div>';
+
+            if (jenis === 'realisasi') { await renderLaporanRealisasiProker(box); return; }
+
+            var data = await hitungLaporanKeuangan();
+            if (!data) { box.innerHTML = ''; return; }
+
+            if (jenis === 'posisi') box.innerHTML = htmlLaporanPosisiKeuangan(data);
+            else if (jenis === 'aktivitas') box.innerHTML = htmlLaporanAktivitas(data);
+            else if (jenis === 'perubahan') box.innerHTML = htmlLaporanPerubahanAsetNeto(data);
+        }
+
+        function htmlLaporanPosisiKeuangan(d) {
+            var html = '<div class="lp-report-box">' +
+                '<div class="lp-report-header"><div class="lp-report-title">LAPORAN POSISI KEUANGAN</div><div class="lp-report-sub">Remaja Masjid Fadhlillah &middot; Per ' + tanggalLaporanHariIni() + '</div></div>';
+
+            html += '<div class="lp-line first" style="color:var(--maroon);"><span>ASET</span><span></span></div>';
+            html += '<div class="lp-line" style="font-weight:600;"><span>Aset Lancar</span><span></span></div>';
+            d.kasList.forEach(function (k) { html += '<div class="lp-sub-item"><span>' + k.nama + '</span><span>' + fmtRp(k.saldo) + '</span></div>'; });
+            d.asetCoa.forEach(function (a) { html += '<div class="lp-sub-item"><span>' + a.nama + '</span><span>' + fmtRp(a.saldo) + '</span></div>'; });
+            if (d.kasList.length === 0 && d.asetCoa.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+            html += '<div class="lp-line"><span>Total Aset Lancar</span><span>' + fmtRp(d.totalAset) + '</span></div>';
+            html += '<div class="lp-line" style="font-weight:700;"><span>TOTAL ASET</span><span>' + fmtRp(d.totalAset) + '</span></div>';
+
+            html += '<div class="lp-line" style="color:var(--maroon); margin-top:6px;"><span>LIABILITAS & ASET NETO</span><span></span></div>';
+            html += '<div class="lp-line" style="font-weight:600;"><span>Kewajiban</span><span></span></div>';
+            d.kewajibanCoa.forEach(function (k) { html += '<div class="lp-sub-item"><span>' + k.nama + '</span><span>' + fmtRp(k.saldo) + '</span></div>'; });
+            if (d.kewajibanCoa.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+            html += '<div class="lp-line"><span>Total Kewajiban</span><span>' + fmtRp(d.totalKewajiban) + '</span></div>';
+
+            html += '<div class="lp-line" style="font-weight:600;"><span>Aset Neto</span><span></span></div>';
+            html += '<div class="lp-sub-item"><span>Aset Neto Tidak Terikat</span><span>' + fmtRp(d.surplusTT) + '</span></div>';
+            html += '<div class="lp-sub-item"><span>Aset Neto Terikat Sementara</span><span>' + (d.surplusT ? fmtRp(d.surplusT) : '-') + '</span></div>';
+            html += '<div class="lp-line"><span>Total Aset Neto</span><span>' + fmtRp(d.totalAsetNeto) + '</span></div>';
+
+            html += '<div class="lp-line lp-final"><span>TOTAL LIABILITAS & ASET NETO</span><span>' + fmtRp(d.totalKewajiban + d.totalAsetNeto) + '</span></div>';
+            html += '</div>';
+            return html;
+        }
+
+        function htmlLaporanPerubahanAsetNeto(d) {
+            var html = '<div class="lp-report-box">' +
+                '<div class="lp-report-header"><div class="lp-report-title">LAPORAN PERUBAHAN ASET NETO</div><div class="lp-report-sub">Remaja Masjid Fadhlillah &middot; Per ' + tanggalLaporanHariIni() + '</div></div>';
+
+            html += '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;">' +
+                '<span>Uraian</span><span>Tdk Terikat</span><span>Terikat Sem.</span><span>Total</span></div>';
+            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Saldo Awal</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">Rp 0</span></div>';
+            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Surplus/(Defisit) Berjalan</span><span style="font-size:0.72rem;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(d.surplusT) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.totalAsetNeto) + '</span></div>';
+            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr; background:var(--paper-soft);"><span style="font-size:0.72rem; font-weight:700;">Saldo Akhir</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusT) + '</span><span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">' + fmtRp(d.totalAsetNeto) + '</span></div>';
+            html += '</div></div>';
+            return html;
+        }
+
+        function htmlLaporanAktivitas(d) {
+            var html = '<div class="lp-report-box">' +
+                '<div class="lp-report-header"><div class="lp-report-title">LAPORAN PENGHASILAN KOMPREHENSIF</div><div class="lp-report-sub">Remaja Masjid Fadhlillah &middot; Per ' + tanggalLaporanHariIni() + '</div></div>';
+
+            html += '<div class="lp-line first" style="color:var(--maroon);"><span>PENDAPATAN</span><span></span></div>';
+            html += '<div class="lp-line" style="font-weight:600;"><span>Pendapatan Tidak Terikat</span><span></span></div>';
+            d.pendapatanTT.forEach(function (p) { html += '<div class="lp-sub-item"><span>' + p.nama + '</span><span>' + fmtRp(p.saldo) + '</span></div>'; });
+            if (d.pendapatanTT.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+            html += '<div class="lp-line"><span>Total Pendapatan Tidak Terikat</span><span>' + fmtRp(d.totalPendapatanTT) + '</span></div>';
+
+            html += '<div class="lp-line" style="font-weight:600;"><span>Pendapatan Terikat Sementara</span><span></span></div>';
+            d.pendapatanT.forEach(function (p) { html += '<div class="lp-sub-item"><span>' + p.nama + '</span><span>' + fmtRp(p.saldo) + '</span></div>'; });
+            if (d.pendapatanT.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+            html += '<div class="lp-line"><span>Total Pendapatan Terikat Sementara</span><span>' + fmtRp(d.totalPendapatanT) + '</span></div>';
+
+            html += '<div class="lp-line" style="font-weight:700;"><span>TOTAL PENDAPATAN</span><span>' + fmtRp(d.totalPendapatan) + '</span></div>';
+
+            html += '<div class="lp-line" style="color:var(--maroon); margin-top:6px;"><span>BEBAN</span><span></span></div>';
+            d.bebanCoa.forEach(function (b) { html += '<div class="lp-sub-item"><span>' + b.nama + '</span><span>' + fmtRp(b.saldo) + '</span></div>'; });
+            if (d.bebanCoa.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+            html += '<div class="lp-line"><span>TOTAL BEBAN</span><span>' + fmtRp(-d.totalBeban) + '</span></div>';
+
+            html += '<div class="lp-line lp-final"><span>SURPLUS / (DEFISIT) TAHUN BERJALAN</span><span>' + fmtRp(d.totalAsetNeto) + '</span></div>';
+            html += '</div>';
+            return html;
+        }
+
+        async function renderLaporanRealisasiProker(box) {
+            try {
+                if (Object.keys(prokerData).length === 0) { await muatProgramKerja(); }
+
+                var html = '<div class="lp-report-box">' +
+                    '<div class="lp-report-header"><div class="lp-report-title">LAPORAN REALISASI ANGGARAN PROKER</div><div class="lp-report-sub">Remaja Masjid Fadhlillah &middot; Per ' + tanggalLaporanHariIni() + '</div></div>';
+
+                html += '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.4fr 0.9fr 0.9fr 0.9fr;">' +
+                    '<span>Nama Proker</span><span>RAB</span><span>Realisasi</span><span>Selisih</span></div>';
+
+                var totalRab = 0, totalReal = 0;
+                Object.keys(prokerData).forEach(function (id) {
+                    var p = prokerData[id];
+                    var rab = totalRabProker(p);
+                    var real = hitungTotalRealisasi(p);
+                    var selisih = rab - real;
+                    totalRab += rab; totalReal += real;
+                    html += '<div class="ip-table-row" style="grid-template-columns:1.4fr 0.9fr 0.9fr 0.9fr;">' +
+                        '<span style="font-size:0.72rem; font-weight:600; color:var(--text-dark);">' + p.nama + '</span>' +
+                        '<span style="font-size:0.72rem;">Rp ' + rab.toLocaleString('id-ID') + '</span>' +
+                        '<span style="font-size:0.72rem; font-weight:700;">Rp ' + real.toLocaleString('id-ID') + '</span>' +
+                        '<span style="font-size:0.72rem; font-weight:700; color:' + (selisih < 0 ? 'var(--maroon)' : '#16A34A') + ';">Rp ' + selisih.toLocaleString('id-ID') + '</span></div>';
+                });
+
+                if (Object.keys(prokerData).length === 0) {
+                    html += '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada program kerja.</div>';
+                }
+                html += '</div>';
+
+                html += '<div class="ct-total-box" style="margin-top:10px;"><div><span>Total RAB</span><strong class="ok">Rp ' + totalRab.toLocaleString('id-ID') + '</strong></div><div><span>Total Realisasi</span><strong class="bad">Rp ' + totalReal.toLocaleString('id-ID') + '</strong></div></div>';
+                html += '</div>';
+
+                box.innerHTML = html;
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
     </script>
 
