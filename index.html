@@ -1523,6 +1523,187 @@
 }
 
 /* =========================================================
+   DETAIL JURNAL
+   ========================================================= */
+
+.siasfa-jurnal-detail-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99990;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(10, 7, 14, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: jurnalOverlayIn 0.2s ease;
+}
+
+.siasfa-jurnal-detail-card {
+    width: min(400px, 100%);
+    max-height: 88vh;
+    overflow-y: auto;
+    background: #FFFFFF;
+    border-radius: 24px 24px 0 0;
+    padding: 18px 16px 20px;
+    box-shadow: 0 -15px 50px rgba(26,18,37,0.25);
+    animation: jurnalCardUp 0.28s cubic-bezier(.2,.8,.2,1);
+}
+
+.siasfa-jurnal-detail-handle {
+    width: 38px;
+    height: 4px;
+    border-radius: 10px;
+    background: #D9D4D7;
+    margin: 0 auto 16px;
+}
+
+.siasfa-jurnal-detail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.siasfa-jurnal-detail-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.siasfa-jurnal-detail-code {
+    margin-top: 3px;
+    font-size: 0.65rem;
+    color: var(--text-gray);
+    font-weight: 600;
+}
+
+.siasfa-jurnal-detail-close {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: #F4F1F2;
+    color: #6B6670;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.siasfa-jurnal-detail-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.siasfa-jurnal-detail-info {
+    background: #FBF8F9;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 10px 11px;
+}
+
+.siasfa-jurnal-detail-info-label {
+    font-size: 0.58rem;
+    color: var(--text-gray);
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.siasfa-jurnal-detail-info-value {
+    font-size: 0.69rem;
+    color: var(--text-dark);
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.siasfa-jurnal-detail-section-title {
+    font-size: 0.67rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 15px 0 7px;
+}
+
+.siasfa-jurnal-detail-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 7px;
+    align-items: center;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+}
+
+.siasfa-jurnal-detail-account {
+    min-width: 0;
+}
+
+.siasfa-jurnal-detail-account-name {
+    font-size: 0.67rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.siasfa-jurnal-detail-account-no {
+    font-size: 0.55rem;
+    color: var(--text-gray);
+    margin-top: 2px;
+}
+
+.siasfa-jurnal-detail-amount {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.siasfa-jurnal-detail-amount.debit {
+    color: #B81337;
+}
+
+.siasfa-jurnal-detail-amount.kredit {
+    color: #2563EB;
+}
+
+.siasfa-jurnal-detail-edit {
+    width: 100%;
+    height: 42px;
+    margin-top: 17px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--maroon), var(--maroon-deep));
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 7px 18px rgba(184,19,55,0.22);
+}
+
+.siasfa-jurnal-detail-edit:active {
+    transform: scale(0.98);
+}
+
+@keyframes jurnalOverlayIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes jurnalCardUp {
+    from {
+        opacity: 0;
+        transform: translateY(35px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================================
    SIASFA CONFIRM MODAL
    Menggantikan native browser confirm()
    ========================================================= */
@@ -3837,7 +4018,177 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
             document.getElementById('catat-transaksi-screen').style.display = 'flex';
         }
-        function tutupCatatTransaksi() {
+        async function editJurnal(jurnalId) {
+    var trx = _riwayatCache.find(function (item) {
+        return String(item.id) === String(jurnalId);
+    });
+
+    if (!trx) {
+        alert('Data jurnal tidak ditemukan.');
+        return;
+    }
+
+    await loadDataFormTransaksi();
+
+    var jenisMap = {
+        umum: 'Jurnal Umum',
+        penerimaan: 'Penerimaan',
+        pengeluaran: 'Pengeluaran'
+    };
+
+    var jenis = jenisMap[trx.jenis] || 'Jurnal Umum';
+
+    document.getElementById('umumRows').innerHTML = '';
+    document.getElementById('penerimaanRows').innerHTML = '';
+    document.getElementById('pengeluaranRows').innerHTML = '';
+
+    document.querySelectorAll('#catat-transaksi-screen .ct-nama-program')
+        .forEach(function (sel) {
+            sel.innerHTML = optProkerList();
+        });
+
+    document.querySelectorAll('#catat-transaksi-screen .ct-pos-anggaran')
+        .forEach(function (sel) {
+            sel.innerHTML = '<option value="">Pos Anggaran</option>';
+            sel.disabled = true;
+        });
+
+    switchJurnalTab(trx.jenis || 'umum');
+
+    var containerId =
+        trx.jenis === 'penerimaan'
+            ? 'ctpage-penerimaan'
+            : trx.jenis === 'pengeluaran'
+                ? 'ctpage-pengeluaran'
+                : 'ctpage-umum';
+
+    var container = document.getElementById(containerId);
+
+    var dateInput = container.querySelector('input[type="date"]');
+    if (dateInput) dateInput.value = trx.tanggal || '';
+
+    var selects = container.querySelectorAll('select');
+    if (selects[0]) selects[0].value = trx.bendahara || '';
+
+    var textInputs = container.querySelectorAll('input[type="text"]');
+    if (textInputs[0]) textInputs[0].value = trx.keterangan || '';
+
+    if (trx.jenis === 'umum') {
+
+        (trx.jurnal_detail || []).forEach(function (d) {
+            tambahBarisUmum();
+
+            var rows = document.querySelectorAll('#umumRows .ct-table-row');
+            var row = rows[rows.length - 1];
+
+            var akunSelect = row.querySelector('select');
+            var inputs = row.querySelectorAll('input');
+
+            if (d.akun_kas) {
+                akunSelect.value = 'kas:' + d.akun_kas.id;
+            } else if (d.coa_akun) {
+                akunSelect.value = 'coa:' + d.coa_akun.id;
+            }
+
+            inputs[0].value = d.debit || 0;
+            inputs[1].value = d.kredit || 0;
+        });
+
+        hitungTotalUmum();
+
+    } else if (trx.jenis === 'penerimaan') {
+
+        var penerimaanDetails = trx.jurnal_detail || [];
+
+        var pasangan = [];
+
+        penerimaanDetails.forEach(function (d) {
+            if ((parseFloat(d.debit) || 0) > 0 && d.akun_kas) {
+                var nominal = parseFloat(d.debit) || 0;
+
+                var sumber = penerimaanDetails.find(function (x) {
+                    return (parseFloat(x.kredit) || 0) === nominal &&
+                           x.coa_akun;
+                });
+
+                pasangan.push({
+                    kas: d.akun_kas.id,
+                    sumber: sumber && sumber.coa_akun
+                        ? sumber.coa_akun.id
+                        : '',
+                    nominal: nominal
+                });
+            }
+        });
+
+        pasangan.forEach(function (item) {
+            tambahBarisPenerimaan();
+
+            var rows = document.querySelectorAll('#penerimaanRows .ct-table-row');
+            var row = rows[rows.length - 1];
+
+            var rowSelects = row.querySelectorAll('select');
+
+            rowSelects[0].value = 'kas:' + item.kas;
+            rowSelects[1].value = 'coa:' + item.sumber;
+            row.querySelector('input').value = item.nominal;
+        });
+
+    } else if (trx.jenis === 'pengeluaran') {
+
+        var pengeluaranDetails = trx.jurnal_detail || [];
+
+        var pasanganKeluar = [];
+
+        pengeluaranDetails.forEach(function (d) {
+            if ((parseFloat(d.debit) || 0) > 0 && d.coa_akun) {
+                var nominal = parseFloat(d.debit) || 0;
+
+                var kas = pengeluaranDetails.find(function (x) {
+                    return (parseFloat(x.kredit) || 0) === nominal &&
+                           x.akun_kas;
+                });
+
+                pasanganKeluar.push({
+                    beban: d.coa_akun.id,
+                    kas: kas && kas.akun_kas
+                        ? kas.akun_kas.id
+                        : '',
+                    nominal: nominal
+                });
+            }
+        });
+
+        pasanganKeluar.forEach(function (item) {
+            tambahBarisPengeluaran();
+
+            var rows = document.querySelectorAll('#pengeluaranRows .ct-table-row');
+            var row = rows[rows.length - 1];
+
+            var rowSelects = row.querySelectorAll('select');
+
+            rowSelects[0].value = 'coa:' + item.beban;
+            rowSelects[1].value = 'kas:' + item.kas;
+            row.querySelector('input').value = item.nominal;
+        });
+    }
+
+    document.getElementById('catat-transaksi-screen').style.display = 'flex';
+
+    var submitButton = container.querySelector('.ct-submit-btn');
+
+    if (submitButton) {
+        submitButton.innerHTML =
+            '<i class="ph ph-floppy-disk"></i> Simpan Perubahan';
+
+        submitButton.setAttribute(
+            'onclick',
+            "updateJurnal('" + trx.id + "', '" + jenis + "')"
+        );
+    }
+}
+
+function tutupCatatTransaksi() {
             document.getElementById('catat-transaksi-screen').style.display = 'none';
         }
 
@@ -4017,7 +4368,232 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             }
         }
 
-        // ===== Cash Opname: buka/tutup halaman & modal =====
+        // ===== UPDATE JURNAL =====
+
+async function updateJurnal(jurnalId, jenis) {
+    try {
+        var tanggal, bendahara, keterangan;
+        var detailRows = [];
+
+        var jenisDb =
+            jenis === 'Jurnal Umum'
+                ? 'umum'
+                : jenis === 'Penerimaan'
+                    ? 'penerimaan'
+                    : 'pengeluaran';
+
+        var containerId =
+            jenisDb === 'penerimaan'
+                ? 'ctpage-penerimaan'
+                : jenisDb === 'pengeluaran'
+                    ? 'ctpage-pengeluaran'
+                    : 'ctpage-umum';
+
+        var container = document.getElementById(containerId);
+
+        tanggal = container.querySelector('input[type="date"]').value;
+        bendahara = container.querySelector('select').value;
+
+        var textInputs = container.querySelectorAll('input[type="text"]');
+        keterangan = textInputs[0] ? textInputs[0].value.trim() : '';
+
+        if (!tanggal || !bendahara) {
+            alert('Tanggal dan Nama Bendahara wajib diisi');
+            return;
+        }
+
+        if (!keterangan) {
+            alert('Keterangan wajib diisi');
+            return;
+        }
+
+        if (jenisDb === 'umum') {
+
+            var totalDebit = 0;
+            var totalKredit = 0;
+
+            document.querySelectorAll('#umumRows .ct-table-row')
+                .forEach(function (row) {
+
+                    var sel = row.querySelector('select').value;
+                    var inputs = row.querySelectorAll('input');
+
+                    var debit = parseRupiah(inputs[0].value) || 0;
+                    var kredit = parseRupiah(inputs[1].value) || 0;
+
+                    if (!sel || (debit === 0 && kredit === 0)) return;
+
+                    var parts = sel.split(':');
+
+                    detailRows.push({
+                        akun_kas_id: parts[0] === 'kas'
+                            ? parseInt(parts[1])
+                            : null,
+
+                        coa_akun_id: parts[0] === 'coa'
+                            ? parseInt(parts[1])
+                            : null,
+
+                        debit: debit,
+                        kredit: kredit
+                    });
+
+                    totalDebit += debit;
+                    totalKredit += kredit;
+                });
+
+            if (detailRows.length === 0) {
+                alert('Isi minimal 1 baris jurnal dengan akun & nominal');
+                return;
+            }
+
+            if (totalDebit !== totalKredit) {
+                alert(
+                    'Debit dan Kredit harus balance! Debit: Rp ' +
+                    totalDebit.toLocaleString('id-ID') +
+                    ', Kredit: Rp ' +
+                    totalKredit.toLocaleString('id-ID')
+                );
+                return;
+            }
+
+        } else if (jenisDb === 'penerimaan') {
+
+            document.querySelectorAll('#penerimaanRows .ct-table-row')
+                .forEach(function (row) {
+
+                    var selects = row.querySelectorAll('select');
+
+                    var kasVal = selects[0].value;
+                    var sumberVal = selects[1].value;
+                    var nominal =
+                        parseRupiah(row.querySelector('input').value) || 0;
+
+                    if (!kasVal || !sumberVal || nominal <= 0) return;
+
+                    detailRows.push({
+                        akun_kas_id: parseInt(kasVal.split(':')[1]),
+                        coa_akun_id: null,
+                        debit: nominal,
+                        kredit: 0
+                    });
+
+                    detailRows.push({
+                        akun_kas_id: null,
+                        coa_akun_id: parseInt(sumberVal.split(':')[1]),
+                        debit: 0,
+                        kredit: nominal
+                    });
+                });
+
+        } else {
+
+            document.querySelectorAll('#pengeluaranRows .ct-table-row')
+                .forEach(function (row) {
+
+                    var selects = row.querySelectorAll('select');
+
+                    var bebanVal = selects[0].value;
+                    var kasVal = selects[1].value;
+
+                    var nominal =
+                        parseRupiah(row.querySelector('input').value) || 0;
+
+                    if (!bebanVal || !kasVal || nominal <= 0) return;
+
+                    detailRows.push({
+                        akun_kas_id: null,
+                        coa_akun_id: parseInt(bebanVal.split(':')[1]),
+                        debit: nominal,
+                        kredit: 0
+                    });
+
+                    detailRows.push({
+                        akun_kas_id: parseInt(kasVal.split(':')[1]),
+                        coa_akun_id: null,
+                        debit: 0,
+                        kredit: nominal
+                    });
+                });
+        }
+
+        if (detailRows.length === 0) {
+            alert('Detail jurnal belum lengkap.');
+            return;
+        }
+
+        var updateRes = await supabaseClient
+            .from('jurnal_transaksi')
+            .update({
+                tanggal: tanggal,
+                jenis: jenisDb,
+                bendahara: bendahara,
+                keterangan: keterangan
+            })
+            .eq('id', jurnalId);
+
+        if (updateRes.error) {
+            alert(
+                'ERROR SUPABASE (update jurnal): ' +
+                updateRes.error.message
+            );
+            return;
+        }
+
+        var deleteRes = await supabaseClient
+            .from('jurnal_detail')
+            .delete()
+            .eq('jurnal_id', jurnalId);
+
+        if (deleteRes.error) {
+            alert(
+                'ERROR SUPABASE (hapus detail lama): ' +
+                deleteRes.error.message
+            );
+            return;
+        }
+
+        var detailToInsert = detailRows.map(function (d) {
+            return {
+                jurnal_id: jurnalId,
+                akun_kas_id: d.akun_kas_id,
+                coa_akun_id: d.coa_akun_id,
+                debit: d.debit,
+                kredit: d.kredit
+            };
+        });
+
+        var insertRes = await supabaseClient
+            .from('jurnal_detail')
+            .insert(detailToInsert);
+
+        if (insertRes.error) {
+            alert(
+                'ERROR SUPABASE (detail jurnal): ' +
+                insertRes.error.message
+            );
+            return;
+        }
+
+        alert('Jurnal berhasil diperbarui.');
+
+        document
+            .querySelectorAll('#catat-transaksi-screen .ct-submit-btn')
+            .forEach(function (btn) {
+                btn.innerHTML =
+                    '<i class="ph ph-paper-plane-tilt"></i> Simpan Transaksi';
+            });
+
+        await muatRiwayatDanBukuBesar();
+
+        tutupCatatTransaksi();
+
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+// ===== Cash Opname: buka/tutup halaman & modal =====
         function bukaCashOpname() {
             document.getElementById('cashopname-screen').style.display = 'flex';
             muatCashOpname();
@@ -4450,7 +5026,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 var prefix = netKas > 0 ? '+' : (netKas < 0 ? '-' : '');
                 var nomShow = netKas !== 0 ? Math.abs(netKas) : totalNominal;
 
-                html += '<div class="rw-trx-item" data-ket="' + trx.keterangan + '" data-akun="' + akunNames.join(' ') + '" data-id="' + trx.kode + '" data-inputer="' + trx.bendahara + '">' +
+                html += '<div class="rw-trx-item" onclick="bukaDetailJurnal(\'' + trx.id + '\')" data-ket="' + trx.keterangan + '" data-akun="' + akunNames.join(' ') + '" data-id="' + trx.kode + '" data-inputer="' + trx.bendahara + '">' +
                     '<div class="rw-trx-icon ' + cls + '"><i class="ph ' + arrow + '"></i></div>' +
                     '<div class="rw-trx-mid"><div class="rw-trx-ket">' + trx.keterangan + '</div><div class="rw-trx-sub">' + trx.bendahara + ' &middot; ' + formatTanggalID(trx.tanggal) + '</div></div>' +
                     '<div class="rw-trx-right"><div class="rw-trx-nominal ' + nomClass + '">' + prefix + 'Rp ' + nomShow.toLocaleString('id-ID') + '</div><div class="rw-trx-id">' + trx.kode + '</div></div>' +
@@ -5964,7 +6540,141 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('riwayatTransaksiNotFound').style.display = visibleCount === 0 ? 'block' : 'none';
         }
 
-        function unduhRiwayatTransaksi() {
+        function bukaDetailJurnal(jurnalId) {
+    var trx = _riwayatCache.find(function (item) {
+        return String(item.id) === String(jurnalId);
+    });
+
+    if (!trx) {
+        alert('Data jurnal tidak ditemukan.');
+        return;
+    }
+
+    var jenisLabel = {
+        umum: 'Jurnal Umum',
+        penerimaan: 'Penerimaan',
+        pengeluaran: 'Pengeluaran'
+    };
+
+    var detailHtml = '';
+
+    (trx.jurnal_detail || []).forEach(function (d) {
+        var akun = d.akun_kas || d.coa_akun;
+        var namaAkun = akun ? akun.nama : 'Akun tidak ditemukan';
+        var noAkun = akun ? (akun.no_akun || '-') : '-';
+
+        var debit = parseFloat(d.debit) || 0;
+        var kredit = parseFloat(d.kredit) || 0;
+
+        detailHtml +=
+            '<div class="siasfa-jurnal-detail-row">' +
+                '<div class="siasfa-jurnal-detail-account">' +
+                    '<div class="siasfa-jurnal-detail-account-name">' +
+                        namaAkun +
+                    '</div>' +
+                    '<div class="siasfa-jurnal-detail-account-no">' +
+                        noAkun +
+                    '</div>' +
+                '</div>' +
+
+                '<div class="siasfa-jurnal-detail-amount debit">' +
+                    (debit > 0 ? 'Rp ' + debit.toLocaleString('id-ID') : '-') +
+                '</div>' +
+
+                '<div class="siasfa-jurnal-detail-amount kredit">' +
+                    (kredit > 0 ? 'Rp ' + kredit.toLocaleString('id-ID') : '-') +
+                '</div>' +
+            '</div>';
+    });
+
+    var overlay = document.createElement('div');
+    overlay.className = 'siasfa-jurnal-detail-overlay';
+
+    overlay.innerHTML =
+        '<div class="siasfa-jurnal-detail-card">' +
+
+            '<div class="siasfa-jurnal-detail-handle"></div>' +
+
+            '<div class="siasfa-jurnal-detail-head">' +
+                '<div>' +
+                    '<div class="siasfa-jurnal-detail-title">Detail Jurnal</div>' +
+                    '<div class="siasfa-jurnal-detail-code">' +
+                        trx.kode +
+                    '</div>' +
+                '</div>' +
+
+                '<button class="siasfa-jurnal-detail-close" type="button">' +
+                    '<i class="ph ph-x"></i>' +
+                '</button>' +
+            '</div>' +
+
+            '<div class="siasfa-jurnal-detail-summary">' +
+
+                '<div class="siasfa-jurnal-detail-info">' +
+                    '<div class="siasfa-jurnal-detail-info-label">Tanggal</div>' +
+                    '<div class="siasfa-jurnal-detail-info-value">' +
+                        formatTanggalID(trx.tanggal) +
+                    '</div>' +
+                '</div>' +
+
+                '<div class="siasfa-jurnal-detail-info">' +
+                    '<div class="siasfa-jurnal-detail-info-label">Jenis</div>' +
+                    '<div class="siasfa-jurnal-detail-info-value">' +
+                        (jenisLabel[trx.jenis] || trx.jenis || '-') +
+                    '</div>' +
+                '</div>' +
+
+                '<div class="siasfa-jurnal-detail-info">' +
+                    '<div class="siasfa-jurnal-detail-info-label">Bendahara</div>' +
+                    '<div class="siasfa-jurnal-detail-info-value">' +
+                        (trx.bendahara || '-') +
+                    '</div>' +
+                '</div>' +
+
+                '<div class="siasfa-jurnal-detail-info">' +
+                    '<div class="siasfa-jurnal-detail-info-label">Keterangan</div>' +
+                    '<div class="siasfa-jurnal-detail-info-value">' +
+                        (trx.keterangan || '-') +
+                    '</div>' +
+                '</div>' +
+
+            '</div>' +
+
+            '<div class="siasfa-jurnal-detail-section-title">' +
+                'Rincian Jurnal' +
+            '</div>' +
+
+            '<div>' +
+                detailHtml +
+            '</div>' +
+
+            '<button class="siasfa-jurnal-detail-edit" type="button">' +
+                '<i class="ph ph-pencil-simple"></i> Edit Jurnal' +
+            '</button>' +
+
+        '</div>';
+
+    document.body.appendChild(overlay);
+
+    overlay.querySelector('.siasfa-jurnal-detail-close')
+        .addEventListener('click', function () {
+            overlay.remove();
+        });
+
+    overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) {
+            overlay.remove();
+        }
+    });
+
+    overlay.querySelector('.siasfa-jurnal-detail-edit')
+        .addEventListener('click', function () {
+            overlay.remove();
+            editJurnal(trx.id);
+        });
+}
+
+function unduhRiwayatTransaksi() {
             alert('Menyiapkan unduhan PDF Riwayat Transaksi (fitur unduh akan datang segera)');
         }
 
