@@ -1386,7 +1386,6 @@
         .bb-row-cutoff { background: rgba(184, 19, 55, 0.08); }
         .bb-row-cutoff .bb-ket { color: var(--maroon); font-weight: 700; }
         .bb-row-cutoff .bb-mutasi { color: var(--maroon); font-weight: 700; }
-<<<<<<< HEAD
     /* =========================================================
    SISTEM NOTIFIKASI SIASFA
    Semua alert() diarahkan ke popup aplikasi sendiri
@@ -1637,151 +1636,6 @@
 }
 
 </style>
-=======
-    /* =========================================================
-   SISTEM NOTIFIKASI SIASFA
-   Semua alert() diarahkan ke popup aplikasi sendiri
-   ========================================================= */
-
-.siasfa-toast-wrap {
-    position: fixed;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(360px, calc(100% - 28px));
-    z-index: 99999;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.siasfa-toast {
-    pointer-events: auto;
-    display: flex;
-    align-items: flex-start;
-    gap: 11px;
-    padding: 12px 14px;
-    background: rgba(26, 18, 37, 0.97);
-    border: 1px solid rgba(255,255,255,0.14);
-    border-left: 3px solid var(--maroon);
-    border-radius: 13px;
-    box-shadow: 0 10px 30px rgba(26,18,37,0.28);
-    color: #FFFFFF;
-    animation: siasfaToastIn 0.28s ease forwards;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.siasfa-toast.success {
-    border-left-color: #4ADE80;
-}
-
-.siasfa-toast.error {
-    border-left-color: #FB7185;
-}
-
-.siasfa-toast.warning {
-    border-left-color: #FBBF24;
-}
-
-.siasfa-toast.info {
-    border-left-color: #60A5FA;
-}
-
-.siasfa-toast-icon {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.1);
-    font-size: 0.9rem;
-}
-
-.siasfa-toast.success .siasfa-toast-icon {
-    color: #4ADE80;
-}
-
-.siasfa-toast.error .siasfa-toast-icon {
-    color: #FB7185;
-}
-
-.siasfa-toast.warning .siasfa-toast-icon {
-    color: #FBBF24;
-}
-
-.siasfa-toast.info .siasfa-toast-icon {
-    color: #60A5FA;
-}
-
-.siasfa-toast-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.siasfa-toast-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    margin-bottom: 2px;
-    letter-spacing: 0.1px;
-}
-
-.siasfa-toast-message {
-    font-size: 0.68rem;
-    line-height: 1.45;
-    color: rgba(255,255,255,0.76);
-    word-break: break-word;
-}
-
-.siasfa-toast-close {
-    width: 20px;
-    height: 20px;
-    border: 0;
-    background: transparent;
-    color: rgba(255,255,255,0.5);
-    font-size: 0.8rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
-
-.siasfa-toast-close:hover {
-    color: #FFFFFF;
-}
-
-.siasfa-toast.hide {
-    animation: siasfaToastOut 0.22s ease forwards;
-}
-
-@keyframes siasfaToastIn {
-    from {
-        opacity: 0;
-        transform: translateY(-12px) scale(0.97);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes siasfaToastOut {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-8px) scale(0.97);
-    }
-}
-
-</style>
->>>>>>> 29b90c1489ff7ad82f8b07f087e088cda3154bf6
 </head>
 <body>
 
@@ -6376,7 +6230,6 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             login.classList.remove('screen-out');
         }
 
-
         function bukaWBS() {
             document.getElementById('wbs-modal-overlay').style.display = 'flex';
         }
@@ -6635,7 +6488,6 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
     </script>
 
-<<<<<<< HEAD
 <script>
 /* =========================================================
    SIASFA NOTIFICATION ENGINE
@@ -6859,102 +6711,6 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 })();
 </script>
 
-=======
-<script>
-/* =========================================================
-   SIASFA NOTIFICATION ENGINE
-   Menggantikan native browser alert()
-   ========================================================= */
-
-(function () {
-    var toastWrap = document.createElement('div');
-    toastWrap.className = 'siasfa-toast-wrap';
-    document.body.appendChild(toastWrap);
-
-    window.siasfaNotify = function (message, type, title) {
-        type = type || 'success';
-
-        var iconMap = {
-            success: 'ph-check-circle',
-            error: 'ph-x-circle',
-            warning: 'ph-warning-circle',
-            info: 'ph-info'
-        };
-
-        var titleMap = {
-            success: 'Berhasil',
-            error: 'Terjadi Kesalahan',
-            warning: 'Perhatian',
-            info: 'Informasi'
-        };
-
-        var toast = document.createElement('div');
-        toast.className = 'siasfa-toast ' + type;
-
-        toast.innerHTML =
-            '<div class="siasfa-toast-icon">' +
-                '<i class="ph ' + iconMap[type] + '"></i>' +
-            '</div>' +
-            '<div class="siasfa-toast-content">' +
-                '<div class="siasfa-toast-title">' +
-                    (title || titleMap[type]) +
-                '</div>' +
-                '<div class="siasfa-toast-message">' +
-                    String(message).replace(/</g, '&lt;').replace(/>/g, '&gt;') +
-                '</div>' +
-            '</div>' +
-            '<button class="siasfa-toast-close" type="button">' +
-                '<i class="ph ph-x"></i>' +
-            '</button>';
-
-        toastWrap.appendChild(toast);
-
-        var closeBtn = toast.querySelector('.siasfa-toast-close');
-
-        function tutupToast() {
-            if (toast.classList.contains('hide')) return;
-
-            toast.classList.add('hide');
-
-            setTimeout(function () {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 220);
-        }
-
-        closeBtn.addEventListener('click', tutupToast);
-
-        setTimeout(tutupToast, type === 'error' ? 5000 : 3200);
-    };
-
-    /*
-     * Semua alert() lama di aplikasi otomatis memakai
-     * desain notifikasi SIASFA.
-     */
-    window.alert = function (message) {
-        var text = String(message || '');
-
-        if (
-            text.indexOf('ERROR') === 0 ||
-            text.toLowerCase().indexOf('gagal') !== -1 ||
-            text.toLowerCase().indexOf('kesalahan') !== -1
-        ) {
-            siasfaNotify(text, 'error');
-        } else if (
-            text.toLowerCase().indexOf('wajib') !== -1 ||
-            text.toLowerCase().indexOf('tidak ada') !== -1 ||
-            text.toLowerCase().indexOf('lengkapi') !== -1
-        ) {
-            siasfaNotify(text, 'warning');
-        } else {
-            siasfaNotify(text, 'success');
-        }
-    };
-})();
-</script>
-
->>>>>>> 29b90c1489ff7ad82f8b07f087e088cda3154bf6
 </body>
 
 </body>
