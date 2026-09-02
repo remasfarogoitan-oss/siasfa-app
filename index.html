@@ -267,55 +267,78 @@
 
         /* ---- Header: rata, garis tipis di bawah, tidak ikut scroll ---- */
         .app-header-wrap {
-            flex: 0 0 auto;
-            background: linear-gradient(to right, var(--grad-start), var(--grad-end));
-            padding: 48px 20px 16px;
-            border-bottom: 1px solid var(--maroon-deep);
-        }
+    flex: 0 0 auto;
+    background: linear-gradient(to right, var(--grad-start), var(--grad-end));
+    padding: 22px 16px 10px;
+    border-bottom: 1px solid var(--maroon-deep);
+}
+
         .header-variant { display: none; align-items: center; justify-content: space-between; }
         .header-variant.active { display: flex; }
 
-        .app-topbar-left { display: flex; align-items: center; gap: 12px; }
+        .app-topbar-left { display: flex; align-items: center; gap: 8px; }
+        
         .brand-mark {
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
-            border-radius: 50%;
-            border: 1.5px solid #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-             
-            font-weight: 600;
-            font-size: 1.15rem;
-            color: #FFFFFF;
-            background: rgba(255,255,255,0.12);
-        }
-        .app-title { font-size: var(--fs-md); font-weight: 700; line-height: 1.3; color: #FFFFFF; }
-        .app-subtitle { font-size: var(--fs-sm); font-weight: 500; color: rgba(255,255,255,0.75); margin-top: 1px; }
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    border: 1.5px solid #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    background: rgba(255,255,255,0.12);
+}
+
+        .app-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #FFFFFF;
+}
+
+.app-subtitle {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    margin-top: 1px;
+}
         .badge-pill {
-            border: 1px solid #FFFFFF;
-            color: #FFFFFF;
-            background: rgba(255,255,255,0.12);
-            font-size: var(--fs-xs);
-            font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 20px;
-            letter-spacing: 1px;
-        }
-        .header-simple-title { font-size: var(--fs-md); font-weight: 700; color: #FFFFFF;   }
-        .header-simple-sub { font-size: var(--fs-sm); color: rgba(255,255,255,0.75); font-weight: 500; margin-top: 2px; }
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    background: rgba(255,255,255,0.12);
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.7px;
+}
+        .header-simple-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.header-simple-sub {
+    font-size: 0.64rem;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+    margin-top: 1px;
+}
         .header-icon-circle {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.05rem;
-        }
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
 
         /* ---- Body: satu-satunya area scroll, tanpa scrollbar ---- */
         .app-body {
@@ -538,19 +561,24 @@
         /* Footer / Bottom Nav — rata, garis tipis, indikator titik */
         /* ====================================================== */
         .app-bottom-wrap { flex: 0 0 auto; background: linear-gradient(to right, var(--grad-start), var(--grad-end)); border-top: 1px solid var(--maroon-deep); }
-        .app-bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 12px 4px 18px; }
+        .app-bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 7px 4px 10px;
+}
         .nav-item {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: rgba(255,255,255,0.65);
-            font-size: var(--fs-xs);
-            font-weight: 600;
-            cursor: pointer;
-            padding-top: 8px;
-        }
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: rgba(255,255,255,0.65);
+    font-size: 0.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding-top: 5px;
+}
         .nav-item::before {
             content: '';
             position: absolute;
@@ -564,7 +592,7 @@
         }
         .nav-item.active { color: #FFFFFF; }
         .nav-item.active::before { opacity: 1; }
-        .nav-item i { font-size: 1.25rem; }
+        .nav-item i { font-size: 0.95rem; }
 
         /* ====================================================== */
         /* Halaman Laporan                                         */
@@ -1358,7 +1386,149 @@
         .bb-row-cutoff { background: rgba(184, 19, 55, 0.08); }
         .bb-row-cutoff .bb-ket { color: var(--maroon); font-weight: 700; }
         .bb-row-cutoff .bb-mutasi { color: var(--maroon); font-weight: 700; }
-    </style>
+    /* =========================================================
+   SISTEM NOTIFIKASI SIASFA
+   Semua alert() diarahkan ke popup aplikasi sendiri
+   ========================================================= */
+
+.siasfa-toast-wrap {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(360px, calc(100% - 28px));
+    z-index: 99999;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.siasfa-toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 12px 14px;
+    background: rgba(26, 18, 37, 0.97);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-left: 3px solid var(--maroon);
+    border-radius: 13px;
+    box-shadow: 0 10px 30px rgba(26,18,37,0.28);
+    color: #FFFFFF;
+    animation: siasfaToastIn 0.28s ease forwards;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.siasfa-toast.success {
+    border-left-color: #4ADE80;
+}
+
+.siasfa-toast.error {
+    border-left-color: #FB7185;
+}
+
+.siasfa-toast.warning {
+    border-left-color: #FBBF24;
+}
+
+.siasfa-toast.info {
+    border-left-color: #60A5FA;
+}
+
+.siasfa-toast-icon {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+}
+
+.siasfa-toast.success .siasfa-toast-icon {
+    color: #4ADE80;
+}
+
+.siasfa-toast.error .siasfa-toast-icon {
+    color: #FB7185;
+}
+
+.siasfa-toast.warning .siasfa-toast-icon {
+    color: #FBBF24;
+}
+
+.siasfa-toast.info .siasfa-toast-icon {
+    color: #60A5FA;
+}
+
+.siasfa-toast-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.siasfa-toast-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+    letter-spacing: 0.1px;
+}
+
+.siasfa-toast-message {
+    font-size: 0.68rem;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.76);
+    word-break: break-word;
+}
+
+.siasfa-toast-close {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.siasfa-toast-close:hover {
+    color: #FFFFFF;
+}
+
+.siasfa-toast.hide {
+    animation: siasfaToastOut 0.22s ease forwards;
+}
+
+@keyframes siasfaToastIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes siasfaToastOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.97);
+    }
+}
+
+</style>
 </head>
 <body>
 
@@ -6195,6 +6365,100 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             }
         }
     </script>
+
+<script>
+/* =========================================================
+   SIASFA NOTIFICATION ENGINE
+   Menggantikan native browser alert()
+   ========================================================= */
+
+(function () {
+    var toastWrap = document.createElement('div');
+    toastWrap.className = 'siasfa-toast-wrap';
+    document.body.appendChild(toastWrap);
+
+    window.siasfaNotify = function (message, type, title) {
+        type = type || 'success';
+
+        var iconMap = {
+            success: 'ph-check-circle',
+            error: 'ph-x-circle',
+            warning: 'ph-warning-circle',
+            info: 'ph-info'
+        };
+
+        var titleMap = {
+            success: 'Berhasil',
+            error: 'Terjadi Kesalahan',
+            warning: 'Perhatian',
+            info: 'Informasi'
+        };
+
+        var toast = document.createElement('div');
+        toast.className = 'siasfa-toast ' + type;
+
+        toast.innerHTML =
+            '<div class="siasfa-toast-icon">' +
+                '<i class="ph ' + iconMap[type] + '"></i>' +
+            '</div>' +
+            '<div class="siasfa-toast-content">' +
+                '<div class="siasfa-toast-title">' +
+                    (title || titleMap[type]) +
+                '</div>' +
+                '<div class="siasfa-toast-message">' +
+                    String(message).replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+                '</div>' +
+            '</div>' +
+            '<button class="siasfa-toast-close" type="button">' +
+                '<i class="ph ph-x"></i>' +
+            '</button>';
+
+        toastWrap.appendChild(toast);
+
+        var closeBtn = toast.querySelector('.siasfa-toast-close');
+
+        function tutupToast() {
+            if (toast.classList.contains('hide')) return;
+
+            toast.classList.add('hide');
+
+            setTimeout(function () {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 220);
+        }
+
+        closeBtn.addEventListener('click', tutupToast);
+
+        setTimeout(tutupToast, type === 'error' ? 5000 : 3200);
+    };
+
+    /*
+     * Semua alert() lama di aplikasi otomatis memakai
+     * desain notifikasi SIASFA.
+     */
+    window.alert = function (message) {
+        var text = String(message || '');
+
+        if (
+            text.indexOf('ERROR') === 0 ||
+            text.toLowerCase().indexOf('gagal') !== -1 ||
+            text.toLowerCase().indexOf('kesalahan') !== -1
+        ) {
+            siasfaNotify(text, 'error');
+        } else if (
+            text.toLowerCase().indexOf('wajib') !== -1 ||
+            text.toLowerCase().indexOf('tidak ada') !== -1 ||
+            text.toLowerCase().indexOf('lengkapi') !== -1
+        ) {
+            siasfaNotify(text, 'warning');
+        } else {
+            siasfaNotify(text, 'success');
+        }
+    };
+})();
+</script>
 
 </body>
 </html>
