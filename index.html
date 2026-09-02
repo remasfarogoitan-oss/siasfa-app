@@ -3360,6 +3360,44 @@
 const supabaseKey = 'sb_publishable_fzYTANfnVxLvXbYFR5ZbqQ_QJha0k5W';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         
+                // ===== Utilitas Format Angka (Rupiah) — GLOBAL, otomatis ke SEMUA textbox angka =====
+        function parseRupiah(str) {
+            if (str === null || str === undefined) return 0;
+            var cleaned = String(str).replace(/[^0-9-]/g, '');
+            var n = parseInt(cleaned, 10);
+            return isNaN(n) ? 0 : n;
+        }
+        function formatRupiahInput(el) {
+            var raw = parseRupiah(el.value);
+            var cursorFromEnd = el.value.length - el.selectionStart;
+            el.value = raw === 0 ? '' : raw.toLocaleString('id-ID');
+            var newPos = Math.max(0, el.value.length - cursorFromEnd);
+            try { el.setSelectionRange(newPos, newPos); } catch (e) {}
+        }
+        function initRupiahInput(el) {
+            if (el.dataset.rupiahReady) return;
+            el.dataset.rupiahReady = '1';
+            el.setAttribute('type', 'text');
+            el.setAttribute('inputmode', 'numeric');
+            if (el.value) formatRupiahInput(el);
+            el.addEventListener('input', function () { formatRupiahInput(el); });
+        }
+        function scanAndFormatRupiahInputs(root) {
+            (root || document).querySelectorAll('input[type="number"]').forEach(initRupiahInput);
+        }
+        var _rupiahObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
+                m.addedNodes.forEach(function (node) {
+                    if (node.nodeType !== 1) return;
+                    if (node.matches && node.matches('input[type="number"]')) initRupiahInput(node);
+                    if (node.querySelectorAll) scanAndFormatRupiahInputs(node);
+                });
+            });
+        });
+        _rupiahObserver.observe(document.body, { childList: true, subtree: true });
+        scanAndFormatRupiahInputs(document);
+
+
         async function muatDataKas() {
     try {
         const { data: akunKas, error } = await supabaseClient
@@ -3397,7 +3435,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             else if (akun.nama.includes('Lainnya')) icon = 'ph-dots-three-circle';
 
             htmlDetail += `
-            <div class="ledger-row" style="cursor:pointer;" onclick="bukaBukuBesarAkun(${akun.id})">
+            <div class="ledger-row" style="cursor:pointer;" onclick="bukaBukuBesarAkun('${akun.nama}')">
                 <span class="left-part"><i class="ph ${icon}"></i> ${akun.nama}</span>
                 <span class="amt">Rp ${saldo.toLocaleString('id-ID')}</span>
             </div>`;
@@ -3507,7 +3545,60 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         // ===== Buka / Tutup Catat Transaksi =====
-        function bukaCatatTransaksi() {
+        async function loadDataFormTransaksi() {
+            try {
+                const [kasRes, coaRes, prokerRes] = await Promise.all([
+                    supabaseClient.from('akun_kas').select('*').order('id'),
+                    supabaseClient.from('coa_akun').select('*').order('id'),
+                    supabaseClient.from('program_kerja').select('*').eq('ditutup', false).order('id')
+                ]);
+                if (kasRes.error) { alert('ERROR SUPABASE (kas): ' + kasRes.error.message); return; }
+                if (coaRes.error) { alert('ERROR SUPABASE (coa): ' + coaRes.error.message); return; }
+                if (prokerRes.error) { alert('ERROR SUPABASE (proker): ' + prokerRes.error.message); return; }
+                window._akunKasCache = kasRes.data || [];
+                window._coaAkunCache = coaRes.data || [];
+                window._prokerCache = prokerRes.data || [];
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+        function optKasList() {
+            return (window._akunKasCache || []).map(function (a) {
+                return '<option value="kas:' + a.id + '">' + a.nama + '</option>';
+            }).join('');
+        }
+        function optCoaList(tipe) {
+            return (window._coaAkunCache || []).filter(function (c) {
+                return !tipe || c.tipe === tipe;
+            }).map(function (c) {
+                return '<option value="coa:' + c.id + '">[' + c.no_akun + '] ' + c.nama + '</option>';
+            }).join('');
+        }
+        function optProkerList() {
+            var opts = '<option value="">Nama Program</option>';
+            (window._prokerCache || []).forEach(function (p) {
+                opts += '<option value="' + p.id + '">' + p.nama + '</option>';
+            });
+            return opts;
+        }
+        async function bukaCatatTransaksi() {
+            await loadDataFormTransaksi();
+
+            document.getElementById('umumRows').innerHTML = '';
+            tambahBarisUmum();
+            tambahBarisUmum();
+            hitungTotalUmum();
+
+            document.getElementById('penerimaanRows').innerHTML = '';
+            tambahBarisPenerimaan();
+
+            document.getElementById('pengeluaranRows').innerHTML = '';
+            tambahBarisPengeluaran();
+
+            document.querySelectorAll('#catat-transaksi-screen .ct-rab-row select:first-of-type').forEach(function (sel) {
+                sel.innerHTML = optProkerList();
+            });
+
             document.getElementById('catat-transaksi-screen').style.display = 'flex';
         }
         function tutupCatatTransaksi() {
@@ -3526,7 +3617,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function tambahBarisUmum() {
             document.getElementById('umumRows').insertAdjacentHTML('beforeend',
                 '<div class="ct-table-row ct-cols-umum">' +
-                '<select><option>Pilih Akun</option></select>' +
+                '<select><option value="">Pilih Akun</option>' + optKasList() + optCoaList() + '</select>' +
                 '<input type="number" placeholder="0" oninput="hitungTotalUmum()">' +
                 '<input type="number" placeholder="0" oninput="hitungTotalUmum()">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
@@ -3534,16 +3625,16 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function tambahBarisPenerimaan() {
             document.getElementById('penerimaanRows').insertAdjacentHTML('beforeend',
                 '<div class="ct-table-row ct-cols-3">' +
-                '<select><option>Pilih Kas</option></select>' +
-                '<select><option>Sumber</option></select>' +
+                '<select><option value="">Pilih Kas</option>' + optKasList() + '</select>' +
+                '<select><option value="">Sumber</option>' + optCoaList('pendapatan') + '</select>' +
                 '<input type="number" placeholder="0">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
         }
         function tambahBarisPengeluaran() {
             document.getElementById('pengeluaranRows').insertAdjacentHTML('beforeend',
                 '<div class="ct-table-row ct-cols-3">' +
-                '<select><option>Akun Beban</option></select>' +
-                '<select><option>Akun Kas</option></select>' +
+                '<select><option value="">Akun Beban</option>' + optCoaList('beban') + '</select>' +
+                '<select><option value="">Akun Kas</option>' + optKasList() + '</select>' +
                 '<input type="number" placeholder="0">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
         }
@@ -3566,18 +3657,118 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var rows = document.querySelectorAll('#umumRows .ct-table-row');
             var totalDebit = 0, totalKredit = 0;
             rows.forEach(function (r) {
-                var inputs = r.querySelectorAll('input[type="number"]');
-                totalDebit += parseFloat(inputs[0].value) || 0;
-                totalKredit += parseFloat(inputs[1].value) || 0;
+                                var inputs = r.querySelectorAll('input');
+                totalDebit += parseRupiah(inputs[0].value) || 0;
+                totalKredit += parseRupiah(inputs[1].value) || 0;
             });
             document.getElementById('totalDebitUmum').textContent = 'Rp ' + totalDebit.toLocaleString('id-ID');
             document.getElementById('totalKreditUmum').textContent = 'Rp ' + totalKredit.toLocaleString('id-ID');
         }
 
-        // ===== Simpan / Submit Transaksi (dummy) =====
-        function simpanTransaksi(jenis) {
-            alert('Transaksi ' + jenis + ' berhasil dicatat (dummy, fitur simpan permanen akan datang segera)');
-            tutupCatatTransaksi();
+        // ===== Simpan Transaksi ke Supabase =====
+        async function simpanTransaksi(jenis) {
+            try {
+                var tanggal, bendahara, keterangan, prokerSelectVal, detailRows = [];
+
+                if (jenis === 'Jurnal Umum') {
+                    var container = document.getElementById('ctpage-umum');
+                    tanggal = container.querySelector('input[type="date"]').value;
+                    bendahara = container.querySelector('select').value;
+                    keterangan = container.querySelectorAll('input[type="text"]')[0].value.trim();
+                    prokerSelectVal = container.querySelector('.ct-rab-row select').value;
+
+                    var totalDebit = 0, totalKredit = 0;
+                    document.querySelectorAll('#umumRows .ct-table-row').forEach(function (row) {
+                        var sel = row.querySelector('select').value;
+                        var inputs = row.querySelectorAll('input');
+                        var debit = parseRupiah(inputs[0].value) || 0;
+                        var kredit = parseRupiah(inputs[1].value) || 0;
+                        if (!sel || (debit === 0 && kredit === 0)) return;
+                        var parts = sel.split(':');
+                        detailRows.push({
+                            akun_kas_id: parts[0] === 'kas' ? parseInt(parts[1]) : null,
+                            coa_akun_id: parts[0] === 'coa' ? parseInt(parts[1]) : null,
+                            debit: debit, kredit: kredit
+                        });
+                        totalDebit += debit; totalKredit += kredit;
+                    });
+                    if (detailRows.length === 0) { alert('Isi minimal 1 baris jurnal dengan akun & nominal'); return; }
+                    if (totalDebit !== totalKredit) { alert('Debit dan Kredit harus balance! Debit: Rp ' + totalDebit.toLocaleString('id-ID') + ', Kredit: Rp ' + totalKredit.toLocaleString('id-ID')); return; }
+
+                } else if (jenis === 'Penerimaan') {
+                    var container = document.getElementById('ctpage-penerimaan');
+                    tanggal = container.querySelector('input[type="date"]').value;
+                    bendahara = container.querySelector('select').value;
+                    keterangan = container.querySelectorAll('input[type="text"]')[0].value.trim();
+                    prokerSelectVal = container.querySelector('.ct-rab-row select').value;
+
+                    document.querySelectorAll('#penerimaanRows .ct-table-row').forEach(function (row) {
+                        var selects = row.querySelectorAll('select');
+                        var kasVal = selects[0].value, sumberVal = selects[1].value;
+                                                var nominal = parseRupiah(row.querySelector('input').value) || 0;
+                        if (!kasVal || !sumberVal || nominal <= 0) return;
+                        var kasId = parseInt(kasVal.split(':')[1]);
+                        var coaId = parseInt(sumberVal.split(':')[1]);
+                        detailRows.push({ akun_kas_id: kasId, coa_akun_id: null, debit: nominal, kredit: 0 });
+                        detailRows.push({ akun_kas_id: null, coa_akun_id: coaId, debit: 0, kredit: nominal });
+                    });
+                    if (detailRows.length === 0) { alert('Isi minimal 1 baris penerimaan dengan lengkap'); return; }
+
+                } else if (jenis === 'Pengeluaran') {
+                    var container = document.getElementById('ctpage-pengeluaran');
+                    tanggal = container.querySelector('input[type="date"]').value;
+                    bendahara = container.querySelector('select').value;
+                    keterangan = container.querySelectorAll('input[type="text"]')[0].value.trim();
+                    prokerSelectVal = container.querySelector('.ct-rab-row select').value;
+
+                    document.querySelectorAll('#pengeluaranRows .ct-table-row').forEach(function (row) {
+                        var selects = row.querySelectorAll('select');
+                        var bebanVal = selects[0].value, kasVal = selects[1].value;
+                                                var nominal = parseRupiah(row.querySelector('input').value) || 0;
+                        if (!bebanVal || !kasVal || nominal <= 0) return;
+                        var coaId = parseInt(bebanVal.split(':')[1]);
+                        var kasId = parseInt(kasVal.split(':')[1]);
+                        detailRows.push({ akun_kas_id: null, coa_akun_id: coaId, debit: nominal, kredit: 0 });
+                        detailRows.push({ akun_kas_id: kasId, coa_akun_id: null, debit: 0, kredit: nominal });
+                    });
+                    if (detailRows.length === 0) { alert('Isi minimal 1 baris pengeluaran dengan lengkap'); return; }
+                }
+
+                if (!tanggal || !bendahara) { alert('Tanggal dan Nama Bendahara wajib diisi'); return; }
+                if (!keterangan) { alert('Keterangan wajib diisi'); return; }
+
+                var kode = 'JU-' + new Date(tanggal).getFullYear() + '-' + String(Date.now()).slice(-6);
+                var jenisDb = jenis === 'Jurnal Umum' ? 'umum' : (jenis === 'Penerimaan' ? 'penerimaan' : 'pengeluaran');
+
+                var jurnalRes = await supabaseClient
+                    .from('jurnal_transaksi')
+                    .insert({
+                        kode: kode,
+                        tanggal: tanggal,
+                        jenis: jenisDb,
+                        bendahara: bendahara,
+                        keterangan: keterangan,
+                        proker_id: prokerSelectVal ? parseInt(prokerSelectVal) : null
+                    })
+                    .select()
+                    .single();
+
+                if (jurnalRes.error) { alert('ERROR SUPABASE (jurnal): ' + jurnalRes.error.message); return; }
+
+                var detailToInsert = detailRows.map(function (d) {
+                    return { jurnal_id: jurnalRes.data.id, akun_kas_id: d.akun_kas_id, coa_akun_id: d.coa_akun_id, debit: d.debit, kredit: d.kredit };
+                });
+
+                var detailRes = await supabaseClient.from('jurnal_detail').insert(detailToInsert);
+                if (detailRes.error) { alert('ERROR SUPABASE (detail): ' + detailRes.error.message); return; }
+
+                alert('Transaksi ' + jenis + ' berhasil disimpan! Kode: ' + kode);
+                await muatDataKas();
+                tutupCatatTransaksi();
+
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         // ===== Cash Opname: buka/tutup halaman & modal =====
@@ -3602,7 +3793,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var total = 0;
             document.querySelectorAll('#coPecahanRows .co-table-row').forEach(function (row) {
                 var pecahan = parseInt(row.getAttribute('data-pecahan'));
-                var lembar = parseFloat(row.querySelector('input').value) || 0;
+                var lembar = parseRupiah(row.querySelector('input').value) || 0;
                 total += pecahan * lembar;
             });
             return total;
@@ -3611,7 +3802,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var total = 0;
             document.querySelectorAll('#coPecahanRows .co-table-row').forEach(function (row) {
                 var pecahan = parseInt(row.getAttribute('data-pecahan'));
-                var lembar = parseFloat(row.querySelector('input').value) || 0;
+                var lembar = parseRupiah(row.querySelector('input').value) || 0;
                 var jumlah = pecahan * lembar;
                 row.querySelector('.co-jumlah-label').textContent = 'Rp ' + jumlah.toLocaleString('id-ID');
                 total += jumlah;
@@ -3642,7 +3833,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var total = 0;
             document.querySelectorAll('#coBankRows .co-table-row').forEach(function (row) {
                 var inputs = row.querySelectorAll('input');
-                total += parseFloat(inputs[1].value) || 0;
+                total += parseRupiah(inputs[1].value) || 0;
             });
             return total;
         }
@@ -3654,7 +3845,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var fisikBank = fisik + bank;
             document.getElementById('coFisikBank').textContent = 'Rp ' + fisikBank.toLocaleString('id-ID');
 
-            var saldoBuku = parseFloat(document.getElementById('coSaldoBuku').value) || 0;
+            var saldoBuku = parseRupiah(document.getElementById('coSaldoBuku').value) || 0;
             var selisih = fisikBank - saldoBuku;
             var label = document.getElementById('coSelisihValue');
             var box = document.getElementById('coAnalysisBox');
@@ -4020,7 +4211,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
         function tutupModalRekBank() { document.getElementById('rb-modal-overlay').style.display = 'none'; }
         function hitungSelisihRb() {
-            var v = parseFloat(document.getElementById('rbSaldoBankInput').value) || 0;
+            var v = parseRupiah(document.getElementById('rbSaldoBankInput').value) || 0;
             document.getElementById('rbSaldoBankDisplay').textContent = 'Rp ' + v.toLocaleString('id-ID');
         }
         function simpanLaporanRekBank() {
@@ -4062,7 +4253,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.querySelectorAll('#iuranPesertaRows .ip-table-row').forEach(function (row) {
                 var inputs = row.querySelectorAll('input');
                 var namaPeserta = inputs[0].value.trim();
-                var target = parseFloat(inputs[1].value) || 0;
+                var target = parseRupiah(inputs[1].value) || 0;
                 if (namaPeserta) peserta.push({ nama: namaPeserta, target: target, pembayaran: [] });
             });
             iuranData.push({ id: 'IUR-' + Date.now(), nama: nama, kas: kas, peserta: peserta });
@@ -4166,8 +4357,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var produk = {
                 id: 'PRD-' + Date.now(),
                 nama: nama,
-                hargaJual: parseFloat(document.getElementById('poHargaJual').value) || 0,
-                hargaBeli: parseFloat(document.getElementById('poHargaBeli').value) || 0,
+                hargaJual: parseRupiah(document.getElementById('poHargaJual').value) || 0,
+                hargaBeli: parseRupiah(document.getElementById('poHargaBeli').value) || 0,
                 kas: document.getElementById('poKasPenampung').value,
                 pembeli: [],
                 biaya: []
@@ -4234,8 +4425,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var p = getProduk(produkAktifId);
             if (!p) return;
             p.nama = document.getElementById('pdNamaProduk').value.trim() || p.nama;
-            p.hargaJual = parseFloat(document.getElementById('pdHargaJual').value) || 0;
-            p.hargaBeli = parseFloat(document.getElementById('pdHargaBeli').value) || 0;
+            p.hargaJual = parseRupiah(document.getElementById('pdHargaJual').value) || 0;
+            p.hargaBeli = parseRupiah(document.getElementById('pdHargaBeli').value) || 0;
             renderPembeliRows();
         }
 
@@ -4292,7 +4483,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function simpanBiayaProduk() {
             var ket = document.getElementById('bcKet').value.trim();
             if (!ket) { alert('Keterangan biaya wajib diisi'); return; }
-            var nominal = parseFloat(document.getElementById('bcNominal').value) || 0;
+            var nominal = parseRupiah(document.getElementById('bcNominal').value) || 0;
             var p = getProduk(produkAktifId);
             p.biaya.push({ ket: ket, nominal: nominal });
             renderBiayaRows();
@@ -4344,7 +4535,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
         function tutupModalTambahBayar() { document.getElementById('bayar-modal-overlay').style.display = 'none'; }
         function simpanPembayaran() {
-            var nominal = parseFloat(document.getElementById('byNominal').value) || 0;
+            var nominal = parseRupiah(document.getElementById('byNominal').value) || 0;
             if (nominal <= 0) { alert('Jumlah pembayaran harus lebih dari 0'); return; }
             var tgl = document.getElementById('byTanggal').value;
             var target = ambilTargetPembayaran();
@@ -4432,8 +4623,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             var data = {
                 tgl: document.getElementById('infaqRowTanggal').value,
                 petugas: document.getElementById('infaqRowPetugas').value.trim() || '-',
-                tunai: parseFloat(document.getElementById('infaqRowTunai').value) || 0,
-                qris: parseFloat(document.getElementById('infaqRowQris').value) || 0,
+                tunai: parseRupiah(document.getElementById('infaqRowTunai').value) || 0,
+                qris: parseRupiah(document.getElementById('infaqRowQris').value) || 0,
                 catatan: document.getElementById('infaqRowCatatan').value.trim()
             };
             if (infaqEditIndex === -1) { infaqData.push(data); } else { infaqData[infaqEditIndex] = data; }
