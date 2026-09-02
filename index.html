@@ -1386,6 +1386,258 @@
         .bb-row-cutoff { background: rgba(184, 19, 55, 0.08); }
         .bb-row-cutoff .bb-ket { color: var(--maroon); font-weight: 700; }
         .bb-row-cutoff .bb-mutasi { color: var(--maroon); font-weight: 700; }
+<<<<<<< HEAD
+    /* =========================================================
+   SISTEM NOTIFIKASI SIASFA
+   Semua alert() diarahkan ke popup aplikasi sendiri
+   ========================================================= */
+
+.siasfa-toast-wrap {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(360px, calc(100% - 28px));
+    z-index: 99999;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.siasfa-toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 12px 14px;
+    background: rgba(26, 18, 37, 0.97);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-left: 3px solid var(--maroon);
+    border-radius: 13px;
+    box-shadow: 0 10px 30px rgba(26,18,37,0.28);
+    color: #FFFFFF;
+    animation: siasfaToastIn 0.28s ease forwards;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.siasfa-toast.success {
+    border-left-color: #4ADE80;
+}
+
+.siasfa-toast.error {
+    border-left-color: #FB7185;
+}
+
+.siasfa-toast.warning {
+    border-left-color: #FBBF24;
+}
+
+.siasfa-toast.info {
+    border-left-color: #60A5FA;
+}
+
+.siasfa-toast-icon {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+}
+
+.siasfa-toast.success .siasfa-toast-icon {
+    color: #4ADE80;
+}
+
+.siasfa-toast.error .siasfa-toast-icon {
+    color: #FB7185;
+}
+
+.siasfa-toast.warning .siasfa-toast-icon {
+    color: #FBBF24;
+}
+
+.siasfa-toast.info .siasfa-toast-icon {
+    color: #60A5FA;
+}
+
+.siasfa-toast-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.siasfa-toast-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+    letter-spacing: 0.1px;
+}
+
+.siasfa-toast-message {
+    font-size: 0.68rem;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.76);
+    word-break: break-word;
+}
+
+.siasfa-toast-close {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.siasfa-toast-close:hover {
+    color: #FFFFFF;
+}
+
+.siasfa-toast.hide {
+    animation: siasfaToastOut 0.22s ease forwards;
+}
+
+@keyframes siasfaToastIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes siasfaToastOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(-8px) scale(0.97); }
+}
+
+/* =========================================================
+   SIASFA CONFIRM MODAL
+   Menggantikan native browser confirm()
+   ========================================================= */
+
+.siasfa-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(10, 7, 14, 0.62);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    animation: siasfaConfirmBgIn 0.2s ease forwards;
+}
+
+.siasfa-confirm-card {
+    width: min(350px, 100%);
+    background: #FFFFFF;
+    border: 1px solid rgba(184, 19, 55, 0.12);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 24px 70px rgba(26, 18, 37, 0.32);
+    animation: siasfaConfirmIn 0.25s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.siasfa-confirm-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    background: rgba(184, 19, 55, 0.09);
+    color: var(--maroon);
+    font-size: 1.35rem;
+}
+
+.siasfa-confirm-card.danger .siasfa-confirm-icon {
+    background: rgba(220, 38, 38, 0.09);
+    color: #DC2626;
+}
+
+.siasfa-confirm-title {
+    margin: 0 0 7px;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.siasfa-confirm-message {
+    color: #6B6670;
+    font-size: 0.73rem;
+    line-height: 1.55;
+    margin-bottom: 20px;
+}
+
+.siasfa-confirm-actions {
+    display: flex;
+    gap: 9px;
+}
+
+.siasfa-confirm-btn {
+    flex: 1;
+    height: 40px;
+    border: 0;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.siasfa-confirm-btn:active {
+    transform: scale(0.97);
+}
+
+.siasfa-confirm-cancel {
+    background: #F3F1F2;
+    color: #5F5962;
+}
+
+.siasfa-confirm-ok {
+    background: linear-gradient(135deg, var(--maroon), var(--maroon-deep));
+    color: #FFFFFF;
+    box-shadow: 0 6px 15px rgba(184, 19, 55, 0.22);
+}
+
+.siasfa-confirm-card.danger .siasfa-confirm-ok {
+    background: linear-gradient(135deg, #DC2626, #991B1B);
+}
+
+@keyframes siasfaConfirmBgIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes siasfaConfirmIn {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+</style>
+=======
     /* =========================================================
    SISTEM NOTIFIKASI SIASFA
    Semua alert() diarahkan ke popup aplikasi sendiri
@@ -1529,6 +1781,7 @@
 }
 
 </style>
+>>>>>>> 29b90c1489ff7ad82f8b07f087e088cda3154bf6
 </head>
 <body>
 
@@ -4853,7 +5106,10 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
         async function tutupBukuProker() {
             var p = prokerData[prokerAktifId];
-            if (!confirm('Tutup buku proker ini? Seluruh pendapatan terikat akan direklasifikasi dan proker tidak dapat diedit lagi.')) return;
+            if (!await siasfaConfirm(
+    'Tutup buku proker ini? Seluruh pendapatan terikat akan direklasifikasi dan proker tidak dapat diedit lagi.',
+    'Tutup Buku Proker'
+)) return;
 
             var res = await supabaseClient.from('program_kerja').update({ ditutup: true }).eq('id', prokerAktifId);
             if (res.error) { alert('ERROR SUPABASE (tutup buku): ' + res.error.message); return; }
@@ -4989,7 +5245,11 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function hapusLaporanRekBank() {
             if (!rbAktifId) { tutupModalRekBank(); return; }
-            if (!confirm('Hapus laporan bulan ini?')) return;
+            if (!await siasfaConfirm(
+    'Hapus laporan bulan ini? Data laporan bulan ini akan dihapus dan tidak dapat dikembalikan.',
+    'Hapus Laporan',
+    { danger: true }
+)) return;
             try {
                 var res = await supabaseClient.from('rekening_bank_laporan').delete().eq('id', rbAktifId);
                 if (res.error) { alert('ERROR SUPABASE (hapus rekening bank): ' + res.error.message); return; }
@@ -5623,7 +5883,11 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         async function hapusInfaqRow(index) {
-            if (!confirm('Hapus data infaq baris ini?')) return;
+            if (!await siasfaConfirm(
+    'Hapus data infaq pada baris ini? Data yang sudah dihapus tidak dapat dikembalikan.',
+    'Hapus Data Infaq',
+    { danger: true }
+)) return;
             try {
                 var id = infaqData[index].id;
                 var res = await supabaseClient.from('infaq_harian').delete().eq('id', id);
@@ -5713,8 +5977,12 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 alert('ERROR SISTEM: ' + e.message);
             }
         }
-        function tutupBukuTahunan() {
-            if (confirm('Tindakan ini akan mengosongkan seluruh riwayat jurnal dan tidak dapat dibatalkan. Lanjutkan?')) {
+        async function tutupBukuTahunan() {
+            if (await siasfaConfirm(
+    'Tindakan ini akan mengosongkan seluruh riwayat jurnal dan tidak dapat dibatalkan. Lanjutkan?',
+    'Tutup Buku Tahunan',
+    { danger: true }
+)) {
                 alert('Proses tutup buku dimulai. PDF akan dikirim ke remasfaorgoitan@gmail.com (dummy, fitur ini akan datang segera)');
             }
         }
@@ -6108,6 +6376,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             login.classList.remove('screen-out');
         }
 
+
         function bukaWBS() {
             document.getElementById('wbs-modal-overlay').style.display = 'flex';
         }
@@ -6366,6 +6635,231 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
     </script>
 
+<<<<<<< HEAD
+<script>
+/* =========================================================
+   SIASFA NOTIFICATION ENGINE
+   alert() + confirm() custom
+   ========================================================= */
+
+(function () {
+
+    var toastWrap = document.createElement('div');
+    toastWrap.className = 'siasfa-toast-wrap';
+    document.body.appendChild(toastWrap);
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /* =====================================================
+       TOAST NOTIFICATION
+       ===================================================== */
+
+    window.siasfaNotify = function (message, type, title) {
+        type = type || 'success';
+
+        var iconMap = {
+            success: 'ph-check-circle',
+            error: 'ph-x-circle',
+            warning: 'ph-warning-circle',
+            info: 'ph-info'
+        };
+
+        var titleMap = {
+            success: 'Berhasil',
+            error: 'Terjadi Kesalahan',
+            warning: 'Perhatian',
+            info: 'Informasi'
+        };
+
+        var toast = document.createElement('div');
+        toast.className = 'siasfa-toast ' + type;
+
+        toast.innerHTML =
+            '<div class="siasfa-toast-icon">' +
+                '<i class="ph ' + iconMap[type] + '"></i>' +
+            '</div>' +
+            '<div class="siasfa-toast-content">' +
+                '<div class="siasfa-toast-title">' +
+                    escapeHtml(title || titleMap[type]) +
+                '</div>' +
+                '<div class="siasfa-toast-message">' +
+                    escapeHtml(message) +
+                '</div>' +
+            '</div>' +
+            '<button class="siasfa-toast-close" type="button">' +
+                '<i class="ph ph-x"></i>' +
+            '</button>';
+
+        toastWrap.appendChild(toast);
+
+        var closeBtn = toast.querySelector('.siasfa-toast-close');
+
+        function tutupToast() {
+            if (toast.classList.contains('hide')) return;
+
+            toast.classList.add('hide');
+
+            setTimeout(function () {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 220);
+        }
+
+        closeBtn.addEventListener('click', tutupToast);
+
+        setTimeout(
+            tutupToast,
+            type === 'error' ? 5000 : 3200
+        );
+    };
+
+    /* =====================================================
+       GANTI NATIVE alert()
+       ===================================================== */
+
+    window.alert = function (message) {
+        var text = String(message || '');
+        var lower = text.toLowerCase();
+
+        if (
+            text.indexOf('ERROR') === 0 ||
+            lower.indexOf('gagal') !== -1 ||
+            lower.indexOf('kesalahan') !== -1
+        ) {
+            siasfaNotify(text, 'error');
+
+        } else if (
+            lower.indexOf('wajib') !== -1 ||
+            lower.indexOf('tidak ada') !== -1 ||
+            lower.indexOf('lengkapi') !== -1
+        ) {
+            siasfaNotify(text, 'warning');
+
+        } else {
+            siasfaNotify(text, 'success');
+        }
+    };
+
+    /* =====================================================
+       CUSTOM CONFIRM
+       ===================================================== */
+
+    window.siasfaConfirm = function (message, title, options) {
+        options = options || {};
+
+        return new Promise(function (resolve) {
+
+            var danger = options.danger === true;
+
+            var overlay = document.createElement('div');
+            overlay.className = 'siasfa-confirm-overlay';
+
+            var icon = danger
+                ? 'ph-trash'
+                : 'ph-warning-circle';
+
+            var defaultTitle = danger
+                ? 'Konfirmasi Penghapusan'
+                : 'Konfirmasi Tindakan';
+
+            overlay.innerHTML =
+                '<div class="siasfa-confirm-card' +
+                    (danger ? ' danger' : '') +
+                    '">' +
+
+                    '<div class="siasfa-confirm-icon">' +
+                        '<i class="ph ' + icon + '"></i>' +
+                    '</div>' +
+
+                    '<div class="siasfa-confirm-title">' +
+                        escapeHtml(title || defaultTitle) +
+                    '</div>' +
+
+                    '<div class="siasfa-confirm-message">' +
+                        escapeHtml(message) +
+                    '</div>' +
+
+                    '<div class="siasfa-confirm-actions">' +
+                        '<button type="button" class="siasfa-confirm-btn siasfa-confirm-cancel">' +
+                            'Batal' +
+                        '</button>' +
+
+                        '<button type="button" class="siasfa-confirm-btn siasfa-confirm-ok">' +
+                            (danger ? 'Hapus' : 'Lanjutkan') +
+                        '</button>' +
+                    '</div>' +
+
+                '</div>';
+
+            document.body.appendChild(overlay);
+
+            var cancelBtn = overlay.querySelector('.siasfa-confirm-cancel');
+            var okBtn = overlay.querySelector('.siasfa-confirm-ok');
+
+            var selesai = false;
+
+            function close(result) {
+                if (selesai) return;
+
+                selesai = true;
+
+                overlay.style.opacity = '0';
+                overlay.style.transition = 'opacity 0.16s ease';
+
+                setTimeout(function () {
+                    if (overlay.parentNode) {
+                        overlay.parentNode.removeChild(overlay);
+                    }
+
+                    resolve(result);
+                }, 160);
+            }
+
+            cancelBtn.addEventListener('click', function () {
+                close(false);
+            });
+
+            okBtn.addEventListener('click', function () {
+                close(true);
+            });
+
+            overlay.addEventListener('click', function (event) {
+                if (event.target === overlay) {
+                    close(false);
+                }
+            });
+
+            function handleEscape(event) {
+                if (event.key === 'Escape') {
+                    document.removeEventListener(
+                        'keydown',
+                        handleEscape
+                    );
+
+                    close(false);
+                }
+            }
+
+            document.addEventListener('keydown', handleEscape);
+
+            setTimeout(function () {
+                cancelBtn.focus();
+            }, 50);
+        });
+    };
+
+})();
+</script>
+
+=======
 <script>
 /* =========================================================
    SIASFA NOTIFICATION ENGINE
@@ -6459,6 +6953,9 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
     };
 })();
 </script>
+
+>>>>>>> 29b90c1489ff7ad82f8b07f087e088cda3154bf6
+</body>
 
 </body>
 </html>
