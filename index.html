@@ -1497,6 +1497,96 @@
         .pf-danger-btn { width: 100%; padding: 13px; border-radius: 14px; border: none; background: var(--maroon); color: #FFFFFF; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
         .pf-danger-btn:active { opacity: 0.85; }
 
+        /* ============================================================
+           GUEST DASHBOARD REDESIGN — animasi & visual baru
+           ============================================================ */
+        @keyframes guestFadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes guestFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50%      { transform: translateY(-6px) rotate(4deg); }
+        }
+        @keyframes guestPulseRing {
+            0%   { box-shadow: 0 0 0 0 rgba(184,19,55,0.35); }
+            70%  { box-shadow: 0 0 0 12px rgba(184,19,55,0); }
+            100% { box-shadow: 0 0 0 0 rgba(184,19,55,0); }
+        }
+        @keyframes guestShineSweep {
+            0%   { left: -60%; }
+            50%  { left: 130%; }
+            100% { left: 130%; }
+        }
+
+        .guest-reveal { opacity: 0; animation: guestFadeUp 0.55s cubic-bezier(0.22,1,0.36,1) forwards; flex-shrink: 0; }
+        .guest-reveal:nth-child(1) { animation-delay: 0.05s; }
+        .guest-reveal:nth-child(2) { animation-delay: 0.12s; }
+        .guest-reveal:nth-child(3) { animation-delay: 0.19s; }
+        .guest-reveal:nth-child(4) { animation-delay: 0.26s; }
+        .guest-reveal:nth-child(5) { animation-delay: 0.33s; }
+        .guest-reveal:nth-child(6) { animation-delay: 0.40s; }
+        .guest-reveal:nth-child(7) { animation-delay: 0.47s; }
+
+        .guest-intro-box { background: var(--paper-soft); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; font-size: 0.78rem; color: var(--text-gray); line-height: 1.6; }
+        .guest-intro-box i { color: var(--maroon); font-size: 1.1rem; margin-right: 4px; }
+
+        .guest-hero-card { position: relative; overflow: hidden; border-radius: 22px; padding: 22px 20px; background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%); box-shadow: 0 14px 30px rgba(184,19,55,0.28); }
+        .guest-hero-card::before { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent); transform: skewX(-20deg); animation: guestShineSweep 3.5s ease-in-out infinite; }
+        .guest-hero-decor { position: absolute; font-size: 6rem; color: rgba(255,255,255,0.08); right: -14px; top: -18px; animation: guestFloat 6s ease-in-out infinite; }
+        .guest-hero-label { position: relative; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 6px; }
+        .guest-hero-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ADE80; animation: guestPulseRing 1.8s infinite; }
+        .guest-hero-amount { position: relative; font-size: 1.8rem; font-weight: 700; color: #FFFFFF; margin-top: 6px; letter-spacing: -0.5px; }
+        .guest-hero-sub { position: relative; font-size: 0.7rem; color: rgba(255,255,255,0.65); margin-top: 2px; font-weight: 500; }
+
+        .guest-stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .guest-stat-pill { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; padding: 10px 8px; text-align: center; box-shadow: 0 3px 10px rgba(26,18,37,0.05); }
+        .guest-stat-pill i { font-size: 1.1rem; color: var(--maroon); }
+        .guest-stat-pill .v { font-size: 0.9rem; font-weight: 700; color: var(--text-dark); margin-top: 4px; }
+        .guest-stat-pill .l { font-size: 0.58rem; color: var(--text-gray); font-weight: 600; margin-top: 1px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+        .guest-section-title { display: flex; align-items: center; gap: 8px; font-size: var(--fs-md); font-weight: 700; color: var(--text-dark); margin-bottom: 12px; }
+        .guest-section-title i { width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+
+        .guest-report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .guest-report-card { position: relative; background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 14px 12px; cursor: pointer; overflow: hidden; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 3px 10px rgba(26,18,37,0.04); }
+        .guest-report-card:active { transform: scale(0.96); box-shadow: 0 2px 6px rgba(26,18,37,0.06); }
+        .guest-report-icon { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, rgba(184,19,55,0.12), rgba(255,122,92,0.12)); color: var(--maroon); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; margin-bottom: 10px; }
+        .guest-report-name { font-size: 0.76rem; font-weight: 700; color: var(--text-dark); line-height: 1.3; }
+        .guest-report-sub { font-size: 0.62rem; color: var(--text-gray); margin-top: 4px; font-weight: 500; }
+        .guest-report-dl { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; border-radius: 50%; background: var(--paper-soft); color: var(--maroon); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; border: none; pointer-events: none; }
+
+        .guest-proker-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; box-shadow: 0 3px 10px rgba(26,18,37,0.04); cursor: pointer; transition: transform 0.15s ease; }
+        .guest-proker-card:active { transform: scale(0.98); }
+        .guest-proker-ring { --p: 0; width: 54px; height: 54px; min-width: 54px; border-radius: 50%; background: conic-gradient(var(--maroon) calc(var(--p) * 1%), var(--line) 0); display: flex; align-items: center; justify-content: center; position: relative; }
+        .guest-proker-ring::before { content: ''; position: absolute; width: 42px; height: 42px; border-radius: 50%; background: #FFFFFF; }
+        .guest-proker-ring span { position: relative; font-size: 0.68rem; font-weight: 800; color: var(--maroon); z-index: 1; }
+        .guest-proker-mid { flex: 1; min-width: 0; }
+        .guest-proker-name { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); line-height: 1.3; }
+        .guest-proker-sub { font-size: 0.66rem; color: var(--text-gray); margin-top: 3px; font-weight: 500; }
+        .guest-proker-dl { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--maroon); color: var(--maroon); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: transparent; flex-shrink: 0; pointer-events: none; }
+
+        .guest-audit-note { display: flex; gap: 10px; background: linear-gradient(135deg, rgba(217,118,6,0.09), rgba(217,118,6,0.04)); border: 1px solid rgba(217,118,6,0.3); border-radius: 16px; padding: 13px 15px; align-items: flex-start; }
+        .guest-audit-note i { color: #D97706; font-size: 1.15rem; margin-top: 1px; }
+        .guest-audit-note span { font-size: 0.72rem; color: #92400E; font-weight: 600; line-height: 1.5; }
+
+        .guest-wbs-card { position: relative; overflow: hidden; border-radius: 20px; padding: 18px; background: linear-gradient(135deg, var(--maroon-deep), var(--text-dark)); cursor: pointer; box-shadow: 0 12px 26px rgba(26,18,37,0.28); transition: transform 0.15s ease; }
+        .guest-wbs-card:active { transform: scale(0.98); }
+        .guest-wbs-icon { width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 12px; animation: guestPulseRing 2.2s infinite; }
+        .guest-wbs-title { font-size: 0.9rem; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; }
+        .guest-wbs-text { font-size: 0.72rem; color: rgba(255,255,255,0.75); line-height: 1.55; margin-bottom: 14px; }
+        .guest-wbs-btn { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; color: var(--maroon-deep); font-size: 0.78rem; font-weight: 700; padding: 10px 18px; border-radius: 30px; border: none; }
+
+        .guest-hero-eyebrow { position: relative; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.72); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .guest-hero-date { position: relative; font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.9); margin-top: 6px; }
+        .guest-hero-card .guest-hero-amount { margin-top: 10px; }
+
+        .guest-donasi-card { position: relative; overflow: hidden; border-radius: 20px; padding: 16px 18px; background: linear-gradient(135deg, var(--coral-start), var(--coral-end)); box-shadow: 0 10px 22px rgba(255,122,92,0.3); }
+        .guest-donasi-card::after { content: ''; position: absolute; top: -30%; right: -8%; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.12); }
+        .guest-donasi-label { position: relative; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 6px; }
+        .guest-donasi-amount { position: relative; font-size: 1.4rem; font-weight: 700; color: #FFFFFF; margin-top: 6px; letter-spacing: -0.3px; }
+        .guest-donasi-sub { position: relative; font-size: 0.64rem; color: rgba(255,255,255,0.85); margin-top: 4px; font-weight: 600; }
+
         /* ---- Cutoff bulanan Buku Besar ---- */
         .bb-row-cutoff { background: rgba(184, 19, 55, 0.08); }
         .bb-row-cutoff .bb-ket { color: var(--maroon); font-weight: 700; }
@@ -2042,7 +2132,7 @@
             <div class="transition-loader"><span></span><span></span><span></span></div>
         </div>
 
-        <!-- ================= LAYAR DASHBOARD TAMU (PUBLIK) ================= -->
+        <!-- ================= LAYAR DASHBOARD TAMU (PUBLIK) — REDESAIN ================= -->
         <div id="guest-dashboard-screen" style="display:none; flex-direction:column; height:100%; background:#FFFFFF;">
 
             <div class="app-header-wrap">
@@ -2055,98 +2145,86 @@
                 </div>
             </div>
 
-            <div class="app-body" id="guest-app-body" style="padding-bottom:30px;">
+            <div class="app-body" id="guest-app-body" style="padding-bottom:30px; display:flex; flex-direction:column; gap:26px;">
 
-                <div style="font-size:0.8rem; color:var(--text-gray); line-height:1.6; margin-bottom:4px;">
-                    Kami menjunjung tinggi transparansi dan akuntabilitas dalam pengelolaan dana umat. Melalui halaman ini, Jamaah dapat memantau posisi kas, laporan keuangan, dan realisasi program kerja Remaja Masjid Fadhlillah secara terbuka. Mari bersama menjaga amanah dana yang telah dipercayakan kepada kami.
+                <div class="guest-intro-box guest-reveal">
+                    <i class="ph ph-shield-check"></i>Kami menjunjung tinggi <strong style="color:var(--text-dark);">transparansi</strong> dan <strong style="color:var(--text-dark);">akuntabilitas</strong> dalam pengelolaan dana umat. Pantau posisi kas, laporan keuangan, dan realisasi program kerja REMASFA secara terbuka di sini.
                 </div>
 
-                <div>
-                    <div class="ledger-head">
-                        <div class="ledger-title">Posisi Kas & Setara Kas</div>
-                    </div>
-                    <div class="cash-card">
-                        <div class="cash-hero-top">
-                            <div>
-                                <div class="cash-label" id="guestCashPerTanggal">Per 1 September 2026</div>
-                                <div class="cash-amount">Rp -</div>
-                            </div>
-                        </div>
-                        <div class="detail-content" style="display:block; margin-top:14px;" id="guestDetailKas">
-                        </div>
-                    </div>
+                <div class="guest-hero-card guest-reveal">
+                    <i class="ph-fill ph-mosque guest-hero-decor"></i>
+                    <div class="guest-hero-eyebrow"><span class="guest-hero-dot"></span> POSISI KAS &amp; SETARA KAS</div>
+                    <div class="guest-hero-date" id="guestCashPerTanggal">Per 1 September 2026</div>
+                    <div class="guest-hero-amount cash-amount">Rp -</div>
+                    <div class="guest-hero-sub">Diperbarui otomatis setiap ada transaksi tercatat</div>
+                    <div id="guestDetailKas" style="position:relative; margin-top:14px; display:flex; flex-direction:column;"></div>
                 </div>
 
-                <div>
-                    <div class="ledger-head">
-                        <div class="ledger-title">Laporan Keuangan</div>
-                    </div>
-                    <div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-scales"></i></div>
-                            <div><div class="report-name">Laporan Posisi Keuangan</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Laporan Posisi Keuangan')"><i class="ph ph-download-simple"></i></button>
-                        </div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-chart-line-up"></i></div>
-                            <div><div class="report-name">Laporan Aktivitas</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Laporan Aktivitas')"><i class="ph ph-download-simple"></i></button>
-                        </div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-arrows-clockwise"></i></div>
-                            <div><div class="report-name">Laporan Perubahan Aset Netto</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Laporan Perubahan Aset Netto')"><i class="ph ph-download-simple"></i></button>
-                        </div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-wallet"></i></div>
-                            <div><div class="report-name">Laporan Arus Kas</div><div class="report-sub">PDF &middot; Update terakhir hari ini</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Laporan Arus Kas')"><i class="ph ph-download-simple"></i></button>
-                        </div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-notepad"></i></div>
-                            <div><div class="report-name">CALK</div><div class="report-sub">Catatan atas Laporan Keuangan</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('CALK')"><i class="ph ph-download-simple"></i></button>
-                        </div>
-                    </div>
+                <div class="guest-stat-strip guest-reveal">
+                    <div class="guest-stat-pill"><i class="ph ph-file-text"></i><div class="v">5</div><div class="l">Laporan Keuangan</div></div>
+                    <div class="guest-stat-pill"><i class="ph ph-folder-open"></i><div class="v" id="guestStatProkerAktif">-</div><div class="l">Proker Aktif</div></div>
+                    <div class="guest-stat-pill"><i class="ph ph-clock-clockwise"></i><div class="v">Hari Ini</div><div class="l">Update Terakhir</div></div>
                 </div>
 
-                <div>
-                    <div class="ledger-head">
-                        <div class="ledger-title">Laporan Program Kerja</div>
-                    </div>
-                    <div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-folder-open"></i></div>
-                            <div><div class="report-name">Ramadhan Fest 2026</div><div class="report-sub">Realisasi 68%</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Realisasi Anggaran - Ramadhan Fest 2026')"><i class="ph ph-download-simple"></i></button>
+                <div class="guest-donasi-card guest-reveal">
+                    <div class="guest-donasi-label"><i class="ph ph-hand-heart"></i> Pendapatan Donasi/Proposal</div>
+                    <div class="guest-donasi-amount" id="guestPendapatanDonasiAmount">Rp -</div>
+                    <div class="guest-donasi-sub">Saldo akhir buku besar &middot; akun [4-40000]</div>
+                </div>
+
+                <div class="guest-reveal">
+                    <div class="guest-section-title"><i class="ph ph-scales"></i> Laporan Keuangan</div>
+                    <div class="guest-report-grid">
+                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Posisi Keuangan')">
+                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                            <div class="guest-report-icon"><i class="ph ph-scales"></i></div>
+                            <div class="guest-report-name">Laporan Posisi Keuangan</div>
+                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
                         </div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-folder-open"></i></div>
-                            <div><div class="report-name">Santunan Yatim & Dhuafa</div><div class="report-sub">Realisasi 42%</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Realisasi Anggaran - Santunan Yatim & Dhuafa')"><i class="ph ph-download-simple"></i></button>
+                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Aktivitas')">
+                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                            <div class="guest-report-icon"><i class="ph ph-chart-line-up"></i></div>
+                            <div class="guest-report-name">Laporan Aktivitas</div>
+                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
                         </div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-folder-open"></i></div>
-                            <div><div class="report-name">Pelatihan Kepemimpinan Remaja</div><div class="report-sub">Realisasi 90%</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Realisasi Anggaran - Pelatihan Kepemimpinan Remaja')"><i class="ph ph-download-simple"></i></button>
+                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Perubahan Aset Netto')">
+                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                            <div class="guest-report-icon"><i class="ph ph-arrows-clockwise"></i></div>
+                            <div class="guest-report-name">Perubahan Aset Netto</div>
+                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
                         </div>
-                        <div class="report-row">
-                            <div class="report-icon"><i class="ph ph-folder-open"></i></div>
-                            <div><div class="report-name">Renovasi Perpustakaan Masjid</div><div class="report-sub">Realisasi 15%</div></div>
-                            <button class="report-dl-btn" onclick="unduhLaporan('Realisasi Anggaran - Renovasi Perpustakaan Masjid')"><i class="ph ph-download-simple"></i></button>
+                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Arus Kas')">
+                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                            <div class="guest-report-icon"><i class="ph ph-wallet"></i></div>
+                            <div class="guest-report-name">Laporan Arus Kas</div>
+                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
+                        </div>
+                        <div class="guest-report-card" onclick="unduhLaporan('CALK')" style="grid-column: 1 / -1;">
+                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                            <div class="guest-report-icon"><i class="ph ph-notepad"></i></div>
+                            <div class="guest-report-name">Catatan atas Laporan Keuangan (CALK)</div>
+                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
                         </div>
                     </div>
                 </div>
 
-                <div style="display:flex; gap:8px; background:rgba(217,118,6,0.08); border:1px solid rgba(217,118,6,0.3); border-radius:12px; padding:12px 14px;">
-                    <i class="ph ph-info" style="color:#D97706; font-size:1.1rem; min-width:18px;"></i>
-                    <div style="font-size:0.72rem; color:#92400E; font-weight:600; line-height:1.5;">Seluruh laporan di atas bersifat <strong>unaudited</strong> (belum diaudit). Laporan hasil audit akan dipublikasikan setelah seluruh rangkaian program kerja berakhir.</div>
+                <div class="guest-reveal">
+                    <div class="guest-section-title"><i class="ph ph-folder-open"></i> Laporan Program Kerja</div>
+                    <div id="guestProkerList">
+                        <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat program kerja...</div>
+                    </div>
                 </div>
 
-                <div class="pf-danger-box" style="cursor:pointer;" onclick="bukaWBS()">
-                    <div class="pf-danger-title"><i class="ph ph-megaphone-simple"></i> Pelaporan Whistleblowing System</div>
-                    <div class="pf-danger-text">Yuk Laporkan Penyalahgunaan Dana Kepada Kami!! Setiap laporan akan ditindaklanjuti secara rahasia dan bertanggung jawab.</div>
-                    <button class="pf-danger-btn"><i class="ph ph-flag"></i> Buat Laporan</button>
+                <div class="guest-audit-note guest-reveal">
+                    <i class="ph ph-info"></i>
+                    <span>Seluruh laporan di atas bersifat <strong>unaudited</strong> (belum diaudit). Laporan hasil audit akan dipublikasikan setelah seluruh rangkaian program kerja berakhir.</span>
+                </div>
+
+                <div class="guest-wbs-card guest-reveal" onclick="bukaWBS()">
+                    <div class="guest-wbs-icon"><i class="ph ph-megaphone-simple"></i></div>
+                    <div class="guest-wbs-title">Pelaporan Whistleblowing System</div>
+                    <div class="guest-wbs-text">Temukan indikasi penyalahgunaan dana? Laporkan kepada kami. Setiap laporan ditindaklanjuti secara rahasia dan bertanggung jawab.</div>
+                    <button class="guest-wbs-btn"><i class="ph ph-flag"></i> Buat Laporan</button>
                 </div>
 
             </div>
@@ -2283,6 +2361,10 @@
                             <div class="menu-item" onclick="bukaUtangPiutang()">
                                 <div class="menu-icon-box"><i class="ph ph-handshake"></i></div>
                                 <div class="menu-label">Utang Piutang</div>
+                            </div>
+                            <div class="menu-item" onclick="bukaPeralatan()">
+                                <div class="menu-icon-box"><i class="ph ph-toolbox"></i></div>
+                                <div class="menu-label">Peralatan</div>
                             </div>
                         </div>
                     </div>
@@ -3918,6 +4000,131 @@
                 </div>
             </div>
         </div>
+        <!-- ================= LAYAR PERALATAN ================= -->
+        <div id="peralatan-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupPeralatan()"></i>
+                    <div class="ct-header-title">Peralatan</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body">
+                <div class="ip-stat-box full">
+                    <div class="ip-stat-icon"><i class="ph ph-toolbox"></i></div>
+                    <div class="ip-stat-label">Total Nilai Buku Peralatan</div>
+                    <div class="ip-stat-value" id="prlTotalNilaiBuku">Rp 0</div>
+                </div>
+
+                <div class="ip-stat-row">
+                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-package"></i></div><div class="ip-stat-label">Item Aktif</div><div class="ip-stat-value" id="prlJumlahItem">0</div></div>
+                    <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-trend-up"></i></div><div class="ip-stat-label">Laba/(Rugi) Pelepasan</div><div class="ip-stat-value" id="prlLabaRugi">Rp 0</div></div>
+                </div>
+
+                <div>
+                    <div class="ledger-head"><div class="ledger-title">Daftar Peralatan</div></div>
+                    <div class="ip-table-wrap">
+                        <div class="ip-table-head" style="grid-template-columns:0.9fr 1.3fr 0.4fr 0.9fr;"><span>Tgl Perolehan</span><span>Nama Peralatan</span><span>QTY</span><span>Nilai Buku</span></div>
+                        <div id="prlRows"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ledger-head"><div class="ledger-title">Arsip Pelepasan Peralatan</div></div>
+                    <div id="prlArsipRows" style="display:flex; flex-direction:column; gap:10px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL PENDATAAN PERALATAN BARU ================= -->
+        <div id="peralatan-catat-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Pendataan Peralatan Baru</div>
+                    <i class="ph ph-x" onclick="batalkanPeralatanBaru()"></i>
+                </div>
+                <div class="co-modal-body">
+                    <div class="un-note-text">Transaksi ini mendebit akun <strong id="prlbNamaAkun">Peralatan</strong>. Rincikan peralatan yang dibeli. Total rincian <strong>wajib sama</strong> dengan nominal jurnal.</div>
+
+                    <div class="ct-field">
+                        <label>Rincian Peralatan</label>
+                        <div class="ct-table-wrap">
+                            <div class="ct-table-head" style="grid-template-columns:1.4fr 0.5fr 1fr 20px;"><span>Nama Peralatan</span><span>Jumlah</span><span>Harga Beli</span><span></span></div>
+                            <div id="prlbRows"></div>
+                        </div>
+                        <div class="ct-add-row" onclick="tambahBarisPeralatanBaru()"><i class="ph ph-plus-circle"></i> Tambah Baris</div>
+                    </div>
+
+                    <div class="ct-field" style="margin-bottom:0;">
+                        <label>Tanggal Pembelian</label>
+                        <input type="date" id="prlbTanggal">
+                    </div>
+
+                    <div class="ct-total-box">
+                        <div><span>Total Rincian</span><strong id="prlbTotalRincian">Rp 0</strong></div>
+                        <div><span>Nominal Jurnal</span><strong id="prlbTargetTotal">Rp 0</strong></div>
+                    </div>
+
+                    <button class="ct-submit-btn" onclick="konfirmasiPeralatanBaru()"><i class="ph ph-check-circle"></i> Simpan Data Peralatan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL PENGHAPUSAN / PENJUALAN PERALATAN ================= -->
+        <div id="peralatan-hapus-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Form Penghapusan Peralatan</div>
+                    <i class="ph ph-x" onclick="batalkanHapusPeralatan()"></i>
+                </div>
+                <div class="co-modal-body">
+                    <div class="un-note-text">Transaksi ini mengkredit akun peralatan. Sistem akan <strong>menyesuaikan jurnal secara otomatis</strong> sebesar nilai buku aset, dan mengakui keuntungan/kerugian pelepasan bila ada.</div>
+
+                    <div class="ct-field">
+                        <label>Jenis</label>
+                        <select id="prlhJenis" onchange="hitungLabaRugiPeralatan()"><option>Penjualan</option><option>Penghapusan</option></select>
+                    </div>
+                    <div class="ct-field">
+                        <label>Pilih Nama Peralatan yang Dihapus</label>
+                        <select id="prlhItem" onchange="hitungLabaRugiPeralatan()"></select>
+                    </div>
+
+                    <div class="co-analysis-box" id="prlhBox">
+                        <div class="co-analysis-title"><i class="ph ph-scales"></i> Perhitungan Keuntungan/Kerugian</div>
+                        <div class="co-analysis-row"><span>Nominal Transaksi</span><strong id="prlhNominal">Rp 0</strong></div>
+                        <div class="co-analysis-row"><span>Nilai Buku Aset</span><strong id="prlhNilaiBuku">Rp 0</strong></div>
+                        <div class="co-analysis-row co-analysis-final"><span>Untung/(Rugi)</span><strong id="prlhLabaRugi">Rp 0</strong></div>
+                    </div>
+
+                    <div class="un-note-text" id="prlhPreviewJurnal" style="line-height:1.6;"></div>
+
+                    <button class="ct-submit-btn" onclick="konfirmasiHapusPeralatan()"><i class="ph ph-check-circle"></i> Catat Transaksi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL PELUNASAN UTANG/PIUTANG VIA JURNAL ================= -->
+        <div id="up-jurnal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title" id="upjTitle">Pelunasan Utang</div>
+                    <i class="ph ph-x" onclick="batalkanPelunasanJurnal()"></i>
+                </div>
+                <div class="co-modal-body">
+                    <div class="un-note-text" id="upjNote">Pilih data yang dilunasi agar saldonya ikut berkurang di menu Utang Piutang.</div>
+                    <div class="ct-field">
+                        <label id="upjLabelPilih">Pilih Utang yang Dibayar</label>
+                        <select id="upjItem" onchange="tampilkanSisaUp()"></select>
+                    </div>
+                    <div class="ct-total-box">
+                        <div><span>Nominal Jurnal</span><strong id="upjNominal">Rp 0</strong></div>
+                        <div><span>Sisa Saat Ini</span><strong id="upjSisa">Rp 0</strong></div>
+                    </div>
+                    <button class="ct-submit-btn" onclick="konfirmasiPelunasanJurnal()"><i class="ph ph-check-circle"></i> Catat & Simpan Transaksi</button>
+                </div>
+            </div>
+        </div>
+
         <!-- ================= LAYAR BUKU BESAR DETAIL AKUN ================= -->
         <div id="akun-bb-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:35;">
             <div class="ct-header">
@@ -8387,6 +8594,8 @@ function unduhRiwayatTransaksi() {
                     guest.style.display = 'flex';
                     guest.classList.add('screen-in');
                     muatDataKas();
+                    renderGuestPendapatanDonasi();
+                    muatProgramKerja().then(renderGuestProkerList);
                 }, 300);
             }, 1650);
         }
@@ -8400,6 +8609,66 @@ function unduhRiwayatTransaksi() {
 
             login.style.display = 'flex';
             login.classList.remove('screen-out');
+        }
+
+        // ===== Guest: Saldo Akun Pendapatan Donasi/Proposal (real, dari buku besar) =====
+        async function muatSaldoPendapatanDonasi() {
+            try {
+                const coaRes = await supabaseClient
+                    .from('coa_akun')
+                    .select('id')
+                    .eq('nama', 'Pendapatan Dana Donasi/Proposal')
+                    .maybeSingle();
+                if (coaRes.error || !coaRes.data) return 0;
+
+                const mutasiRes = await supabaseClient
+                    .from('jurnal_detail')
+                    .select('debit, kredit')
+                    .eq('coa_akun_id', coaRes.data.id);
+                if (mutasiRes.error) return 0;
+
+                var saldo = 0;
+                (mutasiRes.data || []).forEach(function (m) {
+                    saldo += (parseFloat(m.kredit) || 0) - (parseFloat(m.debit) || 0);
+                });
+                return saldo;
+            } catch (e) {
+                return 0;
+            }
+        }
+        async function renderGuestPendapatanDonasi() {
+            var saldo = await muatSaldoPendapatanDonasi();
+            var el = document.getElementById('guestPendapatanDonasiAmount');
+            if (el) el.textContent = 'Rp ' + Math.round(saldo).toLocaleString('id-ID');
+        }
+
+        // ===== Guest: Daftar Proker Aktif (real, dari Supabase) + download PDF realisasi asli =====
+        function renderGuestProkerList() {
+            var wrap = document.getElementById('guestProkerList');
+            if (!wrap) return;
+
+            var daftar = Object.keys(prokerData).map(function (id) { return prokerData[id]; }).filter(function (p) { return !p.ditutup; });
+
+            var elStat = document.getElementById('guestStatProkerAktif');
+            if (elStat) elStat.textContent = daftar.length;
+
+            if (daftar.length === 0) {
+                wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada program kerja aktif.</div>';
+                return;
+            }
+
+            var html = '';
+            daftar.forEach(function (p, i) {
+                var totalRab = totalRabProker(p);
+                var totalReal = hitungTotalRealisasi(p);
+                var persen = totalRab > 0 ? Math.round((totalReal / totalRab) * 100) : 0;
+                var marginStyle = i === daftar.length - 1 ? ' style="margin-bottom:0;"' : '';
+                html += '<div class="guest-proker-card"' + marginStyle + ' onclick="unduhLaporan(\'Realisasi Anggaran - ' + p.nama.replace(/'/g, "\\'") + '\')">' +
+                    '<div class="guest-proker-ring" style="--p:' + persen + ';"><span>' + persen + '%</span></div>' +
+                    '<div class="guest-proker-mid"><div class="guest-proker-name">' + p.nama + '</div><div class="guest-proker-sub">Ketua: ' + (p.ketua || '-') + ' &middot; Realisasi anggaran</div></div>' +
+                    '<button class="guest-proker-dl"><i class="ph ph-download-simple"></i></button></div>';
+            });
+            wrap.innerHTML = html;
         }
 
         function bukaWBS() {
@@ -10281,7 +10550,500 @@ async function renderRincianAkunUP() {
 }
 </script>
 
-</body>
+<script>
+/* =========================================================================
+   SIASFA — PATCH PERALATAN & PELUNASAN UTANG/PIUTANG VIA JURNAL UMUM
+   ========================================================================= */
+
+var peralatanCache = [];
+var _pendingPeralatanBaru = null;
+var _pendingPeralatanHapus = null;
+var _pendingPelunasanJurnal = null;
+var _pendingJenisTxPrl = null;
+
+/* ---------- helper ---------- */
+function coaPeralatanIds() {
+    return (window._coaAkunCache || []).filter(function (c) {
+        return c.tipe === 'aset' && (c.nama || '').toLowerCase().indexOf('peralatan') !== -1;
+    }).map(function (c) { return String(c.id); });
+}
+function cariCoaByNama(nama) {
+    return (window._coaAkunCache || []).find(function (c) { return c.nama === nama; });
+}
+function scanBarisUmum() {
+    var hasil = [];
+    document.querySelectorAll('#umumRows .ct-table-row').forEach(function (row) {
+        var sel = row.querySelector('select');
+        if (!sel || !sel.value) return;
+        var parts = sel.value.split(':');
+        var inputs = row.querySelectorAll('input');
+        var obj = {
+            row: row, jenisAkun: parts[0], id: parts[1],
+            debit: parseRupiah(inputs[0].value) || 0,
+            kredit: parseRupiah(inputs[1].value) || 0,
+            nama: '', tipe: ''
+        };
+        if (parts[0] === 'coa') {
+            var c = (window._coaAkunCache || []).find(function (x) { return String(x.id) === parts[1]; });
+            if (c) { obj.nama = c.nama; obj.tipe = c.tipe; }
+        } else {
+            var k = (window._akunKasCache || []).find(function (x) { return String(x.id) === parts[1]; });
+            if (k) { obj.nama = k.nama; obj.tipe = 'kas'; }
+        }
+        hasil.push(obj);
+    });
+    return hasil;
+}
+function tambahBarisUmumDenganAkun(coaId, debit, kredit) {
+    tambahBarisUmum();
+    var rows = document.querySelectorAll('#umumRows .ct-table-row');
+    var row = rows[rows.length - 1];
+    var sel = row.querySelector('select');
+    sel.value = 'coa:' + coaId;
+    if (typeof tandaiAkunTerisi === 'function') tandaiAkunTerisi(sel);
+    var inputs = row.querySelectorAll('input');
+    inputs[0].value = debit ? debit.toLocaleString('id-ID') : '';
+    inputs[1].value = kredit ? kredit.toLocaleString('id-ID') : '';
+}
+function hapusBarisUmumBerakun(namaAkunArr) {
+    document.querySelectorAll('#umumRows .ct-table-row').forEach(function (row) {
+        var sel = row.querySelector('select');
+        if (!sel || !sel.value) return;
+        var parts = sel.value.split(':');
+        if (parts[0] !== 'coa') return;
+        var c = (window._coaAkunCache || []).find(function (x) { return String(x.id) === parts[1]; });
+        if (c && namaAkunArr.indexOf(c.nama) !== -1) row.remove();
+    });
+}
+async function ambilIdJurnalTerakhir() {
+    var r = await supabaseClient.from('jurnal_transaksi').select('id').order('id', { ascending: false }).limit(1);
+    if (r.error || !r.data || r.data.length === 0) return null;
+    return r.data[0].id;
+}
+
+/* ---------- INTERCEPT SUBMIT JURNAL ---------- */
+var _preSimpanTransaksi = simpanTransaksi;
+simpanTransaksi = async function (jenis) {
+    if (jenis !== 'Jurnal Umum') { await _preSimpanTransaksi(jenis); return; }
+
+    var baris = scanBarisUmum();
+    var idsPrl = coaPeralatanIds();
+    _pendingJenisTxPrl = jenis;
+
+    var prlKredit = baris.find(function (b) { return b.jenisAkun === 'coa' && idsPrl.indexOf(b.id) !== -1 && b.kredit > 0; });
+    if (prlKredit) { await bukaFormHapusPeralatan(prlKredit, baris); return; }
+
+    var prlDebit = baris.find(function (b) { return b.jenisAkun === 'coa' && idsPrl.indexOf(b.id) !== -1 && b.debit > 0; });
+    if (prlDebit) { bukaFormPeralatanBaru(prlDebit); return; }
+
+    var utangDebit = baris.find(function (b) {
+        return b.jenisAkun === 'coa' && (b.nama === 'Utang Kepada Vendor' || b.nama === 'Utang Kepada Anggota') && b.debit > 0;
+    });
+    if (utangDebit) { await bukaFormPelunasanJurnal('utang', utangDebit); return; }
+
+    var piutangKredit = baris.find(function (b) {
+        return b.jenisAkun === 'coa' && b.nama === 'Piutang Kepada Anggota' && b.kredit > 0;
+    });
+    if (piutangKredit) { await bukaFormPelunasanJurnal('piutang', piutangKredit); return; }
+
+    await _preSimpanTransaksi(jenis);
+};
+
+/* ---------- HOOK SETELAH JURNAL BENAR-BENAR TERSIMPAN ---------- */
+var _trueSimpanTransaksi = _origSimpanTransaksi;
+_origSimpanTransaksi = async function (jenis) {
+    var idSebelum = await ambilIdJurnalTerakhir();
+    await _trueSimpanTransaksi(jenis);
+    var idSesudah = await ambilIdJurnalTerakhir();
+    if (idSesudah && idSesudah !== idSebelum) {
+        await prosesSetelahSimpanJurnal(idSesudah);
+    }
+    _pendingPeralatanBaru = null;
+    _pendingPeralatanHapus = null;
+    _pendingPelunasanJurnal = null;
+};
+
+async function prosesSetelahSimpanJurnal(jurnalId) {
+    try {
+        if (_pendingPeralatanBaru && _pendingPeralatanBaru.rows) {
+            var payload = _pendingPeralatanBaru.rows.map(function (r) {
+                return {
+                    jurnal_id: jurnalId,
+                    coa_akun_id: _pendingPeralatanBaru.coaId,
+                    nama: r.nama, qty: r.qty, harga_beli: r.harga,
+                    tanggal_perolehan: _pendingPeralatanBaru.tanggal,
+                    status: 'Aktif'
+                };
+            });
+            var r1 = await supabaseClient.from('peralatan').insert(payload);
+            if (r1.error) alert('ERROR SUPABASE (simpan peralatan): ' + r1.error.message);
+        }
+
+        if (_pendingPeralatanHapus) {
+            var h = _pendingPeralatanHapus;
+            var r2 = await supabaseClient.from('peralatan').update({
+                status: h.jenis === 'Penjualan' ? 'Dijual' : 'Dihapus',
+                jenis_keluar: h.jenis,
+                tanggal_keluar: h.tanggal,
+                nominal_transaksi: h.nominal,
+                laba_rugi: h.labaRugi,
+                jurnal_keluar_id: jurnalId
+            }).eq('id', h.peralatanId);
+            if (r2.error) alert('ERROR SUPABASE (hapus peralatan): ' + r2.error.message);
+        }
+
+        if (_pendingPelunasanJurnal) {
+            var p = _pendingPelunasanJurnal;
+            var tabel, kolom;
+            if (p.sumber === 'vendor') { tabel = 'utang_vendor_pembayaran'; kolom = 'utang_id'; }
+            else if (p.sumber === 'anggota') { tabel = 'utang_anggota_pembayaran'; kolom = 'utang_id'; }
+            else { tabel = 'piutang_anggota_pembayaran'; kolom = 'piutang_id'; }
+            var row = { tanggal: p.tanggal, nominal: p.nominal, kas_id: null, via_jurnal: true };
+            row[kolom] = p.id;
+            var r3 = await supabaseClient.from(tabel).insert(row);
+            if (r3.error) alert('ERROR SUPABASE (pelunasan via jurnal): ' + r3.error.message);
+        }
+
+        await muatPeralatan();
+        if (document.getElementById('utang-piutang-screen').style.display === 'flex') {
+            await muatUtangPiutang();
+            renderRincianAkunUP();
+        }
+    } catch (e) {
+        alert('ERROR SISTEM (proses lanjutan jurnal): ' + e.message);
+    }
+}
+
+/* ---------- FORM PENDATAAN PERALATAN BARU ---------- */
+function bukaFormPeralatanBaru(barisPeralatan) {
+    _pendingPeralatanBaru = { coaId: parseInt(barisPeralatan.id), nominal: barisPeralatan.debit };
+    document.getElementById('prlbNamaAkun').textContent = barisPeralatan.nama;
+    document.getElementById('prlbTargetTotal').textContent = 'Rp ' + barisPeralatan.debit.toLocaleString('id-ID');
+    var tglEl = document.querySelector('#ctpage-umum input[type="date"]');
+    document.getElementById('prlbTanggal').value = tglEl ? tglEl.value : '';
+    document.getElementById('prlbRows').innerHTML = '';
+    tambahBarisPeralatanBaru();
+    document.getElementById('peralatan-catat-overlay').style.display = 'flex';
+}
+function batalkanPeralatanBaru() {
+    document.getElementById('peralatan-catat-overlay').style.display = 'none';
+    _pendingPeralatanBaru = null;
+}
+function tambahBarisPeralatanBaru() {
+    document.getElementById('prlbRows').insertAdjacentHTML('beforeend',
+        '<div class="ct-table-row prlb-row" style="grid-template-columns:1.4fr 0.5fr 1fr 20px;">' +
+        '<input type="text" class="prlb-nama" placeholder="Nama peralatan...">' +
+        '<input type="number" class="prlb-qty" placeholder="1" oninput="hitungTotalPeralatanBaru()">' +
+        '<input type="number" class="prlb-harga" placeholder="0" oninput="hitungTotalPeralatanBaru()">' +
+        '<i class="ph ph-x-circle ct-row-del" onclick="hapusBarisPeralatanBaru(this)"></i></div>');
+    hitungTotalPeralatanBaru();
+}
+function hapusBarisPeralatanBaru(el) {
+    if (document.querySelectorAll('#prlbRows .prlb-row').length <= 1) { alert('Minimal harus ada 1 baris peralatan'); return; }
+    el.closest('.prlb-row').remove();
+    hitungTotalPeralatanBaru();
+}
+function hitungTotalPeralatanBaru() {
+    var total = 0;
+    document.querySelectorAll('#prlbRows .prlb-row').forEach(function (r) {
+        var qty = parseRupiah(r.querySelector('.prlb-qty').value) || 0;
+        var harga = parseRupiah(r.querySelector('.prlb-harga').value) || 0;
+        total += qty * harga;
+    });
+    var el = document.getElementById('prlbTotalRincian');
+    el.textContent = 'Rp ' + total.toLocaleString('id-ID');
+    var target = _pendingPeralatanBaru ? _pendingPeralatanBaru.nominal : 0;
+    el.className = total === target ? 'ok' : 'bad';
+    return total;
+}
+async function konfirmasiPeralatanBaru() {
+    var rows = [], total = 0;
+    document.querySelectorAll('#prlbRows .prlb-row').forEach(function (r) {
+        var nama = r.querySelector('.prlb-nama').value.trim();
+        var qty = parseRupiah(r.querySelector('.prlb-qty').value) || 0;
+        var harga = parseRupiah(r.querySelector('.prlb-harga').value) || 0;
+        if (!nama || harga <= 0) return;
+        if (qty <= 0) qty = 1;
+        total += qty * harga;
+        rows.push({ nama: nama, qty: qty, harga: harga });
+    });
+    if (rows.length === 0) { alert('Isi minimal 1 peralatan dengan nama & harga beli'); return; }
+    var tanggal = document.getElementById('prlbTanggal').value;
+    if (!tanggal) { alert('Tanggal pembelian wajib diisi'); return; }
+    if (total !== _pendingPeralatanBaru.nominal) {
+        alert('Total rincian (Rp ' + total.toLocaleString('id-ID') + ') harus sama dengan nominal jurnal (Rp ' + _pendingPeralatanBaru.nominal.toLocaleString('id-ID') + ')');
+        return;
+    }
+    _pendingPeralatanBaru.rows = rows;
+    _pendingPeralatanBaru.tanggal = tanggal;
+    document.getElementById('peralatan-catat-overlay').style.display = 'none';
+    await _preSimpanTransaksi(_pendingJenisTxPrl);
+}
+
+/* ---------- FORM PENGHAPUSAN / PENJUALAN PERALATAN ---------- */
+async function bukaFormHapusPeralatan(barisPeralatan, semuaBaris) {
+    await muatPeralatan();
+    var aktif = peralatanCache.filter(function (p) { return p.status === 'Aktif'; });
+    if (aktif.length === 0) { alert('Belum ada data peralatan aktif yang bisa dihapus/dijual'); return; }
+
+    var nominal = 0;
+    semuaBaris.forEach(function (b) { if (b.jenisAkun === 'kas') nominal += b.debit; });
+
+    _pendingPeralatanHapus = {
+        coaId: parseInt(barisPeralatan.id),
+        rowEl: barisPeralatan.row,
+        nominal: nominal,
+        kreditAwal: barisPeralatan.kredit
+    };
+
+    document.getElementById('prlhItem').innerHTML = aktif.map(function (p) {
+        return '<option value="' + p.id + '">' + p.nama + ' (' + p.qty + ' unit) \u2014 Rp ' + p.nilaiBuku.toLocaleString('id-ID') + '</option>';
+    }).join('');
+    document.getElementById('prlhJenis').value = nominal > 0 ? 'Penjualan' : 'Penghapusan';
+    hitungLabaRugiPeralatan();
+    document.getElementById('peralatan-hapus-overlay').style.display = 'flex';
+}
+function batalkanHapusPeralatan() {
+    document.getElementById('peralatan-hapus-overlay').style.display = 'none';
+    _pendingPeralatanHapus = null;
+}
+function hitungLabaRugiPeralatan() {
+    if (!_pendingPeralatanHapus) return;
+    var jenis = document.getElementById('prlhJenis').value;
+    var id = document.getElementById('prlhItem').value;
+    var item = peralatanCache.find(function (p) { return String(p.id) === String(id); });
+    var nilaiBuku = item ? item.nilaiBuku : 0;
+    var nominal = jenis === 'Penghapusan' ? 0 : _pendingPeralatanHapus.nominal;
+    var labaRugi = nominal - nilaiBuku;
+
+    document.getElementById('prlhNominal').textContent = 'Rp ' + nominal.toLocaleString('id-ID');
+    document.getElementById('prlhNilaiBuku').textContent = 'Rp ' + nilaiBuku.toLocaleString('id-ID');
+    document.getElementById('prlhLabaRugi').textContent = (labaRugi < 0 ? '(Rp ' + Math.abs(labaRugi).toLocaleString('id-ID') + ')' : 'Rp ' + labaRugi.toLocaleString('id-ID'));
+
+    var box = document.getElementById('prlhBox');
+    box.classList.remove('co-box-ok', 'co-box-warn');
+    box.classList.add(labaRugi >= 0 ? 'co-box-ok' : 'co-box-warn');
+
+    var preview = '<strong>Jurnal setelah penyesuaian:</strong><br>';
+    if (nominal > 0) preview += '(D) Kas \u2014 Rp ' + nominal.toLocaleString('id-ID') + '<br>';
+    if (labaRugi < 0) preview += '(D) Beban Lainnya \u2014 Rp ' + Math.abs(labaRugi).toLocaleString('id-ID') + '<br>';
+    preview += '(K) ' + (item ? item.nama : 'Peralatan') + ' \u2014 Rp ' + nilaiBuku.toLocaleString('id-ID') + '<br>';
+    if (labaRugi > 0) preview += '(K) Pendapatan Lainnya \u2014 Rp ' + labaRugi.toLocaleString('id-ID');
+    document.getElementById('prlhPreviewJurnal').innerHTML = preview;
+
+    _pendingPeralatanHapus.jenis = jenis;
+    _pendingPeralatanHapus.peralatanId = item ? item.id : null;
+    _pendingPeralatanHapus.nilaiBuku = nilaiBuku;
+    _pendingPeralatanHapus.labaRugi = labaRugi;
+    _pendingPeralatanHapus.nominalFinal = nominal;
+}
+async function konfirmasiHapusPeralatan() {
+    if (!_pendingPeralatanHapus || !_pendingPeralatanHapus.peralatanId) { alert('Pilih peralatan terlebih dahulu'); return; }
+    var h = _pendingPeralatanHapus;
+
+    var coaPend = cariCoaByNama('Pendapatan Lainnya');
+    var coaBeban = cariCoaByNama('Beban Lainnya');
+    if (h.labaRugi > 0 && !coaPend) { alert('Akun "Pendapatan Lainnya" tidak ditemukan di COA'); return; }
+    if (h.labaRugi < 0 && !coaBeban) { alert('Akun "Beban Lainnya" tidak ditemukan di COA'); return; }
+
+    /* override jurnal: kredit peralatan = nilai buku */
+    var inputs = h.rowEl.querySelectorAll('input');
+    inputs[0].value = '';
+    inputs[1].value = h.nilaiBuku ? h.nilaiBuku.toLocaleString('id-ID') : '';
+
+    hapusBarisUmumBerakun(['Pendapatan Lainnya', 'Beban Lainnya']);
+
+    if (h.labaRugi > 0) tambahBarisUmumDenganAkun(coaPend.id, 0, h.labaRugi);
+    else if (h.labaRugi < 0) tambahBarisUmumDenganAkun(coaBeban.id, Math.abs(h.labaRugi), 0);
+
+    hitungTotalUmum();
+
+    var tglEl = document.querySelector('#ctpage-umum input[type="date"]');
+    h.tanggal = tglEl ? tglEl.value : null;
+    h.nominal = h.nominalFinal;
+
+    document.getElementById('peralatan-hapus-overlay').style.display = 'none';
+    await _preSimpanTransaksi(_pendingJenisTxPrl);
+}
+
+/* ---------- FORM PELUNASAN UTANG/PIUTANG LEWAT JURNAL UMUM ---------- */
+async function bukaFormPelunasanJurnal(tipe, baris) {
+    await muatUtangPiutang();
+    var opsi = [];
+    if (tipe === 'utang') {
+        var sumberTarget = baris.nama === 'Utang Kepada Vendor' ? 'vendor' : 'anggota';
+        opsi = upUtangCache.filter(function (u) { return u.sumber === sumberTarget; }).map(function (u) {
+            return { key: u.sumber + ':' + u.id, label: u.nama + ' \u2014 sisa Rp ' + u.sisa.toLocaleString('id-ID'), sisa: u.sisa };
+        });
+    } else {
+        opsi = upPiutangCache.map(function (p) {
+            return { key: 'piutang:' + p.id, label: p.nama + ' \u2014 sisa Rp ' + p.sisa.toLocaleString('id-ID'), sisa: p.sisa };
+        });
+    }
+    if (opsi.length === 0) { alert('Tidak ada data ' + (tipe === 'utang' ? 'utang' : 'piutang') + ' berjalan yang bisa dilunasi'); return; }
+
+    var nominal = tipe === 'utang' ? baris.debit : baris.kredit;
+    var tglEl = document.querySelector('#ctpage-umum input[type="date"]');
+
+    _pendingPelunasanJurnal = { tipe: tipe, nominal: nominal, tanggal: tglEl ? tglEl.value : null, opsi: opsi };
+
+    document.getElementById('upjTitle').textContent = tipe === 'utang' ? 'Pelunasan Utang' : 'Penerimaan Piutang';
+    document.getElementById('upjLabelPilih').textContent = tipe === 'utang' ? 'Pilih Utang yang Dibayar' : 'Pilih Piutang yang Diterima';
+    document.getElementById('upjNote').textContent = 'Transaksi ini menyentuh akun ' + baris.nama + '. Pilih data yang dilunasi agar saldonya ikut berkurang di menu Utang Piutang.';
+    document.getElementById('upjNominal').textContent = 'Rp ' + nominal.toLocaleString('id-ID');
+    document.getElementById('upjItem').innerHTML = opsi.map(function (o) {
+        return '<option value="' + o.key + '">' + o.label + '</option>';
+    }).join('');
+    tampilkanSisaUp();
+    document.getElementById('up-jurnal-overlay').style.display = 'flex';
+}
+function batalkanPelunasanJurnal() {
+    document.getElementById('up-jurnal-overlay').style.display = 'none';
+    _pendingPelunasanJurnal = null;
+}
+function tampilkanSisaUp() {
+    if (!_pendingPelunasanJurnal) return;
+    var key = document.getElementById('upjItem').value;
+    var o = _pendingPelunasanJurnal.opsi.find(function (x) { return x.key === key; });
+    document.getElementById('upjSisa').textContent = 'Rp ' + (o ? o.sisa : 0).toLocaleString('id-ID');
+}
+async function konfirmasiPelunasanJurnal() {
+    var key = document.getElementById('upjItem').value;
+    if (!key) { alert('Pilih data terlebih dahulu'); return; }
+    var o = _pendingPelunasanJurnal.opsi.find(function (x) { return x.key === key; });
+    if (_pendingPelunasanJurnal.nominal > o.sisa) {
+        alert('Nominal jurnal (Rp ' + _pendingPelunasanJurnal.nominal.toLocaleString('id-ID') + ') melebihi sisa (Rp ' + o.sisa.toLocaleString('id-ID') + ')');
+        return;
+    }
+    var parts = key.split(':');
+    _pendingPelunasanJurnal.sumber = parts[0];
+    _pendingPelunasanJurnal.id = parseInt(parts[1]);
+    document.getElementById('up-jurnal-overlay').style.display = 'none';
+    await _preSimpanTransaksi(_pendingJenisTxPrl);
+}
+
+/* ---------- MENU PERALATAN ---------- */
+async function bukaPeralatan() {
+    document.getElementById('peralatan-screen').style.display = 'flex';
+    await muatPeralatan();
+}
+function tutupPeralatan() { document.getElementById('peralatan-screen').style.display = 'none'; }
+
+async function muatPeralatan() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('peralatan')
+            .select('*')
+            .order('tanggal_perolehan', { ascending: true })
+            .order('id', { ascending: true });
+        if (error) { alert('ERROR SUPABASE (peralatan): ' + error.message); return; }
+
+        peralatanCache = (data || []).map(function (p) {
+            var qty = parseFloat(p.qty) || 0;
+            var harga = parseFloat(p.harga_beli) || 0;
+            return {
+                id: p.id, nama: p.nama, qty: qty, harga: harga, nilaiBuku: qty * harga,
+                tanggal: p.tanggal_perolehan, status: p.status || 'Aktif',
+                jenisKeluar: p.jenis_keluar, tanggalKeluar: p.tanggal_keluar,
+                nominalTransaksi: parseFloat(p.nominal_transaksi) || 0,
+                labaRugi: parseFloat(p.laba_rugi) || 0
+            };
+        });
+        renderPeralatan();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+function renderPeralatan() {
+    var wrap = document.getElementById('prlRows');
+    if (!wrap) return;
+    var aktif = peralatanCache.filter(function (p) { return p.status === 'Aktif'; });
+    var arsip = peralatanCache.filter(function (p) { return p.status !== 'Aktif'; });
+
+    var total = aktif.reduce(function (s, p) { return s + p.nilaiBuku; }, 0);
+    var totalLabaRugi = arsip.reduce(function (s, p) { return s + p.labaRugi; }, 0);
+
+    document.getElementById('prlTotalNilaiBuku').textContent = 'Rp ' + total.toLocaleString('id-ID');
+    document.getElementById('prlJumlahItem').textContent = aktif.length;
+    document.getElementById('prlLabaRugi').textContent = (totalLabaRugi < 0 ? '(Rp ' + Math.abs(totalLabaRugi).toLocaleString('id-ID') + ')' : 'Rp ' + totalLabaRugi.toLocaleString('id-ID'));
+
+    var html = '';
+    aktif.forEach(function (p) {
+        html += '<div class="ip-table-row" style="grid-template-columns:0.9fr 1.3fr 0.4fr 0.9fr;">' +
+            '<span style="font-size:0.7rem; color:var(--text-gray);">' + formatTanggalID(p.tanggal) + '</span>' +
+            '<span style="font-size:0.74rem; font-weight:600; color:var(--text-dark);">' + p.nama + '</span>' +
+            '<span style="font-size:0.72rem; color:var(--text-dark);">' + p.qty + '</span>' +
+            '<span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">Rp ' + p.nilaiBuku.toLocaleString('id-ID') + '</span></div>';
+    });
+    wrap.innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada peralatan tercatat. Data akan muncul otomatis saat ada jurnal yang mendebit akun peralatan.</div>';
+
+    var htmlArsip = '';
+    arsip.forEach(function (p) {
+        var untung = p.labaRugi >= 0;
+        htmlArsip += '<div class="ip-item-card">' +
+            '<div class="ip-item-top"><div><div class="ip-item-title">' + p.nama + '</div>' +
+            '<div class="ip-item-kas">' + (p.jenisKeluar || p.status) + ' \u00b7 ' + formatTanggalID(p.tanggalKeluar) + ' \u00b7 Nilai buku Rp ' + p.nilaiBuku.toLocaleString('id-ID') + '</div></div>' +
+            '<span class="pay-status-badge ' + (untung ? 'lunas' : 'belum') + '">' + (untung ? 'Untung' : 'Rugi') + ' Rp ' + Math.abs(p.labaRugi).toLocaleString('id-ID') + '</span></div></div>';
+    });
+    document.getElementById('prlArsipRows').innerHTML = htmlArsip || '<div style="padding:12px 0; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada pelepasan peralatan.</div>';
+}
+
+/* ---------- REKAP UTANG/PIUTANG: abaikan pembayaran yang lewat jurnal ---------- */
+muatRekapUtangPiutang = async function () {
+    try {
+        const [uv, ua, pa, uvp, uap, pap] = await Promise.all([
+            supabaseClient.from('utang_vendor').select('id, total_utang'),
+            supabaseClient.from('utang_anggota').select('id, total_utang'),
+            supabaseClient.from('piutang_anggota').select('id, nominal'),
+            supabaseClient.from('utang_vendor_pembayaran').select('nominal, kas_id, via_jurnal'),
+            supabaseClient.from('utang_anggota_pembayaran').select('nominal, kas_id, via_jurnal'),
+            supabaseClient.from('piutang_anggota_pembayaran').select('nominal, kas_id, via_jurnal')
+        ]);
+        if (uv.error || ua.error || pa.error || uvp.error || uap.error || pap.error) return null;
+
+        var totalUtangVendorAsal = (uv.data || []).reduce(function (s, x) { return s + (parseFloat(x.total_utang) || 0); }, 0);
+        var totalUtangAnggotaAsal = (ua.data || []).reduce(function (s, x) { return s + (parseFloat(x.total_utang) || 0); }, 0);
+        var totalPiutangAsal = (pa.data || []).reduce(function (s, x) { return s + (parseFloat(x.nominal) || 0); }, 0);
+
+        var bayarUtangVendor = 0, bayarUtangAnggota = 0, bayarPiutang = 0;
+        var semuaBayarUV = 0, semuaBayarUA = 0, semuaBayarPA = 0;
+        var kasKeluarUtang = {}, kasMasukPiutang = {};
+
+        (uvp.data || []).forEach(function (b) {
+            var n = parseFloat(b.nominal) || 0;
+            semuaBayarUV += n;
+            if (b.via_jurnal) return;
+            bayarUtangVendor += n;
+            if (b.kas_id) kasKeluarUtang[b.kas_id] = (kasKeluarUtang[b.kas_id] || 0) + n;
+        });
+        (uap.data || []).forEach(function (b) {
+            var n = parseFloat(b.nominal) || 0;
+            semuaBayarUA += n;
+            if (b.via_jurnal) return;
+            bayarUtangAnggota += n;
+            if (b.kas_id) kasKeluarUtang[b.kas_id] = (kasKeluarUtang[b.kas_id] || 0) + n;
+        });
+        (pap.data || []).forEach(function (b) {
+            var n = parseFloat(b.nominal) || 0;
+            semuaBayarPA += n;
+            if (b.via_jurnal) return;
+            bayarPiutang += n;
+            if (b.kas_id) kasMasukPiutang[b.kas_id] = (kasMasukPiutang[b.kas_id] || 0) + n;
+        });
+
+        return {
+            kasKeluarUtang: kasKeluarUtang, kasMasukPiutang: kasMasukPiutang,
+            bayarUtangVendor: bayarUtangVendor, bayarUtangAnggota: bayarUtangAnggota, bayarPiutang: bayarPiutang,
+            utangVendorSisa: totalUtangVendorAsal - semuaBayarUV,
+            utangAnggotaSisa: totalUtangAnggotaAsal - semuaBayarUA,
+            piutangAnggotaSisa: totalPiutangAsal - semuaBayarPA
+        };
+    } catch (e) {
+        return null;
+    }
+};
+</script>
 
 </body>
 </html>
