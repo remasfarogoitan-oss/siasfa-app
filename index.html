@@ -40,6 +40,15 @@
             font-family: 'Inter', sans-serif;
         }
 
+        /* Semua <select> akun: biarkan tinggi mengikuti isi teks,
+           supaya nama akun panjang tidak terpotong */
+        select {
+            white-space: normal;
+            word-break: break-word;
+            height: auto;
+            line-height: 1.35;
+        }
+
         html, body {
             height: 100%;
             overscroll-behavior: none;
@@ -877,6 +886,86 @@
             border-color: rgba(0,0,0,0.4);
             background: rgba(0,0,0,0.04);
         }
+
+        /* ============================================================
+           CUSTOM DROPDOWN AKUN — pengganti <select> native
+           Tinggi kotak mengikuti isi teks, daftar dibuka via bottom sheet
+           ============================================================ */
+        .siasfa-select-wrap { position: relative; width: 100%; }
+        .siasfa-select-display {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 6px;
+            width: 100%;
+            min-height: 34px;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 7px 8px;
+            font-size: 0.68rem;
+            line-height: 1.35;
+            color: var(--text-dark);
+            background: #FFFFFF;
+            cursor: pointer;
+            white-space: normal;
+            word-break: break-word;
+        }
+        .siasfa-select-display .siasfa-select-display-text { flex: 1; min-width: 0; padding-top: 1px; }
+        .siasfa-select-display i { flex: 0 0 auto; font-size: 0.85rem; color: var(--text-gray); margin-top: 2px; }
+        .siasfa-select-display.siasfa-select-placeholder .siasfa-select-display-text { color: #9CA3AF; }
+        .siasfa-select-display.siasfa-select-filled {
+            color: var(--maroon);
+            font-weight: 700;
+            border-color: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.04);
+        }
+        .siasfa-select-display.siasfa-select-filled i { color: var(--maroon); }
+        .siasfa-select-display:active { opacity: 0.85; }
+
+        .siasfa-select-panel-overlay {
+            position: fixed; inset: 0; z-index: 99985;
+            background: rgba(0,0,0,0.55);
+            display: flex; align-items: flex-end; justify-content: center;
+            animation: siasfaSelectFade 0.15s ease;
+        }
+        @keyframes siasfaSelectFade { from { opacity: 0; } to { opacity: 1; } }
+
+        .siasfa-select-panel {
+            width: min(420px, 100%);
+            max-height: 82vh;
+            background: #FFFFFF;
+            border-radius: 24px 24px 0 0;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            animation: siasfaSelectUp 0.22s cubic-bezier(0.22,1,0.36,1);
+        }
+        @keyframes siasfaSelectUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .siasfa-select-panel-head {
+            flex: 0 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 20px;
+            background: linear-gradient(to right, var(--grad-start), var(--grad-end));
+            color: #FFFFFF;
+        }
+        .siasfa-select-panel-title { font-size: 0.92rem; font-weight: 700; }
+        .siasfa-select-panel-head i { font-size: 1.2rem; cursor: pointer; }
+
+        .siasfa-select-search-wrap {
+            flex: 0 0 auto;
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+        }
+        .siasfa-select-search-wrap i { color: var(--text-gray); font-size: 1.05rem; }
+        .siasfa-select-search { flex: 1; border: none; outline: none; font-size: 0.82rem; color: var(--text-dark); background: transparent; }
+
+        .siasfa-select-panel-list { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 6px 0 14px; }
+        .siasfa-select-option { padding: 12px 20px; font-size: 0.82rem; color: var(--text-dark); border-bottom: 1px solid var(--line); cursor: pointer; line-height: 1.4; }
+        .siasfa-select-option:active { background: var(--paper-soft); }
+        .siasfa-select-option.selected { color: var(--maroon); font-weight: 700; background: rgba(184,19,55,0.06); }
+        .siasfa-select-option-empty { padding: 20px; text-align: center; color: var(--text-gray); font-size: 0.78rem; display: none; }
+
         .ct-row-del { color: var(--maroon); font-size: 1.1rem; cursor: pointer; justify-self: center; }
 
         .ct-add-row {
@@ -1046,6 +1135,66 @@
 .ct-upload-zone.has-file > span {
     color: #16A34A;
 }
+        .pj-narasi-box {
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.25);
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .pj-narasi-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #2563EB;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .pj-narasi-item {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 6px 0;
+            border-top: 1px dashed rgba(37, 99, 235, 0.25);
+        }
+        .pj-narasi-item:first-of-type { border-top: none; }
+        .pj-rincian-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-top: 6px;
+        }
+        .pj-rincian-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-dark);
+            padding: 7px 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .pj-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: var(--paper-soft);
+        }
+        .pj-total-row.ok { color: #16A34A; }
+        .pj-total-row.bad { color: var(--maroon); }
+        .pj-status {
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 2px;
+        }
+        .pj-status.ok { color: #16A34A; }
+        .pj-status.bad { color: var(--maroon); }
         .ct-submit-btn {
             width: 100%;
             padding: 15px;
@@ -1657,6 +1806,28 @@
         .aging-card.tipe-piutang .aging-btn-primary { background: linear-gradient(135deg, #16A34A, #14532D); box-shadow: 0 6px 14px rgba(22,163,74,0.22); }
         .aging-btn-secondary { background: var(--paper-soft); color: var(--text-dark); border: 1px solid var(--line); }
         .aging-btn:active { opacity: 0.85; transform: scale(0.98); }
+
+        /* ---- Tandai Jurnal (flag merah/hijau) ---- */
+        .tandai-badge-kecil { display:inline-flex; align-items:center; gap:3px; font-size:0.6rem; font-weight:700; padding:2px 7px; border-radius:8px; margin-left:6px; vertical-align:middle; }
+        .tandai-badge-kecil.merah { background:rgba(220,38,38,0.12); color:#DC2626; }
+        .tandai-badge-kecil.hijau { background:rgba(22,163,74,0.12); color:#16A34A; }
+        .tandai-badge-besar { display:flex; align-items:flex-start; gap:10px; border-radius:14px; padding:12px 14px; margin:4px 0 6px; }
+        .tandai-badge-besar.merah { background:rgba(220,38,38,0.07); border:1px solid rgba(220,38,38,0.3); }
+        .tandai-badge-besar.hijau { background:rgba(22,163,74,0.07); border:1px solid rgba(22,163,74,0.3); }
+        .tandai-badge-besar i.tandai-flag-icon { font-size:1.2rem; margin-top:1px; }
+        .tandai-badge-besar.merah i.tandai-flag-icon { color:#DC2626; }
+        .tandai-badge-besar.hijau i.tandai-flag-icon { color:#16A34A; }
+        .tandai-badge-besar .tandai-title { font-size:0.76rem; font-weight:800; }
+        .tandai-badge-besar.merah .tandai-title { color:#DC2626; }
+        .tandai-badge-besar.hijau .tandai-title { color:#16A34A; }
+        .tandai-badge-besar .tandai-sub { font-size:0.68rem; color:var(--text-gray); margin-top:3px; line-height:1.5; }
+        .tandai-badge-besar .tandai-meta { font-size:0.6rem; color:var(--text-gray); margin-top:6px; font-weight:600; }
+        .tandai-rekom-row { display:grid; grid-template-columns:1.5fr 0.8fr 0.8fr 20px; gap:6px; align-items:center; padding:6px 0; }
+        .tandai-rekom-row input { border:1px solid var(--border-gray); border-radius:8px; padding:6px 7px; font-size:0.72rem; color:var(--text-dark); outline:none; width:100%; }
+        .tandai-status-choice { display:flex; gap:8px; }
+        .tandai-status-btn { flex:1; padding:12px; border-radius:12px; font-size:0.76rem; font-weight:700; text-align:center; cursor:pointer; border:1.5px solid var(--border-gray); background:#FFFFFF; color:var(--text-dark); }
+        .tandai-status-btn.aktif-merah { border-color:#DC2626; background:rgba(220,38,38,0.08); color:#DC2626; }
+        .tandai-status-btn.aktif-hijau { border-color:#16A34A; background:rgba(22,163,74,0.08); color:#16A34A; }
     /* =========================================================
    SISTEM NOTIFIKASI SIASFA
    Semua alert() diarahkan ke popup aplikasi sendiri
@@ -2343,9 +2514,13 @@
                                 <div class="menu-icon-box"><i class="ph ph-credit-card"></i></div>
                                 <div class="menu-label">Rekening Bank</div>
                             </div>
-                            <div class="menu-item" onclick="bukaPemeriksaan()">
+                            <div class="menu-item" id="menuPemeriksaan" style="display:none;" onclick="bukaPemeriksaan()">
                                 <div class="menu-icon-box"><i class="ph ph-check-square"></i></div>
                                 <div class="menu-label">Pemeriksaan</div>
+                            </div>
+                            <div class="menu-item" id="menuWbsData" style="display:none;" onclick="bukaWbsData()">
+                                <div class="menu-icon-box"><i class="ph ph-flag"></i></div>
+                                <div class="menu-label">WBS Data</div>
                             </div>
                             <div class="menu-item" onclick="bukaIuran()">
                                 <div class="menu-icon-box"><i class="ph ph-users"></i></div>
@@ -2380,6 +2555,16 @@
                         <div id="berandaProkerList" style="display:flex; flex-direction:column; gap:9px;">
                             <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat program kerja...</div>
                         </div>
+                    </div>
+
+                    <div>
+                        <div class="ledger-head">
+                            <div class="ledger-title">Komposisi Beban &amp; Biaya</div>
+                        </div>
+                        <div style="position:relative; height:220px;">
+                            <canvas id="chartBebanPie"></canvas>
+                        </div>
+                        <div id="bebanPieLegend" style="display:flex; flex-direction:column; gap:8px; margin-top:14px;"></div>
                     </div>
 
                 </div>
@@ -2623,7 +2808,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ct-add-row" onclick="tambahBarisUmum()"><i class="ph ph-plus-circle"></i> Tambah Baris</div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                            <div class="ct-add-row" onclick="tambahBarisUmum()"><i class="ph ph-plus-circle"></i> Tambah Baris</div>
+                            <div class="ct-add-row" style="color:#2563EB;" onclick="bukaPeriksaJurnal()"><i class="ph ph-magnifying-glass"></i> Periksa Jurnal</div>
+                        </div>
                     </div>
 
                     <div class="ct-total-box">
@@ -2791,6 +2979,17 @@
                     <button class="ct-submit-btn" onclick="simpanTransaksi('Pengeluaran')"><i class="ph ph-paper-plane-tilt"></i> Submit Transaksi</button>
                 </div>
 
+            </div>
+        </div>
+
+        <!-- ================= MODAL PERIKSA JURNAL ================= -->
+        <div id="periksa-jurnal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:45; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Periksa Jurnal</div>
+                    <i class="ph ph-x" onclick="tutupPeriksaJurnal()"></i>
+                </div>
+                <div class="co-modal-body" id="periksaJurnalBody"></div>
             </div>
         </div>
 
@@ -3833,6 +4032,13 @@
                 </div>
 
                 <div>
+                    <div class="ledger-head"><div class="ledger-title">Tren Infaq Harian</div></div>
+                    <div style="position:relative; height:200px;">
+                        <canvas id="chartInfaqTren"></canvas>
+                    </div>
+                </div>
+
+                <div>
                     <div class="rb-section-label">Rekapitulasi Infaq Harian Ramadhan</div>
                     <div class="if-table-wrap">
                         <div class="if-table-head"><span>Tanggal</span><span>Petugas</span><span>Jumlah</span><span>Aksi</span></div>
@@ -4253,6 +4459,28 @@
             </div>
         </div>
 
+        <!-- ================= LAYAR WBS DATA (Internal) ================= -->
+        <div id="wbs-data-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupWbsData()"></i>
+                    <div class="ct-header-title">WBS Data</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body">
+                <div class="laporan-tabs">
+                    <button class="laporan-tab-btn active" id="wbsftab-semua" onclick="filterWbsData('semua')">Semua</button>
+                    <button class="laporan-tab-btn" id="wbsftab-belum" onclick="filterWbsData('Belum Ditindaklanjuti')">Belum</button>
+                    <button class="laporan-tab-btn" id="wbsftab-sudah" onclick="filterWbsData('Sudah Ditindaklanjuti')">Sudah</button>
+                    <button class="laporan-tab-btn" id="wbsftab-tr" onclick="filterWbsData('Tidak Relevan')">Tdk Relevan</button>
+                </div>
+                <div id="wbsDataList" style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat laporan...</div>
+                </div>
+            </div>
+        </div>
+
         <!-- ================= MODAL WHISTLEBLOWING SYSTEM ================= -->
         <div id="wbs-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
@@ -4371,8 +4599,51 @@
 
     </div>
 
+    <!-- ================= MODAL TANDAI JURNAL ================= -->
+    <div id="tandai-modal-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99991; align-items:flex-end; justify-content:center;">
+        <div class="co-modal">
+            <div class="co-modal-head">
+                <div class="co-modal-title" id="tandaiModalTitle">Tandai Jurnal</div>
+                <i class="ph ph-x" onclick="tutupModalTandai()"></i>
+            </div>
+            <div class="co-modal-body">
+                <div class="un-note-text">Fitur ini hanya untuk Kepala Biro Anggaran dan Keuangan &amp; Pemeriksa Internal. Tandai merah bila jurnal ini keliru, atau tandai hijau bila jurnal sudah/tetap benar (termasuk setelah direvisi bendahara).</div>
+
+                <div class="tandai-status-choice">
+                    <div class="tandai-status-btn" id="tandaiBtnMerah" onclick="pilihStatusTandai('merah')"><i class="ph ph-flag" style="margin-right:4px;"></i> Bendera Merah (Salah)</div>
+                    <div class="tandai-status-btn" id="tandaiBtnHijau" onclick="pilihStatusTandai('hijau')"><i class="ph ph-flag" style="margin-right:4px;"></i> Bendera Hijau (Sudah Benar)</div>
+                </div>
+
+                <div id="tandaiFormMerah" style="display:none; flex-direction:column; gap:14px;">
+                    <div class="ct-field" style="margin-bottom:0;">
+                        <label>Catatan Kesalahan</label>
+                        <input type="text" id="tandaiCatatan" placeholder="Jelaskan letak kesalahan jurnal ini...">
+                    </div>
+                    <div class="ct-add-row" onclick="toggleRekomendasiJurnal()"><i class="ph ph-lightbulb"></i> Rekomendasikan Jurnal Yang Benar</div>
+                    <div id="tandaiRekomendasiBox" style="display:none;">
+                        <div class="ct-table-wrap">
+                            <div class="ct-table-head" style="grid-template-columns:1.5fr 0.8fr 0.8fr 20px;"><span>Nama Akun</span><span>Debit</span><span>Kredit</span><span></span></div>
+                            <div id="tandaiRekomRows"></div>
+                        </div>
+                        <div class="ct-add-row" onclick="tambahBarisRekomendasi()"><i class="ph ph-plus-circle"></i> Tambah Akun</div>
+                    </div>
+                </div>
+
+                <div id="tandaiFormHijau" style="display:none; flex-direction:column; gap:14px;">
+                    <div class="ct-field" style="margin-bottom:0;">
+                        <label>Catatan (Opsional)</label>
+                        <input type="text" id="tandaiCatatanHijau" placeholder="Contoh: sudah direvisi sesuai rekomendasi...">
+                    </div>
+                </div>
+
+                <button class="ct-submit-btn" id="tandaiSubmitBtn" style="display:none;" onclick="simpanTandai()"><i class="ph ph-flag"></i> Simpan Tanda</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Script Javascript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -4549,6 +4820,47 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             }
         }
 
+        // ===== Pie Chart Beban & Biaya (Beranda) =====
+        var _chartBebanInstance = null;
+        async function renderBebanPieChart() {
+            try {
+                var data = await hitungLaporanKeuangan();
+                if (!data) return;
+                var canvas = document.getElementById('chartBebanPie');
+                if (!canvas || typeof Chart === 'undefined') return;
+
+                var items = (data.bebanCoa || []).filter(function (b) { return b.saldo > 0; });
+                var total = items.reduce(function (s, b) { return s + b.saldo; }, 0);
+
+                var palet = ['#B81337', '#FF7A5C', '#7A0E26', '#9E2A1E', '#1A1225', '#948E96', '#D97706', '#2563EB'];
+                var labels = items.map(function (b) { return b.nama; });
+                var values = items.map(function (b) { return b.saldo; });
+                var colors = items.map(function (b, i) { return palet[i % palet.length]; });
+
+                if (_chartBebanInstance) { _chartBebanInstance.destroy(); }
+                if (items.length === 0) {
+                    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                    document.getElementById('bebanPieLegend').innerHTML = '<div style="text-align:center; color:var(--text-gray); font-size:0.78rem; padding:10px 0;">Belum ada beban tercatat.</div>';
+                    return;
+                }
+
+                _chartBebanInstance = new Chart(canvas.getContext('2d'), {
+                    type: 'pie',
+                    data: { labels: labels, datasets: [{ data: values, backgroundColor: colors, borderColor: '#FFFFFF', borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+
+                var legendHtml = '';
+                items.forEach(function (b, i) {
+                    var persen = total > 0 ? Math.round((b.saldo / total) * 100) : 0;
+                    legendHtml += '<div style="display:flex; align-items:center; justify-content:space-between; font-size:0.76rem;">' +
+                        '<span style="display:flex; align-items:center; gap:8px; color:var(--text-dark); font-weight:600;"><span style="width:10px; height:10px; border-radius:50%; background:' + colors[i] + '; display:inline-block;"></span>' + b.nama + '</span>' +
+                        '<span style="font-weight:700; color:var(--maroon);">' + persen + '% &middot; Rp ' + Math.round(b.saldo).toLocaleString('id-ID') + '</span></div>';
+                });
+                document.getElementById('bebanPieLegend').innerHTML = legendHtml;
+            } catch (e) { /* diamkan */ }
+        }
+
         // ===== Buka-tutup rincian kas =====
         function toggleDetail() {
             var detail = document.getElementById('detailKas');
@@ -4572,6 +4884,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             document.getElementById('app-body').scrollTop = 0;
 
             if (tab === 'profil') { muatPlottingAkun(); renderProfilUser(); }
+            if (tab === 'beranda') { renderBebanPieChart(); }
         }
 
         // ===== Sub-tab halaman Laporan =====
@@ -4679,6 +4992,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                         muatProgramKerja();
                         muatStatMasukKeluar();
                         renderProfilUser();
+                        terapkanAksesMenuBerdasarkanJabatan();
+                        renderBebanPieChart();
                         if (_currentUser.harus_ganti_password) {
                             setTimeout(function () { document.getElementById('warning-ganti-password-overlay').style.display = 'flex'; }, 400);
                         }
@@ -5118,6 +5433,7 @@ function tutupCatatTransaksi() {
                 '<input type="number" placeholder="0" oninput="hitungTotalUmum()">' +
                 '<input type="number" placeholder="0" oninput="hitungTotalUmum()">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
+            if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
         }
         function tambahBarisPenerimaan() {
             document.getElementById('penerimaanRows').insertAdjacentHTML('beforeend',
@@ -5126,6 +5442,7 @@ function tutupCatatTransaksi() {
                 '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Sumber</option>' + optCoaList('pendapatan') + '</select>' +
                 '<input type="number" placeholder="0">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
+            if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
         }
         function tambahBarisPengeluaran() {
             document.getElementById('pengeluaranRows').insertAdjacentHTML('beforeend',
@@ -5134,6 +5451,7 @@ function tutupCatatTransaksi() {
                 '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Akun Kas</option>' + optKasList() + '</select>' +
                 '<input type="number" placeholder="0">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
+            if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
         }
 
         // ===== Update label & style upload nota di Catat Transaksi =====
@@ -5362,6 +5680,7 @@ keterangan = keteranganField
 
 await muatDataKas();
 await muatProgramKerja();
+renderBebanPieChart();
 
 // Tutup form Catat Transaksi
 var catatScreen = document.getElementById('catat-transaksi-screen');
@@ -6184,6 +6503,7 @@ async function updateJurnal(jurnalId, jenis) {
                 if (error) { alert('ERROR SUPABASE (riwayat): ' + error.message); return; }
 
                 _riwayatCache = data || [];
+                await muatTandaiMap();
                 renderRiwayatTransaksi();
                 buildBukuBesarCacheFromRiwayat();
                 var rekap = await muatRekapIuranPenjualan();
@@ -6224,7 +6544,7 @@ async function updateJurnal(jurnalId, jenis) {
 
                 html += '<div class="rw-trx-item" onclick="bukaDetailJurnal(\'' + trx.id + '\')" data-ket="' + trx.keterangan + '" data-akun="' + akunNames.join(' ') + '" data-id="' + trx.kode + '" data-inputer="' + trx.bendahara + '">' +
                     '<div class="rw-trx-icon ' + cls + '"><i class="ph ' + arrow + '"></i></div>' +
-                    '<div class="rw-trx-mid"><div class="rw-trx-ket">' + trx.keterangan + '</div><div class="rw-trx-sub">' + trx.bendahara + ' &middot; ' + formatTanggalID(trx.tanggal) + '</div></div>' +
+                    '<div class="rw-trx-mid"><div class="rw-trx-ket">' + trx.keterangan + badgeTandaiKecil(trx.id) + '</div><div class="rw-trx-sub">' + trx.bendahara + ' &middot; ' + formatTanggalID(trx.tanggal) + '</div></div>' +
                     '<div class="rw-trx-right"><div class="rw-trx-nominal ' + nomClass + '">' + prefix + 'Rp ' + nomShow.toLocaleString('id-ID') + '</div><div class="rw-trx-id">' + trx.kode + '</div></div>' +
                     '</div>';
             });
@@ -6464,7 +6784,7 @@ async function updateJurnal(jurnalId, jenis) {
 
                 if (p.ditutup) {
                     countSelesai++;
-                    arsipHtml += '<div class="pk-arsip-card"><div class="pk-arsip-title">' + p.nama + '</div>' +
+                    arsipHtml += '<div class="pk-arsip-card" style="cursor:pointer;" onclick="bukaBukuProker(' + p.id + ')"><div class="pk-arsip-title">' + p.nama + '</div>' +
                         '<div class="pk-arsip-sub">Ketua: ' + (p.ketua || '-') + ' &middot; Realisasi ' + persen + '% &middot; Selesai</div></div>';
                 } else {
                     countAktif++;
@@ -6736,6 +7056,10 @@ async function updateJurnal(jurnalId, jenis) {
         function tutupDokumenProker() { document.getElementById('proker-dokumen-overlay').style.display = 'none'; }
         function renderDokumenProker() {
             var p = prokerData[prokerAktifId];
+            document.querySelectorAll('#proker-dokumen-overlay .ct-upload-zone').forEach(function (z) {
+                z.style.opacity = p.ditutup ? '0.5' : '1';
+                z.style.pointerEvents = p.ditutup ? 'none' : 'auto';
+            });
             ['proposal', 'lpj', 'dokumentasi'].forEach(function (key) {
                 var tagId = 'bpTag' + key.charAt(0).toUpperCase() + key.slice(1);
                 var terupload = p.dokumen[key] && p.dokumen[key].uploaded;
@@ -6753,6 +7077,8 @@ async function updateJurnal(jurnalId, jenis) {
             var btn = document.getElementById('bpTutupBtn');
             btn.disabled = !dokumentasiSiap || p.ditutup;
             btn.innerHTML = p.ditutup ? '<i class="ph ph-lock-key"></i> Proker Sudah Ditutup' : '<i class="ph ph-lock-key"></i> Tutup Buku Proker';
+            var btnTanpaDok = document.querySelector('#proker-dokumen-overlay .co-btn-secondary');
+            if (btnTanpaDok) btnTanpaDok.style.display = p.ditutup ? 'none' : 'flex';
         }
         async function uploadDokumenProker(key, inputEl) {
             try {
@@ -6788,7 +7114,7 @@ async function updateJurnal(jurnalId, jenis) {
             if (res.error) { alert('ERROR SUPABASE (tutup buku): ' + res.error.message); return; }
 
             p.ditutup = true;
-            alert('Buku proker berhasil ditutup. (Catatan: reklasifikasi otomatis pendapatan terikat belum diimplementasikan)');
+            alert('Buku proker berhasil ditutup. Reklasifikasi Aset Neto tetap mengikuti perhitungan otomatis di Laporan Keuangan (berdasarkan dana kas terikat yang sudah dibelanjakan), tidak dihitung per-proker.');
             renderDokumenProker();
             bukaBukuProker(prokerAktifId);
             await muatProgramKerja();
@@ -7725,6 +8051,42 @@ async function updateJurnal(jurnalId, jenis) {
             });
             wrap.innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada data infaq.</div>';
             hitungTotalInfaq();
+            renderInfaqTrenChart();
+        }
+
+        var _chartInfaqInstance = null;
+        function renderInfaqTrenChart() {
+            var canvas = document.getElementById('chartInfaqTren');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            var urut = infaqData.slice().sort(function (a, b) { return new Date(a.tgl) - new Date(b.tgl); });
+            var labels = urut.map(function (d) { return formatTanggalID(d.tgl); });
+            var values = urut.map(function (d) { return (d.tunai || 0) + (d.qris || 0); });
+
+            if (_chartInfaqInstance) { _chartInfaqInstance.destroy(); }
+            if (urut.length === 0) { canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height); return; }
+
+            _chartInfaqInstance = new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Infaq Harian',
+                        data: values,
+                        borderColor: '#B81337',
+                        backgroundColor: 'rgba(184,19,55,0.12)',
+                        tension: 0.3,
+                        fill: true,
+                        pointRadius: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { ticks: { callback: function (v) { return 'Rp ' + Number(v).toLocaleString('id-ID'); } } } }
+                }
+            });
         }
 
         function bukaModalInfaqRow(index) {
@@ -8213,6 +8575,8 @@ async function updateJurnal(jurnalId, jenis) {
 
             '</div>' +
 
+            '<div id="siasfaTandaiArea"></div>' +
+
             '<div class="siasfa-jurnal-detail-section-title">' +
                 'Rincian Jurnal' +
             '</div>' +
@@ -8230,6 +8594,10 @@ async function updateJurnal(jurnalId, jenis) {
                 '<i class="ph ph-pencil-simple"></i> Edit Jurnal' +
             '</button>' +
 
+            '<button class="siasfa-tandai-btn" type="button" style="width:100%; height:42px; margin-top:9px; border:1.5px solid #B81337; border-radius:12px; background:#FFFFFF; color:#B81337; font-family:inherit; font-size:0.72rem; font-weight:800; cursor:pointer; display:none; align-items:center; justify-content:center; gap:6px;">' +
+                '<i class="ph ph-flag"></i> Tandai' +
+            '</button>' +
+
             '<button class="siasfa-jurnal-detail-delete" type="button" style="width:100%; height:42px; margin-top:9px; border:1.5px solid #DC2626; border-radius:12px; background:#FFFFFF; color:#DC2626; font-family:inherit; font-size:0.72rem; font-weight:800; cursor:pointer;">' +
                 '<i class="ph ph-trash"></i> Hapus Jurnal' +
             '</button>' +
@@ -8237,6 +8605,17 @@ async function updateJurnal(jurnalId, jenis) {
         '</div>';
 
     document.body.appendChild(overlay);
+
+    if (cekAksesTandai()) {
+        var tombolTandai = overlay.querySelector('.siasfa-tandai-btn');
+        if (tombolTandai) {
+            tombolTandai.style.display = 'flex';
+            tombolTandai.addEventListener('click', function () {
+                bukaModalTandai(trx.id, trx.kode);
+            });
+        }
+    }
+    renderTandaiAreaDiDetail(trx.id);
 
     overlay.querySelector('.siasfa-jurnal-detail-close')
         .addEventListener('click', function () {
@@ -9075,6 +9454,89 @@ function unduhRiwayatTransaksi() {
                 document.getElementById('wbsUraian').value = '';
                 if (fileInput) fileInput.value = '';
                 tutupWBS();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        // ===== WBS Data (Internal: Ketua/Wakil Ketua/Pemeriksa) =====
+        var wbsDataCache = [];
+        var wbsFilterAktif = 'semua';
+
+        function terapkanAksesMenuBerdasarkanJabatan() {
+            var jabatan = ((_currentUser && _currentUser.jabatan) || '').toLowerCase();
+            var izin = jabatan.indexOf('ketua umum') !== -1 || jabatan.indexOf('wakil ketua') !== -1 || jabatan.indexOf('pemeriksa internal') !== -1;
+            var elP = document.getElementById('menuPemeriksaan');
+            var elW = document.getElementById('menuWbsData');
+            if (elP) elP.style.display = izin ? 'flex' : 'none';
+            if (elW) elW.style.display = izin ? 'flex' : 'none';
+        }
+
+        function bukaWbsData() {
+            document.getElementById('wbs-data-screen').style.display = 'flex';
+            muatWbsData();
+        }
+        function tutupWbsData() { document.getElementById('wbs-data-screen').style.display = 'none'; }
+
+        async function muatWbsData() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('wbs_laporan')
+                    .select('*')
+                    .order('id', { ascending: false });
+                if (error) { alert('ERROR SUPABASE (wbs): ' + error.message); return; }
+                wbsDataCache = (data || []).map(function (r) {
+                    if (!r.status || r.status === 'Baru') r.status = 'Belum Ditindaklanjuti';
+                    return r;
+                });
+                renderWbsData();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        function filterWbsData(status) {
+            wbsFilterAktif = status;
+            document.querySelectorAll('#wbs-data-screen .laporan-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+            var idMap = { semua: 'wbsftab-semua', 'Belum Ditindaklanjuti': 'wbsftab-belum', 'Sudah Ditindaklanjuti': 'wbsftab-sudah', 'Tidak Relevan': 'wbsftab-tr' };
+            document.getElementById(idMap[status]).classList.add('active');
+            renderWbsData();
+        }
+
+        function renderWbsData() {
+            var wrap = document.getElementById('wbsDataList');
+            var daftar = wbsDataCache.filter(function (r) { return wbsFilterAktif === 'semua' || r.status === wbsFilterAktif; });
+
+            if (daftar.length === 0) {
+                wrap.innerHTML = '<div style="padding:24px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Tidak ada laporan untuk kategori ini.</div>';
+                return;
+            }
+
+            var html = '';
+            daftar.forEach(function (r) {
+                html += '<div class="ip-item-card">' +
+                    '<div class="ip-item-top"><div><div class="ip-item-title">' + (r.kategori || 'Lainnya') + '</div>' +
+                    '<div class="ip-item-kas">' + (r.created_at ? formatTanggalID(r.created_at.slice(0, 10)) : '-') + ' &middot; ' + (r.nama || 'Anonim') + (r.kontak ? ' (' + r.kontak + ')' : '') + '</div></div>' +
+                    '<span class="pay-status-badge belum">' + r.status + '</span></div>' +
+                    (r.pihak_terlibat ? '<div style="font-size:0.74rem; color:var(--text-dark); margin-bottom:6px;"><strong>Pihak Terlibat:</strong> ' + r.pihak_terlibat + '</div>' : '') +
+                    '<div style="font-size:0.76rem; color:var(--text-dark); line-height:1.5; margin-bottom:10px;">' + (r.uraian || '-') + '</div>' +
+                    (r.bukti_url ? '<a href="' + r.bukti_url + '" target="_blank" style="font-size:0.72rem; color:var(--maroon); font-weight:700;"><i class="ph ph-paperclip"></i> Lihat Bukti Pendukung</a>' : '') +
+                    '<div style="display:flex; gap:6px; margin-top:10px;">' +
+                    '<button class="aging-btn ' + (r.status === 'Belum Ditindaklanjuti' ? 'aging-btn-primary' : 'aging-btn-secondary') + '" onclick="ubahStatusWbs(' + r.id + ', \'Belum Ditindaklanjuti\')">Belum</button>' +
+                    '<button class="aging-btn ' + (r.status === 'Sudah Ditindaklanjuti' ? 'aging-btn-primary' : 'aging-btn-secondary') + '" onclick="ubahStatusWbs(' + r.id + ', \'Sudah Ditindaklanjuti\')">Sudah</button>' +
+                    '<button class="aging-btn ' + (r.status === 'Tidak Relevan' ? 'aging-btn-primary' : 'aging-btn-secondary') + '" onclick="ubahStatusWbs(' + r.id + ', \'Tidak Relevan\')">Tdk Relevan</button>' +
+                    '</div></div>';
+            });
+            wrap.innerHTML = html;
+        }
+
+        async function ubahStatusWbs(id, statusBaru) {
+            try {
+                var res = await supabaseClient.from('wbs_laporan').update({ status: statusBaru }).eq('id', id);
+                if (res.error) { alert('ERROR SUPABASE (update status wbs): ' + res.error.message); return; }
+                var item = wbsDataCache.find(function (x) { return x.id === id; });
+                if (item) item.status = statusBaru;
+                renderWbsData();
             } catch (e) {
                 alert('ERROR SISTEM: ' + e.message);
             }
@@ -11402,6 +11864,492 @@ muatRekapUtangPiutang = async function () {
         return null;
     }
 };
+</script>
+<script>
+/* =========================================================================
+   SIASFA — FITUR TANDAI JURNAL (Bendera Merah/Hijau)
+   Hanya untuk jabatan "Kepala Biro Anggaran dan Keuangan" & "Pemeriksa Internal"
+   ========================================================================= */
+
+var _tandaiMap = {};
+var _tandaiAktif = { jurnalId: null, kode: null, status: null };
+
+function cekAksesTandai() {
+    if (!_currentUser || !_currentUser.jabatan) return false;
+    var j = _currentUser.jabatan.toLowerCase();
+    return j.indexOf('kepala biro anggaran dan keuangan') !== -1 || j.indexOf('pemeriksa internal') !== -1;
+}
+
+async function muatTandaiMap() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('jurnal_tandai')
+            .select('*, jurnal_tandai_rekomendasi(id, nama_akun, debit, kredit)')
+            .order('created_at', { ascending: true });
+        if (error) { _tandaiMap = {}; return; }
+        var map = {};
+        (data || []).forEach(function (r) { map[r.jurnal_id] = r; });
+        _tandaiMap = map;
+    } catch (e) {
+        _tandaiMap = {};
+    }
+}
+
+function badgeTandaiKecil(jurnalId) {
+    var r = _tandaiMap[jurnalId];
+    if (!r) return '';
+    if (r.status === 'merah') return '<span class="tandai-badge-kecil merah"><i class="ph ph-flag"></i> Ditandai</span>';
+    return '<span class="tandai-badge-kecil hijau"><i class="ph ph-flag"></i> Sudah Diverifikasi</span>';
+}
+
+function renderTandaiAreaDiDetail(jurnalId) {
+    var area = document.getElementById('siasfaTandaiArea');
+    if (!area) return;
+    var r = _tandaiMap[jurnalId];
+    if (!r) { area.innerHTML = ''; return; }
+
+    var rekomHtml = '';
+    if (r.status === 'merah' && r.jurnal_tandai_rekomendasi && r.jurnal_tandai_rekomendasi.length > 0) {
+        rekomHtml += '<div class="tandai-meta" style="margin-top:8px; font-weight:700; color:var(--text-dark);">Rekomendasi Jurnal yang Benar:</div><div style="margin-top:4px;">';
+        r.jurnal_tandai_rekomendasi.forEach(function (x) {
+            rekomHtml += '<div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-dark); padding:3px 0; border-bottom:1px dashed var(--line);">' +
+                '<span>' + x.nama_akun + '</span>' +
+                '<span>' + (parseFloat(x.debit) > 0 ? 'D: Rp ' + parseFloat(x.debit).toLocaleString('id-ID') : '') + ' ' + (parseFloat(x.kredit) > 0 ? 'K: Rp ' + parseFloat(x.kredit).toLocaleString('id-ID') : '') + '</span></div>';
+        });
+        rekomHtml += '</div>';
+    }
+
+    var judul = r.status === 'merah' ? 'Ditandai Bendera Merah — Ada Kesalahan' : 'Ditandai Bendera Hijau — Sudah Diverifikasi Benar';
+    area.innerHTML = '<div class="tandai-badge-besar ' + r.status + '">' +
+        '<i class="ph ph-flag tandai-flag-icon"></i>' +
+        '<div style="flex:1; min-width:0;">' +
+        '<div class="tandai-title">' + judul + '</div>' +
+        (r.catatan_kesalahan ? '<div class="tandai-sub">' + r.catatan_kesalahan + '</div>' : '') +
+        rekomHtml +
+        '<div class="tandai-meta">Oleh ' + (r.ditandai_oleh || '-') + ' &middot; ' + formatTanggalID((r.created_at || '').slice(0, 10)) + '</div>' +
+        '</div></div>';
+}
+
+function bukaModalTandai(jurnalId, kode) {
+    _tandaiAktif = { jurnalId: jurnalId, kode: kode, status: null };
+    document.getElementById('tandaiModalTitle').textContent = 'Tandai Jurnal ' + (kode || '');
+    document.getElementById('tandaiCatatan').value = '';
+    document.getElementById('tandaiCatatanHijau').value = '';
+    document.getElementById('tandaiRekomRows').innerHTML = '';
+    document.getElementById('tandaiRekomendasiBox').style.display = 'none';
+    document.getElementById('tandaiFormMerah').style.display = 'none';
+    document.getElementById('tandaiFormHijau').style.display = 'none';
+    document.getElementById('tandaiSubmitBtn').style.display = 'none';
+    document.getElementById('tandaiBtnMerah').classList.remove('aktif-merah');
+    document.getElementById('tandaiBtnHijau').classList.remove('aktif-hijau');
+    document.getElementById('tandai-modal-overlay').style.display = 'flex';
+}
+function tutupModalTandai() {
+    document.getElementById('tandai-modal-overlay').style.display = 'none';
+}
+function pilihStatusTandai(status) {
+    _tandaiAktif.status = status;
+    document.getElementById('tandaiBtnMerah').classList.toggle('aktif-merah', status === 'merah');
+    document.getElementById('tandaiBtnHijau').classList.toggle('aktif-hijau', status === 'hijau');
+    document.getElementById('tandaiFormMerah').style.display = status === 'merah' ? 'flex' : 'none';
+    document.getElementById('tandaiFormHijau').style.display = status === 'hijau' ? 'flex' : 'none';
+    document.getElementById('tandaiSubmitBtn').style.display = 'flex';
+}
+function toggleRekomendasiJurnal() {
+    var box = document.getElementById('tandaiRekomendasiBox');
+    var sedangTampil = box.style.display === 'block';
+    box.style.display = sedangTampil ? 'none' : 'block';
+    if (!sedangTampil && document.querySelectorAll('#tandaiRekomRows .tandai-rekom-row').length === 0) {
+        tambahBarisRekomendasi();
+        tambahBarisRekomendasi();
+    }
+}
+function optSemuaAkunUntukTandai() {
+    var opts = '<option value="">Pilih Akun</option>';
+    (window._akunKasCache || []).forEach(function (a) {
+        var label = a.no_akun + ' \u2014 ' + a.nama;
+        opts += '<option value="' + label.replace(/"/g, '&quot;') + '">' + label + '</option>';
+    });
+    (window._coaAkunCache || []).forEach(function (c) {
+        var label = c.no_akun + ' \u2014 ' + c.nama;
+        opts += '<option value="' + label.replace(/"/g, '&quot;') + '">' + label + '</option>';
+    });
+    return opts;
+}
+function tambahBarisRekomendasi() {
+    document.getElementById('tandaiRekomRows').insertAdjacentHTML('beforeend',
+        '<div class="ct-table-row tandai-rekom-row">' +
+        '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)">' + optSemuaAkunUntukTandai() + '</select>' +
+        '<input type="number" placeholder="0">' +
+        '<input type="number" placeholder="0">' +
+        '<i class="ph ph-x-circle ct-row-del" onclick="hapusBarisRekomendasi(this)"></i></div>');
+    if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
+}
+function hapusBarisRekomendasi(el) {
+    el.closest('.tandai-rekom-row').remove();
+}
+
+async function simpanTandai() {
+    try {
+        if (!_tandaiAktif.status) { alert('Pilih Bendera Merah atau Bendera Hijau terlebih dahulu'); return; }
+        if (!cekAksesTandai()) { alert('Anda tidak memiliki akses untuk menandai jurnal'); return; }
+
+        var payload = {
+            jurnal_id: _tandaiAktif.jurnalId,
+            status: _tandaiAktif.status,
+            catatan_kesalahan: _tandaiAktif.status === 'merah' ? document.getElementById('tandaiCatatan').value.trim() : (document.getElementById('tandaiCatatanHijau').value.trim() || null),
+            ditandai_oleh: _currentUser ? _currentUser.nama : '-'
+        };
+        if (_tandaiAktif.status === 'merah' && !payload.catatan_kesalahan) { alert('Catatan kesalahan wajib diisi untuk bendera merah'); return; }
+
+        var res = await supabaseClient.from('jurnal_tandai').insert(payload).select().single();
+        if (res.error) { alert('ERROR SUPABASE (simpan tandai): ' + res.error.message); return; }
+
+        if (_tandaiAktif.status === 'merah') {
+            var rows = [];
+            document.querySelectorAll('#tandaiRekomRows .tandai-rekom-row').forEach(function (row) {
+                var sel = row.querySelector('select');
+                var inputs = row.querySelectorAll('input');
+                var nama = sel ? sel.value.trim() : '';
+                var debit = parseRupiah(inputs[0].value) || 0;
+                var kredit = parseRupiah(inputs[1].value) || 0;
+                if (nama && (debit > 0 || kredit > 0)) rows.push({ tandai_id: res.data.id, nama_akun: nama, debit: debit, kredit: kredit });
+            });
+            if (rows.length > 0) {
+                var r2 = await supabaseClient.from('jurnal_tandai_rekomendasi').insert(rows);
+                if (r2.error) { alert('ERROR SUPABASE (simpan rekomendasi): ' + r2.error.message); }
+            }
+        }
+
+        alert('Jurnal berhasil ditandai ' + (_tandaiAktif.status === 'merah' ? 'Bendera Merah' : 'Bendera Hijau'));
+        tutupModalTandai();
+        await muatTandaiMap();
+        renderTandaiAreaDiDetail(_tandaiAktif.jurnalId);
+        if (document.getElementById('riwayat-screen').style.display === 'flex') { renderRiwayatTransaksi(); }
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+    </script>
+
+    <script>
+    /* ================================================================
+       PATCH: Reset otomatis posisi scroll ke atas setiap kali sebuah
+       layar (-screen) atau body scrollable (.ct-body / .app-body /
+       .co-modal-body) ditampilkan. Ini mengatasi bug tampilan yang
+       langsung terbuka pada posisi scroll paling bawah.
+       ================================================================ */
+    (function () {
+        function resetInnerScroll(el) {
+            if (!el || !el.querySelectorAll) return;
+            el.querySelectorAll('.ct-body, .app-body, .co-modal-body').forEach(function (inner) {
+                inner.scrollTop = 0;
+            });
+            if (el.classList && (el.classList.contains('ct-body') || el.classList.contains('app-body') || el.classList.contains('co-modal-body'))) {
+                el.scrollTop = 0;
+            }
+        }
+        var observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
+                if (m.type === 'attributes' && m.attributeName === 'style') {
+                    var el = m.target;
+                    var disp = el.style && el.style.display;
+                    if (disp === 'flex' || disp === 'block') {
+                        resetInnerScroll(el);
+                    }
+                }
+            });
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['style'], subtree: true });
+    })();
+    </script>
+
+<script>
+/* =========================================================================
+   SIASFA — FITUR PERIKSA JURNAL (Jurnal Umum)
+   ========================================================================= */
+
+function kategoriAkunUntukPeriksa(noAkun, jenisAkun) {
+    if (jenisAkun === 'kas') return 'kas';
+    if (!noAkun) return 'lainnya';
+    noAkun = String(noAkun);
+    if (noAkun === '1-10100' || noAkun === '1-10101' || noAkun === '1-10300') return 'piutang';
+    if (noAkun === '1-10200') return 'persediaan';
+    if (noAkun === '1-10402' || noAkun === '1-10500') return 'perlengkapan';
+    if (noAkun.indexOf('1-107') === 0) return 'peralatan';
+    if (noAkun === '1-10800') return 'investasi';
+    if (noAkun.indexOf('2-2') === 0) return 'utang';
+    if (noAkun.indexOf('3-3') === 0) return 'asetnetto';
+    if (noAkun.indexOf('4-4') === 0) return 'pendapatan';
+    if (noAkun.indexOf('5-') === 0) return 'beban';
+    return 'lainnya';
+}
+
+function bacaBarisJurnalUmumUntukPeriksa() {
+    var rows = [];
+    document.querySelectorAll('#umumRows .ct-table-row').forEach(function (row) {
+        var sel = row.querySelector('select');
+        if (!sel || !sel.value) return;
+        var parts = sel.value.split(':');
+        var jenisAkun = parts[0], id = parts[1];
+        var inputs = row.querySelectorAll('input');
+        var debit = parseRupiah(inputs[0].value) || 0;
+        var kredit = parseRupiah(inputs[1].value) || 0;
+        if (debit === 0 && kredit === 0) return;
+
+        var nama = '-', noAkun = '';
+        if (jenisAkun === 'kas') {
+            var k = (window._akunKasCache || []).find(function (a) { return String(a.id) === id; });
+            if (k) { nama = k.nama; noAkun = k.no_akun; }
+        } else {
+            var c = (window._coaAkunCache || []).find(function (a) { return String(a.id) === id; });
+            if (c) { nama = c.nama; noAkun = c.no_akun; }
+        }
+        rows.push({
+            nama: nama, noAkun: noAkun, jenisAkun: jenisAkun,
+            debit: debit, kredit: kredit,
+            kategori: kategoriAkunUntukPeriksa(noAkun, jenisAkun)
+        });
+    });
+    return rows;
+}
+
+function narasiKombinasiJurnal(debitRow, kreditRow) {
+    var d = debitRow.kategori, k = kreditRow.kategori;
+    var nominal = 'Rp ' + Math.min(debitRow.debit, kreditRow.kredit).toLocaleString('id-ID');
+    var namaD = debitRow.nama, namaK = kreditRow.nama;
+
+    if (d === 'kas' && k === 'pendapatan') return 'Kamu menerima kas sejumlah ' + nominal + ' dari pendapatan ' + namaK + '.';
+    if (d === 'kas' && k === 'piutang') return 'Kamu menerima pelunasan piutang sejumlah ' + nominal + ' dari ' + namaK + ', dananya masuk ke ' + namaD + '.';
+    if (d === 'kas' && k === 'utang') return 'Kamu menerima pinjaman/utang baru sejumlah ' + nominal + ' melalui ' + namaK + ', dananya masuk ke ' + namaD + '.';
+    if (d === 'kas' && k === 'investasi') return 'Kamu mencairkan investasi sejumlah ' + nominal + ', dananya masuk ke ' + namaD + '.';
+    if (d === 'kas' && k === 'persediaan') return 'Kamu menjual persediaan/merchandise sejumlah ' + nominal + ', hasil penjualannya masuk ke ' + namaD + '.';
+    if (d === 'kas' && k === 'asetnetto') return 'Kamu mencatat saldo awal/penyesuaian kas sejumlah ' + nominal + ' pada ' + namaD + '.';
+    if (d === 'kas' && k === 'beban') return 'Kamu menerima kas sejumlah ' + nominal + ' sebagai pengembalian/koreksi atas beban ' + namaK + '.';
+    if (d === 'kas' && k === 'perlengkapan') return 'Kamu menjual/melepas perlengkapan ' + namaK + ' sejumlah ' + nominal + ', hasilnya masuk ke ' + namaD + '.';
+    if (d === 'kas' && k === 'peralatan') return 'Kamu menjual/melepas peralatan ' + namaK + ' sejumlah ' + nominal + ', hasilnya masuk ke ' + namaD + '.';
+
+    if (d === 'piutang' && k === 'pendapatan') return 'Kamu mencatat pendapatan ' + namaK + ' sejumlah ' + nominal + ' yang belum diterima tunai, sehingga dicatat sebagai ' + namaD + '.';
+    if (d === 'piutang' && k === 'kas') return 'Kamu memberikan pinjaman/piutang sejumlah ' + nominal + ' kepada pihak terkait (' + namaD + '), dibayarkan menggunakan ' + namaK + '.';
+
+    if (d === 'persediaan' && k === 'kas') return 'Kamu membeli persediaan/merchandise (' + namaD + ') sejumlah ' + nominal + ' secara tunai menggunakan ' + namaK + '.';
+    if (d === 'persediaan' && k === 'utang') return 'Kamu membeli persediaan/merchandise (' + namaD + ') sejumlah ' + nominal + ' secara kredit, dicatat sebagai ' + namaK + '.';
+
+    if (d === 'perlengkapan' && k === 'kas') return 'Kamu membeli perlengkapan (' + namaD + ') sejumlah ' + nominal + ' secara tunai menggunakan ' + namaK + '.';
+    if (d === 'perlengkapan' && k === 'utang') return 'Kamu membeli perlengkapan (' + namaD + ') sejumlah ' + nominal + ' secara kredit, dicatat sebagai ' + namaK + '.';
+
+    if (d === 'peralatan' && k === 'kas') return 'Kamu membeli peralatan (' + namaD + ') sejumlah ' + nominal + ' secara tunai menggunakan ' + namaK + '.';
+    if (d === 'peralatan' && k === 'utang') return 'Kamu membeli peralatan (' + namaD + ') sejumlah ' + nominal + ' secara kredit, dicatat sebagai ' + namaK + '.';
+
+    if (d === 'investasi' && k === 'kas') return 'Kamu menempatkan dana sejumlah ' + nominal + ' ke dalam investasi (' + namaD + ') menggunakan ' + namaK + '.';
+
+    if (d === 'utang' && k === 'kas') return 'Kamu membayar utang (' + namaD + ') sejumlah ' + nominal + ' menggunakan ' + namaK + '.';
+
+    if (d === 'beban' && k === 'kas') return 'Kamu mengeluarkan kas sejumlah ' + nominal + ' dari ' + namaK + ' untuk membayar beban ' + namaD + '.';
+    if (d === 'beban' && k === 'utang') return 'Kamu mencatat beban ' + namaD + ' sejumlah ' + nominal + ' yang belum dibayar tunai, dicatat sebagai ' + namaK + '.';
+    if (d === 'beban' && k === 'persediaan') return 'Kamu mencatat harga pokok penjualan (HPP) atas ' + namaK + ' sejumlah ' + nominal + ' sebagai beban ' + namaD + '.';
+    if (d === 'beban' && k === 'perlengkapan') return 'Kamu mencatat pemakaian perlengkapan ' + namaK + ' sejumlah ' + nominal + ' sebagai beban ' + namaD + '.';
+
+    if (d === 'asetnetto' && k === 'kas') return 'Kamu mengurangi ' + namaD + ' sejumlah ' + nominal + ', dananya diambil dari ' + namaK + '.';
+    if (d === 'kas' && k === 'lainnya') return 'Kamu mencatat kas masuk sejumlah ' + nominal + ' dari ' + namaK + '.';
+    if (d === 'lainnya' && k === 'kas') return 'Kamu mencatat kas keluar sejumlah ' + nominal + ' untuk ' + namaD + '.';
+
+    return 'Kamu mendebit akun ' + namaD + ' sejumlah ' + nominal + ' dan mengkredit akun ' + namaK + ' sejumlah ' + nominal + '.';
+}
+
+function bukaPeriksaJurnal() {
+    var rows = bacaBarisJurnalUmumUntukPeriksa();
+    if (rows.length === 0) { alert('Isi minimal 1 baris jurnal dengan akun & nominal terlebih dahulu'); return; }
+
+    var debitRows = rows.filter(function (r) { return r.debit > 0; });
+    var kreditRows = rows.filter(function (r) { return r.kredit > 0; });
+    var totalDebit = debitRows.reduce(function (s, r) { return s + r.debit; }, 0);
+    var totalKredit = kreditRows.reduce(function (s, r) { return s + r.kredit; }, 0);
+
+    var narasiHtml = '';
+    if (debitRows.length && kreditRows.length) {
+        debitRows.forEach(function (dr) {
+            kreditRows.forEach(function (kr) {
+                narasiHtml += '<div class="pj-narasi-item">' + narasiKombinasiJurnal(dr, kr) + '</div>';
+            });
+        });
+    } else {
+        narasiHtml = '<div class="pj-narasi-item">Lengkapi minimal 1 baris Debit dan 1 baris Kredit agar transaksi dapat dideskripsikan.</div>';
+    }
+
+    var rincianHtml = '<div class="pj-rincian-title">Rincian Baris Jurnal</div>';
+    rows.forEach(function (r) {
+        rincianHtml += '<div class="pj-rincian-row"><span>' + r.nama + '</span><span>' + (r.debit > 0 ? 'Debit Rp ' + r.debit.toLocaleString('id-ID') : 'Kredit Rp ' + r.kredit.toLocaleString('id-ID')) + '</span></div>';
+    });
+
+    var statusSeimbang = totalDebit === totalKredit && totalDebit > 0;
+
+    document.getElementById('periksaJurnalBody').innerHTML =
+        '<div class="pj-narasi-box"><div class="pj-narasi-title"><i class="ph ph-chat-circle-text"></i> Transaksi yang Kamu Catat</div>' + narasiHtml + '</div>' +
+        rincianHtml +
+        '<div class="pj-total-row ' + (statusSeimbang ? 'ok' : 'bad') + '"><span>Total Debit: Rp ' + totalDebit.toLocaleString('id-ID') + '</span><span>Total Kredit: Rp ' + totalKredit.toLocaleString('id-ID') + '</span></div>' +
+        '<div class="pj-status ' + (statusSeimbang ? 'ok' : 'bad') + '">' + (statusSeimbang ? '<i class="ph ph-check-circle"></i> Jurnal sudah seimbang (balance).' : '<i class="ph ph-warning-circle"></i> Jurnal belum seimbang, periksa kembali nominal debit dan kredit.') + '</div>';
+
+    document.getElementById('periksa-jurnal-overlay').style.display = 'flex';
+}
+function tutupPeriksaJurnal() {
+    document.getElementById('periksa-jurnal-overlay').style.display = 'none';
+}
+</script>
+
+<script>
+/* =========================================================================
+   SIASFA — CUSTOM DROPDOWN AKUN (pengganti <select> native)
+   Berlaku untuk semua <select class="ct-akun-select">.
+   <select> asli tetap ada (disembunyikan) supaya semua kode lama
+   (.value, onchange, tandaiAkunTerisi, dll) tidak perlu diubah.
+   ========================================================================= */
+(function () {
+    var activePanel = null;
+
+    function escapeHtml(s) {
+        return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function escapeAttr(s) {
+        return String(s || '').replace(/"/g, '&quot;');
+    }
+
+    function isPlaceholder(selectEl) { return !selectEl.value; }
+
+    function buildDisplayText(selectEl) {
+        var opt = selectEl.options[selectEl.selectedIndex];
+        return opt ? opt.textContent : 'Pilih Akun';
+    }
+
+    function updateDisplayBox(selectEl) {
+        if (!selectEl.dataset.siasfaEnhanced) enhanceSelect(selectEl);
+        var wrap = selectEl.closest('.siasfa-select-wrap');
+        if (!wrap) return;
+        var display = wrap.querySelector('.siasfa-select-display');
+        if (!display) return;
+        var textEl = display.querySelector('.siasfa-select-display-text');
+        var placeholder = isPlaceholder(selectEl);
+        textEl.textContent = buildDisplayText(selectEl);
+        display.classList.toggle('siasfa-select-placeholder', placeholder);
+        display.classList.toggle('siasfa-select-filled', !placeholder);
+    }
+
+    function closePanel() {
+        if (activePanel) { activePanel.remove(); activePanel = null; }
+        document.removeEventListener('keydown', handleEscape);
+    }
+    function handleEscape(e) { if (e.key === 'Escape') closePanel(); }
+
+    function openPanel(selectEl) {
+        closePanel();
+
+        var options = Array.prototype.slice.call(selectEl.options);
+        var listHtml = options.map(function (opt) {
+            var selectedCls = (opt.value === selectEl.value && opt.value !== '') ? ' selected' : '';
+            return '<div class="siasfa-select-option' + selectedCls + '" data-value="' + escapeAttr(opt.value) + '">' + escapeHtml(opt.textContent) + '</div>';
+        }).join('');
+
+        var overlay = document.createElement('div');
+        overlay.className = 'siasfa-select-panel-overlay';
+        overlay.innerHTML =
+            '<div class="siasfa-select-panel">' +
+                '<div class="siasfa-select-panel-head">' +
+                    '<div class="siasfa-select-panel-title">Pilih Akun</div>' +
+                    '<i class="ph ph-x siasfa-select-panel-close"></i>' +
+                '</div>' +
+                '<div class="siasfa-select-search-wrap">' +
+                    '<i class="ph ph-magnifying-glass"></i>' +
+                    '<input type="text" class="siasfa-select-search" placeholder="Cari nomor atau nama akun...">' +
+                '</div>' +
+                '<div class="siasfa-select-panel-list">' + listHtml +
+                    '<div class="siasfa-select-option-empty">Akun tidak ditemukan.</div>' +
+                '</div>' +
+            '</div>';
+
+        document.body.appendChild(overlay);
+        activePanel = overlay;
+
+        var searchInput = overlay.querySelector('.siasfa-select-search');
+        var listWrap = overlay.querySelector('.siasfa-select-panel-list');
+        var emptyEl = overlay.querySelector('.siasfa-select-option-empty');
+
+        searchInput.addEventListener('input', function () {
+            var q = searchInput.value.toLowerCase();
+            var terlihat = 0;
+            listWrap.querySelectorAll('.siasfa-select-option').forEach(function (el) {
+                var cocok = el.textContent.toLowerCase().indexOf(q) !== -1;
+                el.style.display = cocok ? 'block' : 'none';
+                if (cocok) terlihat++;
+            });
+            emptyEl.style.display = terlihat === 0 ? 'block' : 'none';
+        });
+
+        listWrap.querySelectorAll('.siasfa-select-option').forEach(function (el) {
+            el.addEventListener('click', function () {
+                selectEl.value = el.getAttribute('data-value');
+                updateDisplayBox(selectEl);
+                selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+                closePanel();
+            });
+        });
+
+        overlay.querySelector('.siasfa-select-panel-close').addEventListener('click', closePanel);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) closePanel(); });
+        document.addEventListener('keydown', handleEscape);
+
+        setTimeout(function () { searchInput.focus(); }, 60);
+    }
+
+    function enhanceSelect(selectEl) {
+        if (selectEl.dataset.siasfaEnhanced) { updateDisplayBox(selectEl); return; }
+        selectEl.dataset.siasfaEnhanced = '1';
+
+        var wrap = document.createElement('div');
+        wrap.className = 'siasfa-select-wrap';
+        selectEl.parentNode.insertBefore(wrap, selectEl);
+        wrap.appendChild(selectEl);
+        selectEl.style.display = 'none';
+
+        var display = document.createElement('div');
+        display.className = 'siasfa-select-display';
+        display.setAttribute('tabindex', '0');
+        display.innerHTML = '<span class="siasfa-select-display-text"></span><i class="ph ph-caret-down"></i>';
+        wrap.insertBefore(display, selectEl);
+
+        display.addEventListener('click', function () { openPanel(selectEl); });
+        display.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(selectEl); }
+        });
+
+        updateDisplayBox(selectEl);
+    }
+
+    function scanAndEnhance(root) {
+        (root || document).querySelectorAll('select.ct-akun-select').forEach(enhanceSelect);
+    }
+
+    var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (m) {
+            m.addedNodes.forEach(function (node) {
+                if (node.nodeType !== 1) return;
+                if (node.matches && node.matches('select.ct-akun-select')) enhanceSelect(node);
+                if (node.querySelectorAll) scanAndEnhance(node);
+            });
+        });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Bungkus tandaiAkunTerisi supaya setiap kali kode lama meng-set .value
+    // secara langsung (mis. saat editJurnal), tampilan custom ikut ter-update.
+    var _origTandaiAkunTerisi = window.tandaiAkunTerisi;
+    window.tandaiAkunTerisi = function (selectEl) {
+        if (typeof _origTandaiAkunTerisi === 'function') _origTandaiAkunTerisi(selectEl);
+        updateDisplayBox(selectEl);
+    };
+
+    window.siasfaEnhanceAkunSelects = scanAndEnhance;
+    scanAndEnhance(document);
+})();
 </script>
 
 </body>
