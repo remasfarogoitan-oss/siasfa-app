@@ -162,7 +162,7 @@
             border: none;
             cursor: pointer;
             transition: opacity 0.2s;
-            box-shadow: 0 8px 20px rgba(26, 18, 37, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .btn-signin:active { opacity: 0.8; transform: scale(0.98); }
@@ -379,7 +379,7 @@
             background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
             border-radius: 18px;
             padding: 16px;
-            box-shadow: 0 8px 18px rgba(184, 19, 55, 0.22);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
         }
         .cash-hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
         .cash-label { font-size: var(--fs-sm); color: rgba(255,255,255,0.75); font-weight: 600; }
@@ -483,13 +483,13 @@
             align-items: center;
             justify-content: center;
             font-size: 1.15rem;
-            background: rgba(184, 19, 55, 0.07);
+            background: rgba(0, 0, 0, 0.07);
             color: var(--maroon);
         }
         .menu-icon-box.utama {
             background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
             color: #FFFFFF;
-            box-shadow: 0 6px 14px rgba(184, 19, 55, 0.3);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
         }
         .menu-label { font-size: var(--fs-xs); font-weight: 600; color: var(--text-dark); }
 
@@ -500,13 +500,13 @@
             border: none;
             border-radius: 12px;
             padding: 9px 11px;
-            background: linear-gradient(135deg, rgba(255,122,92,0.09), rgba(184,19,55,0.07));
+            background: linear-gradient(135deg, rgba(255,122,92,0.09), rgba(0,0,0,0.07));
             box-shadow: inset 3px 0 0 0 var(--coral-start);
             cursor: pointer;
         }
         .proker-card.tier-high { box-shadow: inset 3px 0 0 0 var(--coral-start); background: linear-gradient(135deg, rgba(255,122,92,0.1), rgba(158,42,30,0.07)); }
-        .proker-card.tier-mid { box-shadow: inset 3px 0 0 0 var(--maroon); background: linear-gradient(135deg, rgba(184,19,55,0.08), rgba(158,42,30,0.06)); }
-        .proker-card.tier-low { box-shadow: inset 3px 0 0 0 var(--maroon-deep); background: linear-gradient(135deg, rgba(184,19,55,0.09), rgba(122,14,38,0.08)); }
+        .proker-card.tier-mid { box-shadow: inset 3px 0 0 0 var(--maroon); background: linear-gradient(135deg, rgba(0,0,0,0.08), rgba(158,42,30,0.06)); }
+        .proker-card.tier-low { box-shadow: inset 3px 0 0 0 var(--maroon-deep); background: linear-gradient(135deg, rgba(0,0,0,0.09), rgba(122,14,38,0.08)); }
 
         .proker-deco-icon {
             position: absolute;
@@ -552,7 +552,7 @@
         }
         .proker-rab-row strong { color: var(--maroon); font-size: 0.85rem; font-weight: 700;   }
         .proker-progress-row { display: flex; align-items: center; gap: 8px; position: relative; z-index: 1; }
-        .proker-progress-bar { flex: 1; height: 5px; border-radius: 10px; background: rgba(184,19,55,0.1); overflow: hidden; }
+        .proker-progress-bar { flex: 1; height: 5px; border-radius: 10px; background: rgba(0,0,0,0.1); overflow: hidden; }
         .proker-progress-fill { height: 100%; border-radius: 10px; }
         .level-high { background: linear-gradient(90deg, var(--coral-start), var(--maroon)); }
         .level-mid { background: linear-gradient(90deg, var(--maroon), var(--maroon-deep)); }
@@ -657,7 +657,7 @@
         }
         .report-dl-btn:active { background: var(--paper-soft); }
                 .laporan-detail-box { display:none; margin: -6px 0 8px; }
-        .bb-row-rekap { background: rgba(184,19,55,0.06); }
+        .bb-row-rekap { background: rgba(0,0,0,0.06); }
         .bb-row-rekap .bb-ket { color: var(--maroon); font-weight: 700; font-style: italic; }
         .bb-row-rekap .bb-tgl { color: var(--maroon); font-weight: 700; }
         .btn-download-all {
@@ -674,7 +674,7 @@
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 8px 18px rgba(184, 19, 55, 0.25);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
         }
         .btn-download-all:active { opacity: 0.85; }
 
@@ -709,7 +709,7 @@
             font-size: 1.7rem;
             font-weight: 600;
             position: relative;
-            box-shadow: 0 8px 18px rgba(184, 19, 55, 0.25);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
         }
         .avatar-edit-btn {
             position: absolute;
@@ -779,11 +779,12 @@
         .ct-header {
             flex: 0 0 auto;
             background: linear-gradient(to right, var(--grad-start), var(--grad-end));
-            padding: 48px 20px 16px;
+            padding: 22px 16px 10px;
+            border-bottom: 1px solid var(--maroon-deep);
         }
         .ct-header-top { display: flex; align-items: center; justify-content: space-between; color: #FFFFFF; }
-        .ct-back-btn { font-size: 1.3rem; cursor: pointer; }
-        .ct-header-title { font-size: 0.9rem; font-weight: 700; }
+        .ct-back-btn { font-size: 1.1rem; cursor: pointer; }
+        .ct-header-title { font-size: 0.82rem; font-weight: 700; }
         .ct-tabs { display: flex; gap: 6px; margin-top: 16px; }
         .ct-tab-btn {
             flex: 1;
@@ -873,8 +874,8 @@
         .ct-akun-select.ct-akun-filled {
             color: var(--maroon);
             font-weight: 700;
-            border-color: rgba(184,19,55,0.4);
-            background: rgba(184,19,55,0.04);
+            border-color: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.04);
         }
         .ct-row-del { color: var(--maroon); font-size: 1.1rem; cursor: pointer; justify-self: center; }
 
@@ -909,7 +910,7 @@
             text-transform: uppercase;
             padding: 3px 9px;
             border-radius: 20px;
-            background: rgba(184, 19, 55, 0.1);
+            background: rgba(0, 0, 0, 0.1);
             color: var(--maroon);
             white-space: nowrap;
         }
@@ -923,8 +924,8 @@
 
         /* --- RAB: maroon soft/terang, garis putus2 --- */
         .ct-rab-box {
-            background: rgba(184, 19, 55, 0.05);
-            border: 1.5px dashed rgba(184, 19, 55, 0.3);
+            background: rgba(0, 0, 0, 0.05);
+            border: 1.5px dashed rgba(0, 0, 0, 0.3);
             border-radius: 12px;
             padding: 14px;
         }
@@ -939,7 +940,7 @@
         }
         .ct-rab-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .ct-rab-row select {
-            border: 1px solid rgba(184, 19, 55, 0.3);
+            border: 1px solid rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             padding: 9px 10px;
             font-size: 0.78rem;
@@ -1059,7 +1060,7 @@
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 8px 18px rgba(184, 19, 55, 0.25);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
         }
         .ct-submit-btn:active { opacity: 0.85; }
 
@@ -1105,7 +1106,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.4rem;
-            box-shadow: 0 10px 22px rgba(184, 19, 55, 0.4);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
             cursor: pointer;
             z-index: 5;
         }
@@ -1114,7 +1115,7 @@
         .co-history-item {
             border-radius: 14px;
             border-left: 4px solid var(--maroon);
-            background: rgba(184, 19, 55, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             padding: 12px 14px;
             margin-bottom: 10px;
         }
@@ -1133,7 +1134,7 @@
             display: none;
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(26, 18, 37, 0.55);
+            background: rgba(0, 0, 0, 0.55);
             z-index: 40;
             align-items: flex-end;
             justify-content: center;
@@ -1191,7 +1192,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(184, 19, 55, 0.06);
+            background: rgba(0, 0, 0, 0.06);
             border-radius: 12px;
             padding: 12px 14px;
             margin-top: -6px;
@@ -1202,8 +1203,8 @@
         .co-analysis-box {
             border-radius: 14px;
             padding: 14px 16px;
-            background: rgba(184, 19, 55, 0.05);
-            border: 1.5px solid rgba(184, 19, 55, 0.2);
+            background: rgba(0, 0, 0, 0.05);
+            border: 1.5px solid rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -1224,7 +1225,7 @@
             color: var(--text-dark);
         }
         .co-analysis-row strong { font-size: 0.85rem; color: var(--text-dark); }
-        .co-analysis-final { border-top: 1px dashed rgba(184,19,55,0.25); padding-top: 8px; margin-top: 2px; }
+        .co-analysis-final { border-top: 1px dashed rgba(0,0,0,0.25); padding-top: 8px; margin-top: 2px; }
         .co-analysis-final strong { font-size: 0.95rem; color: var(--maroon); }
         .co-box-ok .co-analysis-final strong { color: #16A34A; }
         .co-box-warn .co-analysis-final strong { color: #D97706; }
@@ -1255,9 +1256,9 @@
         .rw-trx-item { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
         .rw-trx-item:last-child { border-bottom: none; }
         .rw-trx-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-        .rw-trx-icon.tp-umum { background: rgba(26, 18, 37, 0.08); color: var(--text-dark); }
+        .rw-trx-icon.tp-umum { background: rgba(0, 0, 0, 0.08); color: var(--text-dark); }
         .rw-trx-icon.tp-in { background: rgba(22, 163, 74, 0.1); color: #16A34A; }
-        .rw-trx-icon.tp-out { background: rgba(184, 19, 55, 0.1); color: var(--maroon); }
+        .rw-trx-icon.tp-out { background: rgba(0, 0, 0, 0.1); color: var(--maroon); }
         .rw-trx-mid { flex: 1; min-width: 0; }
         .rw-trx-ket { font-size: 0.82rem; font-weight: 600; color: var(--text-dark); }
         .rw-trx-sub { font-size: 0.68rem; color: var(--text-gray); margin-top: 3px; }
@@ -1270,19 +1271,19 @@
         .bb-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
         .bb-head { display: flex; justify-content: space-between; align-items: center; background: var(--paper-soft); padding: 11px 14px; }
         .bb-akun-name { font-size: 0.8rem; font-weight: 700; color: var(--text-dark); }
-        .bb-akun-no { font-size: 0.66rem; font-weight: 700; color: var(--maroon); background: rgba(184,19,55,0.08); padding: 3px 8px; border-radius: 8px; }
+        .bb-akun-no { font-size: 0.66rem; font-weight: 700; color: var(--maroon); background: rgba(0,0,0,0.08); padding: 3px 8px; border-radius: 8px; }
         .bb-row { display: grid; grid-template-columns: 58px 1fr 84px; gap: 6px; padding: 8px 14px; border-top: 1px solid var(--line); align-items: center; }
         .bb-tgl { font-size: 0.65rem; color: var(--text-gray); font-weight: 500; }
         .bb-ket { font-size: 0.72rem; color: var(--text-dark); font-weight: 500; }
         .bb-mutasi { font-size: 0.74rem; font-weight: 700; text-align: right; color: var(--text-dark); }
         .bb-mutasi.minus { color: var(--maroon); }
-        .bb-saldo-row { display: flex; justify-content: space-between; padding: 11px 14px; background: rgba(184,19,55,0.05); border-top: 1px dashed rgba(184,19,55,0.25); }
+        .bb-saldo-row { display: flex; justify-content: space-between; padding: 11px 14px; background: rgba(0,0,0,0.05); border-top: 1px dashed rgba(0,0,0,0.25); }
         .bb-saldo-row span { font-size: 0.72rem; font-weight: 700; color: var(--text-gray); }
         .bb-saldo-row strong { font-size: 0.85rem; color: var(--maroon); }
 
         .nota-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .nota-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #FFFFFF; }
-        .nota-img { height: 110px; background: linear-gradient(135deg, rgba(184,19,55,0.08), rgba(26,18,37,0.08)); display: flex; align-items: center; justify-content: center; color: var(--maroon); font-size: 1.8rem; }
+        .nota-img { height: 110px; background: linear-gradient(135deg, rgba(0,0,0,0.08), rgba(0,0,0,0.08)); display: flex; align-items: center; justify-content: center; color: var(--maroon); font-size: 1.8rem; }
         .nota-info { padding: 9px 10px; }
         .nota-ket { font-size: 0.72rem; font-weight: 600; color: var(--text-dark); line-height: 1.25; }
         .nota-tgl { font-size: 0.62rem; color: var(--text-gray); margin-top: 4px; font-weight: 500; }
@@ -1298,7 +1299,7 @@
         .un-add-btn {
             border: 1.5px dashed var(--maroon);
             color: var(--maroon);
-            background: rgba(184, 19, 55, 0.04);
+            background: rgba(0, 0, 0, 0.04);
             border-radius: 12px;
             padding: 12px;
             text-align: center;
@@ -1306,7 +1307,7 @@
             font-weight: 700;
             cursor: pointer;
         }
-        .un-add-btn:active { background: rgba(184, 19, 55, 0.1); }
+        .un-add-btn:active { background: rgba(0, 0, 0, 0.1); }
 
         /* ====================================================== */
         /* Program Kerja                                            */
@@ -1335,7 +1336,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.4rem;
-            box-shadow: 0 10px 22px rgba(184, 19, 55, 0.4);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
             cursor: pointer;
             z-index: 5;
         }
@@ -1351,7 +1352,7 @@
         /* ====================================================== */
         /* Rekening Bank                                            */
         /* ====================================================== */
-        .rb-hero { background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); border-radius: 18px; padding: 16px; color: #FFFFFF; box-shadow: 0 8px 18px rgba(184,19,55,0.22); }
+        .rb-hero { background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); border-radius: 18px; padding: 16px; color: #FFFFFF; box-shadow: 0 8px 18px rgba(0,0,0,0.22); }
         .rb-hero-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; opacity: 0.7; }
         .rb-hero-title { font-size: 0.98rem; font-weight: 700; margin-top: 3px; }
         .rb-hero-sub { font-size: 0.72rem; opacity: 0.8; margin-top: 4px; font-weight: 500; line-height: 1.4; }
@@ -1361,7 +1362,7 @@
         .rb-hero-stat-val { font-size: 1.05rem; font-weight: 700; margin-top: 4px; }
         .rb-hero-stat-lbl { font-size: 0.6rem; font-weight: 600; opacity: 0.8; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
 
-        .rb-reminder { display: flex; align-items: center; gap: 8px; background: rgba(184,19,55,0.08); border: 1px solid rgba(184,19,55,0.25); border-radius: 12px; padding: 11px 13px; font-size: 0.74rem; color: var(--maroon); font-weight: 600; line-height: 1.4; }
+        .rb-reminder { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.25); border-radius: 12px; padding: 11px 13px; font-size: 0.74rem; color: var(--maroon); font-weight: 600; line-height: 1.4; }
         .rb-reminder i { font-size: 1.1rem; min-width: 18px; }
 
         .rb-section-label { font-size: 0.68rem; font-weight: 700; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
@@ -1370,7 +1371,7 @@
         .rb-item.ok { border-left-color: #16A34A; }
         .rb-item.late { border-left-color: #D97706; }
         .rb-item.pending { border-left-color: var(--text-gray); }
-        .rb-item-icon { width: 38px; height: 38px; min-width: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: rgba(184,19,55,0.08); color: var(--maroon); }
+        .rb-item-icon { width: 38px; height: 38px; min-width: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: rgba(0,0,0,0.08); color: var(--maroon); }
         .rb-item.ok .rb-item-icon { background: rgba(22,163,74,0.1); color: #16A34A; }
         .rb-item.late .rb-item-icon { background: rgba(217,118,6,0.1); color: #D97706; }
         .rb-item.pending .rb-item-icon { background: rgba(148,142,150,0.12); color: var(--text-gray); }
@@ -1403,7 +1404,7 @@
         /* Iuran & Penjualan (shared)                               */
         /* ====================================================== */
         .ip-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .ip-stat-box { border: none; border-radius: 16px; padding: 14px; color: #FFFFFF; background: linear-gradient(135deg, var(--maroon), var(--maroon-deep)); box-shadow: 0 6px 14px rgba(184,19,55,0.22); }
+        .ip-stat-box { border: none; border-radius: 16px; padding: 14px; color: #FFFFFF; background: linear-gradient(135deg, var(--maroon), var(--maroon-deep)); box-shadow: 0 6px 14px rgba(0,0,0,0.22); }
         .ip-stat-box.pendapatan { background: linear-gradient(135deg, #16A34A, #14532D); box-shadow: 0 6px 14px rgba(22,163,74,0.22); }
         .ip-stat-box.full { grid-column: 1 / -1; background: linear-gradient(135deg, var(--coral-start), var(--coral-end)); box-shadow: 0 6px 14px rgba(255,122,92,0.28); }
         .ip-stat-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; margin-bottom: 8px; background: rgba(255,255,255,0.2); color: #FFFFFF; }
@@ -1438,14 +1439,14 @@
         /* ====================================================== */
         .if-stat-wrap { display: flex; flex-direction: column; gap: 8px; }
         .if-stat-row-top { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .if-stat-box { border: none; border-radius: 16px; padding: 14px 10px; text-align: center; color: #FFFFFF; background: linear-gradient(135deg, var(--maroon), var(--maroon-deep)); box-shadow: 0 6px 14px rgba(184,19,55,0.22); }
+        .if-stat-box { border: none; border-radius: 16px; padding: 14px 10px; text-align: center; color: #FFFFFF; background: linear-gradient(135deg, var(--maroon), var(--maroon-deep)); box-shadow: 0 6px 14px rgba(0,0,0,0.22); }
         .if-stat-box.qris { background: linear-gradient(135deg, #2563EB, #1E3A8A); box-shadow: 0 6px 14px rgba(37,99,235,0.22); }
         .if-stat-box.tunai { background: linear-gradient(135deg, #16A34A, #14532D); box-shadow: 0 6px 14px rgba(22,163,74,0.22); }
         .if-stat-box.total { background: linear-gradient(135deg, var(--coral-start), var(--coral-end)); box-shadow: 0 6px 14px rgba(255,122,92,0.28); }
         .if-stat-label { font-size: 0.62rem; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.3px; }
         .if-stat-value { font-size: 1.05rem; font-weight: 700; margin-top: 5px; color: #FFFFFF; }
 
-        .if-default-box { border-radius: 14px; padding: 14px; background: linear-gradient(135deg, rgba(184,19,55,0.06), rgba(26,18,37,0.05)); border: 1px solid rgba(184,19,55,0.15); }
+        .if-default-box { border-radius: 14px; padding: 14px; background: linear-gradient(135deg, rgba(0,0,0,0.06), rgba(0,0,0,0.05)); border: 1px solid rgba(0,0,0,0.15); }
         .if-default-label { font-size: 0.72rem; font-weight: 700; color: var(--maroon); display: flex; align-items: center; gap: 6px; margin-bottom: 0; }
 
         .if-table-wrap { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 8px; }
@@ -1460,11 +1461,11 @@
         .if-row-actions .del-icon { color: var(--text-gray); }
 
         .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .prod-card { border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, rgba(184,19,55,0.08), rgba(26,18,37,0.06)); border: 1px solid rgba(184,19,55,0.15); cursor: pointer; text-align: center; padding: 12px 8px; }
+        .prod-card { border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, rgba(0,0,0,0.08), rgba(0,0,0,0.06)); border: 1px solid rgba(0,0,0,0.15); cursor: pointer; text-align: center; padding: 12px 8px; }
         .prod-card-icon { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin: 0 auto 8px; }
         .prod-card-name { font-size: 0.74rem; font-weight: 700; color: var(--text-dark); line-height: 1.25; }
         .prod-card-price { font-size: 0.7rem; font-weight: 700; color: var(--maroon); margin-top: 4px; }
-        .prod-add-card { border: 1.5px dashed var(--maroon); background: rgba(184,19,55,0.04); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 8px; cursor: pointer; color: var(--maroon); font-size: 0.7rem; font-weight: 700; }
+        .prod-add-card { border: 1.5px dashed var(--maroon); background: rgba(0,0,0,0.04); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 8px; cursor: pointer; color: var(--maroon); font-size: 0.7rem; font-weight: 700; }
 
         .pay-status-badge { font-size: 0.66rem; font-weight: 700; padding: 4px 10px; border-radius: 10px; cursor: pointer; }
         .pay-status-badge.lunas { background: rgba(22,163,74,0.12); color: #16A34A; }
@@ -1490,7 +1491,7 @@
         .pf-plot-akun { font-size: 0.7rem; font-weight: 600; color: var(--text-dark); line-height: 1.3; }
         .pf-plot-row select { border: 1px solid var(--border-gray); border-radius: 8px; padding: 6px 6px; font-size: 0.66rem; color: var(--text-dark); outline: none; width: 100%; }
 
-        .pf-danger-box { border: 1.5px solid rgba(184,19,55,0.3); background: rgba(184,19,55,0.05); border-radius: 16px; padding: 16px; }
+        .pf-danger-box { border: 1.5px solid rgba(0,0,0,0.3); background: rgba(0,0,0,0.05); border-radius: 16px; padding: 16px; }
         .pf-danger-title { font-size: 0.85rem; font-weight: 700; color: var(--maroon); display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
         .pf-danger-text { font-size: 0.72rem; color: var(--text-gray); line-height: 1.5; margin-bottom: 14px; }
         .pf-danger-text strong { color: var(--text-dark); }
@@ -1509,9 +1510,9 @@
             50%      { transform: translateY(-6px) rotate(4deg); }
         }
         @keyframes guestPulseRing {
-            0%   { box-shadow: 0 0 0 0 rgba(184,19,55,0.35); }
-            70%  { box-shadow: 0 0 0 12px rgba(184,19,55,0); }
-            100% { box-shadow: 0 0 0 0 rgba(184,19,55,0); }
+            0%   { box-shadow: 0 0 0 0 rgba(0,0,0,0.35); }
+            70%  { box-shadow: 0 0 0 12px rgba(0,0,0,0); }
+            100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
         }
         @keyframes guestShineSweep {
             0%   { left: -60%; }
@@ -1531,7 +1532,7 @@
         .guest-intro-box { background: var(--paper-soft); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; font-size: 0.78rem; color: var(--text-gray); line-height: 1.6; }
         .guest-intro-box i { color: var(--maroon); font-size: 1.1rem; margin-right: 4px; }
 
-        .guest-hero-card { position: relative; overflow: hidden; border-radius: 22px; padding: 22px 20px; background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%); box-shadow: 0 14px 30px rgba(184,19,55,0.28); }
+        .guest-hero-card { position: relative; overflow: hidden; border-radius: 22px; padding: 22px 20px; background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%); box-shadow: 0 14px 30px rgba(0,0,0,0.28); }
         .guest-hero-card::before { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent); transform: skewX(-20deg); animation: guestShineSweep 3.5s ease-in-out infinite; }
         .guest-hero-decor { position: absolute; font-size: 6rem; color: rgba(255,255,255,0.08); right: -14px; top: -18px; animation: guestFloat 6s ease-in-out infinite; }
         .guest-hero-label { position: relative; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 6px; }
@@ -1540,7 +1541,7 @@
         .guest-hero-sub { position: relative; font-size: 0.7rem; color: rgba(255,255,255,0.65); margin-top: 2px; font-weight: 500; }
 
         .guest-stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .guest-stat-pill { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; padding: 10px 8px; text-align: center; box-shadow: 0 3px 10px rgba(26,18,37,0.05); }
+        .guest-stat-pill { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; padding: 10px 8px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
         .guest-stat-pill i { font-size: 1.1rem; color: var(--maroon); }
         .guest-stat-pill .v { font-size: 0.9rem; font-weight: 700; color: var(--text-dark); margin-top: 4px; }
         .guest-stat-pill .l { font-size: 0.58rem; color: var(--text-gray); font-weight: 600; margin-top: 1px; text-transform: uppercase; letter-spacing: 0.3px; }
@@ -1549,14 +1550,14 @@
         .guest-section-title i { width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
 
         .guest-report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .guest-report-card { position: relative; background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 14px 12px; cursor: pointer; overflow: hidden; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 3px 10px rgba(26,18,37,0.04); }
-        .guest-report-card:active { transform: scale(0.96); box-shadow: 0 2px 6px rgba(26,18,37,0.06); }
-        .guest-report-icon { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, rgba(184,19,55,0.12), rgba(255,122,92,0.12)); color: var(--maroon); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; margin-bottom: 10px; }
+        .guest-report-card { position: relative; background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 14px 12px; cursor: pointer; overflow: hidden; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.04); }
+        .guest-report-card:active { transform: scale(0.96); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .guest-report-icon { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, rgba(0,0,0,0.12), rgba(255,122,92,0.12)); color: var(--maroon); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; margin-bottom: 10px; }
         .guest-report-name { font-size: 0.76rem; font-weight: 700; color: var(--text-dark); line-height: 1.3; }
         .guest-report-sub { font-size: 0.62rem; color: var(--text-gray); margin-top: 4px; font-weight: 500; }
         .guest-report-dl { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; border-radius: 50%; background: var(--paper-soft); color: var(--maroon); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; border: none; pointer-events: none; }
 
-        .guest-proker-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; box-shadow: 0 3px 10px rgba(26,18,37,0.04); cursor: pointer; transition: transform 0.15s ease; }
+        .guest-proker-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.15s ease; }
         .guest-proker-card:active { transform: scale(0.98); }
         .guest-proker-ring { --p: 0; width: 54px; height: 54px; min-width: 54px; border-radius: 50%; background: conic-gradient(var(--maroon) calc(var(--p) * 1%), var(--line) 0); display: flex; align-items: center; justify-content: center; position: relative; }
         .guest-proker-ring::before { content: ''; position: absolute; width: 42px; height: 42px; border-radius: 50%; background: #FFFFFF; }
@@ -1570,7 +1571,7 @@
         .guest-audit-note i { color: #D97706; font-size: 1.15rem; margin-top: 1px; }
         .guest-audit-note span { font-size: 0.72rem; color: #92400E; font-weight: 600; line-height: 1.5; }
 
-        .guest-wbs-card { position: relative; overflow: hidden; border-radius: 20px; padding: 18px; background: linear-gradient(135deg, var(--maroon-deep), var(--text-dark)); cursor: pointer; box-shadow: 0 12px 26px rgba(26,18,37,0.28); transition: transform 0.15s ease; }
+        .guest-wbs-card { position: relative; overflow: hidden; border-radius: 20px; padding: 18px; background: linear-gradient(135deg, var(--maroon-deep), var(--text-dark)); cursor: pointer; box-shadow: 0 12px 26px rgba(0,0,0,0.28); transition: transform 0.15s ease; }
         .guest-wbs-card:active { transform: scale(0.98); }
         .guest-wbs-icon { width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 12px; animation: guestPulseRing 2.2s infinite; }
         .guest-wbs-title { font-size: 0.9rem; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; }
@@ -1588,7 +1589,7 @@
         .guest-donasi-sub { position: relative; font-size: 0.64rem; color: rgba(255,255,255,0.85); margin-top: 4px; font-weight: 600; }
 
         /* ---- Cutoff bulanan Buku Besar ---- */
-        .bb-row-cutoff { background: rgba(184, 19, 55, 0.08); }
+        .bb-row-cutoff { background: rgba(0, 0, 0, 0.08); }
         .bb-row-cutoff .bb-ket { color: var(--maroon); font-weight: 700; }
         .bb-row-cutoff .bb-mutasi { color: var(--maroon); font-weight: 700; }
 
@@ -1600,7 +1601,7 @@
             border-radius: 16px;
             padding: 14px 15px;
             background: #FFFFFF;
-            box-shadow: 0 3px 10px rgba(26,18,37,0.05);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -1614,7 +1615,7 @@
             width: 42px; height: 42px; min-width: 42px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.15rem;
-            background: linear-gradient(135deg, rgba(184,19,55,0.10), rgba(26,18,37,0.08));
+            background: linear-gradient(135deg, rgba(0,0,0,0.10), rgba(0,0,0,0.08));
             color: var(--maroon);
         }
         .aging-card.tipe-piutang .aging-icon { background: linear-gradient(135deg, rgba(22,163,74,0.16), rgba(22,163,74,0.06)); color: #16A34A; }
@@ -1636,9 +1637,9 @@
         .aging-chip i { font-size: 0.85rem; }
         .aging-chip.umur-aman { background: rgba(22,163,74,0.1); color: #16A34A; }
         .aging-chip.umur-perhatian { background: rgba(217,118,6,0.12); color: #D97706; }
-        .aging-chip.umur-mendesak { background: rgba(184,19,55,0.1); color: var(--maroon); }
-        .aging-chip.tempo-chip { background: rgba(26,18,37,0.06); color: var(--text-dark); }
-        .aging-chip.tempo-lewat { background: rgba(184,19,55,0.14); color: var(--maroon); }
+        .aging-chip.umur-mendesak { background: rgba(0,0,0,0.1); color: var(--maroon); }
+        .aging-chip.tempo-chip { background: rgba(0,0,0,0.06); color: var(--text-dark); }
+        .aging-chip.tempo-lewat { background: rgba(0,0,0,0.14); color: var(--maroon); }
 
         .aging-actions { display: flex; gap: 8px; }
         .aging-btn {
@@ -1652,7 +1653,7 @@
             border: none;
             display: flex; align-items: center; justify-content: center; gap: 6px;
         }
-        .aging-btn-primary { background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color: #FFFFFF; box-shadow: 0 6px 14px rgba(184,19,55,0.22); }
+        .aging-btn-primary { background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color: #FFFFFF; box-shadow: 0 6px 14px rgba(0,0,0,0.22); }
         .aging-card.tipe-piutang .aging-btn-primary { background: linear-gradient(135deg, #16A34A, #14532D); box-shadow: 0 6px 14px rgba(22,163,74,0.22); }
         .aging-btn-secondary { background: var(--paper-soft); color: var(--text-dark); border: 1px solid var(--line); }
         .aging-btn:active { opacity: 0.85; transform: scale(0.98); }
@@ -1680,11 +1681,11 @@
     align-items: flex-start;
     gap: 11px;
     padding: 12px 14px;
-    background: rgba(26, 18, 37, 0.97);
+    background: rgba(0, 0, 0, 0.97);
     border: 1px solid rgba(255,255,255,0.14);
     border-left: 3px solid var(--maroon);
     border-radius: 13px;
-    box-shadow: 0 10px 30px rgba(26,18,37,0.28);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28);
     color: #FFFFFF;
     animation: siasfaToastIn 0.28s ease forwards;
     backdrop-filter: blur(10px);
@@ -1816,7 +1817,7 @@
     background: #FFFFFF;
     border-radius: 24px 24px 0 0;
     padding: 18px 16px 20px;
-    box-shadow: 0 -15px 50px rgba(26,18,37,0.25);
+    box-shadow: 0 -15px 50px rgba(0,0,0,0.25);
     animation: jurnalCardUp 0.28s cubic-bezier(.2,.8,.2,1);
 }
 
@@ -1950,7 +1951,7 @@
     font-size: 0.72rem;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 7px 18px rgba(184,19,55,0.22);
+    box-shadow: 0 7px 18px rgba(0,0,0,0.22);
 }
 
 .siasfa-jurnal-detail-edit:active {
@@ -1995,10 +1996,10 @@
 .siasfa-confirm-card {
     width: min(350px, 100%);
     background: #FFFFFF;
-    border: 1px solid rgba(184, 19, 55, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 20px;
     padding: 22px;
-    box-shadow: 0 24px 70px rgba(26, 18, 37, 0.32);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
     animation: siasfaConfirmIn 0.25s cubic-bezier(.2,.8,.2,1) forwards;
 }
 
@@ -2010,7 +2011,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 14px;
-    background: rgba(184, 19, 55, 0.09);
+    background: rgba(0, 0, 0, 0.09);
     color: var(--maroon);
     font-size: 1.35rem;
 }
@@ -2063,7 +2064,7 @@
 .siasfa-confirm-ok {
     background: linear-gradient(135deg, var(--maroon), var(--maroon-deep));
     color: #FFFFFF;
-    box-shadow: 0 6px 15px rgba(184, 19, 55, 0.22);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.22);
 }
 
 .siasfa-confirm-card.danger .siasfa-confirm-ok {
@@ -2974,7 +2975,7 @@
         </div>
 
         <!-- ================= MODAL DETAIL / KERTAS KERJA CASH OPNAME ================= -->
-        <div id="co-detail-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div id="co-detail-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Kertas Kerja Cash Opname</div>
@@ -3152,7 +3153,7 @@
         </div>
 
         <!-- ================= MODAL TAMBAH PROGRAM KERJA ================= -->
-        <div id="pk-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="pk-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Tambah Program Kerja</div>
@@ -3237,7 +3238,7 @@
                 </div>
                 <div class="ct-field" style="margin-bottom:0;"><label>Tanggal Pelaksanaan</label><input type="text" id="bpTanggal" placeholder="Contoh: Setiap Jumat, Maret 2026" oninput="updateProkerInfo()"></div>
 
-                <div id="bpTutupNotice" style="display:none; background:rgba(184,19,55,0.06); border:1px solid rgba(184,19,55,0.25); border-radius:12px; padding:12px 14px; font-size:0.74rem; color:var(--maroon); font-weight:600;">
+                <div id="bpTutupNotice" style="display:none; background:rgba(0,0,0,0.06); border:1px solid rgba(0,0,0,0.25); border-radius:12px; padding:12px 14px; font-size:0.74rem; color:var(--maroon); font-weight:600;">
                     <i class="ph ph-lock-simple"></i> Proker ini sudah ditutup dan tidak dapat diedit lagi.
                 </div>
 
@@ -3263,7 +3264,7 @@
         </div>
 
         <!-- ================= MODAL RAB PROKER ================= -->
-        <div id="proker-rab-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="proker-rab-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">RAB Proker</div>
@@ -3282,7 +3283,7 @@
         </div>
 
         <!-- ================= MODAL REALISASI PROKER ================= -->
-        <div id="proker-realisasi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="proker-realisasi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Realisasi Anggaran</div>
@@ -3309,7 +3310,7 @@
         </div>
 
         <!-- ================= MODAL BUKU TRANSAKSI PROKER ================= -->
-        <div id="proker-buku-transaksi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div id="proker-buku-transaksi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Buku Transaksi Proker</div>
@@ -3331,7 +3332,7 @@
         </div>
 
         <!-- ================= MODAL DOKUMEN PROKER ================= -->
-        <div id="proker-dokumen-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="proker-dokumen-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Dokumen Proker</div>
@@ -3397,7 +3398,7 @@
         </div>
 
         <!-- ================= MODAL LAPORAN REKENING BANK ================= -->
-        <div id="rb-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="rb-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title" id="rbModalTitle">Januari 2026</div>
@@ -3446,7 +3447,7 @@
             </div>
         </div>
         <!-- ================= MODAL TAMBAH BULAN PELAPORAN ================= -->
-        <div id="tambah-bulan-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div id="tambah-bulan-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Tambah Bulan Pelaporan</div>
@@ -3501,7 +3502,7 @@
         </div>
 
         <!-- ================= MODAL BUAT KONSEP IURAN ================= -->
-        <div id="iuran-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="iuran-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Buat Konsep Iuran</div>
@@ -3618,7 +3619,7 @@
         </div>
 
         <!-- ================= MODAL TAMBAH PERSEDIAAN ================= -->
-        <div id="po-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="po-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Tambah Persediaan</div>
@@ -3673,7 +3674,7 @@
         </div>
 
         <!-- ================= MODAL TAMBAH PEMESAN ================= -->
-        <div id="pembeli-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div id="pembeli-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Tambah Pemesan</div>
@@ -3688,7 +3689,7 @@
         </div>
 
         <!-- ================= MODAL TAMBAH BIAYA PRODUK ================= -->
-        <div id="biaya-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div id="biaya-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Tambah Biaya Produk</div>
@@ -3704,7 +3705,7 @@
         </div>
 
         <!-- ================= MODAL BAYAR VENDOR ================= -->
-        <div id="vendor-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div id="vendor-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title" id="vdModalTitle">Bayar Vendor</div>
@@ -3742,7 +3743,7 @@
         </div>
 
         <!-- ================= OVERLAY RIWAYAT PEMBAYARAN ================= -->
-        <div id="pembayaran-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:42; align-items:flex-end; justify-content:center;">
+        <div id="pembayaran-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:42; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title" id="pyTitle">Riwayat Pembayaran</div>
@@ -3763,7 +3764,7 @@
         </div>
 
         <!-- ================= MODAL TAMBAH PEMBAYARAN ================= -->
-        <div id="bayar-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:43; align-items:flex-end; justify-content:center;">
+        <div id="bayar-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:43; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Tambah Pembayaran</div>
@@ -3843,7 +3844,7 @@
         </div>
 
         <!-- ================= MODAL EDIT INFAQ HARIAN ================= -->
-        <div id="infaq-row-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="infaq-row-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Input Infaq Harian</div>
@@ -3930,7 +3931,7 @@
         </div>
 
         <!-- ================= MODAL: AKSI UTANG/PIUTANG (bayar / terima / lihat detail) ================= -->
-        <div id="up-aksi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div id="up-aksi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title" id="upAksiTitle">Detail</div>
@@ -3963,7 +3964,7 @@
         </div>
 
         <!-- ================= MODAL: PENCATATAN UTANG/PIUTANG (muncul otomatis saat submit jurnal) ================= -->
-        <div id="up-catat-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:flex-end; justify-content:center;">
+        <div id="up-catat-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:60; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title" id="upCatatTitle">Catat Utang</div>
@@ -4037,7 +4038,7 @@
         </div>
 
         <!-- ================= MODAL PENDATAAN PERALATAN BARU ================= -->
-        <div id="peralatan-catat-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:flex-end; justify-content:center;">
+        <div id="peralatan-catat-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:60; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Pendataan Peralatan Baru</div>
@@ -4071,7 +4072,7 @@
         </div>
 
         <!-- ================= MODAL PENGHAPUSAN / PENJUALAN PERALATAN ================= -->
-        <div id="peralatan-hapus-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:flex-end; justify-content:center;">
+        <div id="peralatan-hapus-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:60; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Form Penghapusan Peralatan</div>
@@ -4104,7 +4105,7 @@
         </div>
 
         <!-- ================= MODAL PELUNASAN UTANG/PIUTANG VIA JURNAL ================= -->
-        <div id="up-jurnal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:flex-end; justify-content:center;">
+        <div id="up-jurnal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:60; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title" id="upjTitle">Pelunasan Utang</div>
@@ -4168,7 +4169,7 @@
         </div>
 
         <!-- ================= OVERLAY BUKU BESAR BEBAN PROKER ================= -->
-        <div id="proker-bb-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:45; align-items:flex-end; justify-content:center;">
+        <div id="proker-bb-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:45; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Buku Besar Beban Proker</div>
@@ -4186,7 +4187,7 @@
         </div>
 
         <!-- ================= MODAL GALERI NOTA (multi-file per transaksi) ================= -->
-        <div id="galeri-nota-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:46; align-items:flex-end; justify-content:center;">
+        <div id="galeri-nota-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:46; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title" id="galeriNotaTitle">Bukti Transaksi</div>
@@ -4206,37 +4207,54 @@
                     <div class="ct-header-title">Pemeriksaan Internal</div>
                     <div style="width:22px;"></div>
                 </div>
+                <div class="ct-tabs">
+                    <button class="ct-tab-btn active" id="pmtab-umum" onclick="switchPemeriksaanTab('umum')">Umum</button>
+                    <button class="ct-tab-btn" id="pmtab-rekonsiliasi" onclick="switchPemeriksaanTab('rekonsiliasi')">Rekonsiliasi Otomatis</button>
+                </div>
             </div>
             <div class="ct-body">
-                <div style="text-align:center;">
-                    <div style="font-size:0.78rem; font-weight:700; color:var(--maroon); text-transform:uppercase; letter-spacing:0.5px;">Pemeriksaan Internal</div>
-                    <div style="font-size:0.72rem; color:var(--text-gray); font-weight:600; margin-top:2px;">Biro Anggaran dan Keuangan &middot; Remaja Masjid Fadhlillah</div>
+
+                <div class="ct-subpage active" id="pmpage-umum">
+                    <div style="text-align:center;">
+                        <div style="font-size:0.78rem; font-weight:700; color:var(--maroon); text-transform:uppercase; letter-spacing:0.5px;">Pemeriksaan Internal</div>
+                        <div style="font-size:0.72rem; color:var(--text-gray); font-weight:600; margin-top:2px;">Biro Anggaran dan Keuangan &middot; Remaja Masjid Fadhlillah</div>
+                    </div>
+
+                    <div>
+                        <div class="ledger-head"><div class="ledger-title">Struktur Tim Pemeriksa Internal</div></div>
+                        <div class="ct-field"><label>Ketua Tim</label><input type="text" id="pmKetuaTim" placeholder="Nama ketua tim pemeriksa..."></div>
+                        <div class="ct-field" style="margin-bottom:0;">
+                            <label>Anggota Tim</label>
+                            <div id="pmAnggotaRows" style="display:flex; flex-direction:column; gap:8px;"></div>
+                        </div>
+                        <div class="ct-add-row" onclick="tambahAnggotaTim()"><i class="ph ph-plus-circle"></i> Tambah Anggota Tim</div>
+                        <button class="ct-submit-btn" style="margin-top:10px;" onclick="simpanTimPemeriksa()"><i class="ph ph-floppy-disk"></i> Simpan Tim Pemeriksa</button>
+                    </div>
+
+                    <div>
+                        <div class="ledger-head"><div class="ledger-title">Rekapan Transaksi Bendahara</div></div>
+                        <div style="font-size:0.72rem; font-weight:700; color:var(--text-gray); margin-bottom:6px;">A. Jurnal Transaksi</div>
+                        <div class="ip-table-wrap">
+                            <div class="ip-table-head" style="grid-template-columns:0.9fr 1.1fr 1.1fr 0.9fr;"><span>Bulan</span><span>Trx Proker</span><span>Trx Non Proker</span><span>Total</span></div>
+                            <div id="pmRekapRows"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <div class="ledger-head"><div class="ledger-title">Struktur Tim Pemeriksa Internal</div></div>
-                    <div class="ct-field"><label>Ketua Tim</label><input type="text" id="pmKetuaTim" placeholder="Nama ketua tim pemeriksa..."></div>
-                    <div class="ct-field" style="margin-bottom:0;">
-                        <label>Anggota Tim</label>
-                        <div id="pmAnggotaRows" style="display:flex; flex-direction:column; gap:8px;"></div>
+                <div class="ct-subpage" id="pmpage-rekonsiliasi">
+                    <div style="text-align:center;">
+                        <div style="font-size:0.78rem; font-weight:700; color:var(--maroon); text-transform:uppercase; letter-spacing:0.5px;">Rekonsiliasi Otomatis Antar-Modul</div>
+                        <div style="font-size:0.72rem; color:var(--text-gray); font-weight:600; margin-top:2px;">APLIKASI SIASFA</div>
                     </div>
-                    <div class="ct-add-row" onclick="tambahAnggotaTim()"><i class="ph ph-plus-circle"></i> Tambah Anggota Tim</div>
-                    <button class="ct-submit-btn" style="margin-top:10px;" onclick="simpanTimPemeriksa()"><i class="ph ph-floppy-disk"></i> Simpan Tim Pemeriksa</button>
+                    <div class="ct-add-row" onclick="muatRekonsiliasiOtomatis()"><i class="ph ph-arrows-clockwise"></i> Jalankan Ulang Rekonsiliasi</div>
+                    <div id="rekonWrap"><div style="padding:20px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat...</div></div>
                 </div>
 
-                <div>
-                    <div class="ledger-head"><div class="ledger-title">Rekapan Transaksi Bendahara</div></div>
-                    <div style="font-size:0.72rem; font-weight:700; color:var(--text-gray); margin-bottom:6px;">A. Jurnal Transaksi</div>
-                    <div class="ip-table-wrap">
-                        <div class="ip-table-head" style="grid-template-columns:0.9fr 1.1fr 1.1fr 0.9fr;"><span>Bulan</span><span>Trx Proker</span><span>Trx Non Proker</span><span>Total</span></div>
-                        <div id="pmRekapRows"></div>
-                    </div>
-                </div>
             </div>
         </div>
 
         <!-- ================= MODAL WHISTLEBLOWING SYSTEM ================= -->
-        <div id="wbs-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div id="wbs-modal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Pelaporan Whistleblowing System</div>
@@ -4288,7 +4306,7 @@
         </div>
 
         <!-- ================= MODAL SURAT PERNYATAAN TANGGUNG JAWAB ================= -->
-        <div id="surat-pernyataan-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:50; align-items:flex-end; justify-content:center;">
+        <div id="surat-pernyataan-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:50; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Format Surat Pernyataan Tanggung Jawab Pengurus</div>
@@ -4306,7 +4324,7 @@
         </div>
 
         <!-- ================= MODAL WARNING GANTI PASSWORD ================= -->
-        <div id="warning-ganti-password-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.6); z-index:60; align-items:center; justify-content:center; padding:24px;">
+        <div id="warning-ganti-password-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:60; align-items:center; justify-content:center; padding:24px;">
             <div class="siasfa-confirm-card" style="width:100%;">
                 <div class="siasfa-confirm-icon" style="background:rgba(217,118,6,0.12); color:#D97706;"><i class="ph ph-warning-octagon"></i></div>
                 <div class="siasfa-confirm-title">Segera Ganti Password Anda</div>
@@ -4319,7 +4337,7 @@
         </div>
 
         <!-- ================= MODAL UBAH PASSWORD ================= -->
-        <div id="ubah-password-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:50; align-items:flex-end; justify-content:center;">
+        <div id="ubah-password-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:50; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Ubah Password</div>
@@ -4335,7 +4353,7 @@
         </div>
 
         <!-- ================= MODAL UBAH PROFIL SAYA ================= -->
-        <div id="ubah-profil-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(26,18,37,0.55); z-index:50; align-items:flex-end; justify-content:center;">
+        <div id="ubah-profil-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:50; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
                     <div class="co-modal-title">Ubah Profil Saya</div>
@@ -8316,7 +8334,7 @@ function unduhRiwayatTransaksi() {
             var doc = pdfBaru();
             var y = pdfKop(doc, 'RIWAYAT TRANSAKSI', 'Per ' + tanggalLaporanHariIni() + ' \u00b7 ' + body.length + ' transaksi');
             pdfTabel(doc, y + 4, ['Kode', 'Tanggal', 'Keterangan', 'Bendahara', 'Jenis', 'Nominal (Rp)'], body, {
-                styles: { font: 'helvetica', fontSize: 7, cellPadding: 4, textColor: [26, 18, 37], lineColor: [225, 220, 222], lineWidth: 0.5 },
+                styles: { font: 'times', fontSize: 7, cellPadding: 4, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
                 columnStyles: { 5: { halign: 'right' } }
             });
             pdfTutup(doc, 'Riwayat-Transaksi-' + Date.now() + '.pdf');
@@ -8363,7 +8381,7 @@ function unduhRiwayatTransaksi() {
                 : '<i class="ph ph-folder"></i>';
             return '<div class="nota-card" onclick="bukaGaleriNota(' + t.id + ')" style="cursor:pointer; position:relative;">' +
                 '<div class="nota-img">' + thumb + '</div>' +
-                (jumlah > 1 ? '<div style="position:absolute; top:6px; right:6px; background:rgba(184,19,55,0.9); color:#FFFFFF; font-size:0.6rem; font-weight:700; padding:2px 7px; border-radius:10px;">' + jumlah + ' file</div>' : '') +
+                (jumlah > 1 ? '<div style="position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.9); color:#FFFFFF; font-size:0.6rem; font-weight:700; padding:2px 7px; border-radius:10px;">' + jumlah + ' file</div>' : '') +
                 '<div class="nota-info"><div class="nota-ket">' + t.ket + '</div><div class="nota-tgl">' + formatTanggalID(t.tanggal) + '</div><div class="nota-nominal">Rp ' + t.nominal.toLocaleString('id-ID') + '</div></div></div>';
         }
 
@@ -8458,6 +8476,7 @@ function unduhRiwayatTransaksi() {
 
         async function bukaPemeriksaan() {
             document.getElementById('pemeriksaan-screen').style.display = 'flex';
+            switchPemeriksaanTab('umum');
             await muatTimPemeriksa();
             renderRekapPemeriksaan();
         }
@@ -8567,6 +8586,346 @@ function unduhRiwayatTransaksi() {
             } catch (e) {
                 alert('ERROR SISTEM: ' + e.message);
             }
+        }
+
+        // ====================================================================
+        // ===== REKONSILIASI OTOMATIS — Pemeriksaan Internal ================
+        // ====================================================================
+        function switchPemeriksaanTab(tab) {
+            document.querySelectorAll('#pemeriksaan-screen .ct-tab-btn').forEach(function (el) { el.classList.remove('active'); });
+            document.querySelectorAll('#pemeriksaan-screen .ct-subpage').forEach(function (el) { el.classList.remove('active'); });
+            document.getElementById('pmtab-' + tab).classList.add('active');
+            document.getElementById('pmpage-' + tab).classList.add('active');
+            if (tab === 'rekonsiliasi') { muatRekonsiliasiOtomatis(); }
+        }
+
+        function rekonBadge(status) {
+            var map = {
+                sesuai: { cls: 'lunas', label: 'Sesuai', icon: 'ph-check-circle' },
+                selisih: { cls: 'belum', label: 'Ada Selisih', icon: 'ph-warning-circle' },
+                tinjau: { cls: 'belum', label: 'Perlu Ditinjau', icon: 'ph-flag' }
+            };
+            var m = map[status] || map.tinjau;
+            return '<span class="pay-status-badge ' + m.cls + '"><i class="ph ' + m.icon + '" style="margin-right:3px;"></i>' + m.label + '</span>';
+        }
+
+        async function rekonAmbilRefData() {
+            const [coaRes, kasRes] = await Promise.all([
+                supabaseClient.from('coa_akun').select('id, nama, tipe'),
+                supabaseClient.from('akun_kas').select('id, nama')
+            ]);
+            var coaByNama = {}, coaById = {};
+            (coaRes.data || []).forEach(function (c) { coaByNama[c.nama] = c; coaById[c.id] = c; });
+            var kasByNama = {}, kasById = {};
+            (kasRes.data || []).forEach(function (k) { kasByNama[k.nama] = k; kasById[k.id] = k; });
+            return { coaByNama: coaByNama, coaById: coaById, kasByNama: kasByNama, kasById: kasById };
+        }
+
+        async function rekonAmbilJurnalPadaCoa(coaIds) {
+            if (!coaIds.length) return [];
+            const { data, error } = await supabaseClient
+                .from('jurnal_detail')
+                .select('id, jurnal_id, coa_akun_id, debit, kredit, jurnal_transaksi(kode, tanggal, keterangan, bendahara)')
+                .in('coa_akun_id', coaIds);
+            if (error) { alert('ERROR SUPABASE (rekonsiliasi): ' + error.message); return []; }
+            return data || [];
+        }
+
+        function rekonBarisTransaksi(rows, coaById) {
+            if (!rows.length) return '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.72rem;">Tidak ada entri jurnal pada akun ini.</div>';
+            var html = '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:0.7fr 1.3fr 0.9fr 0.9fr;"><span>Tanggal</span><span>Keterangan</span><span>Akun</span><span>Nominal</span></div>';
+            rows.forEach(function (r) {
+                var trx = r.jurnal_transaksi || {};
+                var nominal = (parseFloat(r.debit) || 0) - (parseFloat(r.kredit) || 0);
+                var akunNama = (coaById[r.coa_akun_id] || {}).nama || '-';
+                html += '<div class="ip-table-row" style="grid-template-columns:0.7fr 1.3fr 0.9fr 0.9fr;">' +
+                    '<span style="font-size:0.68rem; color:var(--text-gray);">' + (trx.tanggal ? formatTanggalID(trx.tanggal) : '-') + '</span>' +
+                    '<span style="font-size:0.7rem; color:var(--text-dark);">' + (trx.keterangan || '-') + ' <span style="color:var(--text-gray);">(' + (trx.kode || '-') + (trx.bendahara ? ' \u00b7 ' + trx.bendahara : '') + ')</span></span>' +
+                    '<span style="font-size:0.68rem; color:var(--text-gray);">' + akunNama + '</span>' +
+                    '<span style="font-size:0.72rem; font-weight:700; color:' + (nominal < 0 ? '#16A34A' : 'var(--maroon)') + ';">' + (nominal < 0 ? '(Kredit) ' : '(Debit) ') + 'Rp ' + Math.abs(nominal).toLocaleString('id-ID') + '</span></div>';
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function rekonCardWrap(judul, icon, ringkasanHtml, ekstraHtml, statusHtml) {
+            return '<div style="border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:16px;">' +
+                '<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px;">' +
+                '<div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; font-weight:700; color:var(--text-dark);"><i class="ph ' + icon + '" style="color:var(--maroon);"></i> ' + judul + '</div>' +
+                statusHtml +
+                '</div>' +
+                ringkasanHtml + ekstraHtml +
+                '</div>';
+        }
+
+        async function muatRekonsiliasiOtomatis() {
+            var wrap = document.getElementById('rekonWrap');
+            wrap.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Menjalankan rekonsiliasi otomatis, mohon tunggu...</div>';
+            try {
+                const [htmlUP, htmlPenjualan, htmlInfaq, htmlIuran] = await Promise.all([
+                    rekonUtangPiutang(), rekonPenjualan(), rekonInfaq(), rekonIuran()
+                ]);
+                wrap.innerHTML =
+                    '<div style="background:rgba(217,118,6,0.07); border:1px solid rgba(217,118,6,0.3); border-radius:12px; padding:12px 14px; font-size:0.7rem; color:#92400E; font-weight:600; line-height:1.5; margin-bottom:16px;"><i class="ph ph-info"></i> Rekonsiliasi ini bersifat indikatif dan dihitung otomatis dari data sistem. Tetap perlu verifikasi manual oleh pemeriksa untuk kesimpulan akhir &mdash; sistem tidak menyimpulkan ada/tidaknya kecurangan, hanya menyajikan data untuk ditelusuri.</div>' +
+                    htmlUP + htmlPenjualan + htmlInfaq + htmlIuran;
+            } catch (e) {
+                wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--maroon); font-size:0.78rem;">Gagal menjalankan rekonsiliasi: ' + e.message + '</div>';
+            }
+        }
+
+        /* ---------- 1. UTANG PIUTANG ---------- */
+        async function rekonUtangPiutang() {
+            var ref = await rekonAmbilRefData();
+            var coaPiutang = ref.coaByNama['Piutang Kepada Anggota'];
+            var coaUtangVendor = ref.coaByNama['Utang Kepada Vendor'];
+            var coaUtangAnggota = ref.coaByNama['Utang Kepada Anggota'];
+            var coaIds = [coaPiutang, coaUtangVendor, coaUtangAnggota].filter(Boolean).map(function (c) { return c.id; });
+
+            const [uv, ua, pa, uvp, uap, pap] = await Promise.all([
+                supabaseClient.from('utang_vendor').select('id, total_utang, jurnal_id'),
+                supabaseClient.from('utang_anggota').select('id, total_utang, jurnal_id'),
+                supabaseClient.from('piutang_anggota').select('id, nominal, jurnal_id'),
+                supabaseClient.from('utang_vendor_pembayaran').select('utang_id, nominal, tanggal, via_jurnal'),
+                supabaseClient.from('utang_anggota_pembayaran').select('utang_id, nominal, tanggal, via_jurnal'),
+                supabaseClient.from('piutang_anggota_pembayaran').select('piutang_id, nominal, tanggal, via_jurnal')
+            ]);
+
+            var idCreationSet = {};
+            (uv.data || []).forEach(function (x) { if (x.jurnal_id) idCreationSet[x.jurnal_id] = true; });
+            (ua.data || []).forEach(function (x) { if (x.jurnal_id) idCreationSet[x.jurnal_id] = true; });
+            (pa.data || []).forEach(function (x) { if (x.jurnal_id) idCreationSet[x.jurnal_id] = true; });
+
+            function sisaModul(sumber, bayarList, kolomNominal) {
+                var totalAsal = sumber.reduce(function (s, x) { return s + (parseFloat(x[kolomNominal]) || 0); }, 0);
+                var totalBayar = bayarList.reduce(function (s, x) { return s + (parseFloat(x.nominal) || 0); }, 0);
+                return totalAsal - totalBayar;
+            }
+            var sisaUtangVendor = sisaModul(uv.data || [], uvp.data || [], 'total_utang');
+            var sisaUtangAnggota = sisaModul(ua.data || [], uap.data || [], 'total_utang');
+            var sisaPiutang = sisaModul(pa.data || [], pap.data || [], 'nominal');
+
+            var rowsJurnal = await rekonAmbilJurnalPadaCoa(coaIds);
+            var mutasiCoa = {};
+            rowsJurnal.forEach(function (r) {
+                var net = (parseFloat(r.debit) || 0) - (parseFloat(r.kredit) || 0);
+                mutasiCoa[r.coa_akun_id] = (mutasiCoa[r.coa_akun_id] || 0) + net;
+            });
+            var ledgerPiutang = coaPiutang ? (mutasiCoa[coaPiutang.id] || 0) : 0;
+            var ledgerUtangVendor = coaUtangVendor ? -(mutasiCoa[coaUtangVendor.id] || 0) : 0;
+            var ledgerUtangAnggota = coaUtangAnggota ? -(mutasiCoa[coaUtangAnggota.id] || 0) : 0;
+
+            var viaJurnalUV = (uvp.data || []).filter(function (x) { return x.via_jurnal; });
+            var viaJurnalUA = (uap.data || []).filter(function (x) { return x.via_jurnal; });
+            var viaJurnalPA = (pap.data || []).filter(function (x) { return x.via_jurnal; });
+
+            function cocokViaJurnal(list, tanggal, nominal) {
+                return list.some(function (x) { return x.tanggal === tanggal && Math.abs((parseFloat(x.nominal) || 0) - nominal) < 1; });
+            }
+
+            var luarProsedur = [];
+            rowsJurnal.forEach(function (r) {
+                if (idCreationSet[r.jurnal_id]) return;
+                var trx = r.jurnal_transaksi || {};
+                var nominal = Math.abs((parseFloat(r.debit) || 0) - (parseFloat(r.kredit) || 0));
+                var list = (coaUtangVendor && r.coa_akun_id === coaUtangVendor.id) ? viaJurnalUV
+                    : (coaUtangAnggota && r.coa_akun_id === coaUtangAnggota.id) ? viaJurnalUA
+                    : viaJurnalPA;
+                var cocok = trx.tanggal ? cocokViaJurnal(list, trx.tanggal, nominal) : false;
+                luarProsedur.push({ row: r, cocok: cocok });
+            });
+
+            var jumlahAnomali = luarProsedur.filter(function (x) { return !x.cocok; }).length;
+            var status = jumlahAnomali > 0 ? 'tinjau' : 'sesuai';
+
+            var ringkasan = '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.4fr 1fr 1fr 0.8fr;"><span>Akun</span><span>Saldo Modul</span><span>Saldo Buku Besar</span><span>Selisih</span></div>';
+            [
+                ['Piutang Kepada Anggota', sisaPiutang, ledgerPiutang],
+                ['Utang Kepada Vendor', sisaUtangVendor, ledgerUtangVendor],
+                ['Utang Kepada Anggota', sisaUtangAnggota, ledgerUtangAnggota]
+            ].forEach(function (row) {
+                var selisih = Math.round(row[1] - row[2]);
+                ringkasan += '<div class="ip-table-row" style="grid-template-columns:1.4fr 1fr 1fr 0.8fr;">' +
+                    '<span style="font-size:0.72rem; font-weight:600; color:var(--text-dark);">' + row[0] + '</span>' +
+                    '<span style="font-size:0.72rem;">Rp ' + Math.round(row[1]).toLocaleString('id-ID') + '</span>' +
+                    '<span style="font-size:0.72rem;">Rp ' + Math.round(row[2]).toLocaleString('id-ID') + '</span>' +
+                    '<span style="font-size:0.72rem; font-weight:700; color:' + (selisih === 0 ? '#16A34A' : 'var(--maroon)') + ';">Rp ' + selisih.toLocaleString('id-ID') + '</span></div>';
+            });
+            ringkasan += '</div>';
+
+            var ekstra = '<div style="margin-top:14px; font-size:0.72rem; font-weight:700; color:var(--text-gray); text-transform:uppercase; letter-spacing:0.3px;">Transaksi Jurnal di Luar Pembentukan Awal (' + luarProsedur.length + ')</div>' +
+                '<div style="font-size:0.66rem; color:var(--text-gray); margin:4px 0 8px;">Baris hijau kemungkinan pelunasan resmi via menu Utang Piutang (tanggal &amp; nominal cocok dengan riwayat pembayaran). Baris merah tidak ditemukan padanannya di modul manapun &mdash; wajib ditinjau langsung oleh pemeriksa.</div>';
+            if (luarProsedur.length === 0) {
+                ekstra += '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.72rem;">Tidak ada transaksi lanjutan selain pembentukan awal.</div>';
+            } else {
+                ekstra += '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:0.7fr 1.1fr 0.9fr 0.8fr 0.6fr;"><span>Tanggal</span><span>Keterangan</span><span>Akun</span><span>Nominal</span><span>Status</span></div>';
+                luarProsedur.forEach(function (x) {
+                    var r = x.row, trx = r.jurnal_transaksi || {};
+                    var nominal = Math.abs((parseFloat(r.debit) || 0) - (parseFloat(r.kredit) || 0));
+                    var akunNama = (ref.coaById[r.coa_akun_id] || {}).nama || '-';
+                    ekstra += '<div class="ip-table-row" style="grid-template-columns:0.7fr 1.1fr 0.9fr 0.8fr 0.6fr;">' +
+                        '<span style="font-size:0.66rem; color:var(--text-gray);">' + (trx.tanggal ? formatTanggalID(trx.tanggal) : '-') + '</span>' +
+                        '<span style="font-size:0.68rem; color:var(--text-dark);">' + (trx.keterangan || '-') + '</span>' +
+                        '<span style="font-size:0.64rem; color:var(--text-gray);">' + akunNama + '</span>' +
+                        '<span style="font-size:0.68rem; font-weight:700;">Rp ' + nominal.toLocaleString('id-ID') + '</span>' +
+                        '<span style="font-size:0.6rem; font-weight:700; color:' + (x.cocok ? '#16A34A' : 'var(--maroon)') + ';">' + (x.cocok ? 'Kemungkinan Resmi' : '\u26a0 Tinjau') + '</span></div>';
+                });
+                ekstra += '</div>';
+            }
+
+            return rekonCardWrap('Utang Piutang', 'ph-handshake', ringkasan, ekstra, rekonBadge(status));
+        }
+
+        /* ---------- 2. PENJUALAN & AKUN TERDAMPAK ---------- */
+        async function rekonPenjualan() {
+            var ref = await rekonAmbilRefData();
+            var coaPersediaan = ref.coaByNama['Persediaan Merchandise'];
+            var coaHpp = ref.coaByNama['Harga Pokok Penjualan'];
+            var coaIdsEksklusif = [coaPersediaan, coaHpp].filter(Boolean).map(function (c) { return c.id; });
+
+            const { data: produkData } = await supabaseClient
+                .from('produk')
+                .select('id, nama, harga_jual, harga_beli, total_modal_vendor, produk_pembeli(qty, produk_pembayaran(nominal)), produk_vendor_bayar(nominal)');
+            var produk = produkData || [];
+
+            var totalHpp = 0, totalPersediaanSisa = 0, totalPiutangPenjualan = 0, totalUtangVendorPenjualan = 0;
+            produk.forEach(function (p) {
+                var hargaJual = parseFloat(p.harga_jual) || 0, hargaBeli = parseFloat(p.harga_beli) || 0;
+                var qtyTerjual = (p.produk_pembeli || []).reduce(function (s, b) { return s + (parseFloat(b.qty) || 0); }, 0);
+                totalHpp += qtyTerjual * hargaBeli;
+                (p.produk_pembeli || []).forEach(function (b) {
+                    var tagihan = (parseFloat(b.qty) || 0) * hargaJual;
+                    var dibayar = (b.produk_pembayaran || []).reduce(function (s, x) { return s + (parseFloat(x.nominal) || 0); }, 0);
+                    if (dibayar < tagihan) totalPiutangPenjualan += (tagihan - dibayar);
+                });
+                var modalVendor = parseFloat(p.total_modal_vendor) || 0;
+                var bayarVendor = (p.produk_vendor_bayar || []).reduce(function (s, x) { return s + (parseFloat(x.nominal) || 0); }, 0);
+                totalUtangVendorPenjualan += Math.max(0, modalVendor - bayarVendor);
+                totalPersediaanSisa += modalVendor - (qtyTerjual * hargaBeli);
+            });
+
+            var rowsJurnal = await rekonAmbilJurnalPadaCoa(coaIdsEksklusif);
+            var mutasiCoa = {};
+            rowsJurnal.forEach(function (r) {
+                var net = (parseFloat(r.debit) || 0) - (parseFloat(r.kredit) || 0);
+                mutasiCoa[r.coa_akun_id] = (mutasiCoa[r.coa_akun_id] || 0) + net;
+            });
+            var ledgerPersediaan = coaPersediaan ? (mutasiCoa[coaPersediaan.id] || 0) : 0;
+            var ledgerHpp = coaHpp ? (mutasiCoa[coaHpp.id] || 0) : 0;
+
+            var status = rowsJurnal.length > 0 ? 'tinjau' : 'sesuai';
+
+            var ringkasan = '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.4fr 1fr 1fr 0.8fr;"><span>Akun</span><span>Saldo Modul Penjualan</span><span>Saldo Buku Besar</span><span>Selisih</span></div>';
+            [
+                ['Persediaan Merchandise', totalPersediaanSisa, ledgerPersediaan],
+                ['Harga Pokok Penjualan (kumulatif)', totalHpp, ledgerHpp]
+            ].forEach(function (row) {
+                var selisih = Math.round(row[1] - row[2]);
+                ringkasan += '<div class="ip-table-row" style="grid-template-columns:1.4fr 1fr 1fr 0.8fr;">' +
+                    '<span style="font-size:0.72rem; font-weight:600; color:var(--text-dark);">' + row[0] + '</span>' +
+                    '<span style="font-size:0.72rem;">Rp ' + Math.round(row[1]).toLocaleString('id-ID') + '</span>' +
+                    '<span style="font-size:0.72rem;">Rp ' + Math.round(row[2]).toLocaleString('id-ID') + '</span>' +
+                    '<span style="font-size:0.72rem; font-weight:700; color:' + (selisih === 0 ? '#16A34A' : 'var(--maroon)') + ';">Rp ' + selisih.toLocaleString('id-ID') + '</span></div>';
+            });
+            ringkasan += '</div>' +
+                '<div style="display:flex; gap:8px; margin-top:10px;">' +
+                '<div style="flex:1; background:var(--paper-soft); border-radius:10px; padding:8px 10px;"><div style="font-size:0.6rem; color:var(--text-gray); font-weight:700;">PIUTANG DARI PENJUALAN</div><div style="font-size:0.78rem; font-weight:700; color:#16A34A; margin-top:2px;">Rp ' + Math.round(totalPiutangPenjualan).toLocaleString('id-ID') + '</div></div>' +
+                '<div style="flex:1; background:var(--paper-soft); border-radius:10px; padding:8px 10px;"><div style="font-size:0.6rem; color:var(--text-gray); font-weight:700;">UTANG VENDOR (PERSEDIAAN)</div><div style="font-size:0.78rem; font-weight:700; color:var(--maroon); margin-top:2px;">Rp ' + Math.round(totalUtangVendorPenjualan).toLocaleString('id-ID') + '</div></div>' +
+                '</div>';
+
+            var ekstra = '<div style="margin-top:14px; font-size:0.72rem; font-weight:700; color:var(--text-gray); text-transform:uppercase; letter-spacing:0.3px;">Entri Jurnal pada Akun Persediaan / HPP (' + rowsJurnal.length + ')</div>' +
+                '<div style="font-size:0.66rem; color:var(--text-gray); margin:4px 0 8px;">Kedua akun ini murni dikelola otomatis oleh modul Penjualan dan seharusnya tidak pernah tersentuh Jurnal Umum secara manual. Setiap baris di bawah adalah entri di luar mekanisme sistem dan wajib ditinjau.</div>' +
+                rekonBarisTransaksi(rowsJurnal, ref.coaById);
+
+            return rekonCardWrap('Penjualan &amp; Akun Terdampak', 'ph-shopping-cart', ringkasan, ekstra, rekonBadge(status));
+        }
+
+        /* ---------- 3. INFAQ HARIAN ---------- */
+        async function rekonInfaq() {
+            var ref = await rekonAmbilRefData();
+            var kasInfaq = ref.kasByNama['Kas Infaq Harian Ramadhan'];
+
+            const { data: infaqData } = await supabaseClient.from('infaq_harian').select('tunai, qris');
+            var totalRekapPetugas = (infaqData || []).reduce(function (s, d) { return s + (parseFloat(d.tunai) || 0) + (parseFloat(d.qris) || 0); }, 0);
+
+            var rowsJurnal = [];
+            if (kasInfaq) {
+                const res = await supabaseClient
+                    .from('jurnal_detail')
+                    .select('id, jurnal_id, akun_kas_id, debit, kredit, jurnal_transaksi(kode, tanggal, keterangan, bendahara)')
+                    .eq('akun_kas_id', kasInfaq.id);
+                rowsJurnal = res.data || [];
+            }
+            var totalMasukKas = rowsJurnal.reduce(function (s, r) { return s + (parseFloat(r.debit) || 0); }, 0);
+
+            var selisih = Math.round(totalRekapPetugas - totalMasukKas);
+            var status = selisih === 0 ? 'sesuai' : (selisih > 0 ? 'tinjau' : 'selisih');
+
+            var ringkasan = '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.6fr 1fr;"><span>Uraian</span><span>Jumlah</span></div>' +
+                '<div class="ip-table-row" style="grid-template-columns:1.6fr 1fr;"><span style="font-size:0.72rem; color:var(--text-dark);">Total Rekap Petugas (Tunai + QRIS)</span><span style="font-size:0.72rem; font-weight:700;">Rp ' + Math.round(totalRekapPetugas).toLocaleString('id-ID') + '</span></div>' +
+                '<div class="ip-table-row" style="grid-template-columns:1.6fr 1fr;"><span style="font-size:0.72rem; color:var(--text-dark);">Total Disetor ke ' + (kasInfaq ? kasInfaq.nama : 'Kas Infaq') + ' (via Jurnal)</span><span style="font-size:0.72rem; font-weight:700;">Rp ' + Math.round(totalMasukKas).toLocaleString('id-ID') + '</span></div>' +
+                '<div class="ip-table-row" style="grid-template-columns:1.6fr 1fr; background:var(--paper-soft);"><span style="font-size:0.72rem; font-weight:700; color:var(--text-dark);">Selisih (Belum Disetor / Belum Dicatat)</span><span style="font-size:0.74rem; font-weight:700; color:' + (selisih === 0 ? '#16A34A' : 'var(--maroon)') + ';">Rp ' + Math.abs(selisih).toLocaleString('id-ID') + '</span></div>' +
+                '</div>' +
+                '<div style="font-size:0.66rem; color:var(--text-gray); margin-top:8px; line-height:1.5;">Rekap harian dari petugas infaq bersifat administratif dan <strong>tidak otomatis</strong> memengaruhi saldo kas resmi. Setoran ke kas hanya sah setelah dicatat bendahara melalui Jurnal Umum/Penerimaan. Selisih positif berarti ada dana yang sudah direkap petugas namun belum tercatat masuk ke kas resmi &mdash; wajib ditelusuri.</div>';
+
+            var ekstra = '<div style="margin-top:14px; font-size:0.72rem; font-weight:700; color:var(--text-gray); text-transform:uppercase; letter-spacing:0.3px;">Riwayat Setoran ke Kas Infaq (' + rowsJurnal.length + ')</div>';
+            if (!kasInfaq) {
+                ekstra += '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.72rem;">Akun kas "Kas Infaq Harian Ramadhan" tidak ditemukan di sistem.</div>';
+            } else if (rowsJurnal.length === 0) {
+                ekstra += '<div style="padding:10px 0; text-align:center; color:var(--maroon); font-size:0.72rem;">Belum ada satu pun setoran tercatat ke kas ini.</div>';
+            } else {
+                ekstra += '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:0.7fr 1.3fr 0.9fr 0.6fr;"><span>Tanggal</span><span>Keterangan</span><span>Nominal</span><span>Tipe</span></div>';
+                rowsJurnal.forEach(function (r) {
+                    var trx = r.jurnal_transaksi || {};
+                    var debit = parseFloat(r.debit) || 0, kredit = parseFloat(r.kredit) || 0;
+                    ekstra += '<div class="ip-table-row" style="grid-template-columns:0.7fr 1.3fr 0.9fr 0.6fr;">' +
+                        '<span style="font-size:0.66rem; color:var(--text-gray);">' + (trx.tanggal ? formatTanggalID(trx.tanggal) : '-') + '</span>' +
+                        '<span style="font-size:0.68rem; color:var(--text-dark);">' + (trx.keterangan || '-') + '</span>' +
+                        '<span style="font-size:0.7rem; font-weight:700;">Rp ' + (debit || kredit).toLocaleString('id-ID') + '</span>' +
+                        '<span style="font-size:0.62rem; font-weight:700; color:' + (debit > 0 ? '#16A34A' : 'var(--maroon)') + ';">' + (debit > 0 ? 'Masuk' : 'Keluar') + '</span></div>';
+                });
+                ekstra += '</div>';
+            }
+
+            return rekonCardWrap('Infaq Harian', 'ph-hand-heart', ringkasan, ekstra, rekonBadge(status));
+        }
+
+        /* ---------- 4. IURAN ---------- */
+        async function rekonIuran() {
+            var ref = await rekonAmbilRefData();
+            var coaIuran = ref.coaByNama['Pendapatan Iuran'];
+            var coaIds = coaIuran ? [coaIuran.id] : [];
+
+            const { data: iuranData } = await supabaseClient
+                .from('iuran_konsep')
+                .select('id, iuran_peserta(target, iuran_pembayaran(nominal))');
+            var iuran = iuranData || [];
+
+            var totalTarget = 0, totalTerkumpul = 0;
+            iuran.forEach(function (k) {
+                (k.iuran_peserta || []).forEach(function (p) {
+                    totalTarget += parseFloat(p.target) || 0;
+                    totalTerkumpul += (p.iuran_pembayaran || []).reduce(function (s, x) { return s + (parseFloat(x.nominal) || 0); }, 0);
+                });
+            });
+            var totalPiutangIuran = Math.max(0, totalTarget - totalTerkumpul);
+
+            var rowsJurnal = await rekonAmbilJurnalPadaCoa(coaIds);
+            var ledgerPendapatanIuran = rowsJurnal.reduce(function (s, r) { return s + ((parseFloat(r.debit) || 0) - (parseFloat(r.kredit) || 0)); }, 0);
+
+            var status = rowsJurnal.length > 0 ? 'tinjau' : 'sesuai';
+
+            var ringkasan = '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.6fr 1fr;"><span>Uraian</span><span>Jumlah</span></div>' +
+                '<div class="ip-table-row" style="grid-template-columns:1.6fr 1fr;"><span style="font-size:0.72rem; color:var(--text-dark);">Total Target Iuran (Seluruh Konsep)</span><span style="font-size:0.72rem; font-weight:700;">Rp ' + Math.round(totalTarget).toLocaleString('id-ID') + '</span></div>' +
+                '<div class="ip-table-row" style="grid-template-columns:1.6fr 1fr;"><span style="font-size:0.72rem; color:var(--text-dark);">Total Terkumpul (Menurut Modul Iuran)</span><span style="font-size:0.72rem; font-weight:700; color:#16A34A;">Rp ' + Math.round(totalTerkumpul).toLocaleString('id-ID') + '</span></div>' +
+                '<div class="ip-table-row" style="grid-template-columns:1.6fr 1fr;"><span style="font-size:0.72rem; color:var(--text-dark);">Sisa Piutang Iuran</span><span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(totalPiutangIuran).toLocaleString('id-ID') + '</span></div>' +
+                '<div class="ip-table-row" style="grid-template-columns:1.6fr 1fr; background:var(--paper-soft);"><span style="font-size:0.72rem; font-weight:700; color:var(--text-dark);">Entri Manual pada COA &quot;Pendapatan Iuran&quot;</span><span style="font-size:0.74rem; font-weight:700; color:' + (rowsJurnal.length === 0 ? '#16A34A' : 'var(--maroon)') + ';">Rp ' + Math.round(ledgerPendapatanIuran).toLocaleString('id-ID') + '</span></div>' +
+                '</div>';
+
+            var ekstra = '<div style="margin-top:14px; font-size:0.72rem; font-weight:700; color:var(--text-gray); text-transform:uppercase; letter-spacing:0.3px;">Entri Jurnal pada Akun Pendapatan Iuran (' + rowsJurnal.length + ')</div>' +
+                '<div style="font-size:0.66rem; color:var(--text-gray); margin:4px 0 8px;">Akun ini murni dikelola otomatis oleh modul Iuran dan seharusnya tidak pernah tersentuh Jurnal Umum secara manual. Setiap baris di bawah adalah entri di luar mekanisme sistem dan wajib ditinjau.</div>' +
+                rekonBarisTransaksi(rowsJurnal, ref.coaById);
+
+            return rekonCardWrap('Iuran', 'ph-users', ringkasan, ekstra, rekonBadge(status));
         }
 
         // ===== Dashboard Tamu (Publik) =====
@@ -8952,51 +9311,49 @@ function unduhRiwayatTransaksi() {
         // ===== SIASFA PDF ENGINE — desain kop surat & tabel profesional =====
         // ====================================================================
         function pdfBaru() {
-            return new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+            var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+            doc.setLineHeightFactor(1.5);
+            doc.setFont('times', 'normal');
+            doc.setFontSize(12);
+            return doc;
         }
         function pdfKop(doc, judul, subjudul) {
             var w = doc.internal.pageSize.getWidth();
-            doc.setFillColor(184, 19, 55);
-            doc.rect(0, 0, w, 92, 'F');
-            doc.setFillColor(26, 18, 37);
-            doc.rect(0, 92, w, 3, 'F');
+            var cx = w / 2;
+            doc.setTextColor(0, 0, 0);
 
-            doc.setFillColor(255, 255, 255);
-            doc.circle(46, 46, 18, 'F');
-            doc.setTextColor(184, 19, 55);
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(15);
-            doc.text('S', 46, 51, { align: 'center' });
+            doc.setFont('times', 'bold');
+            doc.setFontSize(14);
+            doc.text('MASJID FADHLILLAH ROGOITAN', cx, 46, { align: 'center' });
 
-            doc.setTextColor(255, 255, 255);
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(13);
-            doc.text('REMAJA MASJID FADHLILLAH', 76, 36);
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(8.5);
-            doc.text('Biro Anggaran dan Keuangan \u2014 Sistem Informasi SIASFA', 76, 49);
-            doc.setFontSize(7.5);
-            doc.text('remasfa.keuangan@gmail.com \u00b7 Periode Kepengurusan 2026/2027', 76, 61);
+            doc.setFont('times', 'bold');
+            doc.setFontSize(12);
+            doc.text('BIRO ANGGARAN DAN KEUANGAN', cx, 62, { align: 'center' });
 
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(7.5);
-            doc.text('Dicetak: ' + new Date().toLocaleString('id-ID'), w - 34, 36, { align: 'right' });
-            doc.text('Dokumen resmi \u2014 unaudited', w - 34, 47, { align: 'right' });
+            doc.setFont('times', 'normal');
+            doc.setFontSize(11);
+            doc.text('Sekretariat: Jalan Selarong, Rogoitan, Pendowoharjo, Sewon, Bantul', cx, 77, { align: 'center' });
+            doc.text('Daerah Istimewa Yogyakarta. E-mail: remasfa.rogoitan@gmail.com', cx, 91, { align: 'center' });
 
-            doc.setTextColor(26, 18, 37);
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(12.5);
-            doc.text(judul, w / 2, 118, { align: 'center' });
+            doc.setDrawColor(0, 0, 0);
+            doc.setLineWidth(1.4);
+            doc.line(34, 102, w - 34, 102);
+            doc.setLineWidth(0.6);
+            doc.line(34, 105, w - 34, 105);
+
+            var y = 130;
+            doc.setFont('times', 'bold');
+            doc.setFontSize(12);
+            doc.text(String(judul).toUpperCase(), cx, y, { align: 'center' });
+
             if (subjudul) {
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(9);
-                doc.setTextColor(148, 142, 150);
-                doc.text(subjudul, w / 2, 132, { align: 'center' });
+                y += 16;
+                doc.setFont('times', 'normal');
+                doc.setFontSize(11);
+                doc.text(subjudul, cx, y, { align: 'center' });
             }
-            doc.setDrawColor(184, 19, 55);
-            doc.setLineWidth(1);
-            doc.line(34, 144, w - 34, 144);
-            return 160;
+
+            return y + 24;
         }
         function pdfTutup(doc, namaFile) {
             var pages = doc.internal.getNumberOfPages();
@@ -9004,14 +9361,13 @@ function unduhRiwayatTransaksi() {
             var h = doc.internal.pageSize.getHeight();
             for (var i = 1; i <= pages; i++) {
                 doc.setPage(i);
-                doc.setDrawColor(225, 220, 222);
-                doc.setLineWidth(0.6);
-                doc.line(34, h - 42, w - 34, h - 42);
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(7);
-                doc.setTextColor(148, 142, 150);
-                doc.text('Dicetak otomatis melalui SIASFA \u2014 Sistem Informasi Anggaran dan Keuangan Remasfa', 34, h - 28);
-                doc.text('Halaman ' + i + ' dari ' + pages, w - 34, h - 28, { align: 'right' });
+                doc.setDrawColor(0, 0, 0);
+                doc.setLineWidth(0.5);
+                doc.line(34, h - 40, w - 34, h - 40);
+                doc.setFont('times', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(0, 0, 0);
+                doc.text('Halaman ' + i + ' dari ' + pages, w - 34, h - 26, { align: 'right' });
             }
             doc.save(namaFile);
         }
@@ -9022,19 +9378,19 @@ function unduhRiwayatTransaksi() {
                 head: [head],
                 body: body,
                 theme: 'grid',
-                styles: { font: 'helvetica', fontSize: 8, cellPadding: 5, textColor: [26, 18, 37], lineColor: [225, 220, 222], lineWidth: 0.5 },
-                headStyles: { fillColor: [184, 19, 55], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 },
-                alternateRowStyles: { fillColor: [251, 248, 249] },
+                styles: { font: 'times', fontSize: 10, cellPadding: 5, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.6 },
+                headStyles: { fillColor: [235, 235, 235], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 10, lineColor: [0, 0, 0], lineWidth: 0.6 },
+                alternateRowStyles: { fillColor: [255, 255, 255] },
                 margin: { left: 34, right: 34 }
             }, opts));
             return doc.lastAutoTable.finalY;
         }
         function pdfSeksi(doc, y, label) {
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(9.5);
-            doc.setTextColor(184, 19, 55);
+            doc.setFont('times', 'bold');
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
             doc.text(label, 34, y);
-            return y + 8;
+            return y + 10;
         }
 
         // ===== Laporan Posisi Keuangan =====
@@ -9049,7 +9405,7 @@ function unduhRiwayatTransaksi() {
                 .concat(data.asetCoa.map(function (a) { return [a.nama, fmtRp(a.saldo)]; }));
             if (asetBody.length === 0) asetBody = [['Nihil', '-']];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], asetBody, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 4;
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(26, 18, 37);
+            doc.setFont('times', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 0, 0);
             doc.text('TOTAL ASET', 34, y + 10);
             doc.text(fmtRp(data.totalAset), doc.internal.pageSize.getWidth() - 34, y + 10, { align: 'right' });
             y += 24;
@@ -9057,7 +9413,7 @@ function unduhRiwayatTransaksi() {
             y = pdfSeksi(doc, y, 'LIABILITAS');
             var liaBody = data.kewajibanCoa.length ? data.kewajibanCoa.map(function (k) { return [k.nama, fmtRp(k.saldo)]; }) : [['Nihil', '-']];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], liaBody, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 4;
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+            doc.setFont('times', 'bold'); doc.setFontSize(9);
             doc.text('TOTAL LIABILITAS', 34, y + 10);
             doc.text(fmtRp(data.totalKewajiban), doc.internal.pageSize.getWidth() - 34, y + 10, { align: 'right' });
             y += 24;
@@ -9069,9 +9425,9 @@ function unduhRiwayatTransaksi() {
             ];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], anBody, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 6;
 
-            doc.setDrawColor(184, 19, 55); doc.setLineWidth(1.2);
+            doc.setDrawColor(0, 0, 0); doc.setLineWidth(1.2);
             doc.line(34, y, doc.internal.pageSize.getWidth() - 34, y);
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(184, 19, 55);
+            doc.setFont('times', 'bold'); doc.setFontSize(10); doc.setTextColor(0, 0, 0);
             doc.text('TOTAL LIABILITAS & ASET NETO', 34, y + 16);
             doc.text(fmtRp(data.totalKewajiban + data.totalAsetNeto), doc.internal.pageSize.getWidth() - 34, y + 16, { align: 'right' });
 
@@ -9088,7 +9444,7 @@ function unduhRiwayatTransaksi() {
             y = pdfSeksi(doc, y, 'PENDAPATAN TIDAK TERIKAT');
             var body1 = data.pendapatanTT.length ? data.pendapatanTT.map(function (p) { return [p.nama, fmtRp(p.saldo)]; }) : [['Nihil', '-']];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], body1, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 4;
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(26,18,37);
+            doc.setFont('times', 'bold'); doc.setFontSize(8.5); doc.setTextColor(0,0,0);
             doc.text('Total Pendapatan Tidak Terikat', 34, y + 8);
             doc.text(fmtRp(data.totalPendapatanTT), doc.internal.pageSize.getWidth() - 34, y + 8, { align: 'right' });
             y += 22;
@@ -9096,12 +9452,12 @@ function unduhRiwayatTransaksi() {
             y = pdfSeksi(doc, y, 'PENDAPATAN TERIKAT SEMENTARA');
             var body2 = data.pendapatanT.length ? data.pendapatanT.map(function (p) { return [p.nama, fmtRp(p.saldo)]; }) : [['Nihil', '-']];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], body2, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 4;
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5);
+            doc.setFont('times', 'bold'); doc.setFontSize(8.5);
             doc.text('Total Pendapatan Terikat Sementara', 34, y + 8);
             doc.text(fmtRp(data.totalPendapatanT), doc.internal.pageSize.getWidth() - 34, y + 8, { align: 'right' });
             y += 22;
 
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor(184,19,55);
+            doc.setFont('times', 'bold'); doc.setFontSize(9.5); doc.setTextColor(0,0,0);
             doc.text('TOTAL PENDAPATAN', 34, y);
             doc.text(fmtRp(data.totalPendapatan), doc.internal.pageSize.getWidth() - 34, y, { align: 'right' });
             y += 18;
@@ -9110,9 +9466,9 @@ function unduhRiwayatTransaksi() {
             var body3 = data.bebanCoa.length ? data.bebanCoa.map(function (b) { return [b.nama, fmtRp(b.saldo)]; }) : [['Nihil', '-']];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], body3, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 6;
 
-            doc.setDrawColor(184,19,55); doc.setLineWidth(1.2);
+            doc.setDrawColor(0,0,0); doc.setLineWidth(1.2);
             doc.line(34, y, doc.internal.pageSize.getWidth() - 34, y);
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(184,19,55);
+            doc.setFont('times', 'bold'); doc.setFontSize(10); doc.setTextColor(0,0,0);
             doc.text('SURPLUS / (DEFISIT) TAHUN BERJALAN', 34, y + 16);
             doc.text(fmtRp(data.totalAsetNeto), doc.internal.pageSize.getWidth() - 34, y + 16, { align: 'right' });
 
@@ -9154,14 +9510,15 @@ function unduhRiwayatTransaksi() {
             ];
 
             catatan.forEach(function (c) {
-                if (y > doc.internal.pageSize.getHeight() - 90) { doc.addPage(); y = 50; }
-                doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor(184, 19, 55);
+                if (y > doc.internal.pageSize.getHeight() - 110) { doc.addPage(); y = 50; }
+                doc.setFont('times', 'bold'); doc.setFontSize(12); doc.setTextColor(0, 0, 0);
                 doc.text(c[0], 34, y);
-                y += 14;
-                doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(26, 18, 37);
-                var lines = doc.splitTextToSize(c[1], w - 68);
-                doc.text(lines, 34, y);
-                y += lines.length * 11 + 14;
+                y += 18;
+                doc.setFont('times', 'normal'); doc.setFontSize(12); doc.setTextColor(0, 0, 0);
+                var lebarCalk = w - 68;
+                var lines = doc.splitTextToSize(c[1], lebarCalk);
+                doc.text(lines, 34, y, { align: 'justify', maxWidth: lebarCalk });
+                y += lines.length * 18 + 16;
             });
 
             pdfTutup(doc, 'CALK-' + Date.now() + '.pdf');
@@ -9183,11 +9540,16 @@ function unduhRiwayatTransaksi() {
 
             daftar.forEach(function (p, idx) {
                 if (idx > 0) { doc.addPage(); y = 50; }
-                doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); doc.setTextColor(26,18,37);
+                doc.setTextColor(0, 0, 0);
+                doc.setFont('times', 'bold'); doc.setFontSize(12);
                 doc.text(p.nama, 34, y);
-                doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(148,142,150);
-                doc.text('Ketua: ' + (p.ketua || '-') + '  \u00b7  Bendahara: ' + (p.bendahara || '-') + '  \u00b7  Status: ' + (p.ditutup ? 'Ditutup' : 'Berjalan'), 34, y + 12);
-                y += 26;
+                y += 20;
+
+                doc.setFont('times', 'normal'); doc.setFontSize(11);
+                doc.text('Ketua Pelaksana', 34, y); doc.text(': ' + (p.ketua || '-'), 165, y); y += 16;
+                doc.text('Bendahara Proker', 34, y); doc.text(': ' + (p.bendahara || '-'), 165, y); y += 16;
+                doc.text('Tanggal Pelaksanaan', 34, y); doc.text(': ' + (p.tanggal ? formatTanggalID(p.tanggal) : '-'), 165, y); y += 16;
+                doc.text('Status Proker', 34, y); doc.text(': ' + (p.ditutup ? 'Ditutup' : 'Berjalan'), 165, y); y += 22;
 
                 var body = p.rab.map(function (r) {
                     var rabAmount = r.qty * r.harga;
@@ -9200,14 +9562,14 @@ function unduhRiwayatTransaksi() {
                 if (body.length === 0) body = [['Belum ada rincian RAB', '', '', '', '', '']];
 
                 y = pdfTabel(doc, y, ['Kebutuhan', 'Qty', 'Harga Satuan', 'RAB (Rp)', 'Realisasi (Rp)', 'Selisih (Rp)'], body, {
-                    styles: { font: 'helvetica', fontSize: 7.3, cellPadding: 4, textColor: [26, 18, 37], lineColor: [225, 220, 222], lineWidth: 0.5 },
+                    styles: { font: 'times', fontSize: 7.3, cellPadding: 4, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
                     columnStyles: { 1: { halign: 'center' }, 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' }, 5: { halign: 'right' } }
                 }) + 8;
 
                 var totRab = totalRabProker(p);
                 var totReal = hitungTotalRealisasi(p);
 
-                doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(184,19,55);
+                doc.setFont('times', 'bold'); doc.setFontSize(9); doc.setTextColor(0,0,0);
                 doc.text('Total RAB: ' + fmtRp(totRab) + '   |   Total Realisasi: ' + fmtRp(totReal) + '   |   Selisih: ' + fmtRp(totRab - totReal), 34, y);
             });
 
@@ -9378,31 +9740,25 @@ function unduhRiwayatTransaksi() {
         function buildSuratPernyataanPage(doc, namaKetua) {
             var w = doc.internal.pageSize.getWidth();
             var margin = 56;
-            var y = 70;
+            var y = pdfKop(doc, 'Surat Pernyataan Tanggung Jawab Pengurus', 'Atas Laporan Keuangan Periode yang Berakhir Pada ' + tanggalLaporanHariIni());
 
-            doc.setTextColor(26, 18, 37);
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
-            doc.text('SURAT PERNYATAAN TANGGUNG JAWAB', w / 2, y, { align: 'center' }); y += 16;
-            doc.text('ATAS LAPORAN KEUANGAN', w / 2, y, { align: 'center' }); y += 16;
-            doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
-            doc.text('UNTUK PERIODE YANG BERAKHIR PADA ' + tanggalLaporanHariIni().toUpperCase(), w / 2, y, { align: 'center' }); y += 34;
-
-            doc.setFontSize(9.5);
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('times', 'normal'); doc.setFontSize(12);
             doc.text('Kami yang bertanda tangan di bawah ini:', margin, y); y += 22;
 
             function baris(label, value) {
                 doc.text(label, margin, y);
-                doc.text(':', margin + 92, y);
-                var lines = doc.splitTextToSize(value, w - margin - (margin + 100));
-                doc.text(lines, margin + 100, y);
-                y += lines.length * 13 + 5;
+                doc.text(':', margin + 100, y);
+                var lines = doc.splitTextToSize(value, w - margin - (margin + 110));
+                doc.text(lines, margin + 110, y);
+                y += lines.length * 18 + 4;
             }
             baris('Nama', namaKetua);
             baris('Jabatan', 'Ketua Umum Remaja Masjid Fadhlillah');
             baris('Sekretariat', 'Masjid Fadhlillah, Rogoitan, Pendowoharjo, Sewon, Bantul');
-            y += 8;
+            y += 10;
 
-            doc.text('Menyatakan bahwa:', margin, y); y += 18;
+            doc.text('Menyatakan bahwa:', margin, y); y += 20;
 
             var poin = [
                 '1. Kami bertanggung jawab atas penyusunan dan penyajian laporan keuangan Remaja Masjid Fadhlillah untuk periode yang berakhir pada tanggal ' + tanggalLaporanHariIni() + ';',
@@ -9411,9 +9767,10 @@ function unduhRiwayatTransaksi() {
                 '4. Dalam menyusun laporan keuangan ini, kami telah:'
             ];
             poin.forEach(function (p) {
-                var lines = doc.splitTextToSize(p, w - margin * 2);
-                doc.text(lines, margin, y);
-                y += lines.length * 13 + 7;
+                var lebar = w - margin * 2;
+                var lines = doc.splitTextToSize(p, lebar);
+                doc.text(lines, margin, y, { align: 'justify', maxWidth: lebar });
+                y += lines.length * 18 + 6;
             });
 
             var subpoin = [
@@ -9423,20 +9780,22 @@ function unduhRiwayatTransaksi() {
                 'd. Kami bertanggung jawab untuk menjaga aset Entitas dan oleh karena itu telah mengambil langkah-langkah yang wajar untuk mencegah dan mendeteksi kecurangan (fraud) serta ketidakberesan lainnya.'
             ];
             subpoin.forEach(function (p) {
-                var lines = doc.splitTextToSize(p, w - margin * 2 - 16);
-                doc.text(lines, margin + 16, y);
-                y += lines.length * 13 + 6;
+                var lebar2 = w - margin * 2 - 16;
+                var lines = doc.splitTextToSize(p, lebar2);
+                doc.text(lines, margin + 16, y, { align: 'justify', maxWidth: lebar2 });
+                y += lines.length * 18 + 5;
             });
 
-            y += 6;
-            var penutupLines = doc.splitTextToSize('Demikian pernyataan ini kami buat dengan sebenarnya untuk dapat digunakan sebagaimana mestinya.', w - margin * 2);
-            doc.text(penutupLines, margin, y);
-            y += penutupLines.length * 13 + 30;
+            y += 8;
+            var lebarPenutup = w - margin * 2;
+            var penutupLines = doc.splitTextToSize('Demikian pernyataan ini kami buat dengan sebenarnya untuk dapat digunakan sebagaimana mestinya.', lebarPenutup);
+            doc.text(penutupLines, margin, y, { align: 'justify', maxWidth: lebarPenutup });
+            y += penutupLines.length * 18 + 30;
 
-            doc.text('Bantul, ' + tanggalLaporanHariIni(), w - margin, y, { align: 'right' }); y += 14;
+            doc.text('Bantul, ' + tanggalLaporanHariIni(), w - margin, y, { align: 'right' }); y += 16;
             doc.text('Remaja Masjid Fadhlillah', w - margin, y, { align: 'right' });
-            y += 66;
-            doc.setFont('helvetica', 'bold');
+            y += 70;
+            doc.setFont('times', 'bold');
             doc.text('(' + namaKetua + ')', w - margin, y, { align: 'right' });
         }
 
@@ -9454,7 +9813,7 @@ function unduhRiwayatTransaksi() {
             y = pdfSeksi(doc, y, '1. LAPORAN POSISI KEUANGAN');
             var asetBody = data.kasList.map(function (k) { return [k.nama, fmtRp(k.saldo)]; }).concat(data.asetCoa.map(function (a) { return [a.nama, fmtRp(a.saldo)]; }));
             y = pdfTabel(doc, y + 4, ['Aset', 'Jumlah (Rp)'], asetBody.length ? asetBody : [['Nihil','-']], { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 10;
-            doc.setFont('helvetica','bold'); doc.setFontSize(9);
+            doc.setFont('times','bold'); doc.setFontSize(9);
             doc.text('Total Aset: ' + fmtRp(data.totalAset) + '   |   Total Liabilitas: ' + fmtRp(data.totalKewajiban) + '   |   Total Aset Neto: ' + fmtRp(data.totalAsetNeto), 34, y);
 
             doc.addPage();
@@ -9464,7 +9823,7 @@ function unduhRiwayatTransaksi() {
             y = pdfTabel(doc, y + 4, ['Pendapatan', 'Jumlah (Rp)'], pendBody.length ? pendBody : [['Nihil','-']], { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 10;
             var bebBody = data.bebanCoa.map(function (b) { return [b.nama, fmtRp(b.saldo)]; });
             y = pdfTabel(doc, y, ['Beban', 'Jumlah (Rp)'], bebBody.length ? bebBody : [['Nihil','-']], { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 10;
-            doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(184,19,55);
+            doc.setFont('times','bold'); doc.setFontSize(9.5); doc.setTextColor(0,0,0);
             doc.text('Surplus / (Defisit) Tahun Berjalan: ' + fmtRp(data.totalAsetNeto), 34, y);
 
             doc.addPage();
@@ -9593,7 +9952,7 @@ function unduhRiwayatTransaksi() {
             });
             if (pecahanBody.length === 0) pecahanBody = [['-', '-', '-']];
             y = pdfTabel(doc, y + 4, ['Pecahan', 'Jumlah', 'Nilai (Rp)'], pecahanBody, { columnStyles: { 2: { halign: 'right' } } }) + 4;
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+            doc.setFont('times', 'bold'); doc.setFontSize(9);
             doc.text('Total Uang Tunai: Rp ' + (parseFloat(o.total_fisik) || 0).toLocaleString('id-ID'), 34, y + 10);
             y += 26;
 
@@ -9611,9 +9970,9 @@ function unduhRiwayatTransaksi() {
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah'], analisisBody, { columnStyles: { 1: { halign: 'right', fontStyle: 'bold' } } }) + 10;
 
             if (o.keterangan) {
-                doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(184,19,55);
+                doc.setFont('times', 'bold'); doc.setFontSize(9); doc.setTextColor(0,0,0);
                 doc.text('Penjelasan Pemeriksa:', 34, y + 6);
-                doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(26,18,37);
+                doc.setFont('times', 'normal'); doc.setFontSize(8.5); doc.setTextColor(0,0,0);
                 var ketLines = doc.splitTextToSize(o.keterangan, doc.internal.pageSize.getWidth() - 68);
                 doc.text(ketLines, 34, y + 20);
                 y += 20 + ketLines.length * 11;
@@ -9621,7 +9980,7 @@ function unduhRiwayatTransaksi() {
 
             y += 30;
             var w = doc.internal.pageSize.getWidth();
-            doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(26,18,37);
+            doc.setFont('times', 'normal'); doc.setFontSize(8.5); doc.setTextColor(0,0,0);
             doc.text('Diperiksa oleh,', 60, y);
             doc.text('Bendahara,', w - 160, y);
             doc.line(50, y + 45, 190, y + 45);
