@@ -2258,6 +2258,92 @@
     }
 }
 
+/* =========================================================================
+   PATCH — CALK: paste this block anywhere inside your existing STYLE block
+   (e.g. right before the closing style tag)
+   ========================================================================= */
+
+.calk-sec-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--maroon);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+.calk-sec-num {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    background: var(--maroon);
+    border-radius: 6px;
+    padding: 2px 7px;
+}
+.calk-sub-title {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 10px 0 4px;
+}
+.calk-hint {
+    font-size: 0.64rem;
+    color: var(--text-gray);
+    font-weight: 500;
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+.calk-narrative {
+    width: 100%;
+    border: 1px solid var(--border-gray);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    outline: none;
+    font-family: inherit;
+    resize: vertical;
+}
+.calk-block {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 14px 16px;
+    margin-bottom: 4px;
+}
+.calk-autobadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #16A34A;
+    background: rgba(22,163,74,0.1);
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+.calk-manualbadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #D97706;
+    background: rgba(217,118,6,0.1);
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+.calk-row-flat {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.calk-mini-table-wrap { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-top: 6px; }
+.calk-mini-head { display: grid; gap: 6px; background: var(--paper-soft); padding: 7px 9px; font-size: 0.6rem; font-weight: 700; color: var(--text-gray); }
+.calk-mini-row { display: grid; gap: 6px; align-items: center; padding: 7px 9px; border-top: 1px solid var(--line); }
+.calk-mini-row input, .calk-mini-row select { border: 1px solid var(--border-gray); border-radius: 7px; padding: 6px 7px; font-size: 0.72rem; color: var(--text-dark); outline: none; width: 100%; }
 </style>
 </head>
 <body>
@@ -2371,7 +2457,7 @@
                             <div class="guest-report-name">Laporan Arus Kas</div>
                             <div class="guest-report-sub">PDF &middot; Hari ini</div>
                         </div>
-                        <div class="guest-report-card" onclick="unduhLaporan('CALK')" style="grid-column: 1 / -1;">
+                        <div class="guest-report-card" onclick="bukaCalkScreen()" style="grid-column: 1 / -1;">
                             <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
                             <div class="guest-report-icon"><i class="ph ph-notepad"></i></div>
                             <div class="guest-report-name">Catatan atas Laporan Keuangan (CALK)</div>
@@ -2608,11 +2694,11 @@
                             </div>
                             <div class="laporan-detail-box" id="laporanDetail-realisasi"></div>
 
-                            <div class="report-row">
-                                <div class="report-icon"><i class="ph ph-notepad"></i></div>
-                                <div><div class="report-name">CALK</div><div class="report-sub">Catatan atas Laporan Keuangan</div></div>
-                                <button class="report-dl-btn" onclick="unduhLaporan('CALK')"><i class="ph ph-download-simple"></i></button>
-                            </div>
+                            <div class="report-row" style="cursor:pointer;" onclick="bukaCalkScreen()">
+    <div class="report-icon"><i class="ph ph-notepad"></i></div>
+    <div><div class="report-name">CALK</div><div class="report-sub">Tap untuk buka &amp; lengkapi</div></div>
+    <button class="report-dl-btn" onclick="event.stopPropagation(); bukaCalkScreen()"><i class="ph ph-caret-right"></i></button>
+</div>
                         </div>
 
                         <button class="btn-download-all" onclick="unduhLaporan('Laporan Keuangan Tahunan (Gabungan)')">
@@ -3063,7 +3149,7 @@
                     </div>
                     <div class="ct-field">
                         <label>Kas yang Diperiksa</label>
-                                                <select id="coKas">
+                                                <select id="coKas" onchange="perbaruiSaldoBukuOpname()">
                             <option value="">— Pilih Kas —</option>
                             <option>Kas Umum dan Administratif</option>
                             <option>Kas Infaq Harian Ramadhan</option>
@@ -3150,7 +3236,7 @@
                         <div class="co-analysis-title"><i class="ph ph-scales"></i> Analisis Selisih</div>
                         <div class="co-analysis-row">
                             <span>Saldo Buku</span>
-                            <input type="number" id="coSaldoBuku" placeholder="0" oninput="hitungSelisih()">
+                            <input type="number" id="coSaldoBuku" placeholder="0" oninput="hitungSelisih()" readonly>
                         </div>
                         <div class="co-analysis-row">
                             <span>Fisik + Bank</span>
@@ -3167,6 +3253,7 @@
                         <input type="text" id="coKeterangan" placeholder="Jelaskan penyebab selisih (jika ada)...">
                     </div>
 
+                    <button class="co-btn-secondary" onclick="bukaModalRekomOpname()"><i class="ph ph-lightbulb"></i> Buat Rekomendasi Jurnal</button>
                     <button class="co-btn-secondary" onclick="unduhBeritaAcara()"><i class="ph ph-download-simple"></i> Download Berita Acara (PDF)</button>
                     <button class="ct-submit-btn" onclick="arsipkanOpname()"><i class="ph ph-archive-box"></i> Arsipkan Cash Opname</button>
                 </div>
@@ -3181,6 +3268,25 @@
                     <i class="ph ph-x" onclick="tutupDetailOpname()"></i>
                 </div>
                 <div class="co-modal-body" id="coDetailBody"></div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL REKOMENDASI JURNAL (CASH OPNAME) ================= -->
+        <div id="co-rekom-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:46; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Rekomendasi Jurnal Koreksi</div>
+                    <i class="ph ph-x" onclick="tutupModalRekomOpname()"></i>
+                </div>
+                <div class="co-modal-body">
+                    <div class="un-note-text">Usulkan jurnal koreksi agar saldo kas kembali balance sesuai temuan cash opname ini. Rekomendasi akan tersimpan dan ditampilkan di kertas kerja / PDF.</div>
+                    <div class="ct-table-wrap">
+                        <div class="ct-table-head" style="grid-template-columns:1.5fr 0.8fr 0.8fr 20px;"><span>Nama Akun</span><span>Debit</span><span>Kredit</span><span></span></div>
+                        <div id="coRekomRows"></div>
+                    </div>
+                    <div class="ct-add-row" onclick="tambahBarisRekomOpname()"><i class="ph ph-plus-circle"></i> Tambah Akun</div>
+                    <button class="ct-submit-btn" onclick="simpanRekomOpname()"><i class="ph ph-floppy-disk"></i> Simpan Rekomendasi</button>
+                </div>
             </div>
         </div>
 
@@ -3382,6 +3488,11 @@
                     <div class="ct-field"><label>Ketua Pelaksana</label><input type="text" placeholder="Nama ketua..."></div>
                     <div class="ct-field"><label>Bendahara</label><input type="text" placeholder="Nama bendahara..."></div>
                     <div class="ct-field"><label>Tanggal Pelaksanaan</label><input type="date" value="2026-09-01"></div>
+                    <div class="ct-field">
+                        <label>Akun Beban Utama Proker</label>
+                        <select id="pkAkunBebanUtama"></select>
+                        <div class="calk-hint" style="margin-top:4px;">Akun ini otomatis mengaitkan setiap jurnal pengeluaran ke proker ini saat dicatat di menu Catat Transaksi.</div>
+                    </div>
 
                     <div class="ct-field">
                         <label>Rencana Anggaran Belanja</label>
@@ -3401,8 +3512,8 @@
                         <div class="ct-add-row" onclick="tambahBarisRab()"><i class="ph ph-plus-circle"></i> Tambah Baris</div>
                     </div>
 
-                    <div class="ct-field">
-                        <label>Rencana Penerimaan</label>
+                    <div class="ct-field" id="pkPenWrap" style="display:none;">
+                        <div class="ct-field-label-row"><label>Rencana Penerimaan</label><span class="ct-tag-optional" style="cursor:pointer;" onclick="hapusKonsepPenerimaanPk()">Hapus</span></div>
                         <div class="pk-pen-table-wrap">
                             <div class="pk-table-head pk-cols-pen"><span>Sumber Penerimaan</span><span>Nominal (Rp)</span></div>
                             <div id="pkPenRows">
@@ -3414,6 +3525,7 @@
                         </div>
                         <div class="ct-add-row" onclick="tambahBarisPenPk()"><i class="ph ph-plus-circle"></i> Tambah Baris</div>
                     </div>
+                    <div class="un-add-btn" id="pkBuatPenBtn" onclick="bukaKonsepPenerimaanPk()"><i class="ph ph-plus-circle"></i> Buat Konsep Penerimaan</div>
 
                     <button class="ct-submit-btn" onclick="simpanProker()"><i class="ph ph-floppy-disk"></i> Simpan Proker</button>
                 </div>
@@ -3435,7 +3547,8 @@
                     <div class="ct-field"><label>Nama Ketua</label><input type="text" id="bpKetua" oninput="updateProkerInfo()"></div>
                     <div class="ct-field"><label>Nama Bendahara</label><input type="text" id="bpBendahara" oninput="updateProkerInfo()"></div>
                 </div>
-                <div class="ct-field" style="margin-bottom:0;"><label>Tanggal Pelaksanaan</label><input type="text" id="bpTanggal" placeholder="Contoh: Setiap Jumat, Maret 2026" oninput="updateProkerInfo()"></div>
+                <div class="ct-field"><label>Tanggal Pelaksanaan</label><input type="text" id="bpTanggal" placeholder="Contoh: Setiap Jumat, Maret 2026" oninput="updateProkerInfo()"></div>
+                <div class="ct-field" style="margin-bottom:0;"><label>Akun Beban Utama Proker</label><select id="bpAkunBebanUtama" onchange="updateProkerInfo()"></select></div>
 
                 <div id="bpTutupNotice" style="display:none; background:rgba(0,0,0,0.06); border:1px solid rgba(0,0,0,0.25); border-radius:12px; padding:12px 14px; font-size:0.74rem; color:var(--maroon); font-weight:600;">
                     <i class="ph ph-lock-simple"></i> Proker ini sudah ditutup dan tidak dapat diedit lagi.
@@ -3452,6 +3565,26 @@
                         <div class="report-icon"><i class="ph ph-scales"></i></div>
                         <div><div class="report-name">2. Realisasi</div><div class="report-sub">Bandingkan RAB dengan realisasi anggaran</div></div>
                         <i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i>
+                    </div>
+                    <div id="bpRealisasiInline" style="display:none; flex-direction:column; gap:16px; margin:-6px 0 14px;">
+                        <div class="pk-rab-table-wrap">
+                            <div class="pk-table-head" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span>Kebutuhan</span><span>RAB</span><span>Realisasi</span><span>Selisih</span></div>
+                            <div id="bpRealisasiRows"></div>
+                        </div>
+                        <div class="ct-total-box"><div><span>Total RAB</span><strong id="bpTotalRab" class="ok">Rp 0</strong></div><div><span>Total Realisasi</span><strong id="bpTotalRealisasi" class="bad">Rp 0</strong></div></div>
+                        <div class="co-total-fisik-row"><span>Selisih</span><strong id="bpSelisihRealisasi">Rp 0</strong></div>
+                        <div class="co-analysis-box" id="bpAnalisisBox">
+                            <div class="co-analysis-title"><i class="ph ph-chart-line"></i> Analisis Selisih</div>
+                            <div style="font-size:0.78rem; color:var(--text-dark); line-height:1.5;" id="bpAnalisisText">Belum ada data realisasi.</div>
+                        </div>
+                        <div class="co-analysis-box" id="bpSaldoBebanBox">
+                            <div class="co-analysis-title"><i class="ph ph-scales"></i> Verifikasi Akun Beban (untuk Audit)</div>
+                            <div class="co-analysis-row"><span>Saldo Buku Besar Beban Program Kerja</span><strong id="bpSaldoBebanUtama">Rp 0</strong></div>
+                            <div style="font-size:0.7rem; color:var(--text-gray); font-weight:700; margin-top:8px;">Saldo Buku Besar Beban Terkait Lainnya:</div>
+                            <div id="bpSaldoBebanLain" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"></div>
+                        </div>
+                        <button class="co-btn-secondary" onclick="bukaBukuTransaksiProker()"><i class="ph ph-book-open"></i> Lihat Buku Transaksi Proker</button>
+                        <button class="co-btn-secondary" onclick="unduhRealisasiPdf()"><i class="ph ph-download-simple"></i> Download PDF Realisasi</button>
                     </div>
                     <div class="report-row" style="cursor:pointer;" onclick="bukaDokumenProker()">
                         <div class="report-icon"><i class="ph ph-folder-open"></i></div>
@@ -3470,40 +3603,46 @@
                     <i class="ph ph-x" onclick="tutupRabProker()"></i>
                 </div>
                 <div class="co-modal-body">
+                    <div class="ledger-head"><div class="ledger-title" style="font-size:0.8rem;">Rencana Anggaran Belanja</div></div>
                     <div class="pk-rab-table-wrap">
                         <div class="pk-table-head pk-cols-rab"><span>Kebutuhan</span><span>Qty</span><span>Satuan</span><span>Harga</span><span>Total</span></div>
                         <div id="bpRabRows"></div>
                     </div>
                     <div class="ct-add-row" id="bpRabAddBtn" onclick="tambahBarisRabProker()"><i class="ph ph-plus-circle"></i> Tambah Baris</div>
                     <div class="ct-total-box"><div><span>Total RAB</span><strong id="bpRabTotal" class="ok">Rp 0</strong></div></div>
-                    <button class="ct-submit-btn" id="bpRabSaveBtn" onclick="simpanRabProker()"><i class="ph ph-floppy-disk"></i> Simpan RAB</button>
+
+                    <div id="bpPenWrap" style="display:none;">
+                        <div class="ledger-head" style="margin-top:8px;"><div class="ledger-title" style="font-size:0.8rem;">Rencana Penerimaan</div></div>
+                        <div class="pk-pen-table-wrap">
+                            <div class="pk-table-head pk-cols-pen"><span>Sumber Penerimaan</span><span>Nominal (Rp)</span></div>
+                            <div id="bpPenRows"></div>
+                        </div>
+                        <div class="ct-add-row" id="bpPenAddBtn" onclick="tambahBarisPenProker()"><i class="ph ph-plus-circle"></i> Tambah Baris</div>
+                        <div class="ct-total-box"><div><span>Total Rencana Penerimaan</span><strong id="bpPenTotal" class="ok">Rp 0</strong></div></div>
+                    </div>
+                    <div class="un-add-btn" id="bpBuatPenBtn" style="display:none;" onclick="bukaKonsepPenerimaanProker()"><i class="ph ph-plus-circle"></i> Buat Konsep Penerimaan</div>
+
+                    <button class="ct-submit-btn" id="bpRabSaveBtn" onclick="simpanRabProker()"><i class="ph ph-floppy-disk"></i> Simpan RAB & Rencana Penerimaan</button>
                 </div>
             </div>
         </div>
 
-        <!-- ================= MODAL REALISASI PROKER ================= -->
-        <div id="proker-realisasi-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+ 
+
+        <!-- ================= MODAL DETAIL REALISASI PER POS RAB ================= -->
+        <div id="proker-detail-rab-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:42; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
                 <div class="co-modal-head">
-                    <div class="co-modal-title">Realisasi Anggaran</div>
-                    <i class="ph ph-x" onclick="tutupRealisasiProker()"></i>
+                    <div class="co-modal-title" id="prdRabTitle">Detail Realisasi</div>
+                    <i class="ph ph-x" onclick="tutupDetailRealisasiRab()"></i>
                 </div>
                 <div class="co-modal-body">
-                    <div class="pk-rab-table-wrap">
-                        <div class="pk-table-head" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span>Kebutuhan</span><span>RAB</span><span>Realisasi</span><span>Selisih</span></div>
-                        <div id="bpRealisasiRows"></div>
+                    <div class="rb-rekap-box">
+                        <div class="rb-rekap-col"><div class="rb-rekap-lbl">Total Realisasi</div><div class="rb-rekap-val" id="prdRabTotal">Rp 0</div></div>
+                        <div class="rb-rekap-col"><div class="rb-rekap-lbl">Jumlah Jurnal</div><div class="rb-rekap-val" id="prdRabJumlah">0</div></div>
                     </div>
-
-                    <div class="ct-total-box"><div><span>Total RAB</span><strong id="bpTotalRab" class="ok">Rp 0</strong></div><div><span>Total Realisasi</span><strong id="bpTotalRealisasi" class="bad">Rp 0</strong></div></div>
-                    <div class="co-total-fisik-row"><span>Selisih</span><strong id="bpSelisihRealisasi">Rp 0</strong></div>
-
-                    <div class="co-analysis-box" id="bpAnalisisBox">
-                        <div class="co-analysis-title"><i class="ph ph-chart-line"></i> Analisis Selisih</div>
-                        <div style="font-size:0.78rem; color:var(--text-dark); line-height:1.5;" id="bpAnalisisText">Belum ada data realisasi.</div>
-                    </div>
-
-                    <button class="co-btn-secondary" onclick="bukaBukuTransaksiProker()"><i class="ph ph-book-open"></i> Lihat Buku Transaksi Proker</button>
-                    <button class="co-btn-secondary" onclick="unduhRealisasiPdf()"><i class="ph ph-download-simple"></i> Download PDF Realisasi</button>
+                    <div class="ledger-head"><div class="ledger-title" style="font-size:0.8rem;">Riwayat Jurnal Terkait</div></div>
+                    <div id="prdRabRows" style="display:flex; flex-direction:column; gap:10px;"></div>
                 </div>
             </div>
         </div>
@@ -4310,6 +4449,26 @@
             </div>
         </div>
 
+        <!-- =========================================================================
+     PATCH — CALK: paste this whole block anywhere inside <div class="mobile-app"> ... </div>,
+     next to your other full-screen layers (e.g. right after the closing </div> of
+     #peralatan-hapus-overlay). It behaves exactly like your other "-screen" layers.
+     ========================================================================= -->
+
+<div id="calk-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:34;">
+    <div class="ct-header">
+        <div class="ct-header-top">
+            <i class="ph ph-arrow-left ct-back-btn" onclick="tutupCalkScreen()"></i>
+            <div class="ct-header-title">Catatan atas Laporan Keuangan</div>
+            <div style="width:22px;"></div>
+        </div>
+    </div>
+
+    <div class="ct-body" id="calkBody" style="gap:22px;">
+        <div style="padding:30px; text-align:center; color:var(--text-gray); font-size:0.8rem;">Memuat data CALK...</div>
+    </div>
+</div>
+
         <!-- ================= MODAL PELUNASAN UTANG/PIUTANG VIA JURNAL ================= -->
         <div id="up-jurnal-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:60; align-items:flex-end; justify-content:center;">
             <div class="co-modal">
@@ -5011,7 +5170,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 const [kasRes, coaRes, prokerRes, usersRes] = await Promise.all([
                     supabaseClient.from('akun_kas').select('*').order('no_akun'),
                     supabaseClient.from('coa_akun').select('*').order('no_akun'),
-                    supabaseClient.from('program_kerja').select('id, nama, proker_rab(id, kebutuhan)').eq('ditutup', false).order('id'),
+                    supabaseClient.from('program_kerja').select('id, nama, akun_beban_id, proker_rab(id, kebutuhan)').eq('ditutup', false).order('id'),
                     supabaseClient.from('users_siasfa').select('id, nama').order('nama')
                 ]);
                 if (kasRes.error) { alert('ERROR SUPABASE (kas): ' + kasRes.error.message); return; }
@@ -5049,6 +5208,11 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 return '<option value="coa:' + c.id + '" title="[' + c.no_akun + '] ' + c.nama + '">' + c.no_akun + ' \u2014 ' + c.nama + '</option>';
             }).join('');
         }
+        function optCoaBebanPlain() {
+            return (window._coaAkunCache || []).filter(function (c) { return c.tipe === 'beban'; }).map(function (c) {
+                return '<option value="' + c.id + '">' + c.no_akun + ' \u2014 ' + c.nama + '</option>';
+            }).join('');
+        }
         // Menandai select akun yang sudah terisi (warna + tooltip teks lengkap)
         function tandaiAkunTerisi(selectEl) {
             var opt = selectEl.options[selectEl.selectedIndex];
@@ -5066,6 +5230,21 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 opts += '<option value="' + p.id + '">' + p.nama + '</option>';
             });
             return opts;
+        }
+        function autoLinkProkerDariAkunBeban(selectEl) {
+            if (!selectEl.value) return;
+            var parts = selectEl.value.split(':');
+            if (parts[0] !== 'coa') return;
+            var coaId = parseInt(parts[1]);
+            var prokerMatch = (window._prokerCache || []).find(function (p) { return p.akun_beban_id && String(p.akun_beban_id) === String(coaId); });
+            if (!prokerMatch) return;
+            var container = selectEl.closest('.ct-subpage');
+            if (!container) return;
+            var namaProgramSel = container.querySelector('.ct-nama-program');
+            if (namaProgramSel && !namaProgramSel.value) {
+                namaProgramSel.value = prokerMatch.id;
+                isiPosAnggaran(namaProgramSel);
+            }
         }
         function isiPosAnggaran(prokerSelectEl) {
             var posSelectEl = prokerSelectEl.closest('.ct-rab-row').querySelector('.ct-pos-anggaran');
@@ -5429,7 +5608,7 @@ function tutupCatatTransaksi() {
         function tambahBarisUmum() {
             document.getElementById('umumRows').insertAdjacentHTML('beforeend',
                 '<div class="ct-table-row ct-cols-umum">' +
-                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Pilih Akun</option>' + optKasList() + optCoaList() + '</select>' +
+                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this); autoLinkProkerDariAkunBeban(this);"><option value="">Pilih Akun</option>' + optKasList() + optCoaList() + '</select>' +
                 '<input type="number" placeholder="0" oninput="hitungTotalUmum()">' +
                 '<input type="number" placeholder="0" oninput="hitungTotalUmum()">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
@@ -5444,16 +5623,15 @@ function tutupCatatTransaksi() {
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
             if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
         }
-        function tambahBarisPengeluaran() {
+                function tambahBarisPengeluaran() {
             document.getElementById('pengeluaranRows').insertAdjacentHTML('beforeend',
                 '<div class="ct-table-row ct-cols-3">' +
-                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Akun Beban</option>' + optCoaList('beban') + '</select>' +
-                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Akun Kas</option>' + optKasList() + '</select>' +
+                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this); autoLinkProkerDariAkunBeban(this);"><option>Akun Beban</option>' + optCoaList('beban') + '</select>' +
+                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option>Akun Kas</option>' + optKasList() + '</select>' +
                 '<input type="number" placeholder="0">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
             if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
         }
-
         // ===== Update label & style upload nota di Catat Transaksi =====
         function ctUpdateUploadLabel(inputEl, zoneId) {
             var zone = document.getElementById(zoneId);
@@ -6046,19 +6224,45 @@ async function updateJurnal(jurnalId, jenis) {
         function tutupCashOpname() {
             document.getElementById('cashopname-screen').style.display = 'none';
         }
-        function bukaModalOpname() {
+        async function bukaModalOpname() {
+            await muatDataKas();
+            if (!window._usersCache || !window._coaAkunCache) { await loadDataFormTransaksi(); }
+
             var kasSelect = document.getElementById('coKas');
             kasSelect.innerHTML = '<option value="">— Pilih Kas —</option>' + (window._akunKasCache || []).map(function (a) {
-                return '<option>[' + a.no_akun + '] ' + a.nama + '</option>';
+                return '<option value="' + a.id + '">[' + a.no_akun + '] ' + a.nama + '</option>';
             }).join('');
+
+            var bendaharaSelect = document.getElementById('coBendahara');
+            bendaharaSelect.innerHTML = '<option value="">— Pilih —</option>' + (window._usersCache || []).map(function (u) {
+                return '<option value="' + (u.nama || '') + '">' + (u.nama || '-') + '</option>';
+            }).join('');
+
+            document.getElementById('coPemeriksa').value = _currentUser ? (_currentUser.nama || '') : '';
+
+            document.getElementById('coSaldoBuku').value = '';
+            document.getElementById('coSaldoBuku').readOnly = true;
+
+            _pendingRekomOpnameRows = [];
+            _rekomOpnameEditId = null;
+
             document.getElementById('co-modal-overlay').style.display = 'flex';
             hitungFisik();
+            perbaruiSaldoBukuOpname();
+        }
+        function perbaruiSaldoBukuOpname() {
+            var kasId = document.getElementById('coKas').value;
+            var saldo = (kasId && window._saldoKasPerId) ? (window._saldoKasPerId[parseInt(kasId)] || 0) : 0;
+            document.getElementById('coSaldoBuku').value = saldo.toLocaleString('id-ID');
+            hitungSelisih();
         }
         function tutupModalOpname() {
             document.getElementById('co-modal-overlay').style.display = 'none';
         }
 
         var coHistoryCache = [];
+        var _pendingRekomOpnameRows = [];
+        var _rekomOpnameEditId = null;
 
         async function muatCashOpname() {
             try {
@@ -6196,7 +6400,9 @@ async function updateJurnal(jurnalId, jenis) {
         function unduhBeritaAcara() {
             var pemeriksa = document.getElementById('coPemeriksa').value.trim() || '-';
             var bendahara = document.getElementById('coBendahara').value || '-';
-            var kasNama = document.getElementById('coKas').value || '-';
+            var kasId = document.getElementById('coKas').value;
+            var kasObj = (window._akunKasCache || []).find(function (a) { return String(a.id) === String(kasId); });
+            var kasNama = kasObj ? kasObj.nama : '-';
             var tanggal = document.getElementById('coTanggal').value;
             var status = document.getElementById('coSelisihValue').dataset.status || 'Sesuai';
             var keterangan = document.getElementById('coKeterangan').value.trim();
@@ -6220,7 +6426,7 @@ async function updateJurnal(jurnalId, jenis) {
             });
 
             _coDetailAktif = {
-                o: { akun_kas: { nama: kasNama }, tanggal: tanggal, pemeriksa: pemeriksa, bendahara: bendahara, total_fisik: totalFisik, total_bank: totalBank, saldo_buku: saldoBuku, selisih: selisihNum, status: status, keterangan: keterangan },
+                o: { akun_kas: { nama: kasNama }, tanggal: tanggal, pemeriksa: pemeriksa, bendahara: bendahara, total_fisik: totalFisik, total_bank: totalBank, saldo_buku: saldoBuku, selisih: selisihNum, status: status, keterangan: keterangan, rekomendasi_jurnal: (_pendingRekomOpnameRows && _pendingRekomOpnameRows.length) ? _pendingRekomOpnameRows : null },
                 pecahan: pecahan, bank: bank
             };
             unduhKertasKerjaOpname();
@@ -6231,14 +6437,14 @@ async function updateJurnal(jurnalId, jenis) {
             try {
                 var pemeriksa = document.getElementById('coPemeriksa').value.trim();
                 var bendahara = document.getElementById('coBendahara').value;
-                var kasNama = document.getElementById('coKas').value;
+                var kasId = document.getElementById('coKas').value;
 
-                if (!pemeriksa || !bendahara || !kasNama) {
+                if (!pemeriksa || !bendahara || !kasId) {
                     alert('Mohon lengkapi Pemeriksa, Bendahara, dan Kas yang Diperiksa terlebih dahulu');
                     return;
                 }
 
-                var kasObj = (window._akunKasCache || []).find(function (a) { return a.nama === kasNama; });
+                var kasObj = (window._akunKasCache || []).find(function (a) { return String(a.id) === String(kasId); });
                 if (!kasObj) { alert('Data kas belum termuat, coba buka ulang halaman ini'); return; }
 
                 var tanggal = document.getElementById('coTanggal').value;
@@ -6254,7 +6460,8 @@ async function updateJurnal(jurnalId, jenis) {
                     .insert({
                         tanggal: tanggal, pemeriksa: pemeriksa, bendahara: bendahara, kas_id: kasObj.id,
                         total_fisik: totalFisik, total_bank: totalBank, saldo_buku: saldoBuku,
-                        selisih: selisihNum, status: status, keterangan: keterangan
+                        selisih: selisihNum, status: status, keterangan: keterangan,
+                        rekomendasi_jurnal: (_pendingRekomOpnameRows && _pendingRekomOpnameRows.length) ? _pendingRekomOpnameRows : null
                     })
                     .select()
                     .single();
@@ -6310,7 +6517,96 @@ async function updateJurnal(jurnalId, jenis) {
                 '<input type="number" placeholder="0" oninput="hitungSelisih()">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBankRow(this)"></i></div>';
 
+            _pendingRekomOpnameRows = [];
             hitungFisik();
+        }
+
+        // ===== Rekomendasi Jurnal dari Pemeriksa (Cash Opname) =====
+        async function bukaModalRekomOpname() {
+            if (!window._coaAkunCache || !window._akunKasCache) { await loadDataFormTransaksi(); }
+            _rekomOpnameEditId = null;
+            document.getElementById('coRekomRows').innerHTML = '';
+            if (_pendingRekomOpnameRows.length === 0) {
+                tambahBarisRekomOpname();
+                tambahBarisRekomOpname();
+            } else {
+                _pendingRekomOpnameRows.forEach(function (r) { tambahBarisRekomOpname(r); });
+            }
+            document.getElementById('co-rekom-overlay').style.display = 'flex';
+        }
+        async function bukaModalRekomOpnameTersimpan(opnameId) {
+            if (!window._coaAkunCache || !window._akunKasCache) { await loadDataFormTransaksi(); }
+            _rekomOpnameEditId = opnameId;
+            var o = coHistoryCache.find(function (x) { return x.id === opnameId; });
+            var existingRows = (o && o.rekomendasi_jurnal) || [];
+            document.getElementById('coRekomRows').innerHTML = '';
+            if (existingRows.length === 0) {
+                tambahBarisRekomOpname();
+                tambahBarisRekomOpname();
+            } else {
+                existingRows.forEach(function (r) { tambahBarisRekomOpname(r); });
+            }
+            document.getElementById('co-rekom-overlay').style.display = 'flex';
+        }
+        function tutupModalRekomOpname() {
+            document.getElementById('co-rekom-overlay').style.display = 'none';
+        }
+        function tambahBarisRekomOpname(existing) {
+            document.getElementById('coRekomRows').insertAdjacentHTML('beforeend',
+                '<div class="ct-table-row tandai-rekom-row">' +
+                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)">' + optSemuaAkunUntukTandai() + '</select>' +
+                '<input type="number" placeholder="0">' +
+                '<input type="number" placeholder="0">' +
+                '<i class="ph ph-x-circle ct-row-del" onclick="hapusBarisRekomOpname(this)"></i></div>');
+            if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
+            if (existing) {
+                var rows = document.querySelectorAll('#coRekomRows .tandai-rekom-row');
+                var row = rows[rows.length - 1];
+                var sel = row.querySelector('select');
+                sel.value = existing.nama_akun;
+                var inputs = row.querySelectorAll('input');
+                inputs[0].value = existing.debit || '';
+                inputs[1].value = existing.kredit || '';
+                if (typeof tandaiAkunTerisi === 'function') tandaiAkunTerisi(sel);
+            }
+        }
+        function hapusBarisRekomOpname(el) {
+            if (document.querySelectorAll('#coRekomRows .tandai-rekom-row').length <= 1) { alert('Minimal harus ada 1 baris'); return; }
+            el.closest('.tandai-rekom-row').remove();
+        }
+        async function simpanRekomOpname() {
+            var rows = [];
+            document.querySelectorAll('#coRekomRows .tandai-rekom-row').forEach(function (row) {
+                var sel = row.querySelector('select');
+                var inputs = row.querySelectorAll('input');
+                var nama = sel ? sel.value.trim() : '';
+                var debit = parseRupiah(inputs[0].value) || 0;
+                var kredit = parseRupiah(inputs[1].value) || 0;
+                if (nama && (debit > 0 || kredit > 0)) rows.push({ nama_akun: nama, debit: debit, kredit: kredit });
+            });
+            if (rows.length === 0) { alert('Isi minimal 1 baris rekomendasi jurnal dengan akun & nominal'); return; }
+
+            if (_rekomOpnameEditId) {
+                try {
+                    var res = await supabaseClient.from('cash_opname').update({ rekomendasi_jurnal: rows }).eq('id', _rekomOpnameEditId);
+                    if (res.error) { alert('ERROR SUPABASE (simpan rekomendasi): ' + res.error.message); return; }
+                    var item = coHistoryCache.find(function (x) { return x.id === _rekomOpnameEditId; });
+                    if (item) item.rekomendasi_jurnal = rows;
+                    if (_coDetailAktif && _coDetailAktif.o && _coDetailAktif.o.id === _rekomOpnameEditId) {
+                        _coDetailAktif.o.rekomendasi_jurnal = rows;
+                        renderDetailOpname(_coDetailAktif);
+                    }
+                    alert('Rekomendasi jurnal berhasil disimpan');
+                    tutupModalRekomOpname();
+                } catch (e) {
+                    alert('ERROR SISTEM: ' + e.message);
+                }
+                return;
+            }
+
+            _pendingRekomOpnameRows = rows;
+            tutupModalRekomOpname();
+            alert('Rekomendasi jurnal berhasil disiapkan. Rekomendasi akan otomatis tersimpan saat cash opname diarsipkan.');
         }
 
         // ===== Upload Nota =====
@@ -6607,8 +6903,24 @@ async function updateJurnal(jurnalId, jenis) {
             muatProgramKerja();
         }
         function tutupProgramKerja() { document.getElementById('programkerja-screen').style.display = 'none'; }
-        function bukaModalProker() { document.getElementById('pk-modal-overlay').style.display = 'flex'; }
+        async function bukaModalProker() {
+            if (!window._coaAkunCache) { await loadDataFormTransaksi(); }
+            document.getElementById('pkPenWrap').style.display = 'none';
+            document.getElementById('pkBuatPenBtn').style.display = 'block';
+            document.getElementById('pkPenRows').innerHTML = '<div class="pk-table-row pk-cols-pen"><input type="text" placeholder="Sumber dana..."><input type="number" placeholder="0"></div>';
+            document.getElementById('pkAkunBebanUtama').innerHTML = '<option value="">— Pilih Akun Beban —</option>' + optCoaBebanPlain();
+            document.getElementById('pk-modal-overlay').style.display = 'flex';
+        }
         function tutupModalProker() { document.getElementById('pk-modal-overlay').style.display = 'none'; }
+        function bukaKonsepPenerimaanPk() {
+            document.getElementById('pkPenWrap').style.display = 'block';
+            document.getElementById('pkBuatPenBtn').style.display = 'none';
+        }
+        function hapusKonsepPenerimaanPk() {
+            document.getElementById('pkPenRows').innerHTML = '<div class="pk-table-row pk-cols-pen"><input type="text" placeholder="Sumber dana..."><input type="number" placeholder="0"></div>';
+            document.getElementById('pkPenWrap').style.display = 'none';
+            document.getElementById('pkBuatPenBtn').style.display = 'block';
+        }
                 function tambahBarisRab() {
             document.getElementById('pkRabRows').insertAdjacentHTML('beforeend',
                 '<div class="pk-table-row pk-cols-rab">' +
@@ -6661,9 +6973,10 @@ async function updateJurnal(jurnalId, jenis) {
                     if (sumber) penRows.push({ sumber: sumber, nominal: nominal });
                 });
 
+                var akunBebanId = document.getElementById('pkAkunBebanUtama').value;
                 var insertRes = await supabaseClient
                     .from('program_kerja')
-                    .insert({ nama: nama, ketua: ketua, bendahara: bendahara, tanggal_pelaksanaan: tanggal, ditutup: false })
+                    .insert({ nama: nama, ketua: ketua, bendahara: bendahara, tanggal_pelaksanaan: tanggal, ditutup: false, akun_beban_id: akunBebanId ? parseInt(akunBebanId) : null })
                     .select()
                     .single();
 
@@ -6710,7 +7023,7 @@ async function updateJurnal(jurnalId, jenis) {
                 const { data, error } = await supabaseClient
                     .from('program_kerja')
                     .select(`
-                        id, nama, ketua, bendahara, tanggal_pelaksanaan, ditutup,
+                        id, nama, ketua, bendahara, tanggal_pelaksanaan, ditutup, akun_beban_id,
                         proker_rab ( id, kebutuhan, qty, satuan, harga ),
                         proker_rencana_penerimaan ( id, sumber, nominal ),
                         proker_dokumen ( id, jenis, uploaded_at, file_url )
@@ -6722,8 +7035,8 @@ async function updateJurnal(jurnalId, jenis) {
                 const { data: trxData, error: trxError } = await supabaseClient
                     .from('jurnal_transaksi')
                     .select(`
-                        id, tanggal, keterangan, bendahara, proker_id, proker_rab_id,
-                        jurnal_detail ( debit, kredit, akun_kas_id )
+                        id, kode, tanggal, keterangan, bendahara, proker_id, proker_rab_id,
+                        jurnal_detail ( debit, kredit, akun_kas_id, coa_akun_id, coa_akun(nama, no_akun) )
                     `)
                     .not('proker_id', 'is', null);
 
@@ -6731,20 +7044,35 @@ async function updateJurnal(jurnalId, jenis) {
 
                 var realisasiPerProker = {};
                 (trxData || []).forEach(function (trx) {
-                    var nominal = 0;
+                    var nominalKas = 0;
+                    var debitAkunList = [];
                     (trx.jurnal_detail || []).forEach(function (d) {
                         if (d.akun_kas_id) {
-                            nominal += (parseFloat(d.kredit) || 0) - (parseFloat(d.debit) || 0);
+                            nominalKas += (parseFloat(d.kredit) || 0) - (parseFloat(d.debit) || 0);
+                        }
+                        if (d.coa_akun_id && (parseFloat(d.debit) || 0) > 0) {
+                            debitAkunList.push({ nama: d.coa_akun ? d.coa_akun.nama : '-', noAkun: d.coa_akun ? d.coa_akun.no_akun : '-', nominal: parseFloat(d.debit) || 0 });
                         }
                     });
-                    if (!realisasiPerProker[trx.proker_id]) realisasiPerProker[trx.proker_id] = { perRab: {}, nonRab: [], total: 0 };
+                    if (!realisasiPerProker[trx.proker_id]) realisasiPerProker[trx.proker_id] = { perRab: {}, perRabTrx: {}, nonRab: [], total: 0, debitAkun: {} };
                     var rp = realisasiPerProker[trx.proker_id];
-                    rp.total += nominal;
+                    rp.total += nominalKas;
+
+                    var trxInfo = { id: trx.id, kode: trx.kode, tgl: trx.tanggal, ket: trx.keterangan, nominal: nominalKas, bendahara: trx.bendahara, debitAkunList: debitAkunList };
+
                     if (trx.proker_rab_id) {
-                        rp.perRab[trx.proker_rab_id] = (rp.perRab[trx.proker_rab_id] || 0) + nominal;
+                        rp.perRab[trx.proker_rab_id] = (rp.perRab[trx.proker_rab_id] || 0) + nominalKas;
+                        if (!rp.perRabTrx[trx.proker_rab_id]) rp.perRabTrx[trx.proker_rab_id] = [];
+                        rp.perRabTrx[trx.proker_rab_id].push(trxInfo);
                     } else {
-                        rp.nonRab.push({ tgl: trx.tanggal, ket: trx.keterangan, nominal: nominal, bendahara: trx.bendahara });
+                        rp.nonRab.push(trxInfo);
                     }
+
+                    debitAkunList.forEach(function (a) {
+                        var key = a.nama;
+                        if (!rp.debitAkun[key]) rp.debitAkun[key] = { nama: a.nama, noAkun: a.noAkun, total: 0 };
+                        rp.debitAkun[key].total += a.nominal;
+                    });
                 });
 
                 prokerData = {};
@@ -6752,16 +7080,22 @@ async function updateJurnal(jurnalId, jenis) {
                     var dokumen = { proposal: { uploaded: false, url: null }, lpj: { uploaded: false, url: null }, dokumentasi: { uploaded: false, url: null } };
                     (p.proker_dokumen || []).forEach(function (d) { dokumen[d.jenis] = { uploaded: !!d.uploaded_at, url: d.file_url || null }; });
 
-                    var rp = realisasiPerProker[p.id] || { perRab: {}, nonRab: [], total: 0 };
+                    var rp = realisasiPerProker[p.id] || { perRab: {}, perRabTrx: {}, nonRab: [], total: 0, debitAkun: {} };
 
                     prokerData[p.id] = {
                         id: p.id, nama: p.nama, ketua: p.ketua, bendahara: p.bendahara, tanggal: p.tanggal_pelaksanaan, ditutup: p.ditutup,
+                        akunBebanId: p.akun_beban_id || null,
                         rab: (p.proker_rab || []).map(function (r) {
                             return { id: r.id, keb: r.kebutuhan, qty: parseFloat(r.qty) || 0, satuan: r.satuan, harga: parseFloat(r.harga) || 0 };
                         }),
+                        penerimaan: (p.proker_rencana_penerimaan || []).map(function (r) {
+                            return { id: r.id, sumber: r.sumber, nominal: parseFloat(r.nominal) || 0 };
+                        }),
                         realisasiPerRab: rp.perRab,
+                        realisasiPerRabTrx: rp.perRabTrx,
                         realisasiNonRab: rp.nonRab,
                         totalRealisasi: rp.total,
+                        debitAkunBeban: rp.debitAkun,
                         dokumen: dokumen
                     };
                 });
@@ -6825,9 +7159,11 @@ async function updateJurnal(jurnalId, jenis) {
             document.getElementById('bpKetua').value = p.ketua;
             document.getElementById('bpBendahara').value = p.bendahara;
             document.getElementById('bpTanggal').value = p.tanggal;
+            document.getElementById('bpAkunBebanUtama').innerHTML = '<option value="">— Pilih Akun Beban —</option>' + optCoaBebanPlain();
+            document.getElementById('bpAkunBebanUtama').value = p.akunBebanId || '';
 
             var editable = !p.ditutup;
-            ['bpNama', 'bpKetua', 'bpBendahara', 'bpTanggal'].forEach(function (fid) {
+            ['bpNama', 'bpKetua', 'bpBendahara', 'bpTanggal', 'bpAkunBebanUtama'].forEach(function (fid) {
                 document.getElementById(fid).disabled = !editable;
             });
             document.getElementById('bpTutupNotice').style.display = p.ditutup ? 'block' : 'none';
@@ -6845,12 +7181,14 @@ async function updateJurnal(jurnalId, jenis) {
             p.ketua = document.getElementById('bpKetua').value.trim();
             p.bendahara = document.getElementById('bpBendahara').value.trim();
             p.tanggal = document.getElementById('bpTanggal').value.trim();
+            var akunBebanVal = document.getElementById('bpAkunBebanUtama').value;
+            p.akunBebanId = akunBebanVal ? parseInt(akunBebanVal) : null;
 
             clearTimeout(_updateProkerTimer);
             _updateProkerTimer = setTimeout(async function () {
                 var res = await supabaseClient
                     .from('program_kerja')
-                    .update({ nama: p.nama, ketua: p.ketua, bendahara: p.bendahara, tanggal_pelaksanaan: p.tanggal })
+                    .update({ nama: p.nama, ketua: p.ketua, bendahara: p.bendahara, tanggal_pelaksanaan: p.tanggal, akun_beban_id: p.akunBebanId })
                     .eq('id', prokerAktifId);
                 if (res.error) alert('ERROR SUPABASE (update proker): ' + res.error.message);
             }, 800);
@@ -6862,9 +7200,50 @@ async function updateJurnal(jurnalId, jenis) {
             renderRabProkerRows();
             document.getElementById('bpRabAddBtn').style.display = p.ditutup ? 'none' : 'inline-flex';
             document.getElementById('bpRabSaveBtn').style.display = p.ditutup ? 'none' : 'flex';
+
+            var adaPenerimaan = p.penerimaan && p.penerimaan.length > 0;
+            document.getElementById('bpPenWrap').style.display = adaPenerimaan ? 'block' : 'none';
+            document.getElementById('bpBuatPenBtn').style.display = (!adaPenerimaan && !p.ditutup) ? 'block' : 'none';
+            if (adaPenerimaan) renderPenProkerRows();
+
             document.getElementById('proker-rab-overlay').style.display = 'flex';
         }
         function tutupRabProker() { document.getElementById('proker-rab-overlay').style.display = 'none'; }
+        function bukaKonsepPenerimaanProker() {
+            var p = prokerData[prokerAktifId];
+            if (!p.penerimaan) p.penerimaan = [];
+            if (p.penerimaan.length === 0) p.penerimaan.push({ sumber: '', nominal: 0 });
+            document.getElementById('bpPenWrap').style.display = 'block';
+            document.getElementById('bpBuatPenBtn').style.display = 'none';
+            renderPenProkerRows();
+        }
+        function renderPenProkerRows() {
+            var p = prokerData[prokerAktifId];
+            var html = '';
+            var total = 0;
+            (p.penerimaan || []).forEach(function (r, i) {
+                total += r.nominal;
+                if (p.ditutup) {
+                    html += '<div class="pk-table-row pk-cols-pen"><span style="font-size:0.72rem;">' + r.sumber + '</span><span style="font-size:0.72rem; font-weight:700;">Rp ' + r.nominal.toLocaleString('id-ID') + '</span></div>';
+                } else {
+                    html += '<div class="pk-table-row pk-cols-pen" data-index="' + i + '">' +
+                        '<input type="text" value="' + (r.sumber || '') + '" placeholder="Sumber dana..." oninput="ubahPenProkerField(' + i + ',\'sumber\',this.value)">' +
+                        '<input type="number" value="' + (r.nominal || '') + '" placeholder="0" oninput="ubahPenProkerField(' + i + ',\'nominal\',this.value)"></div>';
+                }
+            });
+            document.getElementById('bpPenRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada rencana penerimaan.</div>';
+            document.getElementById('bpPenTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
+            document.getElementById('bpPenAddBtn').style.display = p.ditutup ? 'none' : 'inline-flex';
+        }
+        function tambahBarisPenProker() {
+            prokerData[prokerAktifId].penerimaan.push({ sumber: '', nominal: 0 });
+            renderPenProkerRows();
+        }
+        function ubahPenProkerField(i, field, value) {
+            var p = prokerData[prokerAktifId];
+            p.penerimaan[i][field] = field === 'nominal' ? (parseRupiah(value) || 0) : value;
+            renderPenProkerRows();
+        }
                 function renderRabProkerRows() {
             var p = prokerData[prokerAktifId];
             var html = '';
@@ -6926,7 +7305,25 @@ async function updateJurnal(jurnalId, jenis) {
                     p.rab = [];
                 }
 
-                alert('RAB berhasil disimpan');
+                if (document.getElementById('bpPenWrap').style.display !== 'none') {
+                    var delPen = await supabaseClient.from('proker_rencana_penerimaan').delete().eq('proker_id', prokerAktifId);
+                    if (delPen.error) { alert('ERROR SUPABASE (hapus rencana penerimaan lama): ' + delPen.error.message); return; }
+
+                    var validPen = (p.penerimaan || []).filter(function (r) { return r.sumber && r.sumber.trim() !== ''; });
+                    if (validPen.length > 0) {
+                        var insPen = await supabaseClient.from('proker_rencana_penerimaan').insert(
+                            validPen.map(function (r) { return { proker_id: prokerAktifId, sumber: r.sumber, nominal: r.nominal }; })
+                        ).select();
+                        if (insPen.error) { alert('ERROR SUPABASE (simpan rencana penerimaan): ' + insPen.error.message); return; }
+                        p.penerimaan = insPen.data.map(function (r) {
+                            return { id: r.id, sumber: r.sumber, nominal: parseFloat(r.nominal) || 0 };
+                        });
+                    } else {
+                        p.penerimaan = [];
+                    }
+                }
+
+                alert('RAB & Rencana Penerimaan berhasil disimpan');
                 renderRabProkerRows();
                 tutupRabProker();
 
@@ -6935,12 +7332,41 @@ async function updateJurnal(jurnalId, jenis) {
             }
         }
 
-        // ---- Realisasi ----
+        // ---- Realisasi (inline di halaman, bukan modal, supaya bisa discroll menyatu) ----
         function bukaRealisasiProker() {
-            renderRealisasiProker();
-            document.getElementById('proker-realisasi-overlay').style.display = 'flex';
+            var box = document.getElementById('bpRealisasiInline');
+            var sedangTampil = box.style.display === 'flex';
+            box.style.display = sedangTampil ? 'none' : 'flex';
+            if (!sedangTampil) renderRealisasiProker();
         }
-        function tutupRealisasiProker() { document.getElementById('proker-realisasi-overlay').style.display = 'none'; }
+        function tutupRealisasiProker() {
+            var box = document.getElementById('bpRealisasiInline');
+            if (box) box.style.display = 'none';
+        }
+        function bukaDetailRealisasiRab(rabId) {
+            var p = prokerData[prokerAktifId];
+            var rabItem = p.rab.find(function (r) { return r.id === rabId; });
+            var daftarTrx = (p.realisasiPerRabTrx && p.realisasiPerRabTrx[rabId]) || [];
+            var total = daftarTrx.reduce(function (s, t) { return s + t.nominal; }, 0);
+
+            document.getElementById('prdRabTitle').textContent = 'Realisasi: ' + (rabItem ? rabItem.keb : '-');
+            document.getElementById('prdRabTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
+            document.getElementById('prdRabJumlah').textContent = daftarTrx.length;
+
+            var html = '';
+            daftarTrx.forEach(function (t) {
+                html += '<div class="report-row" style="cursor:pointer;" onclick="tutupDetailRealisasiRab(); bukaDetailJurnal(\'' + t.id + '\');">' +
+                    '<div class="report-icon"><i class="ph ph-file-text"></i></div>' +
+                    '<div><div class="report-name">' + t.ket + '</div><div class="report-sub">' + t.kode + ' &middot; ' + formatTanggalID(t.tgl) + ' &middot; ' + t.bendahara + '</div></div>' +
+                    '<span style="margin-left:auto; font-size:0.78rem; font-weight:700; color:var(--maroon);">Rp ' + t.nominal.toLocaleString('id-ID') + '</span></div>';
+            });
+            document.getElementById('prdRabRows').innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada jurnal realisasi untuk pos ini.</div>';
+
+            document.getElementById('proker-detail-rab-overlay').style.display = 'flex';
+        }
+        function tutupDetailRealisasiRab() {
+            document.getElementById('proker-detail-rab-overlay').style.display = 'none';
+        }
         function renderRealisasiProker() {
             var p = prokerData[prokerAktifId];
             var html = '', totalRab = 0, totalReal = 0;
@@ -6950,7 +7376,7 @@ async function updateJurnal(jurnalId, jenis) {
                 var selisih = rabAmount - realAmount;
                 totalRab += rabAmount;
                 totalReal += realAmount;
-                html += '<div class="pk-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;">' +
+                html += '<div class="pk-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr; cursor:pointer;" onclick="bukaDetailRealisasiRab(' + r.id + ')">' +
                     '<span style="font-size:0.7rem;">' + r.keb + '</span>' +
                     '<span style="font-size:0.7rem;">Rp ' + rabAmount.toLocaleString('id-ID') + '</span>' +
                     '<span style="font-size:0.7rem; font-weight:700;">Rp ' + realAmount.toLocaleString('id-ID') + '</span>' +
@@ -6996,6 +7422,38 @@ async function updateJurnal(jurnalId, jenis) {
                 analisis = 'Realisasi anggaran melebihi RAB sebesar Rp ' + Math.abs(selisihTotal).toLocaleString('id-ID') + (totalRab > 0 ? (' (' + Math.round((Math.abs(selisihTotal) / totalRab) * 100) + '%)') : '') + '. Perlu ditinjau penyebab pembengkakan biaya.';
             }
             document.getElementById('bpAnalisisText').textContent = analisis;
+
+            renderSaldoBebanProker(p);
+        }
+        function renderSaldoBebanProker(p) {
+            var debitAkun = p.debitAkunBeban || {};
+            var utama = null;
+            var lainnya = [];
+            var namaAkunUtama = null;
+            if (p.akunBebanId && window._coaAkunCache) {
+                var coaUtama = window._coaAkunCache.find(function (c) { return String(c.id) === String(p.akunBebanId); });
+                if (coaUtama) namaAkunUtama = coaUtama.nama;
+            }
+            Object.keys(debitAkun).forEach(function (key) {
+                var a = debitAkun[key];
+                if (namaAkunUtama ? a.nama === namaAkunUtama : (a.nama && a.nama.toLowerCase().indexOf('beban program kerja') !== -1)) {
+                    utama = a;
+                } else {
+                    lainnya.push(a);
+                }
+            });
+            document.getElementById('bpSaldoBebanUtama').textContent = 'Rp ' + (utama ? utama.total.toLocaleString('id-ID') : '0');
+
+            var htmlLain = '';
+            if (lainnya.length === 0) {
+                htmlLain = '<div style="font-size:0.74rem; color:var(--text-gray);">Tidak ada akun beban lain yang terpakai &mdash; seluruh realisasi sudah tepat mengarah ke Beban Program Kerja.</div>';
+            } else {
+                lainnya.forEach(function (a, i) {
+                    var huruf = String.fromCharCode(97 + i);
+                    htmlLain += '<div style="display:flex; justify-content:space-between; font-size:0.76rem; color:var(--maroon); font-weight:600;"><span>' + huruf + '. ' + a.nama + '</span><span>Rp ' + a.total.toLocaleString('id-ID') + '</span></div>';
+                });
+            }
+            document.getElementById('bpSaldoBebanLain').innerHTML = htmlLain;
         }
         async function unduhRealisasiPdf() {
             var p = prokerData[prokerAktifId];
@@ -9986,7 +10444,7 @@ function unduhRiwayatTransaksi() {
             pdfTutup(doc, 'CALK-' + Date.now() + '.pdf');
         }
 
-        // ===== Realisasi Anggaran Proker (spesifik satu proker, atau gabungan semua kalau null) =====
+        // ===== Realisasi Anggaran Proker — REDESAIN DETAIL & FORMAL =====
         async function buildRealisasiProkerPdf(namaProkerSpesifik) {
             if (Object.keys(prokerData).length === 0) { await muatProgramKerja(); }
             var daftar = Object.keys(prokerData).map(function (id) { return prokerData[id]; });
@@ -9996,43 +10454,190 @@ function unduhRiwayatTransaksi() {
             }
 
             var doc = pdfBaru();
-            var judul = namaProkerSpesifik ? 'REALISASI ANGGARAN PROKER' : 'LAPORAN REALISASI ANGGARAN PROKER';
-            var sub = namaProkerSpesifik ? namaProkerSpesifik + ' \u00b7 Per ' + tanggalLaporanHariIni() : 'Seluruh Program Kerja \u00b7 Per ' + tanggalLaporanHariIni();
-            var y = pdfKop(doc, judul, sub);
+            var w = doc.internal.pageSize.getWidth();
+            var h = doc.internal.pageSize.getHeight();
+
+            function jagaRuang(yPos, butuh, judulLanjutan) {
+                if (yPos + butuh > h - 60) {
+                    doc.addPage();
+                    return pdfKop(doc, judulLanjutan || 'REALISASI ANGGARAN PROKER', 'Lanjutan');
+                }
+                return yPos;
+            }
+            function subJudul(yPos, teks, judulLanjutan) {
+                yPos = jagaRuang(yPos, 30, judulLanjutan);
+                doc.setFont('times', 'bold'); doc.setFontSize(10.5); doc.setTextColor(0, 0, 0);
+                doc.text(teks, 34, yPos);
+                doc.setDrawColor(0, 0, 0); doc.setLineWidth(0.6);
+                doc.line(34, yPos + 4, w - 34, yPos + 4);
+                return yPos + 16;
+            }
 
             daftar.forEach(function (p, idx) {
-                if (idx > 0) { doc.addPage(); y = 50; }
-                doc.setTextColor(0, 0, 0);
-                doc.setFont('times', 'bold'); doc.setFontSize(12);
-                doc.text(p.nama, 34, y);
-                y += 20;
+                var judulHalaman = 'REALISASI ANGGARAN PROKER \u2014 ' + p.nama;
+                var y;
+                if (idx === 0) {
+                    y = pdfKop(doc, judulHalaman, 'Per ' + tanggalLaporanHariIni());
+                } else {
+                    doc.addPage();
+                    y = pdfKop(doc, judulHalaman, 'Per ' + tanggalLaporanHariIni());
+                }
 
-                doc.setFont('times', 'normal'); doc.setFontSize(11);
-                doc.text('Ketua Pelaksana', 34, y); doc.text(': ' + (p.ketua || '-'), 165, y); y += 16;
-                doc.text('Bendahara Proker', 34, y); doc.text(': ' + (p.bendahara || '-'), 165, y); y += 16;
-                doc.text('Tanggal Pelaksanaan', 34, y); doc.text(': ' + (p.tanggal ? formatTanggalID(p.tanggal) : '-'), 165, y); y += 16;
-                doc.text('Status Proker', 34, y); doc.text(': ' + (p.ditutup ? 'Ditutup' : 'Berjalan'), 165, y); y += 22;
+                var totRab = totalRabProker(p);
+                var totReal = hitungTotalRealisasi(p);
+                var selisihTotal = totRab - totReal;
 
-                var body = p.rab.map(function (r) {
+                /* I. INFORMASI UMUM */
+                y = subJudul(y, 'I. INFORMASI UMUM PROGRAM KERJA', judulHalaman);
+                var infoBody = [
+                    ['Nama Program Kerja', p.nama],
+                    ['Ketua Pelaksana', p.ketua || '-'],
+                    ['Bendahara Proker', p.bendahara || '-'],
+                    ['Tanggal Pelaksanaan', p.tanggal ? formatTanggalID(p.tanggal) : '-'],
+                    ['Status Proker', p.ditutup ? 'Ditutup / Selesai' : 'Berjalan'],
+                    ['Total RAB', fmtRp(totRab)],
+                    ['Total Realisasi', fmtRp(totReal)],
+                    ['Persentase Realisasi', totRab > 0 ? Math.round((totReal / totRab) * 100) + '%' : '-']
+                ];
+                y = pdfTabel(doc, y + 4, ['Uraian', 'Keterangan'], infoBody, {
+                    styles: { font: 'times', fontSize: 9, cellPadding: 5, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
+                    columnStyles: { 0: { fontStyle: 'bold', cellWidth: 160 } }
+                }) + 18;
+
+                /* II. RAB */
+                y = subJudul(y, 'II. RENCANA ANGGARAN BELANJA (RAB)', judulHalaman);
+                var rabBody = p.rab.map(function (r) {
                     var rabAmount = r.qty * r.harga;
                     var realAmount = (p.realisasiPerRab && p.realisasiPerRab[r.id]) || 0;
                     return [r.keb, r.qty + ' ' + r.satuan, fmtRp(r.harga), fmtRp(rabAmount), fmtRp(realAmount), fmtRp(rabAmount - realAmount)];
                 });
-                (p.realisasiNonRab || []).forEach(function (t) {
-                    body.push(['\u21b3 ' + t.ket + ' (Non-RAB)', '-', '-', '-', fmtRp(t.nominal), fmtRp(-t.nominal)]);
-                });
-                if (body.length === 0) body = [['Belum ada rincian RAB', '', '', '', '', '']];
-
-                y = pdfTabel(doc, y, ['Kebutuhan', 'Qty', 'Harga Satuan', 'RAB (Rp)', 'Realisasi (Rp)', 'Selisih (Rp)'], body, {
-                    styles: { font: 'times', fontSize: 7.3, cellPadding: 4, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
+                if (rabBody.length === 0) rabBody = [['Belum ada rincian RAB', '', '', '', '', '']];
+                y = pdfTabel(doc, y + 4, ['Kebutuhan', 'Qty', 'Harga Satuan', 'RAB (Rp)', 'Realisasi (Rp)', 'Selisih (Rp)'], rabBody, {
+                    styles: { font: 'times', fontSize: 8, cellPadding: 4, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
                     columnStyles: { 1: { halign: 'center' }, 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' }, 5: { halign: 'right' } }
                 }) + 8;
+                doc.setFont('times', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 0, 0);
+                doc.text('Total RAB: ' + fmtRp(totRab), 34, y);
+                y += 20;
 
-                var totRab = totalRabProker(p);
-                var totReal = hitungTotalRealisasi(p);
+                /* III. RENCANA PENERIMAAN (jika ada) */
+                if (p.penerimaan && p.penerimaan.length > 0) {
+                    y = subJudul(y, 'III. RENCANA PENERIMAAN', judulHalaman);
+                    var penBody = p.penerimaan.map(function (r) { return [r.sumber, fmtRp(r.nominal)]; });
+                    var totalPen = p.penerimaan.reduce(function (s, r) { return s + r.nominal; }, 0);
+                    y = pdfTabel(doc, y + 4, ['Sumber Penerimaan', 'Nominal (Rp)'], penBody, {
+                        styles: { font: 'times', fontSize: 8.5, cellPadding: 4, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
+                        columnStyles: { 1: { halign: 'right' } }
+                    }) + 6;
+                    doc.setFont('times', 'bold'); doc.setFontSize(9);
+                    doc.text('Total Rencana Penerimaan: ' + fmtRp(totalPen), 34, y);
+                    y += 20;
+                }
 
-                doc.setFont('times', 'bold'); doc.setFontSize(9); doc.setTextColor(0,0,0);
-                doc.text('Total RAB: ' + fmtRp(totRab) + '   |   Total Realisasi: ' + fmtRp(totReal) + '   |   Selisih: ' + fmtRp(totRab - totReal), 34, y);
+                /* IV. RINCIAN REALISASI PER POS ANGGARAN (jurnal pendukung) */
+                y = subJudul(y, 'IV. RINCIAN REALISASI PER POS ANGGARAN (JURNAL PENDUKUNG)', judulHalaman);
+                p.rab.forEach(function (r) {
+                    var daftarTrx = (p.realisasiPerRabTrx && p.realisasiPerRabTrx[r.id]) || [];
+                    y = jagaRuang(y, 34, judulHalaman);
+                    doc.setFont('times', 'bold'); doc.setFontSize(8.7); doc.setTextColor(0, 0, 0);
+                    doc.text(r.keb + '  (Total Realisasi: ' + fmtRp((p.realisasiPerRab && p.realisasiPerRab[r.id]) || 0) + ')', 34, y);
+                    y += 6;
+                    var trxBody = daftarTrx.map(function (t) {
+                        return [t.kode || '-', formatTanggalID(t.tgl), t.ket, t.bendahara || '-', fmtRp(t.nominal)];
+                    });
+                    if (trxBody.length === 0) trxBody = [['-', '-', 'Belum ada jurnal realisasi untuk pos ini', '-', 'Rp 0']];
+                    y = pdfTabel(doc, y + 4, ['Kode', 'Tanggal', 'Keterangan', 'Bendahara', 'Nominal (Rp)'], trxBody, {
+                        styles: { font: 'times', fontSize: 7.2, cellPadding: 3, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.4 },
+                        columnStyles: { 4: { halign: 'right' } }
+                    }) + 10;
+                });
+
+                var nonRabList = p.realisasiNonRab || [];
+                if (nonRabList.length > 0) {
+                    y = jagaRuang(y, 34, judulHalaman);
+                    var totalNonRab = nonRabList.reduce(function (s, t) { return s + t.nominal; }, 0);
+                    doc.setFont('times', 'bold'); doc.setFontSize(8.7); doc.setTextColor(0, 0, 0);
+                    doc.text('Transaksi Non-RAB  (Total: ' + fmtRp(totalNonRab) + ')', 34, y);
+                    y += 6;
+                    var nonRabBody = nonRabList.map(function (t) {
+                        return [t.kode || '-', formatTanggalID(t.tgl), t.ket, t.bendahara || '-', fmtRp(t.nominal)];
+                    });
+                    y = pdfTabel(doc, y + 4, ['Kode', 'Tanggal', 'Keterangan', 'Bendahara', 'Nominal (Rp)'], nonRabBody, {
+                        styles: { font: 'times', fontSize: 7.2, cellPadding: 3, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.4 },
+                        columnStyles: { 4: { halign: 'right' } }
+                    }) + 10;
+                }
+
+                /* V. RINGKASAN & ANALISIS SELISIH */
+                y = jagaRuang(y, 90, judulHalaman);
+                y = subJudul(y, 'V. RINGKASAN & ANALISIS SELISIH', judulHalaman);
+                var ringkasanBody = [
+                    ['Total RAB', fmtRp(totRab)],
+                    ['Total Realisasi', fmtRp(totReal)],
+                    ['Selisih', fmtRp(selisihTotal)]
+                ];
+                y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], ringkasanBody, {
+                    styles: { font: 'times', fontSize: 9, cellPadding: 5, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
+                    columnStyles: { 1: { halign: 'right', fontStyle: 'bold' } }
+                }) + 6;
+
+                var analisisTxt;
+                if (totRab === 0 && totReal === 0) analisisTxt = 'Belum ada data RAB maupun realisasi untuk dianalisis.';
+                else if (selisihTotal === 0) analisisTxt = 'Realisasi anggaran telah sesuai dengan RAB yang direncanakan. Tidak ditemukan selisih pada program kerja ini.';
+                else if (selisihTotal > 0) analisisTxt = 'Realisasi anggaran lebih hemat ' + fmtRp(selisihTotal) + (totRab > 0 ? (' (' + Math.round((selisihTotal / totRab) * 100) + '% dari total RAB)') : '') + ' dibanding RAB yang direncanakan.';
+                else analisisTxt = 'Realisasi anggaran melebihi RAB sebesar ' + fmtRp(Math.abs(selisihTotal)) + (totRab > 0 ? (' (' + Math.round((Math.abs(selisihTotal) / totRab) * 100) + '% dari total RAB)') : '') + '. Perlu ditinjau lebih lanjut penyebab pembengkakan biaya.';
+
+                doc.setFont('times', 'normal'); doc.setFontSize(9); doc.setTextColor(0, 0, 0);
+                var lebarAnalisis = w - 68;
+                var analisisLines = doc.splitTextToSize(analisisTxt, lebarAnalisis);
+                doc.text(analisisLines, 34, y, { align: 'justify', maxWidth: lebarAnalisis });
+                y += analisisLines.length * 13 + 18;
+
+                /* VI. VERIFIKASI AKUN BEBAN (UNTUK AUDIT) */
+                y = jagaRuang(y, 70, judulHalaman);
+                y = subJudul(y, 'VI. VERIFIKASI AKUN BEBAN (UNTUK AUDIT)', judulHalaman);
+                var debitAkun = p.debitAkunBeban || {};
+                var utamaPdf = null, lainnyaPdf = [];
+                Object.keys(debitAkun).forEach(function (key) {
+                    var a = debitAkun[key];
+                    if (a.nama && a.nama.toLowerCase().indexOf('beban program kerja') !== -1) utamaPdf = a;
+                    else lainnyaPdf.push(a);
+                });
+                doc.setFont('times', 'bold'); doc.setFontSize(9); doc.setTextColor(0, 0, 0);
+                doc.text('SALDO BUKU BESAR BEBAN PROGRAM KERJA : ' + (utamaPdf ? fmtRp(utamaPdf.total) : 'Rp 0'), 34, y + 4);
+                y += 20;
+                doc.text('SALDO BUKU BESAR BEBAN TERKAIT' + (lainnyaPdf.length === 0 ? ' : Tidak ada' : ' :'), 34, y);
+                y += 14;
+                doc.setFont('times', 'normal'); doc.setFontSize(8.7);
+                if (lainnyaPdf.length === 0) {
+                    doc.text('(Seluruh realisasi sudah tepat mengarah ke akun Beban Program Kerja \u2014 tidak ditemukan indikasi salah alokasi akun)', 44, y);
+                    y += 16;
+                } else {
+                    lainnyaPdf.forEach(function (a, i) {
+                        y = jagaRuang(y, 14, judulHalaman);
+                        var huruf = String.fromCharCode(97 + i);
+                        doc.text(huruf + '. ' + a.nama + '   Rp ' + Math.round(a.total).toLocaleString('id-ID'), 44, y);
+                        y += 14;
+                    });
+                    y += 4;
+                    doc.setFont('times', 'italic'); doc.setFontSize(8);
+                    var catatanLines = doc.splitTextToSize('Catatan: akun beban terkait di atas berada di luar akun Beban Program Kerja dan perlu ditelusuri kesesuaiannya oleh pemeriksa/auditor.', w - 68);
+                    doc.text(catatanLines, 34, y, { maxWidth: w - 68 });
+                    y += catatanLines.length * 12 + 8;
+                }
+
+                /* Tanda tangan */
+                y = jagaRuang(y, 100, judulHalaman);
+                y += 24;
+                doc.setFont('times', 'normal'); doc.setFontSize(9); doc.setTextColor(0, 0, 0);
+                doc.text('Disusun oleh,', 60, y);
+                doc.text('Diketahui oleh,', w - 190, y);
+                doc.text('Bendahara Proker', 60, y + 12);
+                doc.text('Ketua Pelaksana', w - 190, y + 12);
+                doc.line(50, y + 58, 190, y + 58);
+                doc.line(w - 190, y + 58, w - 50, y + 58);
+                doc.text('(' + (p.bendahara || '.....................') + ')', 60, y + 70);
+                doc.text('(' + (p.ketua || '.....................') + ')', w - 190, y + 70);
             });
 
             if (!namaProkerSpesifik && daftar.length > 1) {
@@ -10380,6 +10985,14 @@ function unduhRiwayatTransaksi() {
             });
             if (!bankHtml) bankHtml = '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.74rem;">Tidak ada saldo bank tercatat.</div>';
 
+            var rekomHtml = '';
+            if (o.rekomendasi_jurnal && o.rekomendasi_jurnal.length > 0) {
+                rekomHtml = '<div class="ct-field"><label>Rekomendasi Jurnal dari Pemeriksa</label><div class="ct-table-wrap"><div class="ct-table-head" style="grid-template-columns:1.5fr 0.8fr 0.8fr;"><span>Nama Akun</span><span>Debit</span><span>Kredit</span></div>' +
+                    o.rekomendasi_jurnal.map(function (r) {
+                        return '<div class="ct-table-row" style="grid-template-columns:1.5fr 0.8fr 0.8fr;"><span style="font-size:0.74rem; color:var(--text-dark);">' + r.nama_akun + '</span><span style="font-size:0.74rem; color:var(--text-dark);">' + (parseFloat(r.debit) > 0 ? 'Rp ' + parseFloat(r.debit).toLocaleString('id-ID') : '-') + '</span><span style="font-size:0.74rem; color:var(--text-dark);">' + (parseFloat(r.kredit) > 0 ? 'Rp ' + parseFloat(r.kredit).toLocaleString('id-ID') : '-') + '</span></div>';
+                    }).join('') + '</div></div>';
+            }
+
             document.getElementById('coDetailBody').innerHTML =
                 '<div class="rb-rekap-box"><div class="rb-rekap-col"><div class="rb-rekap-lbl">Kas Diperiksa</div><div class="rb-rekap-val">' + (o.akun_kas ? o.akun_kas.nama : '-') + '</div></div><div class="rb-rekap-col"><div class="rb-rekap-lbl">Tanggal</div><div class="rb-rekap-val">' + formatTanggalID(o.tanggal) + '</div></div></div>' +
                 '<div class="ct-field" style="margin-bottom:0;"><label>Pemeriksa</label><div class="info-value" style="margin-top:2px;">' + o.pemeriksa + '</div></div>' +
@@ -10392,6 +11005,8 @@ function unduhRiwayatTransaksi() {
                 '<div class="co-analysis-row"><span>Fisik + Bank</span><strong>Rp ' + (totalFisik + totalBank).toLocaleString('id-ID') + '</strong></div>' +
                 '<div class="co-analysis-row co-analysis-final"><span>Selisih</span><strong>Rp ' + Math.abs(parseFloat(o.selisih) || 0).toLocaleString('id-ID') + ' (' + o.status + ')</strong></div></div>' +
                 (o.keterangan ? '<div class="ct-field" style="margin-bottom:0;"><label>Penjelasan Pemeriksa</label><div class="info-value" style="margin-top:2px; font-weight:500;">' + o.keterangan + '</div></div>' : '') +
+                rekomHtml +
+                '<button class="co-btn-secondary" onclick="bukaModalRekomOpnameTersimpan(' + o.id + ')"><i class="ph ph-lightbulb"></i> ' + (o.rekomendasi_jurnal && o.rekomendasi_jurnal.length > 0 ? 'Ubah' : 'Buat') + ' Rekomendasi Jurnal</button>' +
                 '<button class="ct-submit-btn" onclick="unduhKertasKerjaOpname()"><i class="ph ph-download-simple"></i> Download Kertas Kerja (PDF)</button>';
         }
         function unduhKertasKerjaOpname() {
@@ -10431,17 +11046,34 @@ function unduhRiwayatTransaksi() {
             ];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah'], analisisBody, { columnStyles: { 1: { halign: 'right', fontStyle: 'bold' } } }) + 10;
 
-            if (o.keterangan) {
-                doc.setFont('times', 'bold'); doc.setFontSize(9); doc.setTextColor(0,0,0);
-                doc.text('Penjelasan Pemeriksa:', 34, y + 6);
-                doc.setFont('times', 'normal'); doc.setFontSize(8.5); doc.setTextColor(0,0,0);
-                var ketLines = doc.splitTextToSize(o.keterangan, doc.internal.pageSize.getWidth() - 68);
-                doc.text(ketLines, 34, y + 20);
-                y += 20 + ketLines.length * 11;
+            var adaKeterangan = !!o.keterangan;
+            var adaRekomendasi = o.rekomendasi_jurnal && o.rekomendasi_jurnal.length > 0;
+
+            if (adaKeterangan || adaRekomendasi) {
+                doc.addPage();
+                y = pdfKop(doc, 'BERITA ACARA CASH OPNAME', 'Lanjutan \u00b7 ' + (o.akun_kas ? o.akun_kas.nama : '-') + ' \u00b7 ' + formatTanggalID(o.tanggal));
+
+                if (adaKeterangan) {
+                    y = pdfSeksi(doc, y + 6, 'PENJELASAN PEMERIKSA');
+                    doc.setFont('times', 'normal'); doc.setFontSize(10); doc.setTextColor(0, 0, 0);
+                    var lebarKet = doc.internal.pageSize.getWidth() - 68;
+                    var ketLines = doc.splitTextToSize(o.keterangan, lebarKet);
+                    doc.text(ketLines, 34, y + 8, { align: 'justify', maxWidth: lebarKet });
+                    y += 8 + ketLines.length * 14 + 16;
+                }
+
+                if (adaRekomendasi) {
+                    y = pdfSeksi(doc, y, 'REKOMENDASI JURNAL DARI PEMERIKSA');
+                    var rekomBody = o.rekomendasi_jurnal.map(function (r) {
+                        return [r.nama_akun, (parseFloat(r.debit) || 0) > 0 ? 'Rp ' + (parseFloat(r.debit) || 0).toLocaleString('id-ID') : '-', (parseFloat(r.kredit) || 0) > 0 ? 'Rp ' + (parseFloat(r.kredit) || 0).toLocaleString('id-ID') : '-'];
+                    });
+                    y = pdfTabel(doc, y + 4, ['Nama Akun', 'Debit', 'Kredit'], rekomBody, { columnStyles: { 1: { halign: 'right' }, 2: { halign: 'right' } } }) + 10;
+                }
             }
 
             y += 30;
             var w = doc.internal.pageSize.getWidth();
+            if (y > doc.internal.pageSize.getHeight() - 90) { doc.addPage(); y = 60; }
             doc.setFont('times', 'normal'); doc.setFontSize(8.5); doc.setTextColor(0,0,0);
             doc.text('Diperiksa oleh,', 60, y);
             doc.text('Bendahara,', w - 160, y);
@@ -12352,5 +12984,703 @@ function tutupPeriksaJurnal() {
 })();
 </script>
 
+<script>
+/* =========================================================================
+   PATCH — CALK LENGKAP
+   Paste this whole block as a NEW <script> tag right before the closing
+   Requires: table `calk_data` in Supabase — run 1-calk-schema.sql first.
+   ========================================================================= */
+/* ---------------------------------------------------------------------
+   STATE
+--------------------------------------------------------------------- */
+var _calkData = {
+    header: {}, kepengurusan: [], rekeningBank: [], donasiManual: [],
+    pendapatanLainnyaManual: [], bebanManual: [], peristiwa: [],
+    narasi: {}, pilihan: {}, mitigasi: {},
+    donasiVariance: 0, pendapatanNonPeriode: { narasi: '', nominal: 0 },
+    subscriptionNominal: 0, cofinancingProkerId: '', tanggalOtorisasi: '', namaKetuaTtd: '', jabatanTtd: ''
+};
+var _calkLaporan = null;
+
+function calkEsc(v) {
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function valOf(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+
+/* ---------------------------------------------------------------------
+   OPEN / CLOSE
+--------------------------------------------------------------------- */
+async function bukaCalkScreen() {
+    document.getElementById('calk-screen').style.display = 'flex';
+    document.getElementById('calkBody').scrollTop = 0;
+    document.getElementById('calkBody').innerHTML = '<div style="padding:30px; text-align:center; color:var(--text-gray); font-size:0.8rem;">Memuat data CALK dari seluruh modul...</div>';
+    try {
+        await muatSemuaDataUntukCalk();
+        await muatCalkDataDariSupabase();
+        renderCalkScreen();
+    } catch (e) {
+        document.getElementById('calkBody').innerHTML = '<div style="padding:30px; text-align:center; color:var(--maroon); font-size:0.8rem;">Gagal memuat CALK: ' + calkEsc(e.message) + '</div>';
+    }
+}
+function tutupCalkScreen() { document.getElementById('calk-screen').style.display = 'none'; }
+
+async function muatSemuaDataUntukCalk() {
+    var tugas = [];
+    if (!window._akunKasCache || !window._coaAkunCache) tugas.push(loadDataFormTransaksi());
+    if (Object.keys(prokerData).length === 0) tugas.push(muatProgramKerja());
+    tugas.push(muatUtangPiutang());
+    tugas.push(muatPeralatan());
+    tugas.push(muatIuranKegiatan());
+    tugas.push(muatPenjualan());
+    await Promise.all(tugas);
+    _calkLaporan = await hitungLaporanKeuangan();
+}
+
+async function muatCalkDataDariSupabase() {
+    try {
+        const { data, error } = await supabaseClient.from('calk_data').select('*').eq('id', 1).maybeSingle();
+        if (!error && data && data.data) {
+            _calkData = Object.assign({
+                header: {}, kepengurusan: [], rekeningBank: [], donasiManual: [],
+                pendapatanLainnyaManual: [], bebanManual: [], peristiwa: [],
+                narasi: {}, pilihan: {}, mitigasi: {},
+                donasiVariance: 0, pendapatanNonPeriode: { narasi: '', nominal: 0 },
+                subscriptionNominal: 0, cofinancingProkerId: '', tanggalOtorisasi: '', namaKetuaTtd: '', jabatanTtd: ''
+            }, data.data);
+        }
+    } catch (e) { /* tabel belum ada — pakai default kosong, akan dibuat saat pertama kali disimpan */ }
+
+    if (!_calkData.kepengurusan || _calkData.kepengurusan.length === 0) {
+        _calkData.kepengurusan = [
+            { posisi: 'Pelindung (Ketua Takmir)', nama: '' },
+            { posisi: 'Ketua Umum', nama: (_currentUser ? _currentUser.nama : '') },
+            { posisi: 'Kepala Biro Anggaran dan Keuangan', nama: '' },
+            { posisi: 'Bendahara', nama: '' }
+        ];
+    }
+    if (!_calkData.rekeningBank || _calkData.rekeningBank.length === 0) {
+        _calkData.rekeningBank = [{ bank: '', norek: '', atasnama: '', kas: '' }];
+    }
+    if (!_calkData.header || Object.keys(_calkData.header).length === 0) {
+        _calkData.header = {
+            calkNamaEntitas: 'Masjid Fadhlillah',
+            calkAlamat: 'Jalan Selarong, Dusun Rogoitan, Kalurahan Pendowoharjo, Kapanewon Sewon, Kabupaten Bantul, Daerah Istimewa Yogyakarta',
+            calkNoRegistrasi: '',
+            calkPeriodeLabel: 'Periode Kepengurusan 2026/2027',
+            calkPerTanggalLabel: tanggalLaporanHariIni()
+        };
+    }
+}
+
+/* ---------------------------------------------------------------------
+   KUMPULKAN SEMUA INPUT DARI DOM -> _calkData (dipanggil sebelum simpan/PDF)
+--------------------------------------------------------------------- */
+function bacaTabelDinamis(rowSelector, fields) {
+    var out = [];
+    document.querySelectorAll(rowSelector).forEach(function (row) {
+        var obj = {};
+        fields.forEach(function (f) {
+            var el = row.querySelector('[data-f="' + f + '"]');
+            obj[f] = el ? el.value : '';
+        });
+        out.push(obj);
+    });
+    return out;
+}
+function kumpulkanSemuaCalk() {
+    document.querySelectorAll('.calk-narrative').forEach(function (el) { _calkData.narasi[el.dataset.key] = el.value; });
+
+    _calkData.header = {
+        calkNamaEntitas: valOf('calkNamaEntitas'),
+        calkAlamat: valOf('calkAlamat'),
+        calkNoRegistrasi: valOf('calkNoRegistrasi'),
+        calkPeriodeLabel: valOf('calkPeriodeLabel'),
+        calkPerTanggalLabel: valOf('calkPerTanggalLabel')
+    };
+    _calkData.tanggalOtorisasi = valOf('calkTglOtorisasi');
+    _calkData.namaKetuaTtd = valOf('calkNamaKetuaTtd');
+    _calkData.jabatanTtd = valOf('calkJabatanTtd');
+
+    _calkData.pilihan.asetTetapDisusutkan = valOf('calkPilihDisusutkan');
+    _calkData.pilihan.kelangsunganUsaha = valOf('calkPilihKelangsungan');
+    _calkData.pilihan.donasiBasis = valOf('calkPilihDonasiBasis');
+
+    _calkData.mitigasi = {};
+    document.querySelectorAll('.calk-mitigasi-chk').forEach(function (chk) { _calkData.mitigasi[chk.dataset.key] = chk.checked; });
+
+    _calkData.kepengurusan = bacaTabelDinamis('.calk-pengurus-row', ['posisi', 'nama']);
+    _calkData.rekeningBank = bacaTabelDinamis('.calk-rekbank-row', ['bank', 'norek', 'atasnama', 'kas']);
+    _calkData.donasiManual = bacaTabelDinamis('.calk-donasi-row', ['sumber', 'nominal']);
+    _calkData.donasiVariance = parseRupiah(valOf('calkDonasiVariance')) || 0;
+    _calkData.pendapatanNonPeriode = { narasi: valOf('calkPnpNarasi'), nominal: parseRupiah(valOf('calkPnpNominal')) || 0 };
+    _calkData.pendapatanLainnyaManual = bacaTabelDinamis('.calk-pl-row', ['uraian', 'nominal', 'keterangan']);
+    _calkData.bebanManual = bacaTabelDinamis('.calk-bebanmanual-row', ['uraian', 'nominal', 'keterangan']);
+    _calkData.peristiwa = bacaTabelDinamis('.calk-peristiwa-row', ['judul', 'deskripsi', 'dampak']);
+    _calkData.cofinancingProkerId = valOf('calkCofinancingProker');
+    _calkData.subscriptionNominal = parseRupiah(valOf('calkSubscriptionNominal')) || 0;
+}
+
+async function simpanCalkData(diam) {
+    kumpulkanSemuaCalk();
+    var res = await supabaseClient.from('calk_data').upsert({ id: 1, data: _calkData, updated_at: new Date().toISOString() });
+    if (res.error) {
+        alert('ERROR SUPABASE (simpan CALK): ' + res.error.message + '. Pastikan tabel calk_data sudah dibuat (lihat 1-calk-schema.sql).');
+        return false;
+    }
+    if (!diam) alert('Draf CALK berhasil disimpan. Aman dibuka lagi kapan saja untuk dilanjutkan.');
+    return true;
+}
+
+/* ---------------------------------------------------------------------
+   BARIS DINAMIS: tambah / hapus
+--------------------------------------------------------------------- */
+function calkTambahBaris(arrKey, template, renderFn) {
+    kumpulkanSemuaCalk();
+    _calkData[arrKey].push(template);
+    renderFn();
+}
+function calkHapusBaris(arrKey, idx, renderFn, minLen) {
+    kumpulkanSemuaCalk();
+    if (_calkData[arrKey].length <= (minLen || 0)) { _calkData[arrKey].splice(idx, 1); }
+    else { _calkData[arrKey].splice(idx, 1); }
+    renderFn();
+}
+
+function calkTambahPengurus() { calkTambahBaris('kepengurusan', { posisi: '', nama: '' }, renderCalkScreen); }
+function calkHapusPengurus(i) { calkHapusBaris('kepengurusan', i, renderCalkScreen); }
+function calkTambahRekBank() { calkTambahBaris('rekeningBank', { bank: '', norek: '', atasnama: '', kas: '' }, renderCalkScreen); }
+function calkHapusRekBank(i) { calkHapusBaris('rekeningBank', i, renderCalkScreen); }
+function calkTambahDonasi() { calkTambahBaris('donasiManual', { sumber: '', nominal: '' }, renderCalkScreen); }
+function calkHapusDonasi(i) { calkHapusBaris('donasiManual', i, renderCalkScreen); }
+function calkTambahPL() { calkTambahBaris('pendapatanLainnyaManual', { uraian: '', nominal: '', keterangan: '' }, renderCalkScreen); }
+function calkHapusPL(i) { calkHapusBaris('pendapatanLainnyaManual', i, renderCalkScreen); }
+function calkTambahBebanManual() { calkTambahBaris('bebanManual', { uraian: '', nominal: '', keterangan: '' }, renderCalkScreen); }
+function calkHapusBebanManual(i) { calkHapusBaris('bebanManual', i, renderCalkScreen); }
+function calkTambahPeristiwa() { calkTambahBaris('peristiwa', { judul: '', deskripsi: '', dampak: 'Tidak ada dampak keuangan langsung terhadap Posisi Keuangan periode ini.' }, renderCalkScreen); }
+function calkHapusPeristiwa(i) { calkHapusBaris('peristiwa', i, renderCalkScreen); }
+
+/* ---------------------------------------------------------------------
+   NARASI DEFAULT (boilerplate ISAK 35 — bisa diedit bebas oleh bendahara)
+--------------------------------------------------------------------- */
+function calkNarasiDefault(key) {
+    var nama = (_calkData.header && _calkData.header.calkNamaEntitas) || 'Masjid Fadhlillah';
+    var alamat = (_calkData.header && _calkData.header.calkAlamat) || '-';
+    var d = {
+        umum_pendirian: nama + ' adalah entitas nirlaba berbentuk organisasi keagamaan yang berdomisili di ' + alamat + '. Laporan keuangan ini disusun untuk mempertanggungjawabkan pengelolaan dana yang dihimpun dan disalurkan oleh Biro Anggaran dan Keuangan selama periode berjalan.',
+        dasar_penyusunan: 'Laporan keuangan disusun berdasarkan Standar Akuntansi Keuangan yang secara khusus menerapkan Interpretasi Standar Akuntansi Keuangan (ISAK) 35 tentang Penyajian Laporan Keuangan Entitas Berorientasi Nonlaba. Dasar penyusunan laporan keuangan, kecuali untuk Laporan Arus Kas, adalah dasar akrual (accrual basis). Pengukuran yang digunakan adalah biaya historis (historical cost), kecuali dinyatakan lain pada kebijakan akuntansi masing-masing akun.',
+        mata_uang: 'Pembukuan Entitas diselenggarakan dalam mata uang Rupiah (Rp), yang merupakan mata uang fungsional dan mata uang penyajian.',
+        kas_setara_kas: 'Kas dan setara kas mencakup kas di tangan dan simpanan di bank yang dapat dikonversi menjadi kas dalam jumlah tertentu tanpa risiko perubahan nilai yang signifikan. Entitas memisahkan pengelolaan kas berdasarkan peruntukannya untuk memudahkan pengendalian internal, sebagaimana dirinci pada Catatan Kas dan Setara Kas.',
+        aset_keuangan: 'Aset keuangan diakui awal sebesar nilai wajar ditambah biaya transaksi yang dapat didistribusikan secara langsung. Piutang/Dana Belum Disetor dicatat sebesar jumlah nominal tagihan dikurangi penyisihan penurunan nilai (jika ada). Biro Anggaran dan Keuangan melakukan penelaahan berkala atas kolektibilitas saldo dana yang masih dibawa oleh personel panitia/pengurus.',
+        perlengkapan: 'Perlengkapan diakui sebagai aset pada saat pembelian dan dibebankan sebagai biaya pada saat pemakaian (usage method). Perlengkapan yang tersisa pada akhir periode pelaporan dinilai berdasarkan biaya perolehan terendah atau nilai realisasi bersih.',
+        persediaan: 'Entitas mengakui persediaan barang jadi (merchandise) untuk mendukung pendanaan mandiri. Persediaan dinilai berdasarkan harga perolehan (historical cost) dan Harga Pokok Penjualan diakui pada saat barang diserahkan kepada pembeli.',
+        klasifikasi_asetneto: 'Sesuai ISAK 35, aset neto Entitas diklasifikasikan menjadi: (1) Aset Neto Tanpa Pembatasan (Without Donor Restrictions) — dana yang penggunaannya tidak dibatasi oleh pemberi sumber daya; dan (2) Aset Neto Dengan Pembatasan (With Donor Restrictions) — dana yang dibatasi penggunaannya untuk tujuan atau periode tertentu oleh donatur.',
+        pengakuan_donasi: 'Pendapatan dari sumbangan/donasi diakui berdasarkan prinsip basis kas yang dimodifikasi (modified cash basis), yaitu pada saat fisik kas diterima oleh Bendahara, guna menerapkan prinsip kehati-hatian (prudence) mengingat sifat penerimaan donasi sukarela yang memiliki ketidakpastian tinggi.',
+        pengakuan_penjualan: 'Pendapatan dari unit usaha (penjualan merchandise/atribut) diakui pada saat pengendalian atau manfaat atas barang berpindah sepenuhnya kepada pembeli (point of sale), berdasarkan nilai realisasi bersih dari transaksi yang terjadi selama periode berjalan.',
+        pengakuan_beban: 'Beban diakui pada saat terjadinya kewajiban atau saat manfaat ekonomi atas barang dan jasa dikonsumsi (dasar akrual), tanpa memperhatikan saat kas dikeluarkan. Beban disajikan berdasarkan klasifikasi fungsional: (a) Beban Aktivitas Program Kerja — biaya langsung pelaksanaan program; dan (b) Beban Administrasi dan Umum — biaya tidak langsung pendukung tata kelola organisasi.',
+        estimasi: 'Penyusunan laporan keuangan mengharuskan Biro Anggaran dan Keuangan membuat pertimbangan, estimasi, dan asumsi yang memengaruhi penerapan kebijakan akuntansi serta jumlah aset, liabilitas, pendapatan, dan beban yang dilaporkan. Realisasi dapat berbeda dengan jumlah estimasi tersebut.',
+        risiko_likuiditas: 'Risiko likuiditas adalah risiko Entitas mengalami kesulitan memenuhi kewajiban yang terkait dengan liabilitas keuangan. Biro Anggaran dan Keuangan mengelola risiko ini dengan memantau ketat prakiraan dan arus kas aktual, serta memastikan ketersediaan dana sebelum melakukan perikatan pengeluaran (budgeting control).',
+        risiko_operasional_tambahan: '',
+        pendapatan_nonperiode_default: 'Jelaskan sumber dan kronologi penemuan/penerimaan dana di luar periode berjalan (jika ada), serta dasar pengakuannya sebagai pendapatan tanpa pembatasan.',
+        cofinancing: 'Jelaskan di sini apabila terdapat program gabungan (joint program) dengan skema pendanaan bersama (co-financing) antara Entitas dengan pihak lain, termasuk porsi kontribusi kas yang menjadi tanggung jawab pelaporan Entitas ini.',
+        subscription: 'Entitas mengakui beban langganan/sewa/jasa pihak ketiga (jika ada), termasuk perangkat lunak akuntansi atau layanan pendukung operasional Biro Anggaran dan Keuangan lainnya.',
+        peristiwa_pengantar: 'Peristiwa setelah tanggal pelaporan adalah peristiwa, baik yang menguntungkan maupun tidak menguntungkan, yang terjadi antara akhir periode pelaporan dan tanggal laporan keuangan diotorisasi untuk terbit.'
+    };
+    return d[key] || '';
+}
+function calkTeks(key) {
+    if (_calkData.narasi && _calkData.narasi[key] !== undefined && _calkData.narasi[key] !== '') return _calkData.narasi[key];
+    return calkNarasiDefault(key);
+}
+
+/* ---------------------------------------------------------------------
+   RENDER
+--------------------------------------------------------------------- */
+function renderCalkScreen() {
+    var L = _calkLaporan || { kasList: [], totalKas: 0, asetCoa: [], kewajibanCoa: [], pendapatanTT: [], pendapatanT: [], bebanCoa: [], surplusTT: 0, surplusT: 0, totalAsetNeto: 0 };
+    var H = _calkData.header || {};
+
+    var html = '';
+
+    /* ---- Header identitas & aksi ---- */
+    html += '<div class="calk-block">' +
+        '<div class="calk-sec-title"><span class="calk-sec-num">0</span> Identitas Laporan</div>' +
+        '<div class="calk-hint">Field ini menjadi kop &amp; judul pada seluruh dokumen CALK yang diunduh.</div>' +
+        '<div class="ct-field"><label>Nama Entitas</label><input type="text" id="calkNamaEntitas" value="' + calkEsc(H.calkNamaEntitas) + '"></div>' +
+        '<div class="ct-field"><label>Alamat Sekretariat</label><input type="text" id="calkAlamat" value="' + calkEsc(H.calkAlamat) + '"></div>' +
+        '<div class="calk-row-flat">' +
+        '<div class="ct-field"><label>No. Registrasi (opsional)</label><input type="text" id="calkNoRegistrasi" value="' + calkEsc(H.calkNoRegistrasi) + '"></div>' +
+        '<div class="ct-field"><label>Label Periode</label><input type="text" id="calkPeriodeLabel" value="' + calkEsc(H.calkPeriodeLabel) + '"></div>' +
+        '</div>' +
+        '<div class="ct-field" style="margin-bottom:0;"><label>Per Tanggal (untuk judul laporan)</label><input type="text" id="calkPerTanggalLabel" value="' + calkEsc(H.calkPerTanggalLabel) + '"></div>' +
+        '</div>';
+
+    /* ---- 1. UMUM ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">1</span> Umum</div>' +
+        '<div class="calk-sub-title">1.1 Pendirian dan Informasi Umum</div>' +
+        '<textarea class="calk-narrative" data-key="umum_pendirian" rows="4">' + calkEsc(calkTeks('umum_pendirian')) + '</textarea>' +
+
+        '<div class="calk-sub-title">1.2 Susunan Kepengurusan <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<div class="calk-hint">Susunan pengurus yang bertanggung jawab atas penyusunan laporan keuangan ini.</div>' +
+        '<div class="calk-mini-table-wrap"><div class="calk-mini-head" style="grid-template-columns:1.3fr 1fr 20px;"><span>Posisi</span><span>Nama</span><span></span></div>' +
+        '<div id="calkPengurusRows">' + renderCalkPengurusRows() + '</div></div>' +
+        '<div class="ct-add-row" onclick="calkTambahPengurus()"><i class="ph ph-plus-circle"></i> Tambah Baris Pengurus</div>' +
+
+        '<div class="calk-sub-title" style="margin-top:14px;">1.3 Tanggal Otorisasi Laporan</div>' +
+        '<div class="ct-field" style="margin-bottom:0;"><label>Tanggal diotorisasi untuk terbit</label><input type="date" id="calkTglOtorisasi" value="' + calkEsc(_calkData.tanggalOtorisasi) + '"></div>' +
+        '</div>';
+
+    /* ---- 2. IKHTISAR KEBIJAKAN AKUNTANSI ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">2</span> Ikhtisar Kebijakan Akuntansi Penting</div>' +
+        calkNarasiField('2.1 Dasar Penyusunan Laporan Keuangan', 'dasar_penyusunan', 4) +
+        calkNarasiField('2.2 Transaksi dalam Mata Uang Asing', 'mata_uang', 2) +
+        calkNarasiField('2.3 Kas dan Setara Kas', 'kas_setara_kas', 3) +
+        calkNarasiField('2.4 Aset Keuangan (Dana Belum Disetor)', 'aset_keuangan', 3) +
+        calkNarasiField('2.5 Perlengkapan Habis Pakai', 'perlengkapan', 2) +
+        calkNarasiField('2.6 Persediaan Merchandise', 'persediaan', 2) +
+
+        '<div class="calk-sub-title">2.7 Aset Tetap dan Penyusutan</div>' +
+        '<div class="ct-field" style="margin-bottom:8px;"><label>Kebijakan penyusutan</label><select id="calkPilihDisusutkan">' +
+        '<option value="tidak"' + (_calkData.pilihan.asetTetapDisusutkan !== 'ya' ? ' selected' : '') + '>Tidak disusutkan (unit kerja ad-hoc / masa tugas singkat)</option>' +
+        '<option value="ya"' + (_calkData.pilihan.asetTetapDisusutkan === 'ya' ? ' selected' : '') + '>Disusutkan dengan metode garis lurus</option>' +
+        '</select></div>' +
+        '<textarea class="calk-narrative" data-key="aset_tetap_penyusutan" rows="4">' + calkEsc(calkTeks('aset_tetap_penyusutan') || 'Aset tetap diakui dan dicatat berdasarkan biaya perolehan sebesar jumlah kas yang dikeluarkan hingga aset siap digunakan. Kebijakan penyusutan mengikuti pilihan pada dropdown di atas.') + '</textarea>' +
+
+        calkNarasiField('2.8 Klasifikasi Aset Neto', 'klasifikasi_asetneto', 3) +
+        calkNarasiField('2.9 Pengakuan Pendapatan — Sumbangan/Donasi', 'pengakuan_donasi', 3) +
+        calkNarasiField('2.10 Pengakuan Pendapatan — Penjualan', 'pengakuan_penjualan', 3) +
+        calkNarasiField('2.11 Pengakuan Beban', 'pengakuan_beban', 4) +
+        calkNarasiField('2.12 Estimasi dan Pertimbangan Akuntansi Signifikan', 'estimasi', 3) +
+
+        '<div class="calk-sub-title">2.13 Kelangsungan Usaha dan Likuidasi</div>' +
+        '<div class="ct-field" style="margin-bottom:8px;"><label>Sifat Entitas</label><select id="calkPilihKelangsungan">' +
+        '<option value="adhoc"' + (_calkData.pilihan.kelangsunganUsaha !== 'permanen' ? ' selected' : '') + '>Unit kerja Ad-Hoc (akan dibubarkan/dikonsolidasikan setelah program selesai)</option>' +
+        '<option value="permanen"' + (_calkData.pilihan.kelangsunganUsaha === 'permanen' ? ' selected' : '') + '>Entitas going concern permanen</option>' +
+        '</select></div>' +
+        '<textarea class="calk-narrative" data-key="kelangsungan_usaha" rows="3">' + calkEsc(calkTeks('kelangsungan_usaha') || 'Laporan keuangan ini disusun dengan mempertimbangkan sifat Entitas sebagaimana pilihan di atas. Seluruh sisa aset neto, kewajiban (jika ada), dan aset tetap akan diserahterimakan/dikonsolidasikan ke entitas induk pada akhir masa tugas.') + '</textarea>' +
+        '</div>';
+
+    /* ---- 3. MANAJEMEN RISIKO ---- */
+    var mitigasiDefault = ['Pemisahan tugas (segregation of duties) antar pengelola keuangan, diawasi Kepala Biro.', 'Penggunaan sistem QRIS untuk transparansi penerimaan harian.', 'Kewajiban bukti transaksi (nota) untuk setiap pengeluaran material.', 'Audit internal berkala, pemantauan rekening bank, dan program cash opname rutin.'];
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">3</span> Manajemen Risiko Keuangan</div>' +
+        '<div class="calk-sub-title">3.1 Risiko Likuiditas <span class="calk-autobadge"><i class="ph ph-database"></i> Total kas otomatis</span></div>' +
+        '<textarea class="calk-narrative" data-key="risiko_likuiditas" rows="3">' + calkEsc(calkTeks('risiko_likuiditas')) + '</textarea>' +
+        '<div class="calk-hint">Posisi kas per ' + calkEsc(H.calkPerTanggalLabel) + ' menurut sistem: <strong>Rp ' + Math.round(L.totalKas).toLocaleString('id-ID') + '</strong> (nilai ini otomatis dimasukkan ke PDF).</div>' +
+        '<div class="calk-sub-title">3.2 Risiko Operasional dan Fraud</div>' +
+        '<div style="display:flex; flex-direction:column; gap:8px;">' +
+        mitigasiDefault.map(function (t, i) {
+            var key = 'm' + i;
+            var checked = _calkData.mitigasi[key] !== false; // default true
+            return '<label style="display:flex; align-items:flex-start; gap:8px; font-size:0.76rem; color:var(--text-dark);"><input type="checkbox" class="calk-mitigasi-chk" data-key="' + key + '" ' + (checked ? 'checked' : '') + ' style="margin-top:3px;"> ' + calkEsc(t) + '</label>';
+        }).join('') +
+        '</div>' +
+        '<textarea class="calk-narrative" data-key="risiko_operasional_tambahan" rows="2" placeholder="Catatan mitigasi tambahan (opsional)...">' + calkEsc(calkTeks('risiko_operasional_tambahan')) + '</textarea>' +
+        '</div>';
+
+    /* ---- 4. KAS DAN SETARA KAS ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">4</span> Kas dan Setara Kas</div>' +
+        '<div class="calk-sub-title">4.1 Rincian Saldo per Akun <span class="calk-autobadge"><i class="ph ph-database"></i> Data Sistem</span></div>' +
+        '<div class="ip-table-wrap"><div class="ip-table-head ip-cols-2"><span>Akun Kas</span><span>Saldo (Rp)</span></div>' +
+        (L.kasList.length ? L.kasList.map(function (k) { return '<div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem; color:var(--text-dark);">' + calkEsc(k.nama) + '</span><span style="font-size:0.74rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(k.saldo).toLocaleString('id-ID') + '</span></div>'; }).join('') : '<div style="padding:10px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada saldo kas.</div>') +
+        '<div class="ip-table-row ip-cols-2" style="background:var(--paper-soft);"><span style="font-size:0.76rem; font-weight:700;">Total Kas dan Setara Kas</span><span style="font-size:0.78rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(L.totalKas).toLocaleString('id-ID') + '</span></div>' +
+        '</div>' +
+
+        '<div class="calk-sub-title" style="margin-top:14px;">4.2 Daftar Rekening Bank <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<div class="calk-mini-table-wrap"><div class="calk-mini-head" style="grid-template-columns:0.9fr 1fr 1fr 1fr 20px;"><span>Bank</span><span>No. Rekening</span><span>Atas Nama</span><span>Terkait Kas</span><span></span></div>' +
+        '<div id="calkRekBankRows">' + renderCalkRekBankRows() + '</div></div>' +
+        '<div class="ct-add-row" onclick="calkTambahRekBank()"><i class="ph ph-plus-circle"></i> Tambah Rekening</div>' +
+        '</div>';
+
+    /* ---- 5. DANA BELUM DISETOR (PIUTANG) ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">5</span> Dana Belum Disetor (Piutang Pihak Berelasi) <span class="calk-autobadge"><i class="ph ph-database"></i> Data Sistem</span></div>' +
+        '<div class="calk-hint">Ditarik otomatis dari menu Utang Piutang &rarr; Piutang, yang sisa saldonya masih berjalan per hari ini.</div>' +
+        '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.3fr 1.3fr 0.9fr;"><span>Nama Pihak Berelasi</span><span>Keterangan</span><span>Jumlah (Rp)</span></div>' +
+        (upPiutangCache.length ? upPiutangCache.map(function (p) { return '<div class="ip-table-row" style="grid-template-columns:1.3fr 1.3fr 0.9fr;"><span style="font-size:0.74rem;">' + calkEsc(p.nama) + '</span><span style="font-size:0.7rem; color:var(--text-gray);">' + calkEsc(p.sub || '-') + '</span><span style="font-size:0.74rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(p.sisa).toLocaleString('id-ID') + '</span></div>'; }).join('') : '<div style="padding:10px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Tidak ada piutang berjalan.</div>') +
+        '<div class="ip-table-row" style="grid-template-columns:1.3fr 1.3fr 0.9fr; background:var(--paper-soft);"><span style="font-size:0.76rem; font-weight:700;">Total</span><span></span><span style="font-size:0.78rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(upPiutangCache.reduce(function (s, p) { return s + p.sisa; }, 0)).toLocaleString('id-ID') + '</span></div>' +
+        '</div></div>';
+
+    /* ---- 6. ASET TETAP ---- */
+    var aktifPrl = peralatanCache.filter(function (p) { return p.status === 'Aktif'; });
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">6</span> Aset Tetap <span class="calk-autobadge"><i class="ph ph-database"></i> Data Sistem</span></div>' +
+        '<div class="calk-hint">Ditarik otomatis dari menu Peralatan. Saldo Awal 0 karena mengikuti kebijakan bahwa aset milik entitas induk yang dipinjam-pakaikan tidak dicatat ulang.</div>' +
+        '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.3fr 0.7fr 0.8fr 0.8fr 0.8fr;"><span>Kategori Aset</span><span>Saldo Awal</span><span>Penambahan</span><span>Pengurangan</span><span>Saldo Akhir</span></div>' +
+        (aktifPrl.length ? aktifPrl.map(function (p) { return '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.7fr 0.8fr 0.8fr 0.8fr;"><span style="font-size:0.72rem;">' + calkEsc(p.nama) + '</span><span style="font-size:0.72rem;">0</span><span style="font-size:0.72rem;">Rp ' + Math.round(p.nilaiBuku).toLocaleString('id-ID') + '</span><span style="font-size:0.72rem;">0</span><span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(p.nilaiBuku).toLocaleString('id-ID') + '</span></div>'; }).join('') : '<div style="padding:10px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada aset tetap tercatat.</div>') +
+        '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.7fr 0.8fr 0.8fr 0.8fr; background:var(--paper-soft);"><span style="font-size:0.76rem; font-weight:700;">Total</span><span></span><span></span><span></span><span style="font-size:0.76rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(aktifPrl.reduce(function (s, p) { return s + p.nilaiBuku; }, 0)).toLocaleString('id-ID') + '</span></div>' +
+        '</div></div>';
+
+    /* ---- 7. PENDAPATAN DONASI ---- */
+    var pendapatanDonasiSistem = L.pendapatanTT.concat(L.pendapatanT).filter(function (p) { return (p.nama || '').toLowerCase().indexOf('donasi') !== -1; });
+    var totalDonasiSistem = pendapatanDonasiSistem.reduce(function (s, p) { return s + p.saldo; }, 0);
+    var totalDonasiManual = (_calkData.donasiManual || []).reduce(function (s, d) { return s + (parseRupiah(d.nominal) || 0); }, 0);
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">7</span> Pendapatan Donasi Program</div>' +
+        '<div class="calk-hint">Total menurut sistem (akun pendapatan bernama "Donasi"): <strong>Rp ' + Math.round(totalDonasiSistem).toLocaleString('id-ID') + '</strong>. Gunakan tabel di bawah untuk merinci sumber (tunai/transfer) secara manual jika sumbernya perlu dipisah.</div>' +
+        '<div class="calk-mini-table-wrap"><div class="calk-mini-head" style="grid-template-columns:1.6fr 1fr 20px;"><span>Sumber Donasi</span><span>Jumlah (Rp)</span><span></span></div>' +
+        '<div id="calkDonasiRows">' + renderCalkDonasiRows() + '</div></div>' +
+        '<div class="ct-add-row" onclick="calkTambahDonasi()"><i class="ph ph-plus-circle"></i> Tambah Sumber Donasi</div>' +
+        '<div class="ct-field" style="margin-top:10px; margin-bottom:0;"><label>Penyesuaian / Selisih Belum Direkonsiliasi (Rp, boleh negatif)</label><input type="number" id="calkDonasiVariance" value="' + (_calkData.donasiVariance || '') + '"></div>' +
+        '<div class="ct-total-box" style="margin-top:10px;"><div><span>Total Rincian Manual</span><strong>Rp ' + Math.round(totalDonasiManual).toLocaleString('id-ID') + '</strong></div><div><span>Setelah Penyesuaian</span><strong class="' + ((totalDonasiManual + (_calkData.donasiVariance || 0)) === totalDonasiSistem ? 'ok' : 'bad') + '">Rp ' + Math.round(totalDonasiManual + (_calkData.donasiVariance || 0)).toLocaleString('id-ID') + '</strong></div></div>' +
+        '</div>';
+
+    /* ---- 8. PENDAPATAN IURAN ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">8</span> Pengungkapan Pendapatan Iuran-Iuran <span class="calk-autobadge"><i class="ph ph-database"></i> Data Sistem</span></div>' +
+        '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.5fr 0.6fr 1fr;"><span>Nama Kegiatan / Konsep Iuran</span><span>Peserta</span><span>Total Target (Rp)</span></div>' +
+        (iuranData.length ? iuranData.map(function (k) { var tot = k.peserta.reduce(function (s, p) { return s + p.target; }, 0); return '<div class="ip-table-row" style="grid-template-columns:1.5fr 0.6fr 1fr;"><span style="font-size:0.74rem;">' + calkEsc(k.nama) + '</span><span style="font-size:0.74rem; text-align:center;">' + k.peserta.length + '</span><span style="font-size:0.74rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(tot).toLocaleString('id-ID') + '</span></div>'; }).join('') : '<div style="padding:10px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada konsep iuran.</div>') +
+        '<div class="ip-table-row" style="grid-template-columns:1.5fr 0.6fr 1fr; background:var(--paper-soft);"><span style="font-size:0.76rem; font-weight:700;">Total</span><span></span><span style="font-size:0.76rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(iuranData.reduce(function (s, k) { return s + k.peserta.reduce(function (ss, p) { return ss + p.target; }, 0); }, 0)).toLocaleString('id-ID') + '</span></div>' +
+        '</div></div>';
+
+    /* ---- 9. PENDAPATAN NON PERIODE ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">9</span> Pengungkapan Pendapatan Non Periode <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<textarea class="calk-narrative" id="calkPnpNarasi" rows="3" placeholder="Jelaskan sumber & kronologi dana di luar periode berjalan...">' + calkEsc((_calkData.pendapatanNonPeriode && _calkData.pendapatanNonPeriode.narasi) || '') + '</textarea>' +
+        '<div class="ct-field" style="margin-bottom:0; margin-top:6px;"><label>Nominal (Rp)</label><input type="number" id="calkPnpNominal" value="' + ((_calkData.pendapatanNonPeriode && _calkData.pendapatanNonPeriode.nominal) || '') + '"></div>' +
+        '</div>';
+
+    /* ---- 10. AKTIVITAS KOMERSIAL ---- */
+    var totalJualKom = 0, totalHppKom = 0;
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">10</span> Pengungkapan Aktivitas Komersial <span class="calk-autobadge"><i class="ph ph-database"></i> Data Sistem</span></div>' +
+        '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.2fr 0.8fr 0.8fr 0.5fr 0.8fr;"><span>Persediaan</span><span>Harga Beli</span><span>Harga Jual</span><span>Qty Jual</span><span>Margin</span></div>' +
+        (produkData.length ? produkData.map(function (p) {
+            var qty = p.pembeli.reduce(function (s, b) { return s + b.qty; }, 0);
+            var margin = qty * (p.hargaJual - p.hargaBeli);
+            totalJualKom += qty * p.hargaJual; totalHppKom += qty * p.hargaBeli;
+            return '<div class="ip-table-row" style="grid-template-columns:1.2fr 0.8fr 0.8fr 0.5fr 0.8fr;"><span style="font-size:0.7rem;">' + calkEsc(p.nama) + '</span><span style="font-size:0.7rem;">Rp ' + p.hargaBeli.toLocaleString('id-ID') + '</span><span style="font-size:0.7rem;">Rp ' + p.hargaJual.toLocaleString('id-ID') + '</span><span style="font-size:0.7rem; text-align:center;">' + qty + '</span><span style="font-size:0.7rem; font-weight:700; color:var(--maroon);">Rp ' + margin.toLocaleString('id-ID') + '</span></div>';
+        }).join('') : '<div style="padding:10px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada produk/merchandise.</div>') +
+        '</div>' +
+        '<div class="calk-hint" style="margin-top:8px;">Gross Profit Margin: <strong>' + (totalJualKom > 0 ? ((totalJualKom - totalHppKom) / totalJualKom * 100).toFixed(2) : '0.00') + '%</strong> (Rp ' + Math.round(totalJualKom - totalHppKom).toLocaleString('id-ID') + ' dari Rp ' + Math.round(totalJualKom).toLocaleString('id-ID') + ' penjualan)</div>' +
+        '</div>';
+
+    /* ---- 11. PENDAPATAN LAINNYA & DANA NON-HALAL ---- */
+    var coaPendLain = (window._coaAkunCache || []).find(function (c) { return c.nama === 'Pendapatan Lainnya'; });
+    var sistemPendLain = L.pendapatanTT.concat(L.pendapatanT).find(function (p) { return p.nama === 'Pendapatan Lainnya'; });
+    var totalPLManual = (_calkData.pendapatanLainnyaManual || []).reduce(function (s, r) { return s + (parseRupiah(r.nominal) || 0); }, 0);
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">11</span> Pengungkapan Pendapatan Lainnya dan Dana Non-Halal <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<div class="calk-hint">Saldo akun "Pendapatan Lainnya" menurut sistem: <strong>Rp ' + Math.round(sistemPendLain ? sistemPendLain.saldo : 0).toLocaleString('id-ID') + '</strong> — rinci sumbernya (mis. cash overage, bunga bank/dana non-halal, dll) di bawah ini.</div>' +
+        '<div class="calk-mini-table-wrap"><div class="calk-mini-head" style="grid-template-columns:1fr 0.8fr 1.2fr 20px;"><span>Uraian</span><span>Jumlah (Rp)</span><span>Keterangan</span><span></span></div>' +
+        '<div id="calkPLRows">' + renderCalkPLRows() + '</div></div>' +
+        '<div class="ct-add-row" onclick="calkTambahPL()"><i class="ph ph-plus-circle"></i> Tambah Rincian</div>' +
+        '<div class="ct-total-box" style="margin-top:8px;"><div><span>Total Rincian</span><strong class="' + (totalPLManual === (sistemPendLain ? sistemPendLain.saldo : 0) ? 'ok' : 'bad') + '">Rp ' + Math.round(totalPLManual).toLocaleString('id-ID') + '</strong></div></div>' +
+        '</div>';
+
+    /* ---- 12. SKEMA CO-FINANCING ---- */
+    var prokerOpts = '<option value="">— Tidak terkait proker tertentu —</option>' + Object.keys(prokerData).map(function (id) { return '<option value="' + id + '"' + (String(_calkData.cofinancingProkerId) === String(id) ? ' selected' : '') + '>' + calkEsc(prokerData[id].nama) + '</option>'; }).join('');
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">12</span> Pengungkapan Skema Co-Financing / Program Khusus <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<div class="ct-field"><label>Kaitkan dengan Program Kerja (opsional)</label><select id="calkCofinancingProker">' + prokerOpts + '</select></div>' +
+        '<textarea class="calk-narrative" data-key="cofinancing" rows="4">' + calkEsc(calkTeks('cofinancing')) + '</textarea>' +
+        '</div>';
+
+    /* ---- 13. BIAYA LANGGANAN, SEWA, DAN JASA ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">13</span> Pengungkapan Biaya Langganan, Sewa, dan Jasa <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<textarea class="calk-narrative" data-key="subscription" rows="3">' + calkEsc(calkTeks('subscription')) + '</textarea>' +
+        '<div class="ct-field" style="margin-bottom:0; margin-top:6px;"><label>Nominal (Rp)</label><input type="number" id="calkSubscriptionNominal" value="' + (_calkData.subscriptionNominal || '') + '"></div>' +
+        '</div>';
+
+    /* ---- 14. BEBAN LAIN-LAIN ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">14</span> Pengungkapan Beban Lain-lain</div>' +
+        '<div class="calk-sub-title">14.1 Seluruh Beban Menurut Sistem <span class="calk-autobadge"><i class="ph ph-database"></i> Data Sistem</span></div>' +
+        '<div class="ip-table-wrap"><div class="ip-table-head ip-cols-2"><span>Akun Beban</span><span>Jumlah (Rp)</span></div>' +
+        (L.bebanCoa.length ? L.bebanCoa.map(function (b) { return '<div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem;">' + calkEsc(b.nama) + '</span><span style="font-size:0.74rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(b.saldo).toLocaleString('id-ID') + '</span></div>'; }).join('') : '<div style="padding:10px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada beban tercatat.</div>') +
+        '<div class="ip-table-row ip-cols-2" style="background:var(--paper-soft);"><span style="font-size:0.76rem; font-weight:700;">Total Beban</span><span style="font-size:0.76rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(L.totalBeban).toLocaleString('id-ID') + '</span></div>' +
+        '</div>' +
+        '<div class="calk-sub-title" style="margin-top:14px;">14.2 Rincian &amp; Penjelasan Item Material <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<div class="calk-hint">Gunakan untuk menjelaskan item beban tak berulang (non-recurring) seperti piutang tak tertagih, biaya pembatalan vendor, kerugian kerusakan barang, dll.</div>' +
+        '<div class="calk-mini-table-wrap"><div class="calk-mini-head" style="grid-template-columns:1fr 0.8fr 1.2fr 20px;"><span>Uraian</span><span>Jumlah (Rp)</span><span>Keterangan</span><span></span></div>' +
+        '<div id="calkBebanManualRows">' + renderCalkBebanManualRows() + '</div></div>' +
+        '<div class="ct-add-row" onclick="calkTambahBebanManual()"><i class="ph ph-plus-circle"></i> Tambah Rincian</div>' +
+        '</div>';
+
+    /* ---- 15. ASET NETO ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">15</span> Aset Neto <span class="calk-autobadge"><i class="ph ph-database"></i> Data Sistem</span></div>' +
+        '<div class="calk-hint">Dihitung otomatis oleh sistem, termasuk reklasifikasi dana terikat yang telah dibelanjakan (lihat Laporan Perubahan Aset Neto di tab Laporan).</div>' +
+        '<div class="ip-table-wrap"><div class="ip-table-head ip-cols-2"><span>Uraian</span><span>Jumlah (Rp)</span></div>' +
+        '<div class="ip-table-row ip-cols-2"><span style="font-size:0.76rem; font-weight:600;">Aset Neto Dengan Pembatasan (Terikat)</span><span style="font-size:0.76rem; font-weight:700;">Rp ' + Math.round(L.surplusT).toLocaleString('id-ID') + '</span></div>' +
+        '<div class="ip-table-row ip-cols-2"><span style="font-size:0.76rem; font-weight:600;">Aset Neto Tanpa Pembatasan (Bebas)</span><span style="font-size:0.76rem; font-weight:700;">Rp ' + Math.round(L.surplusTT).toLocaleString('id-ID') + '</span></div>' +
+        '<div class="ip-table-row ip-cols-2" style="background:var(--paper-soft);"><span style="font-size:0.78rem; font-weight:700;">Total Aset Neto</span><span style="font-size:0.8rem; font-weight:700; color:var(--maroon);">Rp ' + Math.round(L.totalAsetNeto).toLocaleString('id-ID') + '</span></div>' +
+        '</div></div>';
+
+    /* ---- 16. PERISTIWA SETELAH TANGGAL PELAPORAN ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">16</span> Peristiwa Setelah Tanggal Pelaporan <span class="calk-manualbadge"><i class="ph ph-pencil-simple"></i> Isi Manual</span></div>' +
+        '<textarea class="calk-narrative" data-key="peristiwa_pengantar" rows="2">' + calkEsc(calkTeks('peristiwa_pengantar')) + '</textarea>' +
+        '<div id="calkPeristiwaRows" style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">' + renderCalkPeristiwaRows() + '</div>' +
+        '<div class="ct-add-row" onclick="calkTambahPeristiwa()"><i class="ph ph-plus-circle"></i> Tambah Peristiwa</div>' +
+        '</div>';
+
+    /* ---- 17. PENGESAHAN ---- */
+    html += '<div class="calk-block"><div class="calk-sec-title"><span class="calk-sec-num">17</span> Pengesahan</div>' +
+        '<div class="calk-row-flat">' +
+        '<div class="ct-field"><label>Nama Penandatangan</label><input type="text" id="calkNamaKetuaTtd" value="' + calkEsc(_calkData.namaKetuaTtd) + '"></div>' +
+        '<div class="ct-field"><label>Jabatan</label><input type="text" id="calkJabatanTtd" value="' + calkEsc(_calkData.jabatanTtd || 'Ketua Umum') + '"></div>' +
+        '</div></div>';
+
+    /* ---- Aksi bawah ---- */
+    html += '<button class="co-btn-secondary" onclick="simpanCalkData()"><i class="ph ph-floppy-disk"></i> Simpan Draf CALK</button>' +
+        '<button class="ct-submit-btn" onclick="unduhCalkPdf()"><i class="ph ph-file-pdf"></i> Simpan &amp; Unduh CALK (PDF)</button>';
+
+    document.getElementById('calkBody').innerHTML = html;
+}
+
+function calkNarasiField(judul, key, rows) {
+    return '<div class="calk-sub-title">' + calkEsc(judul) + '</div>' +
+        '<textarea class="calk-narrative" data-key="' + key + '" rows="' + rows + '">' + calkEsc(calkTeks(key)) + '</textarea>';
+}
+
+/* --- mini-table row renderers --- */
+function renderCalkPengurusRows() {
+    return (_calkData.kepengurusan || []).map(function (r, i) {
+        return '<div class="calk-mini-row calk-pengurus-row" style="grid-template-columns:1.3fr 1fr 20px;">' +
+            '<input type="text" data-f="posisi" value="' + calkEsc(r.posisi) + '" placeholder="Posisi...">' +
+            '<input type="text" data-f="nama" value="' + calkEsc(r.nama) + '" placeholder="Nama...">' +
+            '<i class="ph ph-x-circle ct-row-del" onclick="calkHapusPengurus(' + i + ')"></i></div>';
+    }).join('');
+}
+function renderCalkRekBankRows() {
+    return (_calkData.rekeningBank || []).map(function (r, i) {
+        return '<div class="calk-mini-row calk-rekbank-row" style="grid-template-columns:0.9fr 1fr 1fr 1fr 20px;">' +
+            '<input type="text" data-f="bank" value="' + calkEsc(r.bank) + '" placeholder="Nama bank...">' +
+            '<input type="text" data-f="norek" value="' + calkEsc(r.norek) + '" placeholder="No. rekening...">' +
+            '<input type="text" data-f="atasnama" value="' + calkEsc(r.atasnama) + '" placeholder="Atas nama...">' +
+            '<input type="text" data-f="kas" value="' + calkEsc(r.kas) + '" placeholder="Kas terkait...">' +
+            '<i class="ph ph-x-circle ct-row-del" onclick="calkHapusRekBank(' + i + ')"></i></div>';
+    }).join('');
+}
+function renderCalkDonasiRows() {
+    return (_calkData.donasiManual || []).map(function (r, i) {
+        return '<div class="calk-mini-row calk-donasi-row" style="grid-template-columns:1.6fr 1fr 20px;">' +
+            '<input type="text" data-f="sumber" value="' + calkEsc(r.sumber) + '" placeholder="Contoh: Donasi Tunai Masyarakat">' +
+            '<input type="number" data-f="nominal" value="' + calkEsc(r.nominal) + '" placeholder="0">' +
+            '<i class="ph ph-x-circle ct-row-del" onclick="calkHapusDonasi(' + i + ')"></i></div>';
+    }).join('');
+}
+function renderCalkPLRows() {
+    return (_calkData.pendapatanLainnyaManual || []).map(function (r, i) {
+        return '<div class="calk-mini-row calk-pl-row" style="grid-template-columns:1fr 0.8fr 1.2fr 20px;">' +
+            '<input type="text" data-f="uraian" value="' + calkEsc(r.uraian) + '" placeholder="Uraian...">' +
+            '<input type="number" data-f="nominal" value="' + calkEsc(r.nominal) + '" placeholder="0">' +
+            '<input type="text" data-f="keterangan" value="' + calkEsc(r.keterangan) + '" placeholder="Keterangan...">' +
+            '<i class="ph ph-x-circle ct-row-del" onclick="calkHapusPL(' + i + ')"></i></div>';
+    }).join('');
+}
+function renderCalkBebanManualRows() {
+    return (_calkData.bebanManual || []).map(function (r, i) {
+        return '<div class="calk-mini-row calk-bebanmanual-row" style="grid-template-columns:1fr 0.8fr 1.2fr 20px;">' +
+            '<input type="text" data-f="uraian" value="' + calkEsc(r.uraian) + '" placeholder="Uraian...">' +
+            '<input type="number" data-f="nominal" value="' + calkEsc(r.nominal) + '" placeholder="0">' +
+            '<input type="text" data-f="keterangan" value="' + calkEsc(r.keterangan) + '" placeholder="Keterangan...">' +
+            '<i class="ph ph-x-circle ct-row-del" onclick="calkHapusBebanManual(' + i + ')"></i></div>';
+    }).join('');
+}
+function renderCalkPeristiwaRows() {
+    return (_calkData.peristiwa || []).map(function (r, i) {
+        return '<div class="calk-block calk-peristiwa-row" style="padding:10px 12px; position:relative;">' +
+            '<i class="ph ph-x-circle ct-row-del" style="position:absolute; top:10px; right:10px;" onclick="calkHapusPeristiwa(' + i + ')"></i>' +
+            '<div class="ct-field"><label>Judul Peristiwa</label><input type="text" data-f="judul" value="' + calkEsc(r.judul) + '"></div>' +
+            '<div class="ct-field"><label>Deskripsi</label><textarea class="calk-narrative" data-f="deskripsi" rows="2" style="min-height:60px;">' + calkEsc(r.deskripsi) + '</textarea></div>' +
+            '<div class="ct-field" style="margin-bottom:0;"><label>Dampak Keuangan</label><textarea class="calk-narrative" data-f="dampak" rows="2" style="min-height:50px;">' + calkEsc(r.dampak) + '</textarea></div>' +
+            '</div>';
+    }).join('') || '<div style="padding:8px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada peristiwa yang diungkapkan.</div>';
+}
+
+/* ---------------------------------------------------------------------
+   DOWNLOAD PDF LENGKAP
+--------------------------------------------------------------------- */
+async function unduhCalkPdf() {
+    var ok = await simpanCalkData(true);
+    if (!ok) { if (!confirm('Gagal menyimpan draf ke server (cek koneksi/tabel calk_data). Tetap unduh PDF dari data saat ini?')) return; }
+    await buildCalkLengkapPdf();
+}
+
+async function buildCalkLengkapPdf() {
+    var L = _calkLaporan || await hitungLaporanKeuangan();
+    var H = _calkData.header || {};
+    var doc = pdfBaru();
+    var w = doc.internal.pageSize.getWidth();
+    var margin = 34;
+
+    function tulisParagraf(y, teks) {
+        doc.setFont('times', 'normal'); doc.setFontSize(10.5); doc.setTextColor(0, 0, 0);
+        var lebar = w - margin * 2;
+        var lines = doc.splitTextToSize(teks || '-', lebar);
+        doc.text(lines, margin, y, { align: 'justify', maxWidth: lebar });
+        return y + lines.length * 14 + 10;
+    }
+    function pastikanRuang(y, minSisa) {
+        if (y > doc.internal.pageSize.getHeight() - (minSisa || 90)) { doc.addPage(); return 50; }
+        return y;
+    }
+
+    var y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', (H.calkNamaEntitas || '-') + ' \u00b7 Untuk Periode yang Berakhir Pada ' + (H.calkPerTanggalLabel || tanggalLaporanHariIni()));
+
+    /* 1. UMUM */
+    y = pdfSeksi(doc, y, '1. UMUM');
+    y = pdfSeksi(doc, y, '1.1 Pendirian dan Informasi Umum'); y = tulisParagraf(y, calkTeks('umum_pendirian'));
+    y = pastikanRuang(y, 140);
+    y = pdfSeksi(doc, y, '1.2 Susunan Kepengurusan');
+    var pengurusBody = (_calkData.kepengurusan || []).filter(function (r) { return r.posisi || r.nama; }).map(function (r) { return [r.posisi, r.nama || '-']; });
+    y = pdfTabel(doc, y + 4, ['Posisi', 'Nama'], pengurusBody.length ? pengurusBody : [['-', '-']]) + 10;
+    y = pastikanRuang(y, 90);
+    y = pdfSeksi(doc, y, '1.3 Tanggal Otorisasi Laporan');
+    y = tulisParagraf(y, 'Laporan keuangan ini telah diotorisasi untuk terbit oleh Biro Anggaran dan Keuangan pada tanggal ' + (_calkData.tanggalOtorisasi ? formatTanggalID(_calkData.tanggalOtorisasi) : '-') + '.');
+
+    /* 2. KEBIJAKAN AKUNTANSI */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '2. IKHTISAR KEBIJAKAN AKUNTANSI PENTING');
+    var kebijakan = [
+        ['2.1 Dasar Penyusunan Laporan Keuangan', calkTeks('dasar_penyusunan')],
+        ['2.2 Transaksi dalam Mata Uang Asing', calkTeks('mata_uang')],
+        ['2.3 Kas dan Setara Kas', calkTeks('kas_setara_kas')],
+        ['2.4 Aset Keuangan (Dana Belum Disetor)', calkTeks('aset_keuangan')],
+        ['2.5 Perlengkapan Habis Pakai', calkTeks('perlengkapan')],
+        ['2.6 Persediaan Merchandise', calkTeks('persediaan')],
+        ['2.7 Aset Tetap dan Penyusutan', calkTeks('aset_tetap_penyusutan') || ''],
+        ['2.8 Klasifikasi Aset Neto', calkTeks('klasifikasi_asetneto')],
+        ['2.9 Pengakuan Pendapatan \u2014 Sumbangan/Donasi', calkTeks('pengakuan_donasi')],
+        ['2.10 Pengakuan Pendapatan \u2014 Penjualan', calkTeks('pengakuan_penjualan')],
+        ['2.11 Pengakuan Beban', calkTeks('pengakuan_beban')],
+        ['2.12 Estimasi dan Pertimbangan Akuntansi Signifikan', calkTeks('estimasi')],
+        ['2.13 Kelangsungan Usaha dan Likuidasi', calkTeks('kelangsungan_usaha') || '']
+    ];
+    kebijakan.forEach(function (k) {
+        y = pastikanRuang(y, 110);
+        y = pdfSeksi(doc, y, k[0]);
+        y = tulisParagraf(y, k[1]);
+    });
+
+    /* 3. MANAJEMEN RISIKO */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '3. MANAJEMEN RISIKO KEUANGAN');
+    y = pdfSeksi(doc, y, '3.1 Risiko Likuiditas');
+    y = tulisParagraf(y, calkTeks('risiko_likuiditas') + ' Posisi kas per ' + (H.calkPerTanggalLabel || tanggalLaporanHariIni()) + ' sebesar Rp' + Math.round(L.totalKas).toLocaleString('id-ID') + ' menunjukkan kondisi likuiditas Entitas.');
+    y = pastikanRuang(y, 140);
+    y = pdfSeksi(doc, y, '3.2 Risiko Operasional dan Fraud');
+    doc.setFont('times', 'normal'); doc.setFontSize(10.5); doc.setTextColor(0, 0, 0);
+    var mitigasiTeks = ['Pemisahan tugas (segregation of duties) antar pengelola keuangan, diawasi Kepala Biro.', 'Penggunaan sistem QRIS untuk transparansi penerimaan harian.', 'Kewajiban bukti transaksi (nota) untuk setiap pengeluaran material.', 'Audit internal berkala, pemantauan rekening bank, dan program cash opname rutin.'];
+    mitigasiTeks.forEach(function (t, i) {
+        if (_calkData.mitigasi['m' + i] === false) return;
+        var lines = doc.splitTextToSize('\u2022 ' + t, w - margin * 2 - 10);
+        doc.text(lines, margin + 10, y); y += lines.length * 14 + 4;
+    });
+    if (calkTeks('risiko_operasional_tambahan')) y = tulisParagraf(y + 4, calkTeks('risiko_operasional_tambahan'));
+
+    /* 4. KAS DAN SETARA KAS */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '4. KAS DAN SETARA KAS');
+    var rekBody = (_calkData.rekeningBank || []).filter(function (r) { return r.bank || r.norek; }).map(function (r) { return [r.bank, r.norek, r.atasnama, r.kas]; });
+    if (rekBody.length) { y = pdfTabel(doc, y + 4, ['Bank', 'No. Rekening', 'Atas Nama', 'Kas Terkait'], rekBody) + 10; }
+    var kasBody = L.kasList.map(function (k) { return [k.nama, fmtRp(k.saldo)]; });
+    y = pdfTabel(doc, y + 4, ['Akun Kas', 'Saldo (Rp)'], kasBody.length ? kasBody : [['Nihil', '-']], { columnStyles: { 1: { halign: 'right' } } }) + 4;
+    doc.setFont('times', 'bold'); doc.setFontSize(10);
+    doc.text('Total Kas dan Setara Kas: ' + fmtRp(L.totalKas), 34, y + 10);
+
+    /* 5. DANA BELUM DISETOR */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '5. DANA BELUM DISETOR (PIUTANG PIHAK BERELASI)');
+    var piutangBody = upPiutangCache.map(function (p) { return [p.nama, p.sub || '-', fmtRp(p.sisa)]; });
+    y = pdfTabel(doc, y + 4, ['Nama Pihak Berelasi', 'Keterangan', 'Jumlah (Rp)'], piutangBody.length ? piutangBody : [['Tidak ada', '-', '-']], { columnStyles: { 2: { halign: 'right' } } });
+
+    /* 6. ASET TETAP */
+    y = pastikanRuang(y + 20, 140);
+    y = pdfSeksi(doc, y, '6. ASET TETAP');
+    var prlBody = peralatanCache.filter(function (p) { return p.status === 'Aktif'; }).map(function (p) { return [p.nama, fmtRp(0), fmtRp(p.nilaiBuku), fmtRp(0), fmtRp(p.nilaiBuku)]; });
+    y = pdfTabel(doc, y + 4, ['Kategori Aset', 'Saldo Awal', 'Penambahan', 'Pengurangan', 'Saldo Akhir'], prlBody.length ? prlBody : [['Nihil', '-', '-', '-', '-']], { columnStyles: { 1: { halign: 'right' }, 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' } } });
+
+    /* 7. PENDAPATAN DONASI */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '7. PENDAPATAN DONASI PROGRAM');
+    var donasiBody = (_calkData.donasiManual || []).filter(function (r) { return r.sumber; }).map(function (r) { return [r.sumber, fmtRp(parseRupiah(r.nominal))]; });
+    var totalDonasiManual2 = (_calkData.donasiManual || []).reduce(function (s, r) { return s + (parseRupiah(r.nominal) || 0); }, 0);
+    donasiBody.push(['Total Pendapatan Donasi Menurut Catatan', fmtRp(totalDonasiManual2)]);
+    donasiBody.push(['Penyesuaian (Unrecorded Variance)', fmtRp(_calkData.donasiVariance || 0)]);
+    donasiBody.push(['Total Pendapatan Donasi Menurut Kas', fmtRp(totalDonasiManual2 + (_calkData.donasiVariance || 0))]);
+    y = pdfTabel(doc, y + 4, ['Sumber Donasi', 'Jumlah (Rp)'], donasiBody, { columnStyles: { 1: { halign: 'right' } } });
+
+    /* 8. IURAN */
+    y = pastikanRuang(y + 20, 140);
+    y = pdfSeksi(doc, y, '8. PENGUNGKAPAN PENDAPATAN IURAN-IURAN');
+    var iuranBody = iuranData.map(function (k) { var tot = k.peserta.reduce(function (s, p) { return s + p.target; }, 0); return [k.nama, String(k.peserta.length), fmtRp(tot)]; });
+    y = pdfTabel(doc, y + 4, ['Nama Kegiatan', 'Jumlah Peserta', 'Total (Rp)'], iuranBody.length ? iuranBody : [['Nihil', '-', '-']], { columnStyles: { 2: { halign: 'right' } } });
+
+    /* 9. PENDAPATAN NON PERIODE */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '9. PENGUNGKAPAN PENDAPATAN NON PERIODE');
+    y = tulisParagraf(y, ((_calkData.pendapatanNonPeriode && _calkData.pendapatanNonPeriode.narasi) || '-') + (_calkData.pendapatanNonPeriode && _calkData.pendapatanNonPeriode.nominal ? (' Nominal yang diakui sebesar Rp' + Math.round(_calkData.pendapatanNonPeriode.nominal).toLocaleString('id-ID') + '.') : ''));
+
+    /* 10. AKTIVITAS KOMERSIAL */
+    y = pastikanRuang(y, 140);
+    y = pdfSeksi(doc, y, '10. PENGUNGKAPAN AKTIVITAS KOMERSIAL');
+    var totJ = 0, totH = 0;
+    var komBody = produkData.map(function (p) {
+        var qty = p.pembeli.reduce(function (s, b) { return s + b.qty; }, 0);
+        totJ += qty * p.hargaJual; totH += qty * p.hargaBeli;
+        return [p.nama, fmtRp(p.hargaBeli), fmtRp(p.hargaJual), String(qty), fmtRp(qty * (p.hargaJual - p.hargaBeli))];
+    });
+    y = pdfTabel(doc, y + 4, ['Persediaan', 'Harga Beli', 'Harga Jual', 'Qty', 'Margin'], komBody.length ? komBody : [['Nihil', '-', '-', '-', '-']], { columnStyles: { 1: { halign: 'right' }, 2: { halign: 'right' }, 4: { halign: 'right' } } }) + 4;
+    doc.setFont('times', 'bold'); doc.setFontSize(9);
+    doc.text('Gross Profit Margin: ' + (totJ > 0 ? ((totJ - totH) / totJ * 100).toFixed(2) : '0.00') + '%', 34, y + 10);
+
+    /* 11. PENDAPATAN LAINNYA */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '11. PENGUNGKAPAN PENDAPATAN LAINNYA DAN DANA NON-HALAL');
+    var plBody = (_calkData.pendapatanLainnyaManual || []).filter(function (r) { return r.uraian; }).map(function (r) { return [r.uraian, fmtRp(parseRupiah(r.nominal)), r.keterangan || '-']; });
+    y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)', 'Keterangan'], plBody.length ? plBody : [['Nihil', '-', '-']], { columnStyles: { 1: { halign: 'right' } } });
+
+    /* 12. CO-FINANCING */
+    y = pastikanRuang(y + 20, 130);
+    var namaProkerCf = _calkData.cofinancingProkerId && prokerData[_calkData.cofinancingProkerId] ? prokerData[_calkData.cofinancingProkerId].nama : null;
+    y = pdfSeksi(doc, y, '12. PENGUNGKAPAN SKEMA CO-FINANCING / PROGRAM KHUSUS');
+    y = tulisParagraf(y, calkTeks('cofinancing') + (namaProkerCf ? (' Program terkait: ' + namaProkerCf + '.') : ''));
+
+    /* 13. LANGGANAN */
+    y = pastikanRuang(y, 130);
+    y = pdfSeksi(doc, y, '13. PENGUNGKAPAN BIAYA LANGGANAN, SEWA, DAN JASA');
+    y = tulisParagraf(y, calkTeks('subscription') + (_calkData.subscriptionNominal ? (' Total beban yang diakui sebesar Rp' + Math.round(_calkData.subscriptionNominal).toLocaleString('id-ID') + '.') : ''));
+
+    /* 14. BEBAN LAIN-LAIN */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '14. PENGUNGKAPAN BEBAN LAIN-LAIN');
+    var bebanBody = L.bebanCoa.map(function (b) { return [b.nama, fmtRp(b.saldo)]; });
+    y = pdfTabel(doc, y + 4, ['Akun Beban', 'Jumlah (Rp)'], bebanBody.length ? bebanBody : [['Nihil', '-']], { columnStyles: { 1: { halign: 'right' } } }) + 10;
+    var bebanManualBody = (_calkData.bebanManual || []).filter(function (r) { return r.uraian; }).map(function (r) { return [r.uraian, fmtRp(parseRupiah(r.nominal)), r.keterangan || '-']; });
+    if (bebanManualBody.length) {
+        y = pastikanRuang(y, 120);
+        y = pdfSeksi(doc, y, 'Rincian & Penjelasan Item Material');
+        y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)', 'Keterangan'], bebanManualBody, { columnStyles: { 1: { halign: 'right' } } });
+    }
+
+    /* 15. ASET NETO */
+    y = pastikanRuang(y + 20, 130);
+    y = pdfSeksi(doc, y, '15. ASET NETO');
+    y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], [
+        ['Aset Neto Dengan Pembatasan (Terikat)', fmtRp(L.surplusT)],
+        ['Aset Neto Tanpa Pembatasan (Bebas)', fmtRp(L.surplusTT)],
+        ['Total Aset Neto', fmtRp(L.totalAsetNeto)]
+    ], { columnStyles: { 1: { halign: 'right' } } });
+
+    /* 16. PERISTIWA */
+    doc.addPage(); y = pdfKop(doc, 'CATATAN ATAS LAPORAN KEUANGAN', 'Lanjutan \u00b7 ' + (H.calkNamaEntitas || '-'));
+    y = pdfSeksi(doc, y, '16. PERISTIWA SETELAH TANGGAL PELAPORAN');
+    y = tulisParagraf(y, calkTeks('peristiwa_pengantar'));
+    (_calkData.peristiwa || []).forEach(function (p, idx) {
+        if (!p.judul) return;
+        y = pastikanRuang(y, 130);
+        y = pdfSeksi(doc, y, String.fromCharCode(97 + idx) + '. ' + p.judul);
+        y = tulisParagraf(y, p.deskripsi || '-');
+        doc.setFont('times', 'bold'); doc.setFontSize(9.5);
+        doc.text('Dampak Keuangan:', 34, y); y += 14;
+        y = tulisParagraf(y, p.dampak || 'Tidak ada dampak keuangan langsung.');
+    });
+
+    /* 17. PENGESAHAN */
+    y = pastikanRuang(y, 140);
+    y = pdfSeksi(doc, y, '17. PENGESAHAN');
+    y += 40;
+    doc.setFont('times', 'normal'); doc.setFontSize(10.5);
+    doc.text((H.calkAlamat && H.calkAlamat.split(',').pop().trim()) ? '' : '', margin, y);
+    doc.text('Mengetahui,', w - 200, y); y += 60;
+    doc.line(w - 200, y, w - 60, y);
+    doc.setFont('times', 'bold');
+    doc.text(_calkData.namaKetuaTtd || '(...........................)', w - 200, y + 14);
+    doc.setFont('times', 'normal'); doc.setFontSize(9);
+    doc.text(_calkData.jabatanTtd || 'Ketua Umum', w - 200, y + 28);
+
+    pdfTutup(doc, 'CALK-Lengkap-' + Date.now() + '.pdf');
+}
+</script>
 </body>
 </html>
