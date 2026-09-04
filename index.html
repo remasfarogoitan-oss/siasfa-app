@@ -965,7 +965,32 @@
         .siasfa-select-option:active { background: var(--paper-soft); }
         .siasfa-select-option.selected { color: var(--maroon); font-weight: 700; background: rgba(184,19,55,0.06); }
         .siasfa-select-option-empty { padding: 20px; text-align: center; color: var(--text-gray); font-size: 0.78rem; display: none; }
-
+        .siasfa-select-filter-wrap {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+}
+.siasfa-select-filter-chip {
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: var(--paper-soft);
+    color: var(--text-gray);
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+.siasfa-select-filter-chip.active {
+    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+    color: #FFFFFF;
+}
+.siasfa-select-display.siasfa-select-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
         .ct-row-del { color: var(--maroon); font-size: 1.1rem; cursor: pointer; justify-self: center; }
 
         .ct-add-row {
@@ -6623,12 +6648,13 @@ async function updateJurnal(jurnalId, jenis) {
         const { data, error } = await supabaseClient
             .from('jurnal_transaksi')
             .select(`
-                id,
-                tanggal,
-                keterangan,
-                jurnal_detail(debit, kredit, akun_kas_id, coa_akun_id),
-                jurnal_nota(id)
-            `)
+    id,
+    tanggal,
+    keterangan,
+    bendahara,
+    jurnal_detail(debit, kredit, akun_kas_id, coa_akun_id),
+    jurnal_nota(id)
+`)
             .order('tanggal', { ascending: false });
 
         if (error) {
@@ -6653,12 +6679,13 @@ async function updateJurnal(jurnalId, jenis) {
                 var nominal = Math.max(totalDebit, totalKredit);
 
                 return {
-                    id: trx.id,
-                    tanggal: trx.tanggal,
-                    ket: trx.keterangan || 'Tanpa keterangan',
-                    nominal: nominal,
-                    jumlahNota: 0
-                };
+    id: trx.id,
+    tanggal: trx.tanggal,
+    ket: trx.keterangan || 'Tanpa keterangan',
+    nominal: nominal,
+    petugas: trx.bendahara || 'Tidak diketahui',
+    jumlahNota: 0
+};
             });
 
         renderUnItemList();
@@ -6669,20 +6696,14 @@ async function updateJurnal(jurnalId, jenis) {
 }
 
         function optTransaksiTanpaNota() {
-    var opts =
-        '<option value="">— Pilih Transaksi —</option>';
-
+    var opts = '<option value="">— Pilih Transaksi —</option>';
     unTransaksiTanpaNota.forEach(function (t) {
-
-        opts +=
-            '<option value="' + t.id + '">' +
-                '[' + formatTanggalID(t.tanggal) + '] ' +
-                t.ket +
-                ' - Rp ' +
-                t.nominal.toLocaleString('id-ID') +
+        opts += '<option value="' + t.id + '" data-petugas="' + String(t.petugas).replace(/"/g, '&quot;') + '">' +
+            '[' + formatTanggalID(t.tanggal) + '] ' + t.ket +
+            ' - Rp ' + t.nominal.toLocaleString('id-ID') +
+            ' \u00b7 ' + t.petugas +
             '</option>';
     });
-
     return opts;
 }
 
@@ -12830,31 +12851,25 @@ function tutupPeriksaJurnal() {
 </script>
 
 <script>
+
+<script>
 /* =========================================================================
-   SIASFA — CUSTOM DROPDOWN AKUN (pengganti <select> native)
-   Berlaku untuk semua <select class="ct-akun-select">.
-   <select> asli tetap ada (disembunyikan) supaya semua kode lama
-   (.value, onchange, tandaiAkunTerisi, dll) tidak perlu diubah.
+   SIASFA — CUSTOM DROPDOWN UNIVERSAL (pengganti SEMUA <select> native)
    ========================================================================= */
 (function () {
     var activePanel = null;
 
-    function escapeHtml(s) {
-        return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-    function escapeAttr(s) {
-        return String(s || '').replace(/"/g, '&quot;');
-    }
-
+    function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function escapeAttr(s) { return String(s == null ? '' : s).replace(/"/g, '&quot;'); }
     function isPlaceholder(selectEl) { return !selectEl.value; }
-
     function buildDisplayText(selectEl) {
         var opt = selectEl.options[selectEl.selectedIndex];
-        return opt ? opt.textContent : 'Pilih Akun';
+        return opt ? opt.textContent : 'Pilih';
     }
 
     function updateDisplayBox(selectEl) {
-        if (!selectEl.dataset.siasfaEnhanced) enhanceSelect(selectEl);
+        if (!selectEl || selectEl.tagName !== 'SELECT') return;
+        if (!selectEl.dataset.siasfaEnhanced) { enhanceSelect(selectEl); return; }
         var wrap = selectEl.closest('.siasfa-select-wrap');
         if (!wrap) return;
         var display = wrap.querySelector('.siasfa-select-display');
@@ -12864,7 +12879,45 @@ function tutupPeriksaJurnal() {
         textEl.textContent = buildDisplayText(selectEl);
         display.classList.toggle('siasfa-select-placeholder', placeholder);
         display.classList.toggle('siasfa-select-filled', !placeholder);
+        display.classList.toggle('siasfa-select-disabled', !!selectEl.disabled);
     }
+
+    function filterModeUntuk(selectEl) {
+        if (selectEl.classList.contains('ct-akun-select')) return 'akun';
+        if (selectEl.classList.contains('un-trx-select')) return 'petugas';
+        return 'none';
+    }
+
+    function noAkunDariOption(optEl) {
+        var val = optEl.value || '';
+        var parts = val.split(':');
+        if (parts[0] === 'kas') {
+            var k = (window._akunKasCache || []).find(function (x) { return String(x.id) === parts[1]; });
+            return k ? k.no_akun : '';
+        }
+        if (parts[0] === 'coa') {
+            var c = (window._coaAkunCache || []).find(function (x) { return String(x.id) === parts[1]; });
+            return c ? c.no_akun : '';
+        }
+        var m = String(optEl.textContent || val).match(/^([0-9]+-[0-9A-Za-z]+)/);
+        return m ? m[1] : '';
+    }
+    function kategoriDariNoAkun(noAkun) {
+        noAkun = String(noAkun || '');
+        if (noAkun.indexOf('1-') === 0) return 'harta';
+        if (noAkun.indexOf('2-') === 0) return 'utang';
+        if (noAkun.indexOf('3-') === 0) return 'asetneto';
+        if (noAkun.indexOf('4-') === 0) return 'pendapatan';
+        if (noAkun.indexOf('5-') === 0) return 'beban';
+        return 'asetneto';
+    }
+    function kategoriOption(optEl) {
+        if (!optEl.value) return null;
+        return kategoriDariNoAkun(noAkunDariOption(optEl));
+    }
+
+    var KATEGORI_URUTAN = ['semua', 'harta', 'utang', 'asetneto', 'pendapatan', 'beban'];
+    var KATEGORI_LABEL = { semua: 'Semua', harta: 'Harta', utang: 'Utang', asetneto: 'Aset Neto', pendapatan: 'Pendapatan', beban: 'Beban' };
 
     function closePanel() {
         if (activePanel) { activePanel.remove(); activePanel = null; }
@@ -12873,28 +12926,52 @@ function tutupPeriksaJurnal() {
     function handleEscape(e) { if (e.key === 'Escape') closePanel(); }
 
     function openPanel(selectEl) {
+        if (selectEl.disabled) return;
         closePanel();
 
+        var mode = filterModeUntuk(selectEl);
         var options = Array.prototype.slice.call(selectEl.options);
+
+        var filterChipsHtml = '';
+        if (mode === 'akun') {
+            filterChipsHtml = '<div class="siasfa-select-filter-wrap">' + KATEGORI_URUTAN.map(function (k) {
+                return '<div class="siasfa-select-filter-chip' + (k === 'semua' ? ' active' : '') + '" data-kategori="' + k + '">' + KATEGORI_LABEL[k] + '</div>';
+            }).join('') + '</div>';
+        } else if (mode === 'petugas') {
+            var namaSet = {};
+            options.forEach(function (o) { var p = o.getAttribute('data-petugas'); if (p) namaSet[p] = true; });
+            var namaList = Object.keys(namaSet).sort();
+            filterChipsHtml = '<div class="siasfa-select-filter-wrap">' +
+                '<div class="siasfa-select-filter-chip active" data-petugas="">Semua Petugas</div>' +
+                namaList.map(function (n) {
+                    return '<div class="siasfa-select-filter-chip" data-petugas="' + escapeAttr(n) + '">' + escapeHtml(n) + '</div>';
+                }).join('') + '</div>';
+        }
+
         var listHtml = options.map(function (opt) {
             var selectedCls = (opt.value === selectEl.value && opt.value !== '') ? ' selected' : '';
-            return '<div class="siasfa-select-option' + selectedCls + '" data-value="' + escapeAttr(opt.value) + '">' + escapeHtml(opt.textContent) + '</div>';
+            var kategoriAttr = mode === 'akun' ? ' data-kategori="' + (kategoriOption(opt) || '') + '"' : '';
+            var petugasAttr = mode === 'petugas' ? ' data-petugas-val="' + escapeAttr(opt.getAttribute('data-petugas') || '') + '"' : '';
+            return '<div class="siasfa-select-option' + selectedCls + '" data-value="' + escapeAttr(opt.value) + '"' + kategoriAttr + petugasAttr + '>' + escapeHtml(opt.textContent) + '</div>';
         }).join('');
+
+        var judulPanel = mode === 'akun' ? 'Pilih Akun' : (mode === 'petugas' ? 'Pilih Transaksi' : 'Pilih Opsi');
 
         var overlay = document.createElement('div');
         overlay.className = 'siasfa-select-panel-overlay';
         overlay.innerHTML =
             '<div class="siasfa-select-panel">' +
                 '<div class="siasfa-select-panel-head">' +
-                    '<div class="siasfa-select-panel-title">Pilih Akun</div>' +
+                    '<div class="siasfa-select-panel-title">' + escapeHtml(judulPanel) + '</div>' +
                     '<i class="ph ph-x siasfa-select-panel-close"></i>' +
                 '</div>' +
                 '<div class="siasfa-select-search-wrap">' +
                     '<i class="ph ph-magnifying-glass"></i>' +
-                    '<input type="text" class="siasfa-select-search" placeholder="Cari nomor atau nama akun...">' +
+                    '<input type="text" class="siasfa-select-search" placeholder="Cari...">' +
                 '</div>' +
+                filterChipsHtml +
                 '<div class="siasfa-select-panel-list">' + listHtml +
-                    '<div class="siasfa-select-option-empty">Akun tidak ditemukan.</div>' +
+                    '<div class="siasfa-select-option-empty">Tidak ada opsi yang cocok.</div>' +
                 '</div>' +
             '</div>';
 
@@ -12904,16 +12981,33 @@ function tutupPeriksaJurnal() {
         var searchInput = overlay.querySelector('.siasfa-select-search');
         var listWrap = overlay.querySelector('.siasfa-select-panel-list');
         var emptyEl = overlay.querySelector('.siasfa-select-option-empty');
+        var kategoriAktif = 'semua';
+        var petugasAktif = '';
 
-        searchInput.addEventListener('input', function () {
+        function terapkanFilter() {
             var q = searchInput.value.toLowerCase();
             var terlihat = 0;
             listWrap.querySelectorAll('.siasfa-select-option').forEach(function (el) {
-                var cocok = el.textContent.toLowerCase().indexOf(q) !== -1;
-                el.style.display = cocok ? 'block' : 'none';
-                if (cocok) terlihat++;
+                var cocokTeks = el.textContent.toLowerCase().indexOf(q) !== -1;
+                var cocokKategori = mode !== 'akun' || kategoriAktif === 'semua' || el.getAttribute('data-kategori') === kategoriAktif;
+                var cocokPetugas = mode !== 'petugas' || !petugasAktif || el.getAttribute('data-petugas-val') === petugasAktif;
+                var tampil = cocokTeks && cocokKategori && cocokPetugas;
+                el.style.display = tampil ? 'block' : 'none';
+                if (tampil) terlihat++;
             });
             emptyEl.style.display = terlihat === 0 ? 'block' : 'none';
+        }
+
+        searchInput.addEventListener('input', terapkanFilter);
+
+        overlay.querySelectorAll('.siasfa-select-filter-chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                overlay.querySelectorAll('.siasfa-select-filter-chip').forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                if (mode === 'akun') kategoriAktif = chip.getAttribute('data-kategori') || 'semua';
+                if (mode === 'petugas') petugasAktif = chip.getAttribute('data-petugas') || '';
+                terapkanFilter();
+            });
         });
 
         listWrap.querySelectorAll('.siasfa-select-option').forEach(function (el) {
@@ -12957,34 +13051,47 @@ function tutupPeriksaJurnal() {
     }
 
     function scanAndEnhance(root) {
-        (root || document).querySelectorAll('select.ct-akun-select').forEach(enhanceSelect);
+        (root || document).querySelectorAll('select').forEach(enhanceSelect);
     }
 
     var observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (m) {
+            if (m.type === 'attributes') {
+                if (m.target && m.target.tagName === 'SELECT') updateDisplayBox(m.target);
+                return;
+            }
+            if (m.target && m.target.tagName === 'SELECT' && m.target.dataset.siasfaEnhanced) {
+                updateDisplayBox(m.target);
+            }
             m.addedNodes.forEach(function (node) {
                 if (node.nodeType !== 1) return;
-                if (node.matches && node.matches('select.ct-akun-select')) enhanceSelect(node);
+                if (node.tagName === 'SELECT') enhanceSelect(node);
                 if (node.querySelectorAll) scanAndEnhance(node);
             });
         });
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled'] });
 
-    // Bungkus tandaiAkunTerisi supaya setiap kali kode lama meng-set .value
-    // secara langsung (mis. saat editJurnal), tampilan custom ikut ter-update.
-    var _origTandaiAkunTerisi = window.tandaiAkunTerisi;
-    window.tandaiAkunTerisi = function (selectEl) {
-        if (typeof _origTandaiAkunTerisi === 'function') _origTandaiAkunTerisi(selectEl);
-        updateDisplayBox(selectEl);
-    };
+    // Supaya select.value = "..." di kode lama otomatis ikut me-refresh
+    // tampilan custom, tanpa perlu mengubah kode lama itu sendiri.
+    var _selectValueDesc = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
+    if (_selectValueDesc && _selectValueDesc.set) {
+        Object.defineProperty(HTMLSelectElement.prototype, 'value', {
+            get: _selectValueDesc.get,
+            set: function (v) {
+                _selectValueDesc.set.call(this, v);
+                if (this.dataset && this.dataset.siasfaEnhanced) updateDisplayBox(this);
+            },
+            configurable: true
+        });
+    }
 
     window.siasfaEnhanceAkunSelects = scanAndEnhance;
+    window.siasfaRefreshSelect = updateDisplayBox;
     scanAndEnhance(document);
 })();
 </script>
 
-<script>
 /* =========================================================================
    PATCH — CALK LENGKAP
    Paste this whole block as a NEW <script> tag right before the closing
