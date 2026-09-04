@@ -2578,13 +2578,13 @@
                     <div class="stat-row">
                         <div class="stat-box in">
                             <div class="stat-icon"><i class="ph ph-arrow-down-left"></i></div>
-                            <div class="stat-label">Total Masuk</div>
+                            <div class="stat-label">Arus Kas Masuk (Jurnal, Bulan Ini)</div>
                             <div class="stat-amount" id="statMasukAmount">Rp 0</div>
                             <div class="stat-delta up" id="statMasukDelta"><i class="ph-fill ph-arrow-up"></i> 0% dari bulan lalu</div>
                         </div>
                         <div class="stat-box out">
                             <div class="stat-icon"><i class="ph ph-arrow-up-right"></i></div>
-                            <div class="stat-label">Total Keluar</div>
+                            <div class="stat-label">Arus Kas Keluar (Jurnal, Bulan Ini)</div>
                             <div class="stat-amount" id="statKeluarAmount">Rp 0</div>
                             <div class="stat-delta down" id="statKeluarDelta"><i class="ph-fill ph-arrow-down"></i> 0% dari bulan lalu</div>
                         </div>
@@ -4941,7 +4941,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
     }
 }
 
-        // ===== Total Masuk & Keluar bulan berjalan vs bulan lalu =====
+                // ===== Total Masuk & Keluar bulan berjalan vs bulan lalu (v2: semua sumber kas) =====
         async function muatStatMasukKeluar() {
             try {
                 var now = new Date();
@@ -4949,32 +4949,43 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 var startBulanLalu = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                 var endBulanLalu = new Date(now.getFullYear(), now.getMonth(), 0);
                 function toISO(d) { return d.toISOString().slice(0, 10); }
-
-                const { data, error } = await supabaseClient
-                    .from('jurnal_transaksi')
-                    .select('tanggal, jurnal_detail(debit, kredit, akun_kas_id)')
-                    .gte('tanggal', toISO(startBulanLalu));
-
-                if (error) { alert('ERROR SUPABASE (stat masuk keluar): ' + error.message); return; }
-
                 var startIniStr = toISO(startBulanIni);
                 var startLaluStr = toISO(startBulanLalu);
                 var endLaluStr = toISO(endBulanLalu);
-                var masukIni = 0, keluarIni = 0, masukLalu = 0, keluarLalu = 0;
 
-                (data || []).forEach(function (trx) {
-                    var tgl = trx.tanggal;
-                    (trx.jurnal_detail || []).forEach(function (d) {
+                var masukIni = 0, keluarIni = 0, masukLalu = 0, keluarLalu = 0;
+                function tambah(tgl, masuk, keluar) {
+                    if (!tgl) return;
+                    if (tgl >= startIniStr) { masukIni += masuk; keluarIni += keluar; }
+                    else if (tgl >= startLaluStr && tgl <= endLaluStr) { masukLalu += masuk; keluarLalu += keluar; }
+                }
+
+                const [jurnalRes, iuranRes, prodBayarRes, vendorBayarRes, uvPembRes, uaPembRes, paPembRes] = await Promise.all([
+                    supabaseClient.from('jurnal_transaksi').select('tanggal, jurnal_detail(debit, kredit, akun_kas_id)').gte('tanggal', startLaluStr),
+                    supabaseClient.from('iuran_pembayaran').select('tanggal, nominal').gte('tanggal', startLaluStr),
+                    supabaseClient.from('produk_pembayaran').select('tanggal, nominal').gte('tanggal', startLaluStr),
+                    supabaseClient.from('produk_vendor_bayar').select('tanggal, nominal').gte('tanggal', startLaluStr),
+                    supabaseClient.from('utang_vendor_pembayaran').select('tanggal, nominal, via_jurnal').gte('tanggal', startLaluStr),
+                    supabaseClient.from('utang_anggota_pembayaran').select('tanggal, nominal, via_jurnal').gte('tanggal', startLaluStr),
+                    supabaseClient.from('piutang_anggota_pembayaran').select('tanggal, nominal, via_jurnal').gte('tanggal', startLaluStr)
+                ]);
+                if (jurnalRes.error) { alert('ERROR SUPABASE (stat masuk keluar): ' + jurnalRes.error.message); return; }
+
+                (jurnalRes.data || []).forEach(function (trx) {
+                    var rows = trx.jurnal_detail || [];
+                    var hanyaTransferAntarKas = rows.length > 0 && rows.every(function (d) { return !!d.akun_kas_id; });
+                    if (hanyaTransferAntarKas) return; // netral thd total kas keseluruhan, jangan dobel hitung
+                    rows.forEach(function (d) {
                         if (!d.akun_kas_id) return;
-                        var debit = parseFloat(d.debit) || 0;
-                        var kredit = parseFloat(d.kredit) || 0;
-                        if (tgl >= startIniStr) {
-                            masukIni += debit; keluarIni += kredit;
-                        } else if (tgl >= startLaluStr && tgl <= endLaluStr) {
-                            masukLalu += debit; keluarLalu += kredit;
-                        }
+                        tambah(trx.tanggal, parseFloat(d.debit) || 0, parseFloat(d.kredit) || 0);
                     });
                 });
+                (iuranRes.data || []).forEach(function (b) { tambah(b.tanggal, parseFloat(b.nominal) || 0, 0); });
+                (prodBayarRes.data || []).forEach(function (b) { tambah(b.tanggal, parseFloat(b.nominal) || 0, 0); });
+                (vendorBayarRes.data || []).forEach(function (b) { tambah(b.tanggal, 0, parseFloat(b.nominal) || 0); });
+                (uvPembRes.data || []).forEach(function (b) { if (!b.via_jurnal) tambah(b.tanggal, 0, parseFloat(b.nominal) || 0); });
+                (uaPembRes.data || []).forEach(function (b) { if (!b.via_jurnal) tambah(b.tanggal, 0, parseFloat(b.nominal) || 0); });
+                (paPembRes.data || []).forEach(function (b) { if (!b.via_jurnal) tambah(b.tanggal, parseFloat(b.nominal) || 0, 0); });
 
                 function deltaPersen(skrg, lalu) {
                     if (lalu === 0) return skrg === 0 ? 0 : 100;
@@ -12851,8 +12862,6 @@ function tutupPeriksaJurnal() {
 </script>
 
 <script>
-
-<script>
 /* =========================================================================
    SIASFA — CUSTOM DROPDOWN UNIVERSAL (pengganti SEMUA <select> native)
    ========================================================================= */
@@ -13092,6 +13101,7 @@ function tutupPeriksaJurnal() {
 })();
 </script>
 
+<script>
 /* =========================================================================
    PATCH — CALK LENGKAP
    Paste this whole block as a NEW <script> tag right before the closing
