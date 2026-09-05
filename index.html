@@ -2427,6 +2427,30 @@
 .calk-mini-head { display: grid; gap: 6px; background: var(--paper-soft); padding: 7px 9px; font-size: 0.6rem; font-weight: 700; color: var(--text-gray); }
 .calk-mini-row { display: grid; gap: 6px; align-items: center; padding: 7px 9px; border-top: 1px solid var(--line); }
 .calk-mini-row input, .calk-mini-row select { border: 1px solid var(--border-gray); border-radius: 7px; padding: 6px 7px; font-size: 0.72rem; color: var(--text-dark); outline: none; width: 100%; }
+
+@keyframes siasfaSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.siasfa-spin { animation: siasfaSpin 0.7s linear infinite; }
+#upload-nota-screen .ct-body > * { flex-shrink: 0; }
+.siasfa-pull-indicator {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--maroon);
+    font-size: 1.15rem;
+    opacity: 0;
+    z-index: 50;
+    pointer-events: none;
+    transform: translate(-50%, -44px);
+}
+.siasfa-pull-indicator.siasfa-pull-ready { color: #16A34A; }
 </style>
 </head>
 <body>
@@ -2611,7 +2635,7 @@
                             <div class="app-subtitle">Sistem Informasi Pencatatan Keuangan</div>
                         </div>
                     </div>
-                    <div class="badge-pill">SIASFA</div>
+                    <div class="header-icon-circle" id="btnRefreshBeranda" onclick="siasfaRefreshBerandaManual(this)"><i class="ph ph-arrows-clockwise"></i></div>
                 </div>
 
                 <div class="header-variant" id="header-laporan">
@@ -5335,7 +5359,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
 
         // ===== Pie Chart Beban & Biaya (Beranda) =====
-        var _chartBebanInstance = null;
+               var _chartBebanInstance = null;
         async function renderBebanPieChart() {
             try {
                 var data = await hitungLaporanKeuangan();
@@ -5344,15 +5368,17 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 if (!canvas || typeof Chart === 'undefined') return;
 
                 var items = (data.bebanCoa || []).filter(function (b) { return b.saldo > 0; });
-                var total = items.reduce(function (s, b) { return s + b.saldo; }, 0);
+                items.sort(function (a, b) { return b.saldo - a.saldo; });
+                var lainnyaCount = Math.max(0, items.length - 5);
+                var top5 = items.slice(0, 5);
 
-                var palet = ['#B81337', '#FF7A5C', '#7A0E26', '#9E2A1E', '#1A1225', '#948E96', '#D97706', '#2563EB'];
-                var labels = items.map(function (b) { return b.nama; });
-                var values = items.map(function (b) { return b.saldo; });
-                var colors = items.map(function (b, i) { return palet[i % palet.length]; });
+                var palet = ['#B81337', '#FF7A5C', '#7A0E26', '#9E2A1E', '#1A1225'];
+                var labels = top5.map(function (b) { return b.nama; });
+                var values = top5.map(function (b) { return b.saldo; });
+                var colors = top5.map(function (b, i) { return palet[i % palet.length]; });
 
                 if (_chartBebanInstance) { _chartBebanInstance.destroy(); }
-                if (items.length === 0) {
+                if (top5.length === 0) {
                     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
                     document.getElementById('bebanPieLegend').innerHTML = '<div style="text-align:center; color:var(--text-gray); font-size:0.78rem; padding:10px 0;">Belum ada beban tercatat.</div>';
                     return;
@@ -5365,12 +5391,14 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 });
 
                 var legendHtml = '';
-                items.forEach(function (b, i) {
-                    var persen = total > 0 ? Math.round((b.saldo / total) * 100) : 0;
+                top5.forEach(function (b, i) {
                     legendHtml += '<div style="display:flex; align-items:center; justify-content:space-between; font-size:0.76rem;">' +
-                        '<span style="display:flex; align-items:center; gap:8px; color:var(--text-dark); font-weight:600;"><span style="width:10px; height:10px; border-radius:50%; background:' + colors[i] + '; display:inline-block;"></span>' + b.nama + '</span>' +
-                        '<span style="font-weight:700; color:var(--maroon);">' + persen + '% &middot; Rp ' + Math.round(b.saldo).toLocaleString('id-ID') + '</span></div>';
+                        '<span style="display:flex; align-items:center; gap:8px; color:var(--text-dark); font-weight:600; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"><span style="width:10px; height:10px; min-width:10px; border-radius:50%; background:' + colors[i] + '; display:inline-block;"></span>' + b.nama + '</span>' +
+                        '<span style="font-weight:700; color:var(--maroon); white-space:nowrap; margin-left:8px;">Rp ' + Math.round(b.saldo).toLocaleString('id-ID') + '</span></div>';
                 });
+                if (lainnyaCount > 0) {
+                    legendHtml += '<div style="text-align:center; font-size:0.68rem; color:var(--text-gray); padding-top:2px;">+' + lainnyaCount + ' akun beban lainnya (tidak ditampilkan)</div>';
+                }
                 document.getElementById('bebanPieLegend').innerHTML = legendHtml;
             } catch (e) { /* diamkan */ }
         }
@@ -16119,6 +16147,266 @@ async function simpanKkpAsetNeto() {
         alert('ERROR SISTEM: ' + e.message);
     }
 }
+</script>
+
+<script>
+(function () {
+    function toastRefreshMulai() {
+        if (typeof siasfaNotify === 'function') siasfaNotify('Memuat data terbaru dari server...', 'info', 'Memperbarui');
+    }
+    function toastRefreshSelesai() {
+        if (typeof siasfaNotify === 'function') siasfaNotify('Data berhasil diperbarui.', 'success', 'Selesai');
+    }
+
+    var SIASFA_REFRESH_MAP = {
+        'riwayat-screen': function () { return muatRiwayatDanBukuBesar(); },
+        'infaq-screen': function () { return muatInfaqHarian(); },
+        'penjualan-screen': function () { return muatPenjualan(); },
+        'programkerja-screen': function () { return muatProgramKerja(); },
+        'iuran-screen': function () { return muatIuranKegiatan(); },
+        'upload-nota-screen': async function () { await muatTransaksiTanpaNota(); await muatStatistikUploadNota(); },
+        'rekbank-screen': function () { return muatRekBank(); },
+        'utang-piutang-screen': async function () { await muatUtangPiutang(); renderRincianAkunUP(); },
+        'peralatan-screen': function () { return muatPeralatan(); },
+        'cashopname-screen': function () { return muatCashOpname(); },
+        'wbs-data-screen': function () { return muatWbsData(); }
+    };
+
+    async function siasfaRefreshDashboardBeranda() {
+        await muatDataKas();
+        await muatProgramKerja();
+        await muatStatMasukKeluar();
+        if (typeof renderBebanPieChart === 'function') renderBebanPieChart();
+        if (typeof muatBannerTandaiSaya === 'function') await muatBannerTandaiSaya();
+    }
+
+    async function siasfaRefreshCurrentScreen(rootEl) {
+        try {
+            if (rootEl.id === 'app-body') {
+                var activeTab = rootEl.querySelector('.tab-page.active');
+                if (!activeTab) return;
+                if (activeTab.id === 'page-beranda') {
+                    await siasfaRefreshDashboardBeranda();
+                } else if (activeTab.id === 'page-laporan') {
+                    var activeSub = document.querySelector('#page-laporan .laporan-subpage.active');
+                    if (activeSub && activeSub.id === 'lpage-realisasi' && typeof renderProkerReportList === 'function') {
+                        await renderProkerReportList();
+                    }
+                } else if (activeTab.id === 'page-profil') {
+                    if (typeof muatPlottingAkun === 'function') await muatPlottingAkun();
+                    if (typeof renderProfilUser === 'function') renderProfilUser();
+                }
+                return;
+            }
+            if (rootEl.id === 'guest-app-body') {
+                await muatDataKas();
+                if (typeof renderGuestPendapatanDonasi === 'function') await renderGuestPendapatanDonasi();
+                await muatProgramKerja();
+                if (typeof renderGuestProkerList === 'function') renderGuestProkerList();
+                return;
+            }
+            var screenEl = rootEl.closest('[id$="-screen"]');
+            if (!screenEl) return;
+            var fn = SIASFA_REFRESH_MAP[screenEl.id];
+            if (fn) await fn();
+        } catch (e) {
+            console.error('Gagal refresh:', e);
+        }
+    }
+
+    function siasfaAttachPullRefresh() {
+        var containers = document.querySelectorAll('.app-body, .ct-body');
+        containers.forEach(function (el) {
+            if (el.dataset.siasfaRefreshBound) return;
+            el.dataset.siasfaRefreshBound = '1';
+            var lock = false;
+            el.addEventListener('scroll', function () {
+                if (lock) return;
+                if (el.scrollHeight <= el.clientHeight + 20) return;
+                var atBottom = (el.scrollTop + el.clientHeight) >= (el.scrollHeight - 6);
+                if (!atBottom) return;
+                lock = true;
+                toastRefreshMulai();
+                siasfaRefreshCurrentScreen(el).then(function () {
+                    toastRefreshSelesai();
+                }).finally(function () {
+                    setTimeout(function () { lock = false; }, 1200);
+                });
+            }, { passive: true });
+        });
+    }
+
+    window.siasfaRefreshBerandaManual = function (btnEl) {
+        var icon = btnEl ? btnEl.querySelector('i') : null;
+        if (icon) icon.classList.add('siasfa-spin');
+        toastRefreshMulai();
+        siasfaRefreshDashboardBeranda().then(function () {
+            toastRefreshSelesai();
+        }).catch(function (e) {
+            if (typeof siasfaNotify === 'function') siasfaNotify('Gagal memperbarui data: ' + e.message, 'error');
+        }).finally(function () {
+            if (icon) setTimeout(function () { icon.classList.remove('siasfa-spin'); }, 400);
+        });
+    };
+
+    siasfaAttachPullRefresh();
+})();
+</script>
+
+<script>
+(function () {
+    var PULL_THRESHOLD = 70;
+
+    function toastRefreshMulai() {
+        if (typeof siasfaNotify === 'function') siasfaNotify('Menarik data terbaru dari server...', 'info', 'Memperbarui');
+    }
+    function toastRefreshSelesai() {
+        if (typeof siasfaNotify === 'function') siasfaNotify('Data berhasil diperbarui.', 'success', 'Selesai');
+    }
+
+    var SIASFA_REFRESH_MAP = {
+        'riwayat-screen': function () { return muatRiwayatDanBukuBesar(); },
+        'infaq-screen': function () { return muatInfaqHarian(); },
+        'penjualan-screen': function () { return muatPenjualan(); },
+        'programkerja-screen': function () { return muatProgramKerja(); },
+        'iuran-screen': function () { return muatIuranKegiatan(); },
+        'upload-nota-screen': async function () { await muatTransaksiTanpaNota(); await muatStatistikUploadNota(); },
+        'rekbank-screen': function () { return muatRekBank(); },
+        'utang-piutang-screen': async function () { await muatUtangPiutang(); renderRincianAkunUP(); },
+        'peralatan-screen': function () { return muatPeralatan(); },
+        'cashopname-screen': function () { return muatCashOpname(); },
+        'wbs-data-screen': function () { return muatWbsData(); }
+    };
+
+    async function siasfaRefreshDashboardBeranda() {
+        await muatDataKas();
+        await muatProgramKerja();
+        await muatStatMasukKeluar();
+        if (typeof renderBebanPieChart === 'function') renderBebanPieChart();
+        if (typeof muatBannerTandaiSaya === 'function') await muatBannerTandaiSaya();
+    }
+
+    async function siasfaRefreshCurrentScreen(rootEl) {
+        try {
+            if (rootEl.id === 'app-body') {
+                var activeTab = rootEl.querySelector('.tab-page.active');
+                if (!activeTab) return;
+                if (activeTab.id === 'page-beranda') {
+                    await siasfaRefreshDashboardBeranda();
+                } else if (activeTab.id === 'page-laporan') {
+                    var activeSub = document.querySelector('#page-laporan .laporan-subpage.active');
+                    if (activeSub && activeSub.id === 'lpage-realisasi' && typeof renderProkerReportList === 'function') {
+                        await renderProkerReportList();
+                    }
+                } else if (activeTab.id === 'page-profil') {
+                    if (typeof muatPlottingAkun === 'function') await muatPlottingAkun();
+                    if (typeof renderProfilUser === 'function') renderProfilUser();
+                }
+                return;
+            }
+            if (rootEl.id === 'guest-app-body') {
+                await muatDataKas();
+                if (typeof renderGuestPendapatanDonasi === 'function') await renderGuestPendapatanDonasi();
+                await muatProgramKerja();
+                if (typeof renderGuestProkerList === 'function') renderGuestProkerList();
+                return;
+            }
+            var screenEl = rootEl.closest('[id$="-screen"]');
+            if (!screenEl) return;
+            var fn = SIASFA_REFRESH_MAP[screenEl.id];
+            if (fn) await fn();
+        } catch (e) {
+            console.error('Gagal refresh:', e);
+        }
+    }
+
+    function siasfaAttachPullRefresh() {
+        var containers = document.querySelectorAll('.app-body, .ct-body');
+        containers.forEach(function (el) {
+            if (el.dataset.siasfaPullBound) return;
+            el.dataset.siasfaPullBound = '1';
+
+            if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+
+            var indikator = document.createElement('div');
+            indikator.className = 'siasfa-pull-indicator';
+            indikator.innerHTML = '<i class="ph ph-arrow-down"></i>';
+            el.insertBefore(indikator, el.firstChild);
+
+            var startY = 0, dragging = false, siapRefresh = false, lock = false;
+
+            el.addEventListener('touchstart', function (e) {
+                if (lock) return;
+                dragging = el.scrollTop <= 0;
+                startY = e.touches[0].clientY;
+                siapRefresh = false;
+            }, { passive: true });
+
+            el.addEventListener('touchmove', function (e) {
+                if (!dragging || lock) return;
+                var deltaY = e.touches[0].clientY - startY;
+                if (deltaY <= 0 || el.scrollTop > 0) {
+                    indikator.style.opacity = 0;
+                    indikator.style.transform = 'translate(-50%, -44px)';
+                    siapRefresh = false;
+                    return;
+                }
+                e.preventDefault();
+                var dist = Math.min(deltaY, PULL_THRESHOLD * 1.6);
+                var progress = Math.min(1, dist / PULL_THRESHOLD);
+                siapRefresh = progress >= 1;
+                indikator.classList.toggle('siasfa-pull-ready', siapRefresh);
+                indikator.style.opacity = progress;
+                indikator.style.transform = 'translate(-50%, ' + (dist - 44) + 'px)';
+                indikator.querySelector('i').style.transform = 'rotate(' + (progress * 180) + 'deg)';
+            }, { passive: false });
+
+            el.addEventListener('touchend', function () {
+                if (!dragging) return;
+                dragging = false;
+                if (siapRefresh) {
+                    lock = true;
+                    indikator.style.opacity = 1;
+                    indikator.style.transform = 'translate(-50%, 14px)';
+                    var icon = indikator.querySelector('i');
+                    icon.className = 'ph ph-arrows-clockwise siasfa-spin';
+                    icon.style.transform = '';
+                    toastRefreshMulai();
+                    siasfaRefreshCurrentScreen(el).then(function () {
+                        toastRefreshSelesai();
+                    }).finally(function () {
+                        setTimeout(function () {
+                            indikator.style.opacity = 0;
+                            indikator.style.transform = 'translate(-50%, -44px)';
+                            indikator.classList.remove('siasfa-pull-ready');
+                            icon.className = 'ph ph-arrow-down';
+                            lock = false;
+                        }, 500);
+                    });
+                } else {
+                    indikator.style.opacity = 0;
+                    indikator.style.transform = 'translate(-50%, -44px)';
+                }
+                siapRefresh = false;
+            }, { passive: true });
+        });
+    }
+
+    window.siasfaRefreshBerandaManual = function (btnEl) {
+        var icon = btnEl ? btnEl.querySelector('i') : null;
+        if (icon) icon.classList.add('siasfa-spin');
+        toastRefreshMulai();
+        siasfaRefreshDashboardBeranda().then(function () {
+            toastRefreshSelesai();
+        }).catch(function (e) {
+            if (typeof siasfaNotify === 'function') siasfaNotify('Gagal memperbarui data: ' + e.message, 'error');
+        }).finally(function () {
+            if (icon) setTimeout(function () { icon.classList.remove('siasfa-spin'); }, 400);
+        });
+    };
+
+    siasfaAttachPullRefresh();
+})();
 </script>
 </body>
 </html>
