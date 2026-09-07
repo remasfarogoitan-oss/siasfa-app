@@ -501,6 +501,7 @@
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
         }
         .menu-label { font-size: var(--fs-xs); font-weight: 600; color: var(--text-dark); }
+#penugasan-detail-screen .menu-item.active .menu-icon-box { background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color:#FFFFFF; }
 
         /* ---- Proker Aktif: satu-satunya elemen "berani" di halaman ---- */
         .proker-card {
@@ -1872,6 +1873,16 @@
 .prosedur-status.belum { background:rgba(148,142,150,0.15); color:var(--text-gray); }
 .prosedur-status.proses { background:rgba(217,118,6,0.12); color:#D97706; }
 .prosedur-status.selesai { background:rgba(22,163,74,0.12); color:#16A34A; }
+.icq-group-title { font-size:0.76rem; font-weight:800; color:var(--maroon); margin:14px 0 8px; }
+.icq-group-title:first-child { margin-top:0; }
+.icq-item { border:1px solid var(--line); border-radius:12px; padding:10px 12px; }
+.icq-item-teks { font-size:0.78rem; color:var(--text-dark); margin-bottom:8px; line-height:1.4; }
+.icq-btn-row { display:flex; gap:6px; }
+.icq-btn { flex:1; padding:8px; border-radius:10px; font-size:0.66rem; font-weight:700; text-align:center; cursor:pointer; border:1.5px solid var(--border-gray); background:#FFFFFF; color:var(--text-dark); }
+.icq-btn.aktif-ya { border-color:#16A34A; background:rgba(22,163,74,0.08); color:#16A34A; }
+.icq-btn.aktif-tidak { border-color:#DC2626; background:rgba(220,38,38,0.08); color:#DC2626; }
+.icq-btn.aktif-tr { border-color:var(--text-gray); background:rgba(148,142,150,0.12); color:var(--text-gray); }
+.icq-catatan { width:100%; margin-top:8px; border:1px solid var(--border-gray); border-radius:8px; padding:8px 10px; font-size:0.74rem; color:var(--text-dark); outline:none; }
 .kkp-info-box { background:var(--paper-soft); border:1px solid var(--line); border-radius:14px; padding:14px; }
 .kkp-info-label { font-size:0.62rem; font-weight:700; color:var(--text-gray); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:3px; }
 .kkp-info-value { font-size:0.8rem; color:var(--text-dark); font-weight:600; line-height:1.5; margin-bottom:10px; }
@@ -2771,6 +2782,10 @@
                                 <div class="menu-icon-box"><i class="ph ph-toolbox"></i></div>
                                 <div class="menu-label">Peralatan</div>
                             </div>
+                            <div class="menu-item" onclick="bukaDanaKebajikan()">
+                                <div class="menu-icon-box"><i class="ph ph-heart"></i></div>
+                                <div class="menu-label">Dana Kebajikan</div>
+                            </div>
                         </div>
                     </div>
 
@@ -2841,6 +2856,12 @@
     <div class="report-icon"><i class="ph ph-notepad"></i></div>
     <div><div class="report-name">CALK</div><div class="report-sub">Tap untuk buka &amp; lengkapi</div></div>
     <button class="report-dl-btn" onclick="event.stopPropagation(); bukaCalkScreen()"><i class="ph ph-caret-right"></i></button>
+</div>
+
+                            <div class="report-row" style="cursor:pointer;" onclick="bukaDanaKebajikanDariLaporan()">
+    <div class="report-icon"><i class="ph ph-heart"></i></div>
+    <div><div class="report-name">Laporan Sumber dan Penyaluran Dana Kebajikan</div><div class="report-sub">Tap untuk lihat &amp; unduh</div></div>
+    <button class="report-dl-btn" onclick="event.stopPropagation(); bukaDanaKebajikanDariLaporan()"><i class="ph ph-caret-right"></i></button>
 </div>
                         </div>
 
@@ -2927,48 +2948,21 @@
                     </div>
 
                     <div>
-                        <div class="pf-section-title">Pengaturan Akun Pendapatan</div>
-                        <div class="pf-section-sub">Tentukan kas penampung default & status pembatasan untuk tiap akun pendapatan. Berpengaruh pada klasifikasi di laporan posisi keuangan dan laporan aktivitas.</div>
-                        <div class="pf-plot-table">
-                            <div class="pf-plot-head"><span>Akun Pendapatan</span><span>Kas Penampung</span><span>Pembatasan</span></div>
-                            <div class="pf-plot-row">
-                                <span class="pf-plot-akun">[4-40000] Pendapatan Dana Donasi/Proposal</span>
-                                <select><option>-- Kas Penampung --</option><option>Kas Administrasi Umum</option><option>Kas Donasi Ramadhan</option></select>
-                                <select><option>Tidak Terikat</option><option>Terikat</option></select>
+                        <div class="ledger-head"><div class="ledger-title">Pengaturan</div></div>
+                        <div class="menu-grid">
+                            <div class="menu-item" onclick="bukaSettingPembatasan()">
+                                <div class="menu-icon-box utama"><i class="ph ph-lock-simple"></i></div>
+                                <div class="menu-label">Setting Pembatasan</div>
                             </div>
-                            <div class="pf-plot-row">
-                                <span class="pf-plot-akun">[4-40100] Pendapatan Dana Infaq Ramadhan</span>
-                                <select><option>-- Kas Penampung --</option><option>Kas Infaq Harian Ramadhan</option></select>
-                                <select><option>Tidak Terikat</option><option>Terikat</option></select>
+                            <div class="menu-item" onclick="bukaSettingCoa()">
+                                <div class="menu-icon-box utama"><i class="ph ph-tree-structure"></i></div>
+                                <div class="menu-label">Setting COA</div>
                             </div>
-                            <div class="pf-plot-row">
-                                <span class="pf-plot-akun">[4-40200] Pendapatan Dana Infaq Zakat</span>
-                                <select><option>-- Kas Penampung --</option><option>Kas Unit Pengumpul Zakat</option></select>
-                                <select><option>Tidak Terikat</option><option>Terikat</option></select>
-                            </div>
-                            <div class="pf-plot-row">
-                                <span class="pf-plot-akun">[4-40300] Pendapatan Dana Kegiatan Takmir</span>
-                                <select><option>-- Kas Penampung --</option><option>Kas Administrasi Umum</option></select>
-                                <select><option>Tidak Terikat</option><option>Terikat</option></select>
-                            </div>
-                            <div class="pf-plot-row">
-                                <span class="pf-plot-akun">[4-40400] Pendapatan Iuran</span>
-                                <select><option>-- Kas Penampung --</option><option>Kas Administrasi Umum</option></select>
-                                <select><option>Tidak Terikat</option><option>Terikat</option></select>
-                            </div>
-                            <div class="pf-plot-row">
-                                <span class="pf-plot-akun">[4-40500] Pendapatan Lainnya</span>
-                                <select><option>-- Kas Penampung --</option><option>Kas Lainnya</option></select>
-                                <select><option>Tidak Terikat</option><option>Terikat</option></select>
+                            <div class="menu-item" onclick="bukaTutupBukuScreen()">
+                                <div class="menu-icon-box utama"><i class="ph ph-lock-key"></i></div>
+                                <div class="menu-label">Tutup Buku</div>
                             </div>
                         </div>
-                        <button class="ct-submit-btn" style="margin-top:12px;" onclick="simpanPlottingan()"><i class="ph ph-floppy-disk"></i> Simpan Plottingan</button>
-                    </div>
-
-                    <div class="pf-danger-box">
-                        <div class="pf-danger-title"><i class="ph ph-warning-octagon"></i> Zona Berbahaya</div>
-                        <div class="pf-danger-text"><strong>Tutup Buku Periode Berjalan</strong><br>Sistem akan membuat 1 jurnal penutup yang menolkan seluruh akun <strong>Pendapatan dan Beban berbasis jurnal</strong> ke Aset Neto sesuai klasifikasi terikat/tidak terikat. Akun riil (Kas, Piutang, Persediaan, Peralatan, Utang, Aset Neto) <strong>tidak direset</strong> dan seluruh riwayat jurnal tetap tersimpan untuk keperluan audit. Akun virtual (Pendapatan Iuran, Pendapatan Lainnya, HPP, Diskon Pembelian, Utang Vendor) yang dihitung otomatis dari modul Iuran/Penjualan <strong>tidak ikut ditutup</strong>. Proses ini <strong>tidak dapat dibatalkan otomatis</strong>.</div>
-                        <button class="pf-danger-btn" onclick="tutupBukuTahunan()"><i class="ph ph-lock-key"></i> Tutup Buku & Reset Periode Baru</button>
                     </div>
 
                     <button class="btn-logout" onclick="keluarAkun()" style="margin-top:2px;"><i class="ph ph-sign-out"></i> Keluar</button>
@@ -4641,6 +4635,71 @@
             </div>
         </div>
 
+        <!-- ================= LAYAR DANA KEBAJIKAN ================= -->
+        <div id="dana-kebajikan-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDanaKebajikan()"></i>
+                    <div class="ct-header-title">Dana Kebajikan</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body" id="dkBody">
+                <div class="ip-stat-box full">
+                    <div class="ip-stat-icon"><i class="ph ph-heart"></i></div>
+                    <div class="ip-stat-label">Total Kas Dana Kebajikan Yang Harus Dialokasikan</div>
+                    <div class="ip-stat-value" id="dkTotalSaldo">Rp 0</div>
+                </div>
+
+                <div class="laporan-tabs">
+                    <button class="laporan-tab-btn active" id="dktab-sumber" onclick="switchDkTab('sumber')">Sumber</button>
+                    <button class="laporan-tab-btn" id="dktab-penggunaan" onclick="switchDkTab('penggunaan')">Penggunaan</button>
+                    <button class="laporan-tab-btn" id="dktab-laporan" onclick="switchDkTab('laporan')">Laporan</button>
+                    <button class="laporan-tab-btn" id="dktab-panduan" onclick="switchDkTab('panduan')">Panduan</button>
+                </div>
+
+                <div class="laporan-subpage active" id="dkpage-sumber">
+                    <div class="ip-table-wrap">
+                        <div class="ip-table-head" style="grid-template-columns:0.8fr 1.4fr 0.9fr;"><span>Tanggal</span><span>Keterangan</span><span style="text-align:right;">Nominal</span></div>
+                        <div id="dkSumberRows"></div>
+                        <div class="ip-table-row" style="grid-template-columns:0.8fr 1.4fr 0.9fr; background:var(--paper-soft);"><span></span><span style="font-weight:700; font-size:0.76rem;">Total Sumber</span><span id="dkSumberTotal" style="font-weight:700; color:#16A34A; text-align:right; font-size:0.76rem;">Rp 0</span></div>
+                    </div>
+                </div>
+
+                <div class="laporan-subpage" id="dkpage-penggunaan">
+                    <div class="ip-table-wrap">
+                        <div class="ip-table-head" style="grid-template-columns:0.8fr 1.4fr 0.9fr;"><span>Tanggal</span><span>Keterangan</span><span style="text-align:right;">Nominal</span></div>
+                        <div id="dkPenggunaanRows"></div>
+                        <div class="ip-table-row" style="grid-template-columns:0.8fr 1.4fr 0.9fr; background:var(--paper-soft);"><span></span><span style="font-weight:700; font-size:0.76rem;">Total Penggunaan</span><span id="dkPenggunaanTotal" style="font-weight:700; color:var(--maroon); text-align:right; font-size:0.76rem;">Rp 0</span></div>
+                    </div>
+                </div>
+
+                <div class="laporan-subpage" id="dkpage-laporan">
+                    <div id="dkLaporanBox"><div style="padding:20px; text-align:center; color:var(--text-gray); font-size:0.8rem;">Memuat laporan...</div></div>
+                </div>
+
+                <div class="laporan-subpage" id="dkpage-panduan">
+                    <div class="guest-intro-box">
+                        <i class="ph ph-info"></i><strong style="color:var(--text-dark);">Apa itu Dana Non-Halal?</strong><br><br>
+                        Dana non-halal adalah dana yang diperoleh entitas dari sumber yang menurut prinsip syariah tidak dapat diakui sebagai pendapatan halal, misalnya bunga/jasa giro dari rekening bank konvensional, denda keterlambatan, atau penerimaan lain yang mengandung unsur riba/gharar. Karena bukan hak entitas untuk dinikmati sebagai pendapatan operasional, dana ini <strong style="color:var(--text-dark);">wajib dipisahkan</strong> dari kas operasional dan dicatat dalam akun tersendiri, yaitu <strong style="color:var(--text-dark);">Kas Dana Kebajikan [1-10006]</strong>, sesuai prinsip ISAK 35.
+                    </div>
+                    <div class="guest-intro-box">
+                        <i class="ph ph-hand-coins"></i><strong style="color:var(--text-dark);">Bagaimana Cara Menyalurkannya?</strong><br><br>
+                        Dana kebajikan tidak boleh digunakan untuk membiayai kegiatan/operasional REMASFA maupun kegiatan masjid pada umumnya. Dana ini hanya boleh disalurkan untuk kepentingan umum (maslahah) di luar kepentingan pribadi/kelembagaan yang menerimanya, misalnya:
+                        <ul style="margin:8px 0 0 18px; padding:0;">
+                            <li>Pembangunan fasilitas umum (jalan, MCK umum, dsb.)</li>
+                            <li>Bantuan kemanusiaan/bencana</li>
+                            <li>Kepentingan sosial masyarakat sekitar yang bersifat non-ibadah mahdhah</li>
+                        </ul>
+                    </div>
+                    <div class="guest-intro-box">
+                        <i class="ph ph-notebook"></i><strong style="color:var(--text-dark);">Mekanisme Pencatatan di SIASFA</strong><br><br>
+                        Setiap jurnal (D) Kas Dana Kebajikan / (K) Pendapatan Lainnya otomatis tercatat sebagai <strong style="color:var(--text-dark);">Sumber</strong>. Sebaliknya, jurnal yang mengkredit Kas Dana Kebajikan otomatis tercatat sebagai <strong style="color:var(--text-dark);">Penyaluran</strong>. Laporan Sumber dan Penyaluran Dana Kebajikan disusun otomatis dari kedua kelompok transaksi ini, tanpa perlu ada tabel/input tambahan.
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- =========================================================================
      PATCH — CALK: paste this whole block anywhere inside <div class="mobile-app"> ... </div>,
      next to your other full-screen layers (e.g. right after the closing </div> of
@@ -4874,25 +4933,52 @@
 
         <div>
             <div class="ledger-head"><div class="ledger-title">Kertas Kerja</div></div>
-            <div class="ct-tabs" style="margin-top:0; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch;">
-                <button class="ct-tab-btn active" id="pdtab-icq" style="flex:0 0 auto; padding:9px 14px;" onclick="switchPdTab('icq')">ICQ</button>
-                <button class="ct-tab-btn" id="pdtab-dokumen" style="flex:0 0 auto; padding:9px 14px;" onclick="switchPdTab('dokumen')">Dokumen</button>
-                <button class="ct-tab-btn" id="pdtab-prosedur" style="flex:0 0 auto; padding:9px 14px;" onclick="switchPdTab('prosedur')">Prosedur</button>
-                <button class="ct-tab-btn" id="pdtab-temuan" style="flex:0 0 auto; padding:9px 14px;" onclick="switchPdTab('temuan')">Temuan</button>
-                <button class="ct-tab-btn" id="pdtab-opini" style="flex:0 0 auto; padding:9px 14px;" onclick="switchPdTab('opini')">Opini</button>
-                <button class="ct-tab-btn" id="pdtab-lai" style="flex:0 0 auto; padding:9px 14px;" onclick="switchPdTab('lai')">LAI</button>
+            <div class="menu-grid" style="grid-template-columns:repeat(3,1fr); margin-top:0;">
+                <div class="menu-item active" id="pdtab-icq" onclick="switchPdTab('icq')">
+                    <div class="menu-icon-box utama"><i class="ph ph-list-checks"></i></div>
+                    <div class="menu-label">ICQ</div>
+                </div>
+                <div class="menu-item" id="pdtab-dokumen" onclick="switchPdTab('dokumen')">
+                    <div class="menu-icon-box"><i class="ph ph-folder-open"></i></div>
+                    <div class="menu-label">Dokumen</div>
+                </div>
+                <div class="menu-item" id="pdtab-prosedur" onclick="switchPdTab('prosedur')">
+                    <div class="menu-icon-box"><i class="ph ph-clipboard-text"></i></div>
+                    <div class="menu-label">Kertas Kerja</div>
+                </div>
+                <div class="menu-item" id="pdtab-temuan" onclick="switchPdTab('temuan')">
+                    <div class="menu-icon-box"><i class="ph ph-flag"></i></div>
+                    <div class="menu-label">Temuan</div>
+                </div>
+                <div class="menu-item" id="pdtab-opini" onclick="switchPdTab('opini')">
+                    <div class="menu-icon-box"><i class="ph ph-scales"></i></div>
+                    <div class="menu-label">Opini</div>
+                </div>
+                <div class="menu-item" id="pdtab-lai" onclick="switchPdTab('lai')">
+                    <div class="menu-icon-box"><i class="ph ph-file-text"></i></div>
+                    <div class="menu-label">LAI</div>
+                </div>
             </div>
 
             <div class="ct-subpage active" id="pdpage-icq" style="margin-top:14px;">
-                <div id="pdIcqRows" style="display:flex; flex-direction:column; gap:10px;"></div>
-                <div class="ct-add-row" onclick="pdTambahIcq()"><i class="ph ph-plus-circle"></i> Tambah Pertanyaan</div>
+                <div class="ip-stat-box full" id="icqSkorBox">
+                    <div class="ip-stat-icon"><i class="ph ph-gauge"></i></div>
+                    <div class="ip-stat-label">Total Skor Risiko ICQ</div>
+                    <div class="ip-stat-value" id="icqSkorValue">0</div>
+                    <div style="font-size:0.68rem; color:rgba(255,255,255,0.85); font-weight:700; margin-top:4px;" id="icqOpiniValue">Belum Dinilai</div>
+                </div>
+                <div id="pdIcqRows" style="display:flex; flex-direction:column; gap:12px; margin-top:12px;"></div>
                 <button class="ct-submit-btn" style="margin-top:10px;" onclick="pdSimpanIcq()"><i class="ph ph-floppy-disk"></i> Simpan ICQ</button>
             </div>
 
             <div class="ct-subpage" id="pdpage-dokumen" style="margin-top:14px;">
                 <div id="pdDokumenList" style="display:flex; flex-direction:column; gap:10px;"></div>
                 <div class="ct-field"><label>Nama Dokumen</label><input type="text" id="pdDokNama" placeholder="Contoh: Surat Tugas Pemeriksaan"></div>
-                <label class="ct-upload-zone" id="pdDokUploadZone">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="ct-field" style="margin-bottom:0;"><label>Deadline Pengumpulan</label><input type="date" id="pdDokDeadline"></div>
+                    <div class="ct-field" style="margin-bottom:0;"><label>Tanggal Diterima</label><input type="date" id="pdDokDiterima"></div>
+                </div>
+                <label class="ct-upload-zone" id="pdDokUploadZone" style="margin-top:14px;">
                     <input type="file" id="pdDokFile" hidden onchange="ctUpdateUploadLabel(this,'pdDokUploadZone')">
                     <div class="ct-upload-icon"><i class="ph ph-upload-simple"></i></div>
                     <div class="ct-upload-text"><span class="ct-upload-title">Tap untuk pilih file</span><span class="ct-upload-sub">PDF, DOC, atau gambar</span></div>
@@ -4901,12 +4987,37 @@
             </div>
 
             <div class="ct-subpage" id="pdpage-prosedur" style="margin-top:14px;">
-                <div class="search-box">
-                    <i class="ph ph-magnifying-glass"></i>
-                    <input type="text" id="searchProsedur" placeholder="Cari akun / prosedur..." oninput="filterProsedurPemeriksaan()">
+                <div class="ip-stat-row">
+                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-book-open"></i></div><div class="ip-stat-label">Jumlah Transaksi</div><div class="ip-stat-value" id="kkpTrxStatTotal">0</div></div>
+                    <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-check-circle"></i></div><div class="ip-stat-label">Sudah Diperiksa</div><div class="ip-stat-value" id="kkpTrxStatPeriksa">0</div></div>
                 </div>
-                <div id="prosedurPemeriksaanList" style="margin-top:4px;">
-                    <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat prosedur pemeriksaan...</div>
+                <div class="ip-stat-box full" style="margin-top:8px;"><div class="ip-stat-icon"><i class="ph ph-hourglass"></i></div><div class="ip-stat-label">Belum Diperiksa</div><div class="ip-stat-value" id="kkpTrxStatBelum">0</div></div>
+
+                <div class="temuan-rekap-grid" style="margin-top:14px;">
+                    <div class="temuan-rekap-box"><div class="temuan-rekap-label">Temuan Kelemahan Pengendalian</div><div class="temuan-rekap-value" id="kkpTrxTemuanKelemahan">0</div></div>
+                    <div class="temuan-rekap-box full"><div class="temuan-rekap-label">Temuan Salah Saji (Net)</div><div class="temuan-rekap-value" id="kkpTrxTemuanSalahSaji">Rp 0</div></div>
+                </div>
+
+                <div class="ct-field" style="margin-top:14px; margin-bottom:0;">
+                    <label>Tarik Data Riwayat Transaksi</label>
+                    <select id="kkpTrxFilterProker" onchange="muatKkpTransaksiList()">
+                        <option value="">Semua Transaksi</option>
+                    </select>
+                </div>
+
+                <div class="ip-table-wrap" style="margin-top:10px;">
+                    <div class="ip-table-head" style="grid-template-columns:0.7fr 1.4fr 0.8fr 0.6fr;"><span>Tanggal</span><span>Keterangan</span><span>Nominal</span><span>Periksa</span></div>
+                    <div id="kkpTrxRows"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat riwayat transaksi...</div></div>
+                </div>
+            </div>
+
+            <div id="kkp-trx-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99994; align-items:flex-end; justify-content:center;">
+                <div class="co-modal">
+                    <div class="co-modal-head">
+                        <div class="co-modal-title">Riwayat Transaksi</div>
+                        <i class="ph ph-x" onclick="tutupKkpTrxDetail()"></i>
+                    </div>
+                    <div class="co-modal-body" id="kkpTrxDetailBody"></div>
                 </div>
             </div>
 
@@ -5135,8 +5246,6 @@
             </div>
         </div>
 
-    </div>
-
     <!-- ================= MODAL TANDAI JURNAL ================= -->
     <div id="tandai-modal-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99991; align-items:flex-end; justify-content:center;">
         <div class="co-modal">
@@ -5177,6 +5286,89 @@
                 <button class="ct-submit-btn" id="tandaiSubmitBtn" style="display:none;" onclick="simpanTandai()"><i class="ph ph-flag"></i> Simpan Tanda</button>
             </div>
         </div>
+    </div>
+    <!-- ================= LAYAR SETTING PEMBATASAN (Plotting Akun Pendapatan) ================= -->
+    <div id="setting-pembatasan-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupSettingPembatasan()"></i>
+                <div class="ct-header-title">Setting Pembatasan</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="pf-section-title">Pengaturan Akun Pendapatan</div>
+            <div class="pf-section-sub">Tentukan kas penampung default & status pembatasan untuk tiap akun pendapatan. Berpengaruh pada klasifikasi di laporan posisi keuangan dan laporan aktivitas.</div>
+            <div class="pf-plot-table" id="settingPembatasanTable">
+                <div class="pf-plot-head"><span>Akun Pendapatan</span><span>Kas Penampung</span><span>Pembatasan</span></div>
+                <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data akun pendapatan...</div>
+            </div>
+            <button class="ct-submit-btn" style="margin-top:12px;" onclick="simpanPlottingan()"><i class="ph ph-floppy-disk"></i> Simpan Plottingan</button>
+        </div>
+    </div>
+
+    <!-- ================= LAYAR SETTING COA (Chart of Accounts) ================= -->
+    <div id="setting-coa-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupSettingCoa()"></i>
+                <div class="ct-header-title">Setting COA</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="un-note-text">Kelola daftar akun (Chart of Accounts). Perubahan di sini akan langsung memengaruhi pilihan akun pada seluruh menu Catat Transaksi, Laporan, dan Buku Besar.</div>
+            <div class="laporan-tabs" style="flex-wrap:wrap; gap:4px;">
+                <button class="laporan-tab-btn active" id="coaftab-semua" onclick="filterSettingCoaTipe('semua')" style="flex:1 1 30%;">Semua</button>
+                <button class="laporan-tab-btn" id="coaftab-aset" onclick="filterSettingCoaTipe('aset')" style="flex:1 1 30%;">Aset</button>
+                <button class="laporan-tab-btn" id="coaftab-kewajiban" onclick="filterSettingCoaTipe('kewajiban')" style="flex:1 1 30%;">Kewajiban</button>
+                <button class="laporan-tab-btn" id="coaftab-pendapatan" onclick="filterSettingCoaTipe('pendapatan')" style="flex:1 1 30%;">Pendapatan</button>
+                <button class="laporan-tab-btn" id="coaftab-beban" onclick="filterSettingCoaTipe('beban')" style="flex:1 1 30%;">Beban</button>
+            </div>
+            <div id="settingCoaList" style="display:flex; flex-direction:column; gap:8px;">
+                <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat daftar akun...</div>
+            </div>
+            <div class="un-add-btn" onclick="bukaModalTambahCoa()"><i class="ph ph-plus-circle"></i> Tambah Akun Baru</div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL TAMBAH / EDIT AKUN COA ================= -->
+    <div id="modal-coa-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div class="co-modal">
+            <div class="co-modal-head">
+                <div class="co-modal-title" id="coaModalTitle">Tambah Akun</div>
+                <i class="ph ph-x" onclick="tutupModalTambahCoa()"></i>
+            </div>
+            <div class="co-modal-body">
+                <div class="ct-field"><label>No. Akun</label><input type="text" id="coaNoAkun" placeholder="Contoh: 5-50900"></div>
+                <div class="ct-field"><label>Nama Akun</label><input type="text" id="coaNamaAkun" placeholder="Nama akun..."></div>
+                <div class="ct-field" style="margin-bottom:0;"><label>Tipe Akun</label><select id="coaTipeAkun"><option value="aset">Aset</option><option value="kewajiban">Kewajiban</option><option value="pendapatan">Pendapatan</option><option value="beban">Beban</option></select></div>
+                <div style="display:flex; gap:10px; margin-top:16px;">
+                    <button class="ct-submit-btn" style="flex:1;" onclick="simpanCoa()"><i class="ph ph-floppy-disk"></i> Simpan</button>
+                    <button class="co-btn-secondary" id="coaHapusBtn" style="flex:0 0 90px; display:none; border-color:#DC2626; color:#DC2626;" onclick="hapusCoa()">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= LAYAR TUTUP BUKU ================= -->
+    <div id="tutup-buku-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupTutupBukuScreen()"></i>
+                <div class="ct-header-title">Tutup Buku</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="pf-danger-box">
+                <div class="pf-danger-title"><i class="ph ph-warning-octagon"></i> Zona Berbahaya</div>
+                <div class="pf-danger-text"><strong>Tutup Buku Periode Berjalan</strong><br>Sistem akan membuat 1 jurnal penutup yang menolkan seluruh akun <strong>Pendapatan dan Beban berbasis jurnal</strong> ke Aset Neto sesuai klasifikasi terikat/tidak terikat. Akun riil (Kas, Piutang, Persediaan, Peralatan, Utang, Aset Neto) <strong>tidak direset</strong> dan seluruh riwayat jurnal tetap tersimpan untuk keperluan audit. Akun virtual (Pendapatan Iuran, Pendapatan Lainnya, HPP, Diskon Pembelian, Utang Vendor) yang dihitung otomatis dari modul Iuran/Penjualan <strong>tidak ikut ditutup</strong>. Proses ini <strong>tidak dapat dibatalkan otomatis</strong>.</div>
+                <button class="pf-danger-btn" onclick="tutupBukuTahunan()"><i class="ph ph-lock-key"></i> Tutup Buku & Reset Periode Baru</button>
+            </div>
+        </div>
+    </div>
+
     </div>
 
     <!-- Script Javascript -->
@@ -5468,7 +5660,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
             document.getElementById('app-body').scrollTop = 0;
 
-            if (tab === 'profil') { muatPlottingAkun(); renderProfilUser(); }
+            if (tab === 'profil') { renderProfilUser(); }
             if (tab === 'beranda') { renderBebanPieChart(); }
         }
 
@@ -11174,6 +11366,21 @@ function unduhRiwayatTransaksi() {
                     else if (c.tipe === 'beban') bebanCoa.push({ nama: c.nama, saldo: net });
                 });
 
+                var akunDkForLap = (kasRes.data || []).find(function (a) { return a.no_akun === '1-10006' || a.nama === 'Kas Dana Kebajikan'; });
+                var dkTotalSumber = 0, dkTotalPenggunaan = 0;
+                if (akunDkForLap) {
+                    (mutasiRes.data || []).forEach(function (m) {
+                        if (m.akun_kas_id !== akunDkForLap.id) return;
+                        dkTotalSumber += parseFloat(m.debit) || 0;
+                        dkTotalPenggunaan += parseFloat(m.kredit) || 0;
+                    });
+                }
+                var dkSaldoNetto = (akunDkForLap ? (parseFloat(akunDkForLap.saldo_awal) || 0) : 0) + dkTotalSumber - dkTotalPenggunaan;
+                if (dkTotalSumber > 0) {
+                    var pendapatanLainnyaItem = pendapatanCoa.find(function (p) { return p.nama === 'Pendapatan Lainnya'; });
+                    if (pendapatanLainnyaItem) pendapatanLainnyaItem.saldo -= dkTotalSumber;
+                }
+
                 var totalKas = kasList.reduce(function (s, k) { return s + k.saldo; }, 0);
                 var totalAsetCoa = asetCoa.reduce(function (s, k) { return s + k.saldo; }, 0);
                 var totalAset = totalKas + totalAsetCoa;
@@ -11187,7 +11394,7 @@ function unduhRiwayatTransaksi() {
                 var totalBeban = bebanCoa.reduce(function (s, b) { return s + b.saldo; }, 0);
 
                 var surplusTT = totalPendapatanTT - totalBeban;
-                var surplusT = totalPendapatanT;
+                var surplusT = totalPendapatanT + dkSaldoNetto;
                 var totalAsetNeto = surplusTT + surplusT;
 
                 // Akun dengan saldo 0 disembunyikan dari tampilan laporan (total tetap dihitung dari data lengkap di atas)
@@ -11205,7 +11412,8 @@ function unduhRiwayatTransaksi() {
                     pendapatanTT: pendapatanTT, totalPendapatanTT: totalPendapatanTT,
                     pendapatanT: pendapatanT, totalPendapatanT: totalPendapatanT, totalPendapatan: totalPendapatan,
                     bebanCoa: bebanCoa, totalBeban: totalBeban,
-                    surplusTT: surplusTT, surplusT: surplusT, totalAsetNeto: totalAsetNeto
+                    surplusTT: surplusTT, surplusT: surplusT, totalAsetNeto: totalAsetNeto,
+                    danaKebajikanNonHalal: dkSaldoNetto
                 };
             } catch (e) {
                 alert('ERROR SISTEM: ' + e.message);
@@ -11253,7 +11461,9 @@ function unduhRiwayatTransaksi() {
 
             html += '<div class="lp-line" style="font-weight:600;"><span>Aset Neto</span><span></span></div>';
             html += '<div class="lp-sub-item"><span>Aset Neto Tidak Terikat</span><span>' + fmtRp(d.surplusTT) + '</span></div>';
-            html += '<div class="lp-sub-item"><span>Aset Neto Terikat Sementara</span><span>' + (d.surplusT ? fmtRp(d.surplusT) : '-') + '</span></div>';
+            html += '<div class="lp-line" style="font-weight:600;"><span>Aset Neto Dengan Pembatasan (Terikat)</span><span></span></div>';
+            html += '<div class="lp-sub-item"><span>Aset Neto Terikat Sementara (Program/Donasi)</span><span>' + fmtRp(d.surplusT - (d.danaKebajikanNonHalal || 0)) + '</span></div>';
+            html += '<div class="lp-sub-item"><span>Dana Kebajikan (Non-Halal)</span><span>' + fmtRp(d.danaKebajikanNonHalal || 0) + '</span></div>';
             html += '<div class="lp-line"><span>Total Aset Neto</span><span>' + fmtRp(d.totalAsetNeto) + '</span></div>';
 
             html += '<div class="lp-line lp-final"><span>TOTAL LIABILITAS & ASET NETO</span><span>' + fmtRp(d.totalKewajiban + d.totalAsetNeto) + '</span></div>';
@@ -11265,10 +11475,14 @@ function unduhRiwayatTransaksi() {
             var html = '<div class="lp-report-box">' +
                 '<div class="lp-report-header"><div class="lp-report-title">LAPORAN PERUBAHAN ASET NETO</div><div class="lp-report-sub">Remaja Masjid Fadhlillah &middot; Per ' + tanggalLaporanHariIni() + '</div></div>';
 
+            var dkNominal = d.danaKebajikanNonHalal || 0;
+            var terikatSemProgram = d.surplusT - dkNominal;
+
             html += '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;">' +
                 '<span>Uraian</span><span>Tdk Terikat</span><span>Terikat Sem.</span><span>Total</span></div>';
             html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Saldo Awal</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">Rp 0</span></div>';
-            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Surplus/(Defisit) Berjalan</span><span style="font-size:0.72rem;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(d.surplusT) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.totalAsetNeto) + '</span></div>';
+            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Surplus/(Defisit) Berjalan (Program/Donasi)</span><span style="font-size:0.72rem;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(terikatSemProgram) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusTT + terikatSemProgram) + '</span></div>';
+            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Dana Kebajikan (Non-Halal)</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">' + fmtRp(dkNominal) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(dkNominal) + '</span></div>';
             html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr; background:var(--paper-soft);"><span style="font-size:0.72rem; font-weight:700;">Saldo Akhir</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusT) + '</span><span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">' + fmtRp(d.totalAsetNeto) + '</span></div>';
             html += '</div></div>';
             return html;
@@ -11453,7 +11667,8 @@ function unduhRiwayatTransaksi() {
             y = pdfSeksi(doc, y, 'ASET NETO');
             var anBody = [
                 ['Aset Neto Tidak Terikat', fmtRp(data.surplusTT)],
-                ['Aset Neto Terikat Sementara', fmtRp(data.surplusT)]
+                ['Aset Neto Terikat Sementara (Program/Donasi)', fmtRp(data.surplusT - (data.danaKebajikanNonHalal || 0))],
+                ['Dana Kebajikan (Non-Halal)', fmtRp(data.danaKebajikanNonHalal || 0)]
             ];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], anBody, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 6;
 
@@ -11513,9 +11728,12 @@ function unduhRiwayatTransaksi() {
             if (!data) return;
             var doc = pdfBaru();
             var y = pdfKop(doc, 'LAPORAN PERUBAHAN ASET NETO', 'Per ' + tanggalLaporanHariIni());
+            var dkNominalPdf = data.danaKebajikanNonHalal || 0;
+            var terikatSemProgramPdf = data.surplusT - dkNominalPdf;
             var body = [
                 ['Saldo Awal', 'Rp 0', 'Rp 0', 'Rp 0'],
-                ['Surplus/(Defisit) Berjalan', fmtRp(data.surplusTT), fmtRp(data.surplusT), fmtRp(data.totalAsetNeto)],
+                ['Surplus/(Defisit) Berjalan (Program/Donasi)', fmtRp(data.surplusTT), fmtRp(terikatSemProgramPdf), fmtRp(data.surplusTT + terikatSemProgramPdf)],
+                ['Dana Kebajikan (Non-Halal)', 'Rp 0', fmtRp(dkNominalPdf), fmtRp(dkNominalPdf)],
                 ['Saldo Akhir', fmtRp(data.surplusTT), fmtRp(data.surplusT), fmtRp(data.totalAsetNeto)]
             ];
             pdfTabel(doc, y + 6, ['Uraian', 'Tdk Terikat (Rp)', 'Terikat Sementara (Rp)', 'Total (Rp)'], body, {
@@ -15193,7 +15411,7 @@ function bukaKkp(key) {
     document.getElementById('kkp-screen').style.display = 'flex';
 }
 function tutupKkp() {
-    document.getElementById('kkp-screen').style.display = 'none';
+    siasfaTutupSemuaKkpDetail();
 }
 async function simpanKkp() {
     if (!_kkpAktifKey) return;
@@ -15226,6 +15444,20 @@ async function simpanKkp() {
    SIASFA — KKP DETAIL: KAS DAN SETARA KAS + DATA TEMUAN SEMENTARA
    ========================================================================= */
 
+/* ---------- Helper: buka/tutup Kertas Kerja sebagai switch-page (bukan jendela) ---------- */
+function siasfaBukaKkpDetail(wrapId) {
+    document.getElementById('prosedurListView').style.display = 'none';
+    document.getElementById('prosedurDetailView').style.display = 'block';
+    ['kkpGenericWrap', 'kkpKasWrap', 'kkpPdptWrap', 'kkpAnWrap'].forEach(function (id) {
+        document.getElementById(id).style.display = (id === wrapId) ? 'flex' : 'none';
+    });
+}
+function siasfaTutupSemuaKkpDetail() {
+    document.getElementById('prosedurDetailView').style.display = 'none';
+    document.getElementById('prosedurListView').style.display = 'block';
+    renderProsedurPemeriksaan(document.getElementById('searchProsedur') ? document.getElementById('searchProsedur').value : '');
+}
+
 /* ---------- Override: routing khusus kelompok Kas ke KKP detail ---------- */
 function bukaKkp(key) {
     var item = AUDIT_PROSEDUR_LIST.find(function (p) { return p.key === key; });
@@ -15247,7 +15479,7 @@ function bukaKkp(key) {
     document.getElementById('kkpPemeriksa').value = saved ? (saved.diperiksa_oleh || (_currentUser ? _currentUser.nama : '')) : (_currentUser ? _currentUser.nama : '');
     document.getElementById('kkpTanggal').value = saved ? (saved.tanggal_pemeriksaan || '') : '';
 
-    document.getElementById('kkp-screen').style.display = 'flex';
+    siasfaBukaKkpDetail('kkpGenericWrap');
 }
 
 /* ---------- Override: render list prosedur (ikon beda utk Kas) ---------- */
@@ -15330,10 +15562,10 @@ async function bukaKkpKas(key) {
     _kkpKasProsedurAktif = key;
     await muatDataKas();
     await muatKkpKasData();
-    document.getElementById('kkp-kas-screen').style.display = 'flex';
+    siasfaBukaKkpDetail('kkpKasWrap');
     await renderKkpKasScreen();
 }
-function tutupKkpKas() { document.getElementById('kkp-kas-screen').style.display = 'none'; }
+function tutupKkpKas() { siasfaTutupSemuaKkpDetail(); }
 
 async function renderKkpKasScreen() {
     var akunList = window._akunKasCache || [];
@@ -15694,10 +15926,10 @@ async function bukaKkpPendapatan(key) {
     if (!window._coaAkunCache) await loadDataFormTransaksi();
     if (!_calkLaporan) { _calkLaporan = await hitungLaporanKeuangan(); }
     await muatKkpPendapatanData();
-    document.getElementById('kkp-pendapatan-screen').style.display = 'flex';
+    siasfaBukaKkpDetail('kkpPdptWrap');
     await renderKkpPendapatanScreen();
 }
-function tutupKkpPendapatan() { document.getElementById('kkp-pendapatan-screen').style.display = 'none'; }
+function tutupKkpPendapatan() { siasfaTutupSemuaKkpDetail(); }
 
 function kkpPendapatanVouchingRowHtml(v) {
     v = v || {};
@@ -15987,10 +16219,10 @@ async function bukaKkpAsetNeto(key) {
     if (!window._akunKasCache) await loadDataFormTransaksi();
     if (!_calkLaporan) { _calkLaporan = await hitungLaporanKeuangan(); }
     await muatKkpAsetNetoData();
-    document.getElementById('kkp-asetneto-screen').style.display = 'flex';
+    siasfaBukaKkpDetail('kkpAnWrap');
     await renderKkpAsetNetoScreen();
 }
-function tutupKkpAsetNeto() { document.getElementById('kkp-asetneto-screen').style.display = 'none'; }
+function tutupKkpAsetNeto() { siasfaTutupSemuaKkpDetail(); }
 
 function kkpAsetNetoPenggunaanRowHtml(p) {
     p = p || {};
@@ -16568,8 +16800,6 @@ async function bukaPenugasanDetail(id) {
         await pdMuatIcq();
         await pdMuatDokumen();
         await pdMuatOpiniLai();
-        await muatKkpMap();
-        renderProsedurPemeriksaan();
         await muatTemuanSementara();
     } catch (e) {
         alert('ERROR SISTEM: ' + e.message);
@@ -16582,9 +16812,11 @@ function tutupPenugasanDetail() {
 }
 function switchPdTab(tab) {
     document.querySelectorAll('#penugasan-detail-screen .ct-tab-btn').forEach(function (el) { el.classList.remove('active'); });
+    document.querySelectorAll('#penugasan-detail-screen .menu-item').forEach(function (el) { el.classList.remove('active'); });
     document.querySelectorAll('#penugasan-detail-screen .ct-subpage').forEach(function (el) { el.classList.remove('active'); });
     document.getElementById('pdtab-' + tab).classList.add('active');
     document.getElementById('pdpage-' + tab).classList.add('active');
+    if (tab === 'prosedur') { pdSiapkanKkpTransaksi(); }
 }
 async function pdToggleSelesai() {
     if (!_pdAktifPenugasanId) return;
@@ -16621,64 +16853,124 @@ async function pdSimpanMaterialitas() {
 }
 
 /* ================= ICQ ================= */
-var _pdIcqCache = [];
+var ICQ_MASTER_LIST = [
+    { kelompok: 'Pemisahan Tugas', teks: 'Terdapat pemisahan tugas yang jelas antara Bendahara Umum dan Administratif dengan Bendahara Bidang Kegiatan.' },
+    { kelompok: 'Pemisahan Tugas', teks: 'Tugas dan tanggungjawab masing-masing bendahara terdapat bukti yang jelas berupa catatan.' },
+    { kelompok: 'Pemisahan Tugas', teks: 'Terdapat mekanisme pengawasan yang memadai untuk memastikan pemisahan tugas berjalan efektif.' },
+    { kelompok: 'Otorisasi Transaksi', teks: 'Terdapat prosedur yang tertulis dan jelas untuk setiap transaksi keuangan.' },
+    { kelompok: 'Otorisasi Transaksi', teks: 'Pihak yang memberi otorisasi atau menyusun prosedur adalah pihak yang independen dari pihak yang melakukan transaksi.' },
+    { kelompok: 'Otorisasi Transaksi', teks: 'Dokumen-dokumen prosedur tersimpan dengan rapi.' },
+    { kelompok: 'Bukti Pendukung Transaksi', teks: 'Setiap transaksi keuangan didukung oleh bukti-bukti yang lengkap, akurat, dan asli (kwitansi, faktur, atau nota).' },
+    { kelompok: 'Bukti Pendukung Transaksi', teks: 'Bukti transaksi tersimpan dengan rapi, sistematis, dan aman serta mudah diakses.' },
+    { kelompok: 'Bukti Pendukung Transaksi', teks: 'Terdapat sistem penomoran dan pengarsipan yang baik untuk bukti transaksi.' },
+    { kelompok: 'Pengendalian Kas', teks: 'Terdapat batasan uang maksimal yang disimpan secara tunai dan sisanya dimasukkan ke rekening.' },
+    { kelompok: 'Pengendalian Kas', teks: 'Uang tunai yang melebihi batas segera disetorkan ke rekening bank.' },
+    { kelompok: 'Pengendalian Kas', teks: 'Terdapat prosedur yang jelas untuk penyimpanan dan penjagaan uang tunai.' },
+    { kelompok: 'SOP Reimbursement', teks: 'Terdapat SOP reimbursement yang dijelaskan kepada anggota.' },
+    { kelompok: 'SOP Reimbursement', teks: 'SOP ditinjau dan diperbaharui setiap event sesuai evaluasi event sebelumnya.' },
+    { kelompok: 'SOP Reimbursement', teks: 'Bendahara tegas tidak memberikan reimbursement apabila tidak sesuai SOP.' },
+    { kelompok: 'Pengawasan Internal', teks: 'Terdapat pengawasan atau tindakan mencegah dan mendeteksi adanya potensi kecurangan.' },
+    { kelompok: 'Pengawasan Internal', teks: 'Pengawasan internal dilakukan oleh pihak independen.' },
+    { kelompok: 'Pengawasan Internal', teks: 'Hasil pengawasan internal didokumentasikan dan ditindaklanjuti.' },
+    { kelompok: 'Penggunaan Aplikasi SIASFA', teks: 'Bendahara telah menerima pelatihan penggunaan aplikasi pencatatan.' },
+    { kelompok: 'Penggunaan Aplikasi SIASFA', teks: 'Terdapat backup atau cadangan data untuk mengantisipasi aplikasi eror.' },
+    { kelompok: 'Penggunaan Aplikasi SIASFA', teks: 'Hanya pihak berwenang yang memiliki akses ke aplikasi.' }
+];
+
+var _pdIcqCache = {};
+
 async function pdMuatIcq() {
     try {
-        const { data, error } = await supabaseClient.from('audit_icq').select('*').eq('penugasan_id', _pdAktifPenugasanId).order('urutan', { ascending: true }).order('id', { ascending: true });
+        const { data, error } = await supabaseClient.from('audit_icq').select('*').eq('penugasan_id', _pdAktifPenugasanId);
         if (error) { alert('ERROR SUPABASE (ICQ): ' + error.message); return; }
-        _pdIcqCache = data || [];
+        _pdIcqCache = {};
+        (data || []).forEach(function (r) { _pdIcqCache[r.pertanyaan] = r; });
         renderPdIcq();
     } catch (e) { alert('ERROR SISTEM: ' + e.message); }
 }
+
 function renderPdIcq() {
     var wrap = document.getElementById('pdIcqRows');
     var html = '';
-    _pdIcqCache.forEach(function (q, i) {
-        html += '<div class="un-item-card" data-idx="' + i + '">' +
-            '<i class="ph ph-x-circle un-item-remove" onclick="pdHapusIcq(' + i + ')"></i>' +
-            '<div class="ct-field"><label>Pertanyaan</label><input type="text" class="pdicq-pertanyaan" value="' + (q.pertanyaan || '').replace(/"/g, '&quot;') + '"></div>' +
-            '<div class="ct-field"><label>Jawaban</label><select class="pdicq-jawaban"><option' + (q.jawaban === 'Ya' ? ' selected' : '') + '>Ya</option><option' + (q.jawaban === 'Tidak' ? ' selected' : '') + '>Tidak</option><option' + (q.jawaban === 'N/A' ? ' selected' : '') + '>N/A</option></select></div>' +
-            '<div class="ct-field" style="margin-bottom:0;"><label>Catatan</label><input type="text" class="pdicq-catatan" value="' + (q.catatan || '').replace(/"/g, '&quot;') + '"></div>' +
+    var kelompokTerakhir = null;
+    ICQ_MASTER_LIST.forEach(function (m) {
+        if (m.kelompok !== kelompokTerakhir) {
+            html += '<div class="icq-group-title">' + m.kelompok + '</div>';
+            kelompokTerakhir = m.kelompok;
+        }
+        var saved = _pdIcqCache[m.teks];
+        var jawaban = saved ? saved.jawaban : '';
+        html += '<div class="icq-item" data-kelompok="' + m.kelompok + '" data-teks="' + m.teks.replace(/"/g, '&quot;') + '" data-jawaban="' + jawaban + '">' +
+            '<div class="icq-item-teks">' + m.teks + '</div>' +
+            '<div class="icq-btn-row">' +
+            '<div class="icq-btn' + (jawaban === 'Ya' ? ' aktif-ya' : '') + '" onclick="pdPilihIcqJawaban(this,\'Ya\')">Ya</div>' +
+            '<div class="icq-btn' + (jawaban === 'Tidak' ? ' aktif-tidak' : '') + '" onclick="pdPilihIcqJawaban(this,\'Tidak\')">Tidak</div>' +
+            '<div class="icq-btn' + (jawaban === 'Tidak Relevan' ? ' aktif-tr' : '') + '" onclick="pdPilihIcqJawaban(this,\'Tidak Relevan\')">Tidak Relevan</div>' +
+            '</div>' +
+            '<input type="text" class="icq-catatan" placeholder="Catatan (opsional)..." value="' + (saved && saved.catatan ? saved.catatan.replace(/"/g, '&quot;') : '') + '">' +
             '</div>';
     });
-    wrap.innerHTML = html || '<div style="padding:12px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada pertanyaan ICQ.</div>';
+    wrap.innerHTML = html;
+    pdHitungSkorIcq();
 }
-function pdTambahIcq() {
-    _pdIcqCache.push({ pertanyaan: '', jawaban: 'N/A', catatan: '' });
-    renderPdIcq();
+
+function pdPilihIcqJawaban(el, jawaban) {
+    var item = el.closest('.icq-item');
+    item.querySelectorAll('.icq-btn').forEach(function (b) { b.classList.remove('aktif-ya', 'aktif-tidak', 'aktif-tr'); });
+    if (jawaban === 'Ya') el.classList.add('aktif-ya');
+    else if (jawaban === 'Tidak') el.classList.add('aktif-tidak');
+    else el.classList.add('aktif-tr');
+    item.dataset.jawaban = jawaban;
+    pdHitungSkorIcq();
 }
-function pdHapusIcq(i) {
-    var row = _pdIcqCache[i];
-    _pdIcqCache.splice(i, 1);
-    renderPdIcq();
-    if (row && row.id) { supabaseClient.from('audit_icq').delete().eq('id', row.id); }
+
+function pdHitungSkorIcq() {
+    var totalTidak = 0, totalApplicable = 0;
+    document.querySelectorAll('#pdIcqRows .icq-item').forEach(function (item) {
+        var jawaban = item.dataset.jawaban || '';
+        if (jawaban === 'Ya' || jawaban === 'Tidak') totalApplicable++;
+        if (jawaban === 'Tidak') totalTidak++;
+    });
+    var skor = totalApplicable > 0 ? Math.round((totalTidak / totalApplicable) * 126) : 0;
+    var opini = 'Belum Dinilai';
+    if (totalApplicable > 0) {
+        if (skor <= 60) opini = 'Baik';
+        else if (skor <= 75) opini = 'Baik ke Sedang';
+        else if (skor <= 90) opini = 'Sedang';
+        else if (skor <= 105) opini = 'Sedang ke Buruk';
+        else opini = 'Buruk';
+    }
+    document.getElementById('icqSkorValue').textContent = skor;
+    document.getElementById('icqOpiniValue').textContent = opini;
+    return { skor: skor, opini: opini };
 }
+
 async function pdSimpanIcq() {
     try {
-        var rows = document.querySelectorAll('#pdIcqRows .un-item-card');
         var payload = [];
-        rows.forEach(function (row, i) {
-            var pertanyaan = row.querySelector('.pdicq-pertanyaan').value.trim();
-            if (!pertanyaan) return;
-            var existingId = _pdIcqCache[i] ? _pdIcqCache[i].id : null;
-            var obj = {
+        document.querySelectorAll('#pdIcqRows .icq-item').forEach(function (item, i) {
+            var jawaban = item.dataset.jawaban || '';
+            if (!jawaban) return;
+            payload.push({
                 penugasan_id: _pdAktifPenugasanId,
-                pertanyaan: pertanyaan,
-                jawaban: row.querySelector('.pdicq-jawaban').value,
-                catatan: row.querySelector('.pdicq-catatan').value.trim(),
+                kelompok: item.getAttribute('data-kelompok'),
+                pertanyaan: item.getAttribute('data-teks'),
+                jawaban: jawaban,
+                catatan: item.querySelector('.icq-catatan').value.trim(),
                 urutan: i
-            };
-            if (existingId) obj.id = existingId;
-            payload.push(obj);
+            });
         });
-        if (payload.length === 0) { alert('Isi minimal 1 pertanyaan'); return; }
+        if (payload.length === 0) { alert('Jawab minimal 1 pertanyaan ICQ'); return; }
 
         await supabaseClient.from('audit_icq').delete().eq('penugasan_id', _pdAktifPenugasanId);
-        var toInsert = payload.map(function (p) { var c = Object.assign({}, p); delete c.id; return c; });
-        var res = await supabaseClient.from('audit_icq').insert(toInsert);
+        var res = await supabaseClient.from('audit_icq').insert(payload);
         if (res.error) { alert('ERROR SUPABASE (simpan ICQ): ' + res.error.message); return; }
 
-        alert('ICQ berhasil disimpan');
+        var hasil = pdHitungSkorIcq();
+        var res2 = await supabaseClient.from('audit_penugasan').update({ icq_skor: hasil.skor, icq_opini: hasil.opini }).eq('id', _pdAktifPenugasanId);
+        if (res2.error) { alert('ERROR SUPABASE (simpan skor ICQ): ' + res2.error.message); return; }
+
+        alert('ICQ berhasil disimpan. Skor: ' + hasil.skor + ' (' + hasil.opini + ')');
         await pdMuatIcq();
     } catch (e) { alert('ERROR SISTEM: ' + e.message); }
 }
@@ -16690,9 +16982,16 @@ async function pdMuatDokumen() {
         if (error) { alert('ERROR SUPABASE (dokumen): ' + error.message); return; }
         var html = '';
         (data || []).forEach(function (d) {
+            var ketTerlambat = '-';
+            if (d.deadline && d.diterima_at) {
+                var selisihHari = Math.round((new Date(d.diterima_at) - new Date(d.deadline)) / 86400000);
+                ketTerlambat = selisihHari > 0 ? ('Terlambat ' + selisihHari + ' hari') : 'Tepat Waktu';
+            } else if (d.deadline && !d.diterima_at) {
+                ketTerlambat = 'Belum Diterima';
+            }
             html += '<div class="report-row">' +
                 '<div class="report-icon"><i class="ph ph-file-text"></i></div>' +
-                '<div><div class="report-name">' + d.nama + '</div><div class="report-sub">' + (d.uploaded_at ? formatTanggalID(d.uploaded_at.slice(0, 10)) : '-') + '</div></div>' +
+                '<div><div class="report-name">' + d.nama + '</div><div class="report-sub">Deadline: ' + (d.deadline ? formatTanggalID(d.deadline) : '-') + ' &middot; Diterima: ' + (d.diterima_at ? formatTanggalID(d.diterima_at) : '-') + ' &middot; ' + ketTerlambat + '</div></div>' +
                 (d.file_url ? '<a href="' + d.file_url + '" target="_blank" style="margin-left:auto; font-size:0.72rem; color:var(--maroon); font-weight:700;"><i class="ph ph-eye"></i> Lihat</a>' : '') +
                 '<i class="ph ph-trash" style="color:var(--maroon); font-size:1.05rem; margin-left:10px; cursor:pointer;" onclick="pdHapusDokumen(' + d.id + ')"></i>' +
                 '</div>';
@@ -16704,6 +17003,8 @@ async function pdUploadDokumen() {
     try {
         var nama = document.getElementById('pdDokNama').value.trim();
         if (!nama) { alert('Nama dokumen wajib diisi'); return; }
+        var deadline = document.getElementById('pdDokDeadline').value || null;
+        var diterima = document.getElementById('pdDokDiterima').value || null;
         var fileInput = document.getElementById('pdDokFile');
         var file = fileInput.files[0];
         var fileUrl = null;
@@ -16714,11 +17015,13 @@ async function pdUploadDokumen() {
             if (up.error) { alert('ERROR UPLOAD: ' + up.error.message + ' (pastikan bucket "dokumen-audit" sudah dibuat di Supabase Storage)'); return; }
             fileUrl = supabaseClient.storage.from('dokumen-audit').getPublicUrl(path).data.publicUrl;
         }
-        var res = await supabaseClient.from('audit_dokumen').insert({ penugasan_id: _pdAktifPenugasanId, nama: nama, file_url: fileUrl });
+        var res = await supabaseClient.from('audit_dokumen').insert({ penugasan_id: _pdAktifPenugasanId, nama: nama, file_url: fileUrl, deadline: deadline, diterima_at: diterima });
         if (res.error) { alert('ERROR SUPABASE (simpan dokumen): ' + res.error.message); return; }
 
-        alert('Dokumen berhasil diupload');
+        alert('Dokumen berhasil dicatat');
         document.getElementById('pdDokNama').value = '';
+        document.getElementById('pdDokDeadline').value = '';
+        document.getElementById('pdDokDiterima').value = '';
         fileInput.value = '';
         document.getElementById('pdDokUploadZone').classList.remove('has-file');
         await pdMuatDokumen();
@@ -17109,7 +17412,8 @@ async function simpanTemuan() {
 
         alert('Temuan berhasil disimpan');
         document.getElementById('temuan-modal-overlay').style.display = 'none';
-        if (document.getElementById('kkp-kas-screen').style.display === 'flex') tutupKkpKas();
+        var _kkpKasWrapEl = document.getElementById('kkpKasWrap');
+        if (_kkpKasWrapEl && _kkpKasWrapEl.style.display !== 'none') tutupKkpKas();
         await muatTemuanSementara();
     } catch (e) { alert('ERROR SISTEM: ' + e.message); }
 }
@@ -17200,7 +17504,493 @@ async function ubahStatusTindakLanjut(id, statusBaru) {
         renderTindakLanjutRekap();
     } catch (e) { alert('ERROR SISTEM: ' + e.message); }
 }
+
+/* ================= KERTAS KERJA: VOUCHING PER TRANSAKSI ================= */
+var _kkpTrxCache = [];
+var _kkpTrxStatusMap = {};
+var _kkpTrxAktifJurnalId = null;
+
+async function pdSiapkanKkpTransaksi() {
+    if (!window._prokerCache) await loadDataFormTransaksi();
+    var sel = document.getElementById('kkpTrxFilterProker');
+    var opts = '<option value="">Semua Transaksi</option>';
+    (window._prokerCache || []).forEach(function (p) { opts += '<option value="' + p.id + '">Transaksi Proker ' + p.nama + '</option>'; });
+    sel.innerHTML = opts;
+    await muatKkpTransaksiList();
+}
+
+async function muatKkpTransaksiList() {
+    try {
+        var prokerId = document.getElementById('kkpTrxFilterProker').value;
+        var query = supabaseClient.from('jurnal_transaksi').select('id, kode, tanggal, keterangan, bendahara, proker_id, jurnal_detail(debit, kredit, akun_kas_id)').order('tanggal', { ascending: false });
+        if (prokerId) query = query.eq('proker_id', parseInt(prokerId));
+        const { data, error } = await query;
+        if (error) { alert('ERROR SUPABASE (kkp transaksi): ' + error.message); return; }
+
+        var statusRes = await supabaseClient.from('audit_kkp_transaksi').select('*').eq('penugasan_id', _pdAktifPenugasanId);
+        _kkpTrxStatusMap = {};
+        (statusRes.data || []).forEach(function (r) { _kkpTrxStatusMap[r.jurnal_id] = r; });
+
+        _kkpTrxCache = (data || []).map(function (trx) {
+            var nominal = 0;
+            (trx.jurnal_detail || []).forEach(function (d) { if (d.akun_kas_id) nominal += Math.abs((parseFloat(d.debit) || 0) - (parseFloat(d.kredit) || 0)); });
+            return { id: trx.id, kode: trx.kode, tanggal: trx.tanggal, keterangan: trx.keterangan, bendahara: trx.bendahara, nominal: nominal };
+        });
+        renderKkpTrxRows();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+function renderKkpTrxRows() {
+    var html = '';
+    var jumlahPeriksa = 0;
+    _kkpTrxCache.forEach(function (t) {
+        var st = _kkpTrxStatusMap[t.id];
+        var sudah = st && st.status && st.status !== 'Belum Diperiksa';
+        if (sudah) jumlahPeriksa++;
+        var badge = '<i class="ph ph-magnifying-glass" style="color:var(--text-gray);"></i>';
+        if (st && st.status === 'Sesuai') badge = '<i class="ph ph-check-circle" style="color:#16A34A;"></i>';
+        else if (st && st.status === 'Dokumen Tidak Lengkap') badge = '<i class="ph ph-warning-circle" style="color:#D97706;"></i>';
+        else if (st && st.status === 'Salah Saji Substantif') badge = '<i class="ph ph-flag" style="color:#DC2626;"></i>';
+        html += '<div class="ip-table-row" style="grid-template-columns:0.7fr 1.4fr 0.8fr 0.6fr;">' +
+            '<span style="font-size:0.68rem; color:var(--text-gray);">' + formatTanggalID(t.tanggal) + '</span>' +
+            '<span style="font-size:0.72rem; color:var(--text-dark);">' + t.keterangan + '</span>' +
+            '<span style="font-size:0.7rem; font-weight:700; color:var(--text-dark);">Rp ' + Math.round(t.nominal).toLocaleString('id-ID') + '</span>' +
+            '<span style="text-align:center; cursor:pointer; font-size:1.1rem;" onclick="bukaKkpTrxDetail(\'' + t.id + '\')">' + badge + '</span></div>';
+    });
+    document.getElementById('kkpTrxRows').innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Tidak ada transaksi.</div>';
+
+    document.getElementById('kkpTrxStatTotal').textContent = _kkpTrxCache.length;
+    document.getElementById('kkpTrxStatPeriksa').textContent = jumlahPeriksa;
+    document.getElementById('kkpTrxStatBelum').textContent = _kkpTrxCache.length - jumlahPeriksa;
+
+    var jumlahKelemahan = 0, netSalahSaji = 0;
+    Object.keys(_kkpTrxStatusMap).forEach(function (jid) {
+        var r = _kkpTrxStatusMap[jid];
+        if (r.status === 'Dokumen Tidak Lengkap') jumlahKelemahan++;
+        if (r.status === 'Salah Saji Substantif') {
+            var nilai = (_kkpTrxCache.find(function (t) { return String(t.id) === String(jid); }) || {}).nominal || 0;
+            if (r.kategori_kesalahan === 'Kurang Saji') netSalahSaji -= nilai; else netSalahSaji += nilai;
+        }
+    });
+    document.getElementById('kkpTrxTemuanKelemahan').textContent = jumlahKelemahan;
+    document.getElementById('kkpTrxTemuanSalahSaji').textContent = (netSalahSaji < 0 ? '(Rp ' + Math.abs(Math.round(netSalahSaji)).toLocaleString('id-ID') + ')' : 'Rp ' + Math.round(netSalahSaji).toLocaleString('id-ID'));
+}
+
+async function bukaKkpTrxDetail(jurnalId) {
+    try {
+        _kkpTrxAktifJurnalId = jurnalId;
+        const { data, error } = await supabaseClient
+            .from('jurnal_transaksi')
+            .select('id, kode, tanggal, keterangan, bendahara, proker_rab_id, proker_rab(kebutuhan, qty, harga), jurnal_detail(debit, kredit, akun_kas(nama, no_akun), coa_akun(nama, no_akun)), jurnal_nota(file_url)')
+            .eq('id', jurnalId).single();
+        if (error || !data) { alert('Data transaksi tidak ditemukan'); return; }
+
+        var jurnalHtml = '';
+        (data.jurnal_detail || []).forEach(function (d) {
+            var akun = d.akun_kas || d.coa_akun;
+            var debit = parseFloat(d.debit) || 0, kredit = parseFloat(d.kredit) || 0;
+            jurnalHtml += '<div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem;">' + (akun ? akun.nama : '-') + '</span><span style="font-size:0.74rem; font-weight:700; color:' + (debit > 0 ? 'var(--maroon)' : '#2563EB') + ';">' + (debit > 0 ? 'D ' : 'K ') + 'Rp ' + (debit || kredit).toLocaleString('id-ID') + '</span></div>';
+        });
+
+        var rabHtml = data.proker_rab ? ('<div style="font-size:0.78rem; color:var(--text-dark);">Pos RAB: <strong>' + data.proker_rab.kebutuhan + '</strong> &middot; RAB Rp ' + Math.round((data.proker_rab.qty || 0) * (data.proker_rab.harga || 0)).toLocaleString('id-ID') + '</div>') : '<div style="font-size:0.78rem; color:var(--text-gray);">Transaksi ini tidak dikaitkan dengan pos RAB manapun.</div>';
+
+        var galeriHtml = '';
+        (data.jurnal_nota || []).forEach(function (n) {
+            var isPdf = /\.pdf($|\?)/i.test(n.file_url);
+            galeriHtml += '<div class="nota-card" onclick="window.open(\'' + n.file_url + '\',\'_blank\')" style="cursor:pointer;"><div class="nota-img">' + (isPdf ? '<i class="ph ph-file-pdf"></i>' : '<img src="' + n.file_url + '" style="width:100%; height:100%; object-fit:cover;">') + '</div></div>';
+        });
+        if (!galeriHtml) galeriHtml = '<div style="grid-column:1/-1; text-align:center; color:var(--text-gray); font-size:0.76rem; padding:14px 0;">Tidak ada dokumen bukti terlampir.</div>';
+
+        var saved = _kkpTrxStatusMap[jurnalId] || {};
+
+        document.getElementById('kkpTrxDetailBody').innerHTML =
+            '<div class="kkp-info-box"><div class="kkp-info-value" style="font-weight:800; color:var(--maroon);">' + data.keterangan + '</div><div class="kkp-info-label" style="margin-top:4px;">' + formatTanggalID(data.tanggal) + ' &middot; ' + data.bendahara + '</div></div>' +
+            '<div class="calk-sub-title">A. Jurnal Transaksi</div>' +
+            '<div class="ip-table-wrap">' + jurnalHtml + '</div>' +
+            '<div class="calk-sub-title">B. Perealisasian RAB</div>' + rabHtml +
+            '<div class="calk-sub-title">C. Dokumen Bukti</div>' +
+            '<div class="nota-grid">' + galeriHtml + '</div>' +
+            '<div class="calk-sub-title">Kesimpulan Pemeriksaan</div>' +
+            '<div class="tandai-status-choice" style="flex-wrap:wrap;">' +
+            '<div class="tandai-status-btn' + (saved.status === 'Sesuai' ? ' aktif-hijau' : '') + '" id="kkpTrxBtnSesuai" onclick="pdPilihKesimpulanTrx(\'Sesuai\')">Sesuai</div>' +
+            '<div class="tandai-status-btn' + (saved.status === 'Dokumen Tidak Lengkap' ? ' aktif-merah' : '') + '" id="kkpTrxBtnDokumen" onclick="pdPilihKesimpulanTrx(\'Dokumen Tidak Lengkap\')">Dokumen Tidak Lengkap</div>' +
+            '<div class="tandai-status-btn' + (saved.status === 'Salah Saji Substantif' ? ' aktif-merah' : '') + '" id="kkpTrxBtnSalahSaji" onclick="pdPilihKesimpulanTrx(\'Salah Saji Substantif\')">Salah Saji Substantif</div>' +
+            '</div>' +
+            '<div id="kkpTrxFormTemuan" style="display:none; flex-direction:column; gap:12px; margin-top:12px;"></div>' +
+            '<button class="ct-submit-btn" id="kkpTrxBtnSimpanSesuai" style="margin-top:12px; display:' + (saved.status && saved.status !== 'Sesuai' ? 'none' : 'flex') + ';" onclick="simpanKesimpulanSesuai()"><i class="ph ph-check-circle"></i> Simpan (Sesuai) &amp; Lanjut</button>';
+
+        document.getElementById('kkp-trx-overlay').style.display = 'flex';
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+function tutupKkpTrxDetail() { document.getElementById('kkp-trx-overlay').style.display = 'none'; muatKkpTransaksiList(); }
+
+function pdPilihKesimpulanTrx(status) {
+    document.getElementById('kkpTrxBtnSesuai').classList.remove('aktif-hijau');
+    document.getElementById('kkpTrxBtnDokumen').classList.remove('aktif-merah');
+    document.getElementById('kkpTrxBtnSalahSaji').classList.remove('aktif-merah');
+    var formWrap = document.getElementById('kkpTrxFormTemuan');
+    var btnSesuai = document.getElementById('kkpTrxBtnSimpanSesuai');
+
+    if (status === 'Sesuai') {
+        document.getElementById('kkpTrxBtnSesuai').classList.add('aktif-hijau');
+        formWrap.style.display = 'none';
+        btnSesuai.style.display = 'flex';
+        return;
+    }
+    btnSesuai.style.display = 'none';
+    var kategoriOpts = status === 'Dokumen Tidak Lengkap'
+        ? ['Tidak Ditemukan Bukti', 'Bukti Tidak Lengkap', 'Bukti Diragukan Keabsahannya', 'Kelemahan Pengendalian & SOP']
+        : ['Lebih Saji', 'Kurang Saji'];
+
+    if (status === 'Dokumen Tidak Lengkap') document.getElementById('kkpTrxBtnDokumen').classList.add('aktif-merah');
+    else document.getElementById('kkpTrxBtnSalahSaji').classList.add('aktif-merah');
+
+    var saved = _kkpTrxStatusMap[_kkpTrxAktifJurnalId] || {};
+    formWrap.style.display = 'flex';
+    formWrap.innerHTML =
+        '<div class="ct-field"><label>Kategori Kesalahan</label><select id="kkpTrxKategori">' + kategoriOpts.map(function (k) { return '<option' + (saved.kategori_kesalahan === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select></div>' +
+        '<div class="ct-field"><label>Uraian Temuan</label><textarea id="kkpTrxUraian" rows="3" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;">' + (saved.uraian_temuan || '') + '</textarea></div>' +
+        '<div class="ct-field"><label>Rekomendasi</label><textarea id="kkpTrxRekomendasi" rows="3" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;">' + (saved.rekomendasi || '') + '</textarea></div>' +
+        '<div class="ct-field"><label>Dicatat Oleh</label><select id="kkpTrxDicatatOleh"></select></div>' +
+        '<div class="ct-field" style="margin-bottom:0;"><label>Tanggal</label><input type="date" id="kkpTrxTanggal" value="' + (saved.tanggal || '2026-09-01') + '"></div>' +
+        '<button class="ct-submit-btn" style="margin-top:6px;" onclick="simpanTemuanTrx(\'' + status + '\')"><i class="ph ph-floppy-disk"></i> Simpan Temuan</button>';
+
+    var selDicatat = document.getElementById('kkpTrxDicatatOleh');
+    selDicatat.innerHTML = (window._usersCache || []).map(function (u) { return '<option value="' + (u.nama || '') + '">' + (u.nama || '-') + '</option>'; }).join('');
+    if (saved.dicatat_oleh) selDicatat.value = saved.dicatat_oleh;
+    else if (_currentUser) selDicatat.value = _currentUser.nama;
+}
+
+async function simpanKesimpulanSesuai() {
+    try {
+        var payload = { penugasan_id: _pdAktifPenugasanId, jurnal_id: _kkpTrxAktifJurnalId, status: 'Sesuai', kategori_kesalahan: null, uraian_temuan: null, rekomendasi: null, dicatat_oleh: (_currentUser ? _currentUser.nama : '-'), tanggal: new Date().toISOString().slice(0, 10), updated_at: new Date().toISOString() };
+        var res = await supabaseClient.from('audit_kkp_transaksi').upsert(payload, { onConflict: 'penugasan_id,jurnal_id' });
+        if (res.error) { alert('ERROR SUPABASE (simpan kesimpulan): ' + res.error.message); return; }
+        alert('Transaksi ditandai Sesuai');
+        tutupKkpTrxDetail();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+async function simpanTemuanTrx(status) {
+    try {
+        var kategori = document.getElementById('kkpTrxKategori').value;
+        var uraian = document.getElementById('kkpTrxUraian').value.trim();
+        var rekomendasi = document.getElementById('kkpTrxRekomendasi').value.trim();
+        var dicatat = document.getElementById('kkpTrxDicatatOleh').value;
+        var tanggal = document.getElementById('kkpTrxTanggal').value;
+        if (!uraian) { alert('Uraian temuan wajib diisi'); return; }
+
+        var payload = { penugasan_id: _pdAktifPenugasanId, jurnal_id: _kkpTrxAktifJurnalId, status: status, kategori_kesalahan: kategori, uraian_temuan: uraian, rekomendasi: rekomendasi, dicatat_oleh: dicatat, tanggal: tanggal, updated_at: new Date().toISOString() };
+        var res = await supabaseClient.from('audit_kkp_transaksi').upsert(payload, { onConflict: 'penugasan_id,jurnal_id' });
+        if (res.error) { alert('ERROR SUPABASE (simpan temuan): ' + res.error.message); return; }
+
+        alert('Temuan berhasil disimpan');
+        tutupKkpTrxDetail();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
 </script>
 
+<script>
+/* =========================================================================
+   MODUL DANA KEBAJIKAN — Kas Dana Kebajikan [1-10006]
+   Sumber = seluruh jurnal (D) akun ini; Penggunaan = seluruh jurnal (K) akun ini
+   ========================================================================= */
+var _danaKebajikanAkunId = null;
+var _dkSumberCache = [];
+var _dkPenggunaanCache = [];
+
+async function bukaDanaKebajikan() {
+    document.getElementById('dana-kebajikan-screen').style.display = 'flex';
+    await muatDanaKebajikan();
+}
+function tutupDanaKebajikan() {
+    document.getElementById('dana-kebajikan-screen').style.display = 'none';
+}
+async function bukaDanaKebajikanDariLaporan() {
+    document.getElementById('dana-kebajikan-screen').style.display = 'flex';
+    await muatDanaKebajikan();
+    switchDkTab('laporan');
+}
+function switchDkTab(tab) {
+    document.querySelectorAll('#dana-kebajikan-screen .laporan-tab-btn').forEach(function (el) { el.classList.remove('active'); });
+    document.querySelectorAll('#dana-kebajikan-screen .laporan-subpage').forEach(function (el) { el.classList.remove('active'); });
+    document.getElementById('dktab-' + tab).classList.add('active');
+    document.getElementById('dkpage-' + tab).classList.add('active');
+}
+
+async function muatDanaKebajikan() {
+    try {
+        if (!window._akunKasCache) await muatDataKas();
+        var akunDK = (window._akunKasCache || []).find(function (a) {
+            return a.no_akun === '1-10006' || a.nama === 'Kas Dana Kebajikan';
+        });
+        if (!akunDK) {
+            document.getElementById('dkBody').innerHTML = '<div style="padding:20px; text-align:center; color:var(--maroon); font-size:0.8rem;">Akun "Kas Dana Kebajikan" [1-10006] belum ditemukan di tabel akun_kas. Tambahkan dulu akunnya.</div>';
+            return;
+        }
+        _danaKebajikanAkunId = akunDK.id;
+
+        var saldo = (window._saldoKasPerId && window._saldoKasPerId[akunDK.id]) || 0;
+        document.getElementById('dkTotalSaldo').textContent = 'Rp ' + Math.round(saldo).toLocaleString('id-ID');
+
+        const { data, error } = await supabaseClient
+            .from('jurnal_detail')
+            .select('id, jurnal_id, debit, kredit, jurnal_transaksi(id, kode, tanggal, keterangan, bendahara)')
+            .eq('akun_kas_id', akunDK.id)
+            .order('id', { ascending: true });
+        if (error) { alert('ERROR SUPABASE (dana kebajikan): ' + error.message); return; }
+
+        _dkSumberCache = [];
+        _dkPenggunaanCache = [];
+        (data || []).forEach(function (d) {
+            var trx = d.jurnal_transaksi;
+            if (!trx) return;
+            var debit = parseFloat(d.debit) || 0, kredit = parseFloat(d.kredit) || 0;
+            if (debit > 0) _dkSumberCache.push({ id: trx.id, tanggal: trx.tanggal, keterangan: trx.keterangan, nominal: debit });
+            if (kredit > 0) _dkPenggunaanCache.push({ id: trx.id, tanggal: trx.tanggal, keterangan: trx.keterangan, nominal: kredit });
+        });
+
+        renderDkTabelSumber();
+        renderDkTabelPenggunaan();
+        renderDkLaporan(saldo, akunDK);
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+function renderDkTabelSumber() {
+    var html = '';
+    _dkSumberCache.forEach(function (r) {
+        html += '<div class="ip-table-row" style="grid-template-columns:0.8fr 1.4fr 0.9fr; cursor:pointer;" onclick="bukaDetailJurnalDk(\'' + r.id + '\')">' +
+            '<span style="font-size:0.72rem; color:var(--text-gray);">' + formatTanggalID(r.tanggal) + '</span>' +
+            '<span style="font-size:0.74rem; color:var(--text-dark);">' + r.keterangan + '</span>' +
+            '<span style="font-size:0.74rem; font-weight:700; color:#16A34A; text-align:right;">Rp ' + Math.round(r.nominal).toLocaleString('id-ID') + '</span></div>';
+    });
+    document.getElementById('dkSumberRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada sumber dana kebajikan.</div>';
+    var total = _dkSumberCache.reduce(function (s, r) { return s + r.nominal; }, 0);
+    document.getElementById('dkSumberTotal').textContent = 'Rp ' + Math.round(total).toLocaleString('id-ID');
+}
+function renderDkTabelPenggunaan() {
+    var html = '';
+    _dkPenggunaanCache.forEach(function (r) {
+        html += '<div class="ip-table-row" style="grid-template-columns:0.8fr 1.4fr 0.9fr; cursor:pointer;" onclick="bukaDetailJurnalDk(\'' + r.id + '\')">' +
+            '<span style="font-size:0.72rem; color:var(--text-gray);">' + formatTanggalID(r.tanggal) + '</span>' +
+            '<span style="font-size:0.74rem; color:var(--text-dark);">' + r.keterangan + '</span>' +
+            '<span style="font-size:0.74rem; font-weight:700; color:var(--maroon); text-align:right;">Rp ' + Math.round(r.nominal).toLocaleString('id-ID') + '</span></div>';
+    });
+    document.getElementById('dkPenggunaanRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada penyaluran dana kebajikan.</div>';
+    var total = _dkPenggunaanCache.reduce(function (s, r) { return s + r.nominal; }, 0);
+    document.getElementById('dkPenggunaanTotal').textContent = 'Rp ' + Math.round(total).toLocaleString('id-ID');
+}
+
+async function bukaDetailJurnalDk(jurnalId) {
+    try {
+        if (!_riwayatCache || _riwayatCache.length === 0) { await muatRiwayatDanBukuBesar(); }
+        var ada = _riwayatCache.find(function (t) { return String(t.id) === String(jurnalId); });
+        if (ada) { bukaDetailJurnal(jurnalId); return; }
+
+        const { data, error } = await supabaseClient
+            .from('jurnal_transaksi')
+            .select('id, kode, tanggal, keterangan, bendahara, jenis, jurnal_detail(debit, kredit, akun_kas(nama, no_akun), coa_akun(nama, no_akun))')
+            .eq('id', jurnalId).single();
+        if (error || !data) { alert('Data jurnal tidak ditemukan'); return; }
+        _riwayatCache.push(data);
+        bukaDetailJurnal(jurnalId);
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+function renderDkLaporan(saldoAkhir, akunDK) {
+    var totalSumber = _dkSumberCache.reduce(function (s, r) { return s + r.nominal; }, 0);
+    var totalPenggunaan = _dkPenggunaanCache.reduce(function (s, r) { return s + r.nominal; }, 0);
+    var saldoAwal = parseFloat(akunDK.saldo_awal) || 0;
+
+    var html = '<div class="lp-report-box">' +
+        '<div class="lp-report-header"><div class="lp-report-title">LAPORAN SUMBER DAN PENYALURAN DANA KEBAJIKAN</div><div class="lp-report-sub">Per ' + tanggalLaporanHariIni() + '</div></div>' +
+        '<div class="lp-line first"><span>Sumber Dana Kebajikan</span><span></span></div>';
+    _dkSumberCache.forEach(function (r) {
+        html += '<div class="lp-sub-item"><span>' + r.keterangan + '</span><span>Rp ' + Math.round(r.nominal).toLocaleString('id-ID') + '</span></div>';
+    });
+    if (_dkSumberCache.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+    html += '<div class="lp-line"><span>Total Sumber Dana</span><span>Rp ' + Math.round(totalSumber).toLocaleString('id-ID') + '</span></div>';
+
+    html += '<div class="lp-line" style="margin-top:6px;"><span>Penyaluran Dana Kebajikan</span><span></span></div>';
+    _dkPenggunaanCache.forEach(function (r) {
+        html += '<div class="lp-sub-item"><span>' + r.keterangan + '</span><span>Rp ' + Math.round(r.nominal).toLocaleString('id-ID') + '</span></div>';
+    });
+    if (_dkPenggunaanCache.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+    html += '<div class="lp-line"><span>Total Penyaluran</span><span>Rp ' + Math.round(totalPenggunaan).toLocaleString('id-ID') + '</span></div>';
+
+    html += '<div class="lp-line" style="margin-top:6px;"><span>Kenaikan (Penurunan) Dana</span><span>Rp ' + Math.round(totalSumber - totalPenggunaan).toLocaleString('id-ID') + '</span></div>';
+    html += '<div class="lp-line"><span>Saldo Awal Dana Kebajikan</span><span>Rp ' + Math.round(saldoAwal).toLocaleString('id-ID') + '</span></div>';
+    html += '<div class="lp-line lp-final"><span>Saldo Akhir Dana Kebajikan</span><span>Rp ' + Math.round(saldoAkhir).toLocaleString('id-ID') + '</span></div>';
+    html += '</div>' +
+        '<button class="btn-download-all" style="margin-top:14px;" onclick="unduhLaporanDanaKebajikanPdf()"><i class="ph ph-file-pdf"></i> Unduh Laporan Dana Kebajikan (PDF)</button>';
+
+    document.getElementById('dkLaporanBox').innerHTML = html;
+}
+
+async function unduhLaporanDanaKebajikanPdf() {
+    if (!_danaKebajikanAkunId) { alert('Data belum termuat, buka dulu menu Dana Kebajikan'); return; }
+    var akunDK = (window._akunKasCache || []).find(function (a) { return a.id === _danaKebajikanAkunId; });
+    var saldoAwal = akunDK ? (parseFloat(akunDK.saldo_awal) || 0) : 0;
+    var saldoAkhir = (window._saldoKasPerId && window._saldoKasPerId[_danaKebajikanAkunId]) || 0;
+    var totalSumber = _dkSumberCache.reduce(function (s, r) { return s + r.nominal; }, 0);
+    var totalPenggunaan = _dkPenggunaanCache.reduce(function (s, r) { return s + r.nominal; }, 0);
+
+    var doc = pdfBaru();
+    var y = pdfKop(doc, 'LAPORAN SUMBER DAN PENYALURAN DANA KEBAJIKAN', 'Per ' + tanggalLaporanHariIni());
+
+    y = pdfSeksi(doc, y, 'SUMBER DANA KEBAJIKAN');
+    var sumberBody = _dkSumberCache.map(function (r) { return [formatTanggalID(r.tanggal), r.keterangan, fmtRp(r.nominal)]; });
+    y = pdfTabel(doc, y + 4, ['Tanggal', 'Keterangan', 'Nominal (Rp)'], sumberBody.length ? sumberBody : [['-', 'Nihil', '-']], { columnStyles: { 2: { halign: 'right' } } }) + 4;
+    doc.setFont('times', 'bold'); doc.setFontSize(9);
+    doc.text('Total Sumber Dana: ' + fmtRp(totalSumber), 34, y + 8);
+    y += 24;
+
+    y = pdfSeksi(doc, y, 'PENYALURAN DANA KEBAJIKAN');
+    var pakaiBody = _dkPenggunaanCache.map(function (r) { return [formatTanggalID(r.tanggal), r.keterangan, fmtRp(r.nominal)]; });
+    y = pdfTabel(doc, y + 4, ['Tanggal', 'Keterangan', 'Nominal (Rp)'], pakaiBody.length ? pakaiBody : [['-', 'Nihil', '-']], { columnStyles: { 2: { halign: 'right' } } }) + 4;
+    doc.setFont('times', 'bold'); doc.setFontSize(9);
+    doc.text('Total Penyaluran: ' + fmtRp(totalPenggunaan), 34, y + 8);
+    y += 24;
+
+    y = pdfSeksi(doc, y, 'RINGKASAN');
+    var ringkasan = [
+        ['Kenaikan (Penurunan) Dana', fmtRp(totalSumber - totalPenggunaan)],
+        ['Saldo Awal Dana Kebajikan', fmtRp(saldoAwal)],
+        ['Saldo Akhir Dana Kebajikan', fmtRp(saldoAkhir)]
+    ];
+    pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], ringkasan, { columnStyles: { 1: { halign: 'right', fontStyle: 'bold' } } });
+
+    pdfTutup(doc, 'Laporan-Dana-Kebajikan-' + Date.now() + '.pdf');
+}
+</script>
+<script>
+/* =========================================================================
+   SIASFA — MENU SETTING (Pembatasan / COA / Tutup Buku) di tab Profil
+   ========================================================================= */
+function bukaSettingPembatasan() {
+    document.getElementById('setting-pembatasan-screen').style.display = 'flex';
+    muatPlottingAkun();
+}
+function tutupSettingPembatasan() {
+    document.getElementById('setting-pembatasan-screen').style.display = 'none';
+}
+
+function bukaTutupBukuScreen() {
+    document.getElementById('tutup-buku-screen').style.display = 'flex';
+}
+function tutupTutupBukuScreen() {
+    document.getElementById('tutup-buku-screen').style.display = 'none';
+}
+
+/* ---------- Setting COA ---------- */
+var _settingCoaCache = [];
+var _settingCoaFilterAktif = 'semua';
+var _settingCoaEditId = null;
+
+async function bukaSettingCoa() {
+    document.getElementById('setting-coa-screen').style.display = 'flex';
+    await muatSettingCoaList();
+}
+function tutupSettingCoa() {
+    document.getElementById('setting-coa-screen').style.display = 'none';
+}
+
+async function muatSettingCoaList() {
+    try {
+        const { data, error } = await supabaseClient.from('coa_akun').select('*').order('no_akun', { ascending: true });
+        if (error) { alert('ERROR SUPABASE (coa): ' + error.message); return; }
+        _settingCoaCache = data || [];
+        window._coaAkunCache = _settingCoaCache;
+        renderSettingCoaList();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+function filterSettingCoaTipe(tipe) {
+    _settingCoaFilterAktif = tipe;
+    document.querySelectorAll('#setting-coa-screen .laporan-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    var idMap = { semua: 'coaftab-semua', aset: 'coaftab-aset', kewajiban: 'coaftab-kewajiban', pendapatan: 'coaftab-pendapatan', beban: 'coaftab-beban' };
+    document.getElementById(idMap[tipe]).classList.add('active');
+    renderSettingCoaList();
+}
+
+function renderSettingCoaList() {
+    var wrap = document.getElementById('settingCoaList');
+    var daftar = _settingCoaFilterAktif === 'semua' ? _settingCoaCache : _settingCoaCache.filter(function (c) { return c.tipe === _settingCoaFilterAktif; });
+
+    if (daftar.length === 0) {
+        wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada akun pada kategori ini.</div>';
+        return;
+    }
+
+    var labelTipe = { aset: 'Aset', kewajiban: 'Kewajiban', pendapatan: 'Pendapatan', beban: 'Beban' };
+    var html = '';
+    daftar.forEach(function (c) {
+        html += '<div class="report-row" style="cursor:pointer;" onclick="bukaModalTambahCoa(' + c.id + ')">' +
+            '<div class="report-icon"><i class="ph ph-hash"></i></div>' +
+            '<div><div class="report-name">' + c.no_akun + ' &mdash; ' + c.nama + '</div><div class="report-sub">' + (labelTipe[c.tipe] || c.tipe) + '</div></div>' +
+            '<i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i></div>';
+    });
+    wrap.innerHTML = html;
+}
+
+function bukaModalTambahCoa(id) {
+    _settingCoaEditId = id || null;
+    if (id) {
+        var c = _settingCoaCache.find(function (x) { return x.id === id; });
+        if (!c) return;
+        document.getElementById('coaModalTitle').textContent = 'Ubah Akun';
+        document.getElementById('coaNoAkun').value = c.no_akun;
+        document.getElementById('coaNamaAkun').value = c.nama;
+        document.getElementById('coaTipeAkun').value = c.tipe;
+        document.getElementById('coaHapusBtn').style.display = 'block';
+    } else {
+        document.getElementById('coaModalTitle').textContent = 'Tambah Akun';
+        document.getElementById('coaNoAkun').value = '';
+        document.getElementById('coaNamaAkun').value = '';
+        document.getElementById('coaTipeAkun').value = 'aset';
+        document.getElementById('coaHapusBtn').style.display = 'none';
+    }
+    document.getElementById('modal-coa-overlay').style.display = 'flex';
+}
+function tutupModalTambahCoa() {
+    document.getElementById('modal-coa-overlay').style.display = 'none';
+}
+async function simpanCoa() {
+    try {
+        var noAkun = document.getElementById('coaNoAkun').value.trim();
+        var nama = document.getElementById('coaNamaAkun').value.trim();
+        var tipe = document.getElementById('coaTipeAkun').value;
+        if (!noAkun || !nama) { alert('No. Akun dan Nama Akun wajib diisi'); return; }
+
+        var payload = { no_akun: noAkun, nama: nama, tipe: tipe };
+        var res = _settingCoaEditId
+            ? await supabaseClient.from('coa_akun').update(payload).eq('id', _settingCoaEditId)
+            : await supabaseClient.from('coa_akun').insert(payload);
+        if (res.error) { alert('ERROR SUPABASE (simpan akun): ' + res.error.message); return; }
+
+        alert('Akun berhasil disimpan');
+        tutupModalTambahCoa();
+        await muatSettingCoaList();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+async function hapusCoa() {
+    if (!_settingCoaEditId) return;
+    if (!await siasfaConfirm('Hapus akun ini? Akun yang sudah pernah dipakai di jurnal tidak disarankan untuk dihapus karena dapat merusak riwayat laporan.', 'Hapus Akun', { danger: true })) return;
+    try {
+        var res = await supabaseClient.from('coa_akun').delete().eq('id', _settingCoaEditId);
+        if (res.error) { alert('ERROR SUPABASE (hapus akun): ' + res.error.message); return; }
+        tutupModalTambahCoa();
+        await muatSettingCoaList();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+</script>
 </body>
 </html>
