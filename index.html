@@ -6293,6 +6293,26 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
             _catatDariRiwayat = false;
             await loadDataFormTransaksi();
 
+            // FIX: kembalikan tombol Simpan yang mungkin masih "terkunci" ke updateJurnal()
+            // dari sesi editJurnal() sebelumnya, supaya transaksi baru tidak menimpa jurnal lama.
+            (function siasfaResetTombolCatatTransaksi() {
+                var btnUmum = document.querySelector('#ctpage-umum .ct-submit-btn');
+                if (btnUmum) {
+                    btnUmum.onclick = function () { simpanTransaksi('Jurnal Umum'); };
+                    btnUmum.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> Simpan Transaksi';
+                }
+                var btnPenerimaan = document.querySelector('#ctpage-penerimaan .ct-submit-btn');
+                if (btnPenerimaan) {
+                    btnPenerimaan.onclick = function () { simpanTransaksi('Penerimaan'); };
+                    btnPenerimaan.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> Submit Transaksi';
+                }
+                var btnPengeluaran = document.querySelector('#ctpage-pengeluaran .ct-submit-btn');
+                if (btnPengeluaran) {
+                    btnPengeluaran.onclick = function () { simpanTransaksi('Pengeluaran'); };
+                    btnPengeluaran.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> Submit Transaksi';
+                }
+            })();
+
             isiSelectBendahara('ctBendaharaUmum');
             isiSelectBendahara('ctBendaharaPenerimaan');
             isiSelectBendahara('ctBendaharaPengeluaran');
@@ -6336,6 +6356,19 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         alert('Data jurnal tidak ditemukan.');
         return;
     }
+
+    // PERINGATAN: kalau jurnal ini terkait modul Peralatan / Utang Piutang,
+    // mengedit nominal di sini TIDAK otomatis menyesuaikan data di modul tersebut.
+    try {
+        var cekPrl = await supabaseClient.from('peralatan').select('id').or('jurnal_id.eq.' + jurnalId + ',jurnal_keluar_id.eq.' + jurnalId);
+        var cekUv = await supabaseClient.from('utang_vendor').select('id').eq('jurnal_id', jurnalId);
+        var cekUa = await supabaseClient.from('utang_anggota').select('id').eq('jurnal_id', jurnalId);
+        var cekPa = await supabaseClient.from('piutang_anggota').select('id').eq('jurnal_id', jurnalId);
+        var adaKaitan = (cekPrl.data && cekPrl.data.length) || (cekUv.data && cekUv.data.length) || (cekUa.data && cekUa.data.length) || (cekPa.data && cekPa.data.length);
+        if (adaKaitan) {
+            alert('Perhatian: jurnal ini terkait data di modul Peralatan dan/atau Utang Piutang. Perubahan nominal di sini TIDAK otomatis mengubah data di modul tersebut — cek & sesuaikan manual di menu Peralatan / Utang Piutang setelah menyimpan.');
+        }
+    } catch (e) { /* abaikan jika gagal cek, jangan blokir proses edit */ }
 
     _catatDariRiwayat = true;
     await loadDataFormTransaksi();
@@ -10728,6 +10761,25 @@ async function hapusJurnal(jurnalId) {
         var delNota = await supabaseClient.from('jurnal_nota').delete().eq('jurnal_id', jurnalId);
         if (delNota.error) { alert('ERROR SUPABASE (hapus nota): ' + delNota.error.message); return; }
 
+        // FIX: sinkronkan modul Peralatan saat jurnal terkait dihapus.
+        // (a) Jurnal ini MENCATAT pembelian peralatan -> hapus juga data peralatannya.
+        var prlBeli = await supabaseClient.from('peralatan').select('id').eq('jurnal_id', jurnalId);
+        if (prlBeli.error) { alert('ERROR SUPABASE (cek peralatan beli): ' + prlBeli.error.message); return; }
+        if ((prlBeli.data || []).length > 0) {
+            var delPrlBeli = await supabaseClient.from('peralatan').delete().eq('jurnal_id', jurnalId);
+            if (delPrlBeli.error) { alert('ERROR SUPABASE (hapus peralatan): ' + delPrlBeli.error.message); return; }
+        }
+        // (b) Jurnal ini MENCATAT penjualan/penghapusan peralatan -> kembalikan status jadi Aktif.
+        var prlKeluar = await supabaseClient.from('peralatan').select('id').eq('jurnal_keluar_id', jurnalId);
+        if (prlKeluar.error) { alert('ERROR SUPABASE (cek peralatan keluar): ' + prlKeluar.error.message); return; }
+        if ((prlKeluar.data || []).length > 0) {
+            var revertPrl = await supabaseClient.from('peralatan').update({
+                status: 'Aktif', jenis_keluar: null, tanggal_keluar: null,
+                nominal_transaksi: 0, laba_rugi: 0, jurnal_keluar_id: null
+            }).eq('jurnal_keluar_id', jurnalId);
+            if (revertPrl.error) { alert('ERROR SUPABASE (revert peralatan): ' + revertPrl.error.message); return; }
+        }
+
         var uv = await supabaseClient.from('utang_vendor').select('id').eq('jurnal_id', jurnalId);
         if (uv.error) { alert('ERROR SUPABASE (cek utang vendor): ' + uv.error.message); return; }
         for (var i = 0; i < (uv.data || []).length; i++) {
@@ -10760,6 +10812,11 @@ async function hapusJurnal(jurnalId) {
         await muatDataKas();
         await muatProgramKerja();
         await muatStatMasukKeluar();
+        if (typeof muatPeralatan === 'function') { await muatPeralatan(); }
+        if (document.getElementById('utang-piutang-screen') && document.getElementById('utang-piutang-screen').style.display === 'flex') {
+            await muatUtangPiutang();
+            renderRincianAkunUP();
+        }
 
     } catch (e) {
         alert('ERROR SISTEM: ' + e.message);
