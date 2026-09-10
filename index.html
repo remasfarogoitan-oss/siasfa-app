@@ -1666,8 +1666,8 @@
         /* ====================================================== */
         .pf-section-title { font-size: var(--fs-md); font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
         .pf-section-sub { font-size: 0.72rem; color: var(--text-gray); font-weight: 500; margin-bottom: 12px; line-height: 1.4; }
-        .pf-plot-table { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
-        .pf-plot-head { display: grid; grid-template-columns: 1.3fr 1fr 0.9fr; gap: 6px; background: var(--paper-soft); padding: 9px 10px; font-size: 0.6rem; font-weight: 700; color: var(--text-gray); text-transform: uppercase; }
+        .pf-plot-table { border: 1px solid var(--line); border-radius: 14px; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; max-height: 55vh; }
+        .pf-plot-head { display: grid; grid-template-columns: 1.3fr 1fr 0.9fr; gap: 6px; background: var(--paper-soft); padding: 9px 10px; font-size: 0.6rem; font-weight: 700; color: var(--text-gray); text-transform: uppercase; position: sticky; top: 0; z-index: 1; }
         .pf-plot-row { display: grid; grid-template-columns: 1.3fr 1fr 0.9fr; gap: 6px; align-items: center; padding: 9px 10px; border-top: 1px solid var(--line); }
         .pf-plot-akun { font-size: 0.7rem; font-weight: 600; color: var(--text-dark); line-height: 1.3; }
         .pf-plot-row select { border: 1px solid var(--border-gray); border-radius: 8px; padding: 6px 6px; font-size: 0.66rem; color: var(--text-dark); outline: none; width: 100%; }
@@ -2469,7 +2469,7 @@
     <div class="mobile-app">
 
         <!-- ================= BAGIAN 1: LAYAR LOGIN (tidak diubah) ================= -->
-        <div id="login-screen">
+        <div id="login-screen" style="display:none;">
             <div class="header-area">
                 <h1>Welcome,<br><span class="subtitle">Bendahara Remasfa!</span></h1>
                 <i class="ph ph-dots-three menu-icon"></i>
@@ -2491,7 +2491,6 @@
                 <a href="#" class="forgot-link" onclick="event.preventDefault(); bukaModalLupaPassword();">Forgot password?</a>
 
                 <button type="submit" class="btn-signin">SIGN IN</button>
-                <button type="button" class="btn-guest" onclick="masukSebagaiTamu()">Masuk sebagai tamu</button>
 
                 <div class="bottom-area" style="margin-top: 30px;">
                     <div class="copyright-text">&copy; Steering Committee Remasfa 2026</div>
@@ -2536,7 +2535,7 @@
         </div>
 
         <!-- ================= LAYAR DASHBOARD TAMU (PUBLIK) — REDESAIN ================= -->
-        <div id="guest-dashboard-screen" style="display:none; flex-direction:column; height:100%; background:#FFFFFF;">
+        <div id="guest-dashboard-screen" style="display:flex; flex-direction:column; height:100%; background:#FFFFFF;">
 
             <div class="app-header-wrap">
                 <div style="display:flex; align-items:center; justify-content:space-between;">
@@ -2544,7 +2543,7 @@
                         <div class="header-simple-title">Selamat Datang,</div>
                         <div class="header-simple-sub" style="color:#FFFFFF; opacity:0.95; font-weight:700; font-size:0.95rem;">Jamaah Masjid Fadhlillah</div>
                     </div>
-                    <div class="header-icon-circle" onclick="keluarTamu()"><i class="ph ph-sign-out"></i></div>
+                    <div class="header-icon-circle" onclick="keluarTamu()"><i class="ph ph-sign-in"></i></div>
                 </div>
             </div>
 
@@ -2698,13 +2697,13 @@
                     <div class="stat-row">
                         <div class="stat-box in">
                             <div class="stat-icon"><i class="ph ph-arrow-down-left"></i></div>
-                            <div class="stat-label">Arus Kas Masuk (Jurnal, Bulan Ini)</div>
+                            <div class="stat-label">Arus Kas Masuk</div>
                             <div class="stat-amount" id="statMasukAmount">Rp 0</div>
                             <div class="stat-delta up" id="statMasukDelta"><i class="ph-fill ph-arrow-up"></i> 0% dari bulan lalu</div>
                         </div>
                         <div class="stat-box out">
                             <div class="stat-icon"><i class="ph ph-arrow-up-right"></i></div>
-                            <div class="stat-label">Arus Kas Keluar (Jurnal, Bulan Ini)</div>
+                            <div class="stat-label">Arus Kas Keluar</div>
                             <div class="stat-amount" id="statKeluarAmount">Rp 0</div>
                             <div class="stat-delta down" id="statKeluarDelta"><i class="ph-fill ph-arrow-down"></i> 0% dari bulan lalu</div>
                         </div>
@@ -2725,15 +2724,15 @@
                             <div class="ledger-title">Menu Utama</div>
                         </div>
                         <div class="menu-grid">
-                             <div class="menu-item" onclick="bukaCatatTransaksi()">
+                             <div class="menu-item" id="menuCatatTransaksi" onclick="bukaCatatTransaksi()">
                                 <div class="menu-icon-box utama"><i class="ph ph-note-pencil"></i></div>
                                 <div class="menu-label">Catat Transaksi</div>
                             </div>
-                            <div class="menu-item" onclick="bukaUploadNota()">
+                            <div class="menu-item" id="menuUploadNota" onclick="bukaUploadNota()">
                                 <div class="menu-icon-box utama"><i class="ph ph-upload-simple"></i></div>
                                 <div class="menu-label">Upload Nota</div>
                             </div>
-                            <div class="menu-item" onclick="bukaRiwayat()">
+                            <div class="menu-item" id="menuRiwayat" onclick="bukaRiwayat()">
                                 <div class="menu-icon-box utama"><i class="ph ph-clock-counter-clockwise"></i></div>
                                 <div class="menu-label">Riwayat</div>
                             </div>
@@ -2746,43 +2745,52 @@
                             <div class="ledger-title">Menu Lainnya</div>
                         </div>
                         <div class="menu-grid">
-                            <div class="menu-item" onclick="bukaProgramKerja()">
+                            <div class="menu-item" id="menuProgramKerja" onclick="bukaProgramKerja()">
                                 <div class="menu-icon-box"><i class="ph ph-buildings"></i></div>
                                 <div class="menu-label">Program Kerja</div>
                             </div>
-                            <div class="menu-item" onclick="bukaRekBank()">
-                                <div class="menu-icon-box"><i class="ph ph-credit-card"></i></div>
-                                <div class="menu-label">Rekening Bank</div>
+                            <div class="menu-item" id="menuInfaqHarian" onclick="bukaInfaq()">
+                                <div class="menu-icon-box"><i class="ph ph-hand-heart"></i></div>
+                                <div class="menu-label">Infaq Harian</div>
                             </div>
-                            <div class="menu-item" id="menuPemeriksaan" style="display:none;" onclick="bukaPemeriksaan()">
-                                <div class="menu-icon-box"><i class="ph ph-check-square"></i></div>
-                                <div class="menu-label">Pemeriksaan</div>
+                            <div class="menu-item" id="menuIuran" onclick="bukaIuran()">
+                                <div class="menu-icon-box"><i class="ph ph-users"></i></div>
+                                <div class="menu-label">Iuran</div>
+                            </div>
+                            <div class="menu-item" id="menuPenjualan" onclick="bukaPenjualan()">
+                                <div class="menu-icon-box"><i class="ph ph-shopping-cart"></i></div>
+                                <div class="menu-label">Penjualan</div>
+                            </div>
+                            <div class="menu-item" id="menuUtangPiutang" onclick="bukaUtangPiutang()">
+                                <div class="menu-icon-box"><i class="ph ph-handshake"></i></div>
+                                <div class="menu-label">Utang Piutang</div>
                             </div>
                             <div class="menu-item" id="menuWbsData" style="display:none;" onclick="bukaWbsData()">
                                 <div class="menu-icon-box"><i class="ph ph-flag"></i></div>
                                 <div class="menu-label">WBS Data</div>
                             </div>
-                            <div class="menu-item" onclick="bukaIuran()">
-                                <div class="menu-icon-box"><i class="ph ph-users"></i></div>
-                                <div class="menu-label">Iuran</div>
+                            <div class="menu-item" id="menuPemeriksaan" style="display:none;" onclick="bukaPemeriksaan()">
+                                <div class="menu-icon-box"><i class="ph ph-check-square"></i></div>
+                                <div class="menu-label">Pemeriksaan</div>
                             </div>
-                            <div class="menu-item" onclick="bukaPenjualan()">
-                                <div class="menu-icon-box"><i class="ph ph-shopping-cart"></i></div>
-                                <div class="menu-label">Penjualan</div>
+                        </div>
+                    </div>
+
+                    <!-- Menu Pelaporan Khusus -->
+                    <div>
+                        <div class="ledger-head">
+                            <div class="ledger-title">Menu Pelaporan Khusus</div>
+                        </div>
+                        <div class="menu-grid">
+                            <div class="menu-item" id="menuRekBank" onclick="bukaRekBank()">
+                                <div class="menu-icon-box"><i class="ph ph-credit-card"></i></div>
+                                <div class="menu-label">Rekening Bank</div>
                             </div>
-                            <div class="menu-item" onclick="bukaInfaq()">
-                                <div class="menu-icon-box"><i class="ph ph-hand-heart"></i></div>
-                                <div class="menu-label">Infaq Harian</div>
-                            </div>
-                            <div class="menu-item" onclick="bukaUtangPiutang()">
-                                <div class="menu-icon-box"><i class="ph ph-handshake"></i></div>
-                                <div class="menu-label">Utang Piutang</div>
-                            </div>
-                            <div class="menu-item" onclick="bukaPeralatan()">
+                            <div class="menu-item" id="menuPeralatan" onclick="bukaPeralatan()">
                                 <div class="menu-icon-box"><i class="ph ph-toolbox"></i></div>
-                                <div class="menu-label">Peralatan</div>
+                                <div class="menu-label">Daftar Aset Tetap</div>
                             </div>
-                            <div class="menu-item" onclick="bukaDanaKebajikan()">
+                            <div class="menu-item" id="menuDanaKebajikan" onclick="bukaDanaKebajikan()">
                                 <div class="menu-icon-box"><i class="ph ph-heart"></i></div>
                                 <div class="menu-label">Dana Kebajikan</div>
                             </div>
@@ -2947,9 +2955,13 @@
                         <button class="co-btn-secondary" style="flex:1;" onclick="bukaModalUbahPassword()"><i class="ph ph-key"></i> Ubah Password</button>
                     </div>
 
-                    <div>
+                    <div id="menuPengaturanBlok" style="display:none;">
                         <div class="ledger-head"><div class="ledger-title">Pengaturan</div></div>
                         <div class="menu-grid">
+                            <div class="menu-item" onclick="bukaDaftarUser()">
+                                <div class="menu-icon-box utama"><i class="ph ph-users-three"></i></div>
+                                <div class="menu-label">Daftar User</div>
+                            </div>
                             <div class="menu-item" onclick="bukaSettingPembatasan()">
                                 <div class="menu-icon-box utama"><i class="ph ph-lock-simple"></i></div>
                                 <div class="menu-label">Setting Pembatasan</div>
@@ -3044,7 +3056,7 @@
 
                     <div class="ct-field">
                         <label>Keterangan</label>
-                        <input type="text" placeholder="Jelaskan transaksi ini...">
+                        <input type="text" placeholder="Contoh: Pembelian Konsumsi Rapat Besar Ramadhan Ke-3">
                     </div>
 
                     <div class="ct-rab-box">
@@ -3107,7 +3119,7 @@
 
                     <div class="ct-field">
                         <label>Keterangan</label>
-                        <input type="text" placeholder="Contoh: Iuran anggota bulan April...">
+                        <input type="text" placeholder="Contoh: Iuran anggota bulan April">
                     </div>
 
                     <div class="ct-rab-box">
@@ -3170,7 +3182,7 @@
 
                     <div class="ct-field">
                         <label>Keterangan</label>
-                        <input type="text" placeholder="Contoh: Pembelian konsumsi rapat...">
+                        <input type="text" placeholder="Contoh: Pembelian Peralatan Dapur, Alat Kebersihan, dll">
                     </div>
 
                     <div class="ct-rab-box">
@@ -3439,9 +3451,9 @@
             <div class="ct-body">
 
                 <div class="ip-stat-row">
-                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-book-open"></i></div><div class="ip-stat-label">Total Jurnal Transaksi</div><div class="ip-stat-value" id="unStatTotalJurnal">0</div></div>
-                    <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-check-circle"></i></div><div class="ip-stat-label">Jurnal Dengan Nota</div><div class="ip-stat-value" id="unStatDenganNota">0</div></div>
-                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-x-circle"></i></div><div class="ip-stat-label">Jurnal Tanpa Nota</div><div class="ip-stat-value" id="unStatTanpaNota">0</div></div>
+                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-book-open"></i></div><div class="ip-stat-label">Total Transaksi</div><div class="ip-stat-value" id="unStatTotalJurnal">0</div></div>
+                    <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-check-circle"></i></div><div class="ip-stat-label">Transaksi Dengan Nota</div><div class="ip-stat-value" id="unStatDenganNota">0</div></div>
+                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-x-circle"></i></div><div class="ip-stat-label">Transaksi Tanpa Nota</div><div class="ip-stat-value" id="unStatTanpaNota">0</div></div>
                     <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-receipt"></i></div><div class="ip-stat-label">Total File Nota</div><div class="ip-stat-value" id="unStatTotalFile">0</div></div>
                 </div>
 
@@ -4353,7 +4365,7 @@
                 </div>
 
                 <div class="if-default-box">
-                    <div class="if-default-label"><i class="ph ph-link-simple"></i> Kas Penampung Otomatis: Kas Infaq Harian Ramadhan</div>
+                    <div class="if-default-label"><i class="ph ph-link-simple"></i> Kas Penampung: Kas Infaq Harian Ramadhan</div>
                 </div>
 
                 <div>
@@ -5351,6 +5363,91 @@
         </div>
     </div>
 
+    <!-- ================= LAYAR DAFTAR USER ================= -->
+    <div id="daftar-user-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDaftarUser()"></i>
+                <div class="ct-header-title">Daftar User</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="ip-stat-box full">
+                <div class="ip-stat-icon"><i class="ph ph-users-three"></i></div>
+                <div class="ip-stat-label">Total Akun Terdaftar</div>
+                <div class="ip-stat-value" id="duTotalAkun">0</div>
+            </div>
+            <div>
+                <div class="ledger-head"><div class="ledger-title">Daftar Akun</div></div>
+                <div id="duList" style="display:flex; flex-direction:column; gap:10px;">
+                    <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data akun...</div>
+                </div>
+            </div>
+            <button class="ct-submit-btn" onclick="bukaModalBuatUser()"><i class="ph ph-user-plus"></i> Buat Akun Baru</button>
+        </div>
+    </div>
+
+    <!-- ================= OVERLAY DETAIL / SETTING USER ================= -->
+    <div id="user-detail-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99980; align-items:flex-end; justify-content:center;">
+        <div class="co-modal">
+            <div class="co-modal-head">
+                <div class="co-modal-title">Data Akun</div>
+                <i class="ph ph-x" onclick="tutupUserDetail()"></i>
+            </div>
+            <div class="co-modal-body">
+                <div style="display:flex; justify-content:center;">
+                    <div id="udFotoCircle" style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--grad-start),var(--grad-end));color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.3rem;overflow:hidden;">-</div>
+                </div>
+                <div class="ct-field"><label>Username</label><input type="text" id="udUsername" disabled></div>
+                <div class="ct-field"><label>Nama Lengkap</label><input type="text" id="udNama" placeholder="Nama lengkap..."></div>
+                <div class="ct-field"><label>Jabatan</label><input type="text" id="udJabatan" placeholder="Jabatan..."></div>
+                <div class="ct-field"><label>Nomor WhatsApp</label><input type="text" id="udWa" placeholder="08xx-xxxx-xxxx"></div>
+                <div class="ct-field"><label>Email</label><input type="text" id="udEmail" placeholder="nama@email.com"></div>
+                <div class="ct-field"><label>Dashboard yang Ditampilkan</label><select id="udDashboardType"><option value="bendahara">Bendahara (Standar)</option><option value="sekretaris">Sekretaris</option></select></div>
+
+                <div class="ledger-head"><div class="ledger-title" style="font-size:0.82rem;">Menu yang Dapat Diakses</div></div>
+                <div id="udMenuAksesRows" style="display:flex; flex-direction:column; gap:2px;"></div>
+
+                <div class="ct-field" style="margin-top:10px; margin-bottom:0;">
+                    <label>Terakhir Login</label>
+                    <div class="info-value" id="udTerakhirLogin" style="margin-top:2px;">-</div>
+                </div>
+                <div class="ct-field" style="margin-bottom:0;">
+                    <label>Password Terakhir Diganti</label>
+                    <div class="info-value" id="udPasswordDiganti" style="margin-top:2px;">-</div>
+                </div>
+
+                <button class="ct-submit-btn" style="margin-top:14px;" onclick="simpanUserDetail()"><i class="ph ph-floppy-disk"></i> Simpan Perubahan</button>
+                <button class="co-btn-secondary" onclick="resetPasswordUser()"><i class="ph ph-key"></i> Reset Password ke Default</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL BUAT AKUN BARU ================= -->
+    <div id="buat-user-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99981; align-items:flex-end; justify-content:center;">
+        <div class="co-modal">
+            <div class="co-modal-head">
+                <div class="co-modal-title">Buat Akun Baru</div>
+                <i class="ph ph-x" onclick="tutupModalBuatUser()"></i>
+            </div>
+            <div class="co-modal-body">
+                <div class="ct-field"><label>Username</label><input type="text" id="buUsername" placeholder="username tanpa spasi..."></div>
+                <div class="ct-field"><label>Password Awal</label><input type="text" id="buPassword" placeholder="Minimal 6 karakter..." value="remasfa2026"></div>
+                <div class="ct-field"><label>Nama Lengkap</label><input type="text" id="buNama" placeholder="Nama lengkap..."></div>
+                <div class="ct-field"><label>Jabatan</label><input type="text" id="buJabatan" placeholder="Jabatan..."></div>
+                <div class="ct-field"><label>Nomor WhatsApp</label><input type="text" id="buWa" placeholder="08xx-xxxx-xxxx"></div>
+                <div class="ct-field"><label>Email</label><input type="text" id="buEmail" placeholder="nama@email.com"></div>
+                <div class="ct-field"><label>Dashboard yang Ditampilkan</label><select id="buDashboardType"><option value="bendahara">Bendahara (Standar)</option><option value="sekretaris">Sekretaris</option></select></div>
+
+                <div class="ledger-head"><div class="ledger-title" style="font-size:0.82rem;">Menu yang Dapat Diakses</div></div>
+                <div id="buMenuAksesRows" style="display:flex; flex-direction:column; gap:2px;"></div>
+
+                <button class="ct-submit-btn" style="margin-top:14px;" onclick="simpanUserBaru()"><i class="ph ph-floppy-disk"></i> Simpan Akun Baru</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= LAYAR TUTUP BUKU ================= -->
     <div id="tutup-buku-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
         <div class="ct-header">
@@ -5369,6 +5466,230 @@
         </div>
     </div>
 
+    </div>
+
+    <!-- ================= SECRETARY DASHBOARD (Sekretaris) ================= -->
+    <div id="secretary-dashboard-screen" style="display:none; flex-direction:column; height:100%; background:#FFFFFF; position:absolute; top:0; left:0; right:0; bottom:0; z-index:20;">
+        <div class="app-header-wrap">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div class="app-topbar-left">
+                    <div class="brand-mark">S</div>
+                    <div>
+                        <div class="app-title">Kesekretariatan REMASFA</div>
+                        <div class="app-subtitle">Dashboard Sekretaris</div>
+                    </div>
+                </div>
+                <div class="header-icon-circle" onclick="keluarAkun()"><i class="ph ph-sign-out"></i></div>
+            </div>
+        </div>
+        <div class="app-body" style="padding-bottom:30px;">
+            <div class="profile-hero">
+                <div class="avatar-circle" id="sekAvatarCircle">
+                    SK
+                    <div class="avatar-edit-btn" onclick="document.getElementById('profilFotoInput').click()"><i class="ph-fill ph-camera"></i></div>
+                </div>
+                <div class="profile-name" id="sekNamaDisplay">-</div>
+                <div class="profile-role" id="sekJabatanDisplay">-</div>
+                <div class="profile-role" id="sekKontakDisplay">-</div>
+            </div>
+            <button class="ct-submit-btn" onclick="bukaModalUbahProfil()"><i class="ph ph-user-gear"></i> Ubah Profil Saya</button>
+
+            <div class="ledger-head" style="margin-top:20px;"><div class="ledger-title">Daftar Buku Agenda REMASFA</div></div>
+            <div class="stat-row">
+                <div class="stat-box out"><div class="stat-icon"><i class="ph ph-arrow-up-right"></i></div><div class="stat-label">Jumlah Surat Keluar</div><div class="stat-amount" id="sekStatSuratKeluar">0</div></div>
+                <div class="stat-box in"><div class="stat-icon"><i class="ph ph-arrow-down-left"></i></div><div class="stat-label">Jumlah Surat Masuk</div><div class="stat-amount" id="sekStatSuratMasuk">0</div></div>
+            </div>
+
+            <div class="ledger-head" style="margin-top:10px;"><div class="ledger-title">Menu Utama</div></div>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="bukaESurat()"><div class="menu-icon-box utama"><i class="ph ph-envelope-simple-open"></i></div><div class="menu-label">E-Surat</div></div>
+                <div class="menu-item" onclick="siasfaNotify('Fitur E-Meeting sedang dalam pengembangan.','info')"><div class="menu-icon-box utama"><i class="ph ph-video-camera"></i></div><div class="menu-label">E-Meeting</div></div>
+                <div class="menu-item" onclick="siasfaNotify('Fitur E-Calendar sedang dalam pengembangan.','info')"><div class="menu-icon-box utama"><i class="ph ph-calendar-blank"></i></div><div class="menu-label">E-Calendar</div></div>
+            </div>
+
+            <div class="ledger-head" style="margin-top:14px;"><div class="ledger-title">Menu Database</div></div>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="siasfaNotify('Menu Database Anggota sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-users-three"></i></div><div class="menu-label">Anggota</div></div>
+                <div class="menu-item" onclick="siasfaNotify('Menu Database Jamaah sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-mosque"></i></div><div class="menu-label">Jamaah</div></div>
+                <div class="menu-item" onclick="siasfaNotify('Menu Database Inventaris sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-toolbox"></i></div><div class="menu-label">Inventaris</div></div>
+                <div class="menu-item" onclick="siasfaNotify('Menu Database Dokumen sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-folder-open"></i></div><div class="menu-label">Dokumen</div></div>
+            </div>
+
+            <div class="ledger-head" style="margin-top:14px;"><div class="ledger-title">Menu Program Kerja</div></div>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="bukaProgramKerja()"><div class="menu-icon-box"><i class="ph ph-buildings"></i></div><div class="menu-label">Program Kerja</div></div>
+                <div class="menu-item" onclick="siasfaNotify('Fitur Jobdesk Tracker sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-check-square"></i></div><div class="menu-label">Jobdesk Tracker</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= E-SURAT ================= -->
+    <div id="e-surat-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupESurat()"></i>
+                <div class="ct-header-title">E-Surat Kesekretariatan</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="ledger-head"><div class="ledger-title">Generate New Document</div></div>
+            <div class="menu-grid" style="grid-template-columns:repeat(2,1fr);">
+                <div class="menu-item" onclick="bukaSuratKeluar()"><div class="menu-icon-box utama"><i class="ph ph-paper-plane-tilt"></i></div><div class="menu-label">Surat Keluar</div></div>
+                <div class="menu-item" onclick="bukaSuratMasuk()"><div class="menu-icon-box utama"><i class="ph ph-tray-arrow-down"></i></div><div class="menu-label">Surat Masuk</div></div>
+            </div>
+
+            <div class="ledger-head" style="margin-top:10px;"><div class="ledger-title">Arsip Administrasi Surat</div></div>
+            <div class="ip-table-wrap">
+                <div class="ip-table-head" style="grid-template-columns:0.8fr 0.9fr 1.3fr 0.6fr;"><span>Nomor</span><span>Jenis</span><span>Perihal</span><span>Aksi</span></div>
+                <div id="arsipSuratRows"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat arsip surat...</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SURAT MASUK ================= -->
+    <div id="surat-masuk-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:31;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupSuratMasuk()"></i>
+                <div class="ct-header-title">Surat Masuk</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body" style="position:relative;">
+            <div class="ip-stat-box full">
+                <div class="ip-stat-icon"><i class="ph ph-tray-arrow-down"></i></div>
+                <div class="ip-stat-label">Total Surat Masuk</div>
+                <div class="ip-stat-value" id="smTotalSurat">0</div>
+            </div>
+            <div class="ledger-head"><div class="ledger-title">Daftar Surat Masuk</div><div class="ledger-link" onclick="bukaModalTambahSuratMasuk()"><i class="ph ph-plus-circle"></i> Tambah Surat Masuk</div></div>
+            <div class="ip-table-wrap">
+                <div class="ip-table-head" style="grid-template-columns:1fr 1.3fr 0.7fr;"><span>Nomor Surat</span><span>Perihal</span><span>Detail</span></div>
+                <div id="smRows"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data...</div></div>
+            </div>
+        </div>
+        <div class="pk-fab" onclick="bukaModalTambahSuratMasuk()"><i class="ph ph-plus"></i></div>
+    </div>
+
+    <!-- ================= MODAL TAMBAH SURAT MASUK ================= -->
+    <div id="sm-tambah-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:40; align-items:flex-end; justify-content:center;">
+        <div class="co-modal">
+            <div class="co-modal-head"><div class="co-modal-title">Tambah Surat Masuk</div><i class="ph ph-x" onclick="tutupModalTambahSuratMasuk()"></i></div>
+            <div class="co-modal-body">
+                <div class="ct-field"><label>Nomor Surat</label><input type="text" id="smNomorSurat" placeholder="Nomor surat dari pengirim..."></div>
+                <div class="ct-field"><label>Tanggal Surat</label><input type="date" id="smTanggal" value="2026-09-01"></div>
+                <div class="ct-field"><label>Pengirim</label><input type="text" id="smPengirim" placeholder="Nama instansi/pengirim..."></div>
+                <div class="ct-field"><label>Perihal</label><input type="text" id="smPerihal" placeholder="Perihal surat..."></div>
+                <div class="ct-field" style="margin-bottom:0;">
+                    <div class="ct-field-label-row"><label>Lampiran File</label><span class="ct-tag-optional">PDF/PNG/JPG</span></div>
+                    <label class="ct-upload-zone" id="smUploadZone"><input type="file" id="smFile" accept="image/*,.pdf" hidden onchange="ctUpdateUploadLabel(this,'smUploadZone')"><div class="ct-upload-icon"><i class="ph ph-upload-simple"></i></div><div class="ct-upload-text"><span class="ct-upload-title">Tap untuk pilih file</span><span class="ct-upload-sub">PNG, JPG, atau PDF</span></div></label>
+                </div>
+                <button class="ct-submit-btn" style="margin-top:14px;" onclick="simpanSuratMasuk()"><i class="ph ph-floppy-disk"></i> Simpan Surat Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= DETAIL SURAT MASUK ================= -->
+    <div id="sm-detail-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:41; align-items:flex-end; justify-content:center;">
+        <div class="co-modal">
+            <div class="co-modal-head"><div class="co-modal-title">Data Detail Surat Masuk</div><i class="ph ph-x" onclick="tutupDetailSuratMasuk()"></i></div>
+            <div class="co-modal-body">
+                <div class="kkp-info-box">
+                    <div class="kkp-info-label">Nomor Surat</div><div class="kkp-info-value" id="smdNomor">-</div>
+                    <div class="kkp-info-label">Tanggal</div><div class="kkp-info-value" id="smdTanggal">-</div>
+                    <div class="kkp-info-label">Pengirim</div><div class="kkp-info-value" id="smdPengirim">-</div>
+                    <div class="kkp-info-label">Perihal</div><div class="kkp-info-value" id="smdPerihal">-</div>
+                </div>
+                <div class="ct-field"><label>Tindak Lanjut Atas Penerimaan Surat</label>
+                    <div class="tandai-status-choice" style="flex-wrap:wrap;" id="smdTindakLanjutBtns">
+                        <div class="tandai-status-btn" data-val="Belum Diproses" onclick="smdPilihTindakLanjut(this)">Belum Diproses</div>
+                        <div class="tandai-status-btn" data-val="Sudah Didisposisikan" onclick="smdPilihTindakLanjut(this)">Sudah Didisposisikan</div>
+                        <div class="tandai-status-btn" data-val="Hanya Arsip/Informasi" onclick="smdPilihTindakLanjut(this)">Hanya Arsip/Informasi</div>
+                        <div class="tandai-status-btn" data-val="Permohonan Ditolak" onclick="smdPilihTindakLanjut(this)">Permohonan Ditolak</div>
+                    </div>
+                </div>
+                <div id="smdLinkFile" style="margin-bottom:10px;"></div>
+                <button class="co-btn-secondary" onclick="unduhSuratMasukPdf()"><i class="ph ph-download-simple"></i> Download Detail Surat Masuk (PDF)</button>
+                <button class="ct-submit-btn" onclick="simpanTindakLanjutSuratMasuk()"><i class="ph ph-floppy-disk"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SURAT KELUAR ================= -->
+    <div id="surat-keluar-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:31;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupSuratKeluar()"></i>
+                <div class="ct-header-title">Surat Keluar</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="ip-stat-box full">
+                <div class="ip-stat-icon"><i class="ph ph-paper-plane-tilt"></i></div>
+                <div class="ip-stat-label">Jumlah Surat Keluar</div>
+                <div class="ip-stat-value" id="skTotalSurat">0</div>
+            </div>
+            <div id="skRekapJenis" style="display:flex; flex-direction:column; gap:6px;"></div>
+
+            <div class="ledger-head" style="margin-top:14px;"><div class="ledger-title">Generate Surat</div></div>
+            <div class="report-row" style="cursor:pointer;" onclick="bukaGenerateSuratUndangan()">
+                <div class="report-icon"><i class="ph ph-envelope-open"></i></div>
+                <div><div class="report-name">Surat Undangan</div><div class="report-sub">Buat surat undangan baru</div></div>
+                <i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i>
+            </div>
+            <div class="report-row" style="cursor:pointer; opacity:0.55;" onclick="siasfaNotify('Jenis surat ini sedang dalam pengembangan.','info')">
+                <div class="report-icon"><i class="ph ph-file-text"></i></div>
+                <div><div class="report-name">Surat Permohonan</div><div class="report-sub">Coming Soon</div></div>
+            </div>
+            <div class="report-row" style="cursor:pointer; opacity:0.55;" onclick="siasfaNotify('Jenis surat ini sedang dalam pengembangan.','info')">
+                <div class="report-icon"><i class="ph ph-scales"></i></div>
+                <div><div class="report-name">Surat Keputusan</div><div class="report-sub">Coming Soon</div></div>
+            </div>
+            <div class="report-row" style="cursor:pointer; opacity:0.55;" onclick="siasfaNotify('Jenis surat ini sedang dalam pengembangan.','info')">
+                <div class="report-icon"><i class="ph ph-megaphone-simple"></i></div>
+                <div><div class="report-name">Surat Pemberitahuan</div><div class="report-sub">Coming Soon</div></div>
+            </div>
+            <div class="report-row" style="cursor:pointer; opacity:0.55;" onclick="siasfaNotify('Jenis surat ini sedang dalam pengembangan.','info')">
+                <div class="report-icon"><i class="ph ph-warning"></i></div>
+                <div><div class="report-name">Surat Peringatan</div><div class="report-sub">Coming Soon</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= GENERATE SURAT UNDANGAN ================= -->
+    <div id="surat-undangan-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:32;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupGenerateSuratUndangan()"></i>
+                <div class="ct-header-title">Generate Surat Undangan</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="ct-field"><label>Jenis Kop Surat</label><select id="suKop"><option value="remasfa">Kop Remasfa</option><option value="ramadhan">Kop Ramadhan</option><option value="upz">Kop UPZ</option></select></div>
+            <div class="ct-field"><label>Nomor Surat</label><input type="text" id="suNomor" disabled></div>
+            <div class="ct-field"><label>Nama Acara</label><input type="text" id="suNamaAcara" placeholder="Nama acara..."></div>
+            <div class="ct-field"><label>Dalam Rangka</label><input type="text" id="suDalamRangka" placeholder="Dalam rangka..."></div>
+
+            <div class="calk-sub-title">A. Detail Pelaksanaan</div>
+            <div class="ct-field"><label>Tanggal</label><input type="date" id="suTanggal" value="2026-09-01"></div>
+            <div class="ct-field"><label>Jam</label><input type="text" id="suJam" placeholder="Contoh: 08.00 WIB - selesai"></div>
+            <div class="ct-field"><label>Tempat</label><input type="text" id="suTempat" placeholder="Lokasi pelaksanaan..."></div>
+
+            <div class="calk-sub-title">B. Pengesahan</div>
+            <div class="ct-field">
+                <label>Jumlah yang Mengesahkan</label>
+                <div class="tandai-status-choice">
+                    <div class="tandai-status-btn" data-jumlah="1" onclick="suPilihJumlahPengesahan(this)">1 Orang</div>
+                    <div class="tandai-status-btn" data-jumlah="2" onclick="suPilihJumlahPengesahan(this)">2 Orang</div>
+                    <div class="tandai-status-btn" data-jumlah="3" onclick="suPilihJumlahPengesahan(this)">3 Orang</div>
+                </div>
+            </div>
+            <div id="suPengesahanRows" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+            <button class="ct-submit-btn" style="margin-top:14px;" onclick="simpanGenerateSuratUndangan()"><i class="ph ph-file-pdf"></i> Buat &amp; Unduh Surat Undangan</button>
+        </div>
     </div>
 
     <!-- Script Javascript -->
@@ -5703,9 +6024,11 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         function keluarAkun() {
             var dash = document.getElementById('dashboard-screen');
             var login = document.getElementById('login-screen');
+            var dashSek = document.getElementById('secretary-dashboard-screen');
 
             dash.style.display = 'none';
             dash.classList.remove('screen-in');
+            if (dashSek) dashSek.style.display = 'none';
             switchTab('beranda');
 
             _currentUser = null;
@@ -5815,6 +6138,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 if (hashInput !== loginRes.data.password_hash) { alert('Password salah'); return; }
 
                 _currentUser = loginRes.data;
+                supabaseClient.from('users_siasfa').update({ last_login_at: new Date().toISOString() }).eq('id', _currentUser.id).then(function () {});
 
                 var login = document.getElementById('login-screen');
                 var trans = document.getElementById('transition-screen');
@@ -5832,15 +6156,21 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                     trans.classList.remove('show');
                     setTimeout(function () {
                         trans.style.display = 'none';
-                        dash.style.display = 'flex';
-                        dash.classList.add('screen-in');
-                        muatDataKas();
-                        muatProgramKerja();
-                        muatStatMasukKeluar();
-                        renderProfilUser();
-                                                    terapkanAksesMenuBerdasarkanJabatan();
+                        if (_currentUser.dashboard_type === 'sekretaris') {
+                            document.getElementById('secretary-dashboard-screen').style.display = 'flex';
+                            renderSekretarisProfil();
+                            muatStatistikBukuAgenda();
+                        } else {
+                            dash.style.display = 'flex';
+                            dash.classList.add('screen-in');
+                            muatDataKas();
+                            muatProgramKerja();
+                            muatStatMasukKeluar();
+                            renderProfilUser();
+                            terapkanAksesMenuBerdasarkanJabatan();
                             renderBebanPieChart();
                             muatBannerTandaiSaya();
+                        }
                         if (_currentUser.harus_ganti_password) {
                             setTimeout(function () { document.getElementById('warning-ganti-password-overlay').style.display = 'flex'; }, 400);
                         }
@@ -11225,13 +11555,192 @@ function unduhRiwayatTransaksi() {
         var wbsDataCache = [];
         var wbsFilterAktif = 'semua';
 
+        var SIASFA_MENU_LABELS = {
+            catat_transaksi: 'Catat Transaksi', upload_nota: 'Upload Nota', riwayat: 'Riwayat',
+            program_kerja: 'Program Kerja', infaq_harian: 'Infaq Harian', iuran: 'Iuran',
+            penjualan: 'Penjualan', utang_piutang: 'Utang Piutang', wbs_data: 'WBS Data',
+            rekening_bank: 'Rekening Bank', aset_tetap: 'Daftar Aset Tetap', dana_kebajikan: 'Dana Kebajikan',
+            pemeriksaan: 'Pemeriksaan', pengaturan: 'Menu Pengaturan (Daftar User, COA, Tutup Buku)'
+        };
+        var SIASFA_MENU_ID_MAP = {
+            catat_transaksi: 'menuCatatTransaksi', upload_nota: 'menuUploadNota', riwayat: 'menuRiwayat',
+            program_kerja: 'menuProgramKerja', infaq_harian: 'menuInfaqHarian', iuran: 'menuIuran',
+            penjualan: 'menuPenjualan', utang_piutang: 'menuUtangPiutang', wbs_data: 'menuWbsData',
+            rekening_bank: 'menuRekBank', aset_tetap: 'menuPeralatan', dana_kebajikan: 'menuDanaKebajikan',
+            pemeriksaan: 'menuPemeriksaan'
+        };
+
         function terapkanAksesMenuBerdasarkanJabatan() {
-            var jabatan = ((_currentUser && _currentUser.jabatan) || '').toLowerCase();
-            var izin = jabatan.indexOf('ketua umum') !== -1 || jabatan.indexOf('wakil ketua') !== -1 || jabatan.indexOf('pemeriksa internal') !== -1;
-            var elP = document.getElementById('menuPemeriksaan');
-            var elW = document.getElementById('menuWbsData');
-            if (elP) elP.style.display = izin ? 'flex' : 'none';
-            if (elW) elW.style.display = izin ? 'flex' : 'none';
+            var menuAkses = (_currentUser && _currentUser.menu_akses) || {};
+            Object.keys(SIASFA_MENU_ID_MAP).forEach(function (key) {
+                var el = document.getElementById(SIASFA_MENU_ID_MAP[key]);
+                if (!el) return;
+                var izinUser = menuAkses[key] !== false;
+                el.style.display = izinUser ? 'flex' : 'none';
+            });
+
+            var elPengaturan = document.getElementById('menuPengaturanBlok');
+            if (elPengaturan) elPengaturan.style.display = (menuAkses.pengaturan !== false) ? 'block' : 'none';
+        }
+
+        // ===== Daftar User =====
+        var _duUserCache = [];
+        var _udAktifUserId = null;
+
+        async function bukaDaftarUser() {
+            document.getElementById('daftar-user-screen').style.display = 'flex';
+            await muatDaftarUser();
+        }
+        function tutupDaftarUser() { document.getElementById('daftar-user-screen').style.display = 'none'; }
+
+        async function muatDaftarUser() {
+            try {
+                const { data, error } = await supabaseClient.from('users_siasfa').select('*').order('nama', { ascending: true });
+                if (error) { alert('ERROR SUPABASE (daftar user): ' + error.message); return; }
+                _duUserCache = data || [];
+                renderDaftarUser();
+            } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+        }
+        function renderDaftarUser() {
+            document.getElementById('duTotalAkun').textContent = _duUserCache.length;
+            var html = '';
+            _duUserCache.forEach(function (u) {
+                var foto = u.foto_url
+                    ? '<img src="' + u.foto_url + '" style="width:100%;height:100%;object-fit:cover;">'
+                    : inisialNama(u.nama);
+                html += '<div style="display:flex; align-items:center; gap:12px; border:1px solid var(--line); border-radius:14px; padding:10px 12px;">' +
+                    '<div style="width:38px;height:38px;min-width:38px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,var(--grad-start),var(--grad-end));display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-weight:700;font-size:0.8rem;">' + foto + '</div>' +
+                    '<div style="flex:1; min-width:0;">' +
+                    '<div style="font-size:0.8rem; font-weight:700; color:var(--text-dark);">' + (u.username || '-') + '</div>' +
+                    '<div style="font-size:0.68rem; color:var(--text-gray);">' + (u.jabatan || '-') + '</div></div>' +
+                    '<button class="report-dl-btn" onclick="bukaUserDetail(' + u.id + ')"><i class="ph ph-gear-six"></i></button></div>';
+            });
+            document.getElementById('duList').innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada akun terdaftar.</div>';
+        }
+
+        function udRenderMenuRows(wrapId, akses) {
+            akses = akses || {};
+            var html = '';
+            Object.keys(SIASFA_MENU_LABELS).forEach(function (key) {
+                var aktif = akses[key] !== false;
+                html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--line);">' +
+                    '<span style="font-size:0.78rem; color:var(--text-dark); font-weight:600;">' + SIASFA_MENU_LABELS[key] + '</span>' +
+                    '<span class="pay-status-badge ' + (aktif ? 'lunas' : 'belum') + '" data-key="' + key + '" onclick="udToggleMenuAkses(this)">' + (aktif ? 'Ya' : 'Tidak') + '</span></div>';
+            });
+            document.getElementById(wrapId).innerHTML = html;
+        }
+        function udToggleMenuAkses(el) {
+            var aktif = el.classList.contains('lunas');
+            el.classList.toggle('lunas', !aktif);
+            el.classList.toggle('belum', aktif);
+            el.textContent = aktif ? 'Tidak' : 'Ya';
+        }
+        function udBacaMenuAksesDariDom(wrapId) {
+            var hasil = {};
+            document.querySelectorAll('#' + wrapId + ' [data-key]').forEach(function (el) {
+                hasil[el.getAttribute('data-key')] = el.classList.contains('lunas');
+            });
+            return hasil;
+        }
+
+        function bukaUserDetail(id) {
+            var u = _duUserCache.find(function (x) { return x.id === id; });
+            if (!u) return;
+            _udAktifUserId = id;
+            document.getElementById('udFotoCircle').innerHTML = u.foto_url ? '<img src="' + u.foto_url + '" style="width:100%;height:100%;object-fit:cover;">' : inisialNama(u.nama);
+            document.getElementById('udUsername').value = u.username || '';
+            document.getElementById('udNama').value = u.nama || '';
+            document.getElementById('udJabatan').value = u.jabatan || '';
+            document.getElementById('udWa').value = u.whatsapp || '';
+            document.getElementById('udEmail').value = u.email || '';
+            document.getElementById('udTerakhirLogin').textContent = u.last_login_at ? (formatTanggalID(u.last_login_at.slice(0, 10)) + ' ' + new Date(u.last_login_at).toLocaleTimeString('id-ID')) : 'Belum pernah login';
+            document.getElementById('udPasswordDiganti').textContent = u.password_updated_at ? (formatTanggalID(u.password_updated_at.slice(0, 10)) + ' ' + new Date(u.password_updated_at).toLocaleTimeString('id-ID')) : 'Belum pernah diganti';
+            document.getElementById('udDashboardType').value = u.dashboard_type || 'bendahara';
+            udRenderMenuRows('udMenuAksesRows', u.menu_akses);
+            document.getElementById('user-detail-overlay').style.display = 'flex';
+        }
+        function tutupUserDetail() { document.getElementById('user-detail-overlay').style.display = 'none'; }
+
+        async function simpanUserDetail() {
+            if (!_udAktifUserId) return;
+            try {
+                var payload = {
+                    nama: document.getElementById('udNama').value.trim(),
+                    jabatan: document.getElementById('udJabatan').value.trim(),
+                    whatsapp: document.getElementById('udWa').value.trim(),
+                    email: document.getElementById('udEmail').value.trim(),
+                    dashboard_type: document.getElementById('udDashboardType').value,
+                    menu_akses: udBacaMenuAksesDariDom('udMenuAksesRows')
+                };
+                if (!payload.nama) { alert('Nama lengkap wajib diisi'); return; }
+                var res = await supabaseClient.from('users_siasfa').update(payload).eq('id', _udAktifUserId);
+                if (res.error) { alert('ERROR SUPABASE (simpan user): ' + res.error.message); return; }
+
+                alert('Data akun berhasil disimpan');
+                if (_currentUser && _currentUser.id === _udAktifUserId) {
+                    Object.assign(_currentUser, payload);
+                    terapkanAksesMenuBerdasarkanJabatan();
+                    renderProfilUser();
+                }
+                tutupUserDetail();
+                await muatDaftarUser();
+            } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+        }
+
+        async function resetPasswordUser() {
+            if (!_udAktifUserId) return;
+            if (!await siasfaConfirm('Reset password akun ini ke password default "remasfa2026"? Pengguna wajib login ulang dengan password baru ini.', 'Reset Password', { danger: true })) return;
+            try {
+                var hash = await sha256Hex('remasfa2026');
+                var res = await supabaseClient.from('users_siasfa').update({ password_hash: hash, harus_ganti_password: true, password_updated_at: null }).eq('id', _udAktifUserId);
+                if (res.error) { alert('ERROR SUPABASE (reset password): ' + res.error.message); return; }
+                alert('Password berhasil direset ke default: remasfa2026');
+                await muatDaftarUser();
+                bukaUserDetail(_udAktifUserId);
+            } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+        }
+
+            function bukaModalBuatUser() {
+        document.getElementById('buUsername').value = '';
+        document.getElementById('buPassword').value = 'remasfa2026';
+        document.getElementById('buNama').value = '';
+        document.getElementById('buJabatan').value = '';
+        document.getElementById('buWa').value = '';
+        document.getElementById('buEmail').value = '';
+        document.getElementById('buDashboardType').value = 'bendahara';
+        udRenderMenuRows('buMenuAksesRows', {});
+        document.getElementById('buat-user-overlay').style.display = 'flex';
+    }
+        function tutupModalBuatUser() { document.getElementById('buat-user-overlay').style.display = 'none'; }
+
+        async function simpanUserBaru() {
+            try {
+                var username = document.getElementById('buUsername').value.trim().toLowerCase();
+                var password = document.getElementById('buPassword').value;
+                var nama = document.getElementById('buNama').value.trim();
+                if (!username || !password || !nama) { alert('Username, Password, dan Nama Lengkap wajib diisi'); return; }
+                if (password.length < 6) { alert('Password minimal 6 karakter'); return; }
+
+                var cek = await supabaseClient.from('users_siasfa').select('id').eq('username', username).maybeSingle();
+                if (cek.data) { alert('Username sudah digunakan, pilih username lain'); return; }
+
+                            var hash = await sha256Hex(password);
+            var payload = {
+                username: username, password_hash: hash, nama: nama,
+                jabatan: document.getElementById('buJabatan').value.trim(),
+                whatsapp: document.getElementById('buWa').value.trim(),
+                email: document.getElementById('buEmail').value.trim(),
+                harus_ganti_password: true,
+                dashboard_type: document.getElementById('buDashboardType').value,
+                menu_akses: udBacaMenuAksesDariDom('buMenuAksesRows')
+            };
+                var res = await supabaseClient.from('users_siasfa').insert(payload);
+                if (res.error) { alert('ERROR SUPABASE (buat user): ' + res.error.message); return; }
+
+                alert('Akun baru berhasil dibuat');
+                tutupModalBuatUser();
+                await muatDaftarUser();
+            } catch (e) { alert('ERROR SISTEM: ' + e.message); }
         }
 
         function bukaWbsData() {
@@ -12043,6 +12552,7 @@ function unduhRiwayatTransaksi() {
 
                 _currentUser.foto_url = publicUrl;
                 renderProfilUser();
+                if (typeof renderSekretarisProfil === 'function') renderSekretarisProfil();
                 alert('Foto profil berhasil diperbarui');
             } catch (e) {
                 alert('ERROR SISTEM: ' + e.message);
@@ -12078,6 +12588,7 @@ function unduhRiwayatTransaksi() {
 
                 _currentUser.nama = nama; _currentUser.jabatan = jabatan; _currentUser.whatsapp = wa; _currentUser.email = email;
                 renderProfilUser();
+                if (typeof renderSekretarisProfil === 'function') renderSekretarisProfil();
                 tutupModalUbahProfil();
                 alert('Profil berhasil diperbarui');
             } catch (e) {
@@ -17987,6 +18498,393 @@ async function hapusCoa() {
         if (res.error) { alert('ERROR SUPABASE (hapus akun): ' + res.error.message); return; }
         tutupModalTambahCoa();
         await muatSettingCoaList();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+</script>
+
+<script>
+/* =========================================================================
+   SIASFA — GUEST MODE SEBAGAI HALAMAN DEFAULT
+   Dashboard tamu langsung tampil saat aplikasi dibuka, tanpa perlu menekan
+   tombol "Masuk sebagai tamu" (tombol tersebut sudah dihapus dari layar login).
+   ========================================================================= */
+(function inisialisasiGuestDashboardDefault() {
+    function jalankan() {
+        try {
+            var bulanPanjang = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            var now = new Date();
+            var elTgl = document.getElementById('guestCashPerTanggal');
+            if (elTgl) elTgl.textContent = 'Per ' + now.getDate() + ' ' + bulanPanjang[now.getMonth()] + ' ' + now.getFullYear();
+
+            if (typeof muatDataKas === 'function') muatDataKas();
+            if (typeof renderGuestPendapatanDonasi === 'function') renderGuestPendapatanDonasi();
+            if (typeof muatProgramKerja === 'function' && typeof renderGuestProkerList === 'function') {
+                muatProgramKerja().then(renderGuestProkerList);
+            }
+        } catch (e) { /* diamkan, non-fatal saat load awal */ }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', jalankan);
+    } else {
+        jalankan();
+    }
+})();
+</script>
+
+<script>
+/* =========================================================================
+   SIASFA — MODUL SEKRETARIS (Dashboard Sekretaris & E-Surat)
+   ========================================================================= */
+
+function renderSekretarisProfil() {
+    if (!_currentUser) return;
+    document.getElementById('sekNamaDisplay').textContent = _currentUser.nama || '-';
+    document.getElementById('sekJabatanDisplay').textContent = _currentUser.jabatan || '-';
+    document.getElementById('sekKontakDisplay').textContent = (_currentUser.email || '-') + ' \u00b7 ' + (_currentUser.whatsapp || '-');
+    var avatarEl = document.getElementById('sekAvatarCircle');
+    if (avatarEl) {
+        avatarEl.innerHTML = (_currentUser.foto_url ? '<img src="' + _currentUser.foto_url + '" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">' : inisialNama(_currentUser.nama)) +
+            '<div class="avatar-edit-btn" onclick="document.getElementById(\'profilFotoInput\').click()"><i class="ph-fill ph-camera"></i></div>';
+    }
+}
+
+async function muatStatistikBukuAgenda() {
+    try {
+        const [mRes, kRes] = await Promise.all([
+            supabaseClient.from('surat_masuk').select('id', { count: 'exact', head: true }),
+            supabaseClient.from('surat_keluar').select('id', { count: 'exact', head: true })
+        ]);
+        var jm = mRes.count || 0, jk = kRes.count || 0;
+        var e1 = document.getElementById('sekStatSuratMasuk'); if (e1) e1.textContent = jm;
+        var e2 = document.getElementById('sekStatSuratKeluar'); if (e2) e2.textContent = jk;
+        var e3 = document.getElementById('smTotalSurat'); if (e3) e3.textContent = jm;
+        var e4 = document.getElementById('skTotalSurat'); if (e4) e4.textContent = jk;
+    } catch (e) { /* diamkan */ }
+}
+
+/* ---- E-Surat ---- */
+function bukaESurat() {
+    document.getElementById('e-surat-screen').style.display = 'flex';
+    muatArsipSurat();
+}
+function tutupESurat() { document.getElementById('e-surat-screen').style.display = 'none'; }
+
+async function muatArsipSurat() {
+    try {
+        const [mRes, kRes] = await Promise.all([
+            supabaseClient.from('surat_masuk').select('*').order('created_at', { ascending: false }),
+            supabaseClient.from('surat_keluar').select('*').order('created_at', { ascending: false })
+        ]);
+        var gabungan = [];
+        (kRes.data || []).forEach(function (s) { gabungan.push({ nomor: s.nomor_surat, jenis: s.jenis_surat, perihal: s.perihal, file: s.file_url, tgl: s.created_at }); });
+        (mRes.data || []).forEach(function (s) { gabungan.push({ nomor: s.nomor_surat, jenis: 'Surat Masuk', perihal: s.perihal, file: s.file_url, tgl: s.created_at }); });
+        gabungan.sort(function (a, b) { return new Date(b.tgl) - new Date(a.tgl); });
+
+        var html = '';
+        gabungan.forEach(function (s) {
+            html += '<div class="ip-table-row" style="grid-template-columns:0.8fr 0.9fr 1.3fr 0.6fr;">' +
+                '<span style="font-size:0.68rem; color:var(--text-dark);">' + (s.nomor || '-') + '</span>' +
+                '<span style="font-size:0.68rem; color:var(--text-gray);">' + s.jenis + '</span>' +
+                '<span style="font-size:0.7rem; color:var(--text-dark);">' + s.perihal + '</span>' +
+                '<span>' + (s.file ? '<a href="' + s.file + '" target="_blank" style="font-size:0.7rem; color:var(--maroon); font-weight:700;"><i class="ph ph-download-simple"></i></a>' : '<span style="color:var(--text-gray); font-size:0.68rem;">-</span>') + '</span></div>';
+        });
+        document.getElementById('arsipSuratRows').innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada surat tercatat.</div>';
+        muatStatistikBukuAgenda();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+/* ---- Surat Masuk ---- */
+var _smCache = [];
+var _smAktifId = null;
+
+function bukaSuratMasuk() {
+    document.getElementById('surat-masuk-screen').style.display = 'flex';
+    muatSuratMasuk();
+}
+function tutupSuratMasuk() { document.getElementById('surat-masuk-screen').style.display = 'none'; }
+
+async function muatSuratMasuk() {
+    try {
+        const { data, error } = await supabaseClient.from('surat_masuk').select('*').order('created_at', { ascending: false });
+        if (error) { alert('ERROR SUPABASE (surat masuk): ' + error.message); return; }
+        _smCache = data || [];
+        document.getElementById('smTotalSurat').textContent = _smCache.length;
+        var html = '';
+        _smCache.forEach(function (s) {
+            html += '<div class="ip-table-row" style="grid-template-columns:1fr 1.3fr 0.7fr;">' +
+                '<span style="font-size:0.72rem; color:var(--text-dark);">' + s.nomor_surat + '</span>' +
+                '<span style="font-size:0.72rem; color:var(--text-dark);">' + s.perihal + '</span>' +
+                '<span style="display:flex; gap:8px; justify-content:center;">' +
+                (s.file_url ? '<a href="' + s.file_url + '" target="_blank"><i class="ph ph-download-simple" style="color:var(--maroon); font-size:1.05rem;"></i></a>' : '<i class="ph ph-download-simple" style="color:var(--border-gray); font-size:1.05rem;"></i>') +
+                '<i class="ph ph-eye" style="color:var(--maroon); font-size:1.05rem; cursor:pointer;" onclick="bukaDetailSuratMasuk(' + s.id + ')"></i>' +
+                '</span></div>';
+        });
+        document.getElementById('smRows').innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada surat masuk.</div>';
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+function bukaModalTambahSuratMasuk() {
+    document.getElementById('smNomorSurat').value = '';
+    document.getElementById('smTanggal').value = '2026-09-01';
+    document.getElementById('smPengirim').value = '';
+    document.getElementById('smPerihal').value = '';
+    document.getElementById('smFile').value = '';
+    document.getElementById('smUploadZone').classList.remove('has-file');
+    document.getElementById('sm-tambah-overlay').style.display = 'flex';
+}
+function tutupModalTambahSuratMasuk() { document.getElementById('sm-tambah-overlay').style.display = 'none'; }
+
+async function simpanSuratMasuk() {
+    try {
+        var nomor = document.getElementById('smNomorSurat').value.trim();
+        var tanggal = document.getElementById('smTanggal').value;
+        var pengirim = document.getElementById('smPengirim').value.trim();
+        var perihal = document.getElementById('smPerihal').value.trim();
+        if (!nomor || !pengirim || !perihal) { alert('Nomor Surat, Pengirim, dan Perihal wajib diisi'); return; }
+
+        var fileUrl = null;
+        var file = document.getElementById('smFile').files[0];
+        if (file) {
+            var ext = file.name.split('.').pop();
+            var path = 'surat-masuk/' + Date.now() + '.' + ext;
+            var up = await supabaseClient.storage.from('dokumen-surat').upload(path, file);
+            if (up.error) { alert('ERROR UPLOAD: ' + up.error.message + ' (pastikan bucket "dokumen-surat" sudah dibuat di Supabase Storage)'); return; }
+            fileUrl = supabaseClient.storage.from('dokumen-surat').getPublicUrl(path).data.publicUrl;
+        }
+
+        var res = await supabaseClient.from('surat_masuk').insert({ nomor_surat: nomor, tanggal: tanggal, pengirim: pengirim, perihal: perihal, file_url: fileUrl, tindak_lanjut: 'Belum Diproses' });
+        if (res.error) { alert('ERROR SUPABASE (simpan surat masuk): ' + res.error.message); return; }
+
+        alert('Surat masuk berhasil dicatat');
+        tutupModalTambahSuratMasuk();
+        await muatSuratMasuk();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+function smdPilihTindakLanjut(el) {
+    document.querySelectorAll('#smdTindakLanjutBtns .tandai-status-btn').forEach(function (b) { b.classList.remove('aktif-merah', 'aktif-hijau'); });
+    el.classList.add('aktif-hijau');
+}
+function bukaDetailSuratMasuk(id) {
+    var s = _smCache.find(function (x) { return x.id === id; });
+    if (!s) return;
+    _smAktifId = id;
+    document.getElementById('smdNomor').textContent = s.nomor_surat;
+    document.getElementById('smdTanggal').textContent = formatTanggalID(s.tanggal);
+    document.getElementById('smdPengirim').textContent = s.pengirim;
+    document.getElementById('smdPerihal').textContent = s.perihal;
+    document.querySelectorAll('#smdTindakLanjutBtns .tandai-status-btn').forEach(function (b) {
+        b.classList.toggle('aktif-hijau', b.getAttribute('data-val') === (s.tindak_lanjut || 'Belum Diproses'));
+    });
+    document.getElementById('smdLinkFile').innerHTML = s.file_url
+        ? '<a href="' + s.file_url + '" target="_blank" style="font-size:0.78rem; font-weight:700; color:var(--maroon);"><i class="ph ph-eye"></i> Lihat Dokumen</a>'
+        : '<span style="font-size:0.76rem; color:var(--text-gray);">Tidak ada lampiran file.</span>';
+    document.getElementById('sm-detail-overlay').style.display = 'flex';
+}
+function tutupDetailSuratMasuk() { document.getElementById('sm-detail-overlay').style.display = 'none'; }
+
+async function simpanTindakLanjutSuratMasuk() {
+    if (!_smAktifId) return;
+    var aktif = document.querySelector('#smdTindakLanjutBtns .aktif-hijau');
+    var status = aktif ? aktif.getAttribute('data-val') : 'Belum Diproses';
+    var res = await supabaseClient.from('surat_masuk').update({ tindak_lanjut: status }).eq('id', _smAktifId);
+    if (res.error) { alert('ERROR SUPABASE: ' + res.error.message); return; }
+    alert('Tindak lanjut surat berhasil disimpan');
+    tutupDetailSuratMasuk();
+    await muatSuratMasuk();
+}
+
+function unduhSuratMasukPdf() {
+    var s = _smCache.find(function (x) { return x.id === _smAktifId; });
+    if (!s) return;
+    var doc = pdfBaru();
+    var y = pdfKop(doc, 'DETAIL SURAT MASUK', 'Kesekretariatan REMASFA');
+    pdfTabel(doc, y + 6, ['Uraian', 'Keterangan'], [
+        ['Nomor Surat', s.nomor_surat], ['Tanggal', formatTanggalID(s.tanggal)],
+        ['Pengirim', s.pengirim], ['Perihal', s.perihal], ['Tindak Lanjut', s.tindak_lanjut || 'Belum Diproses']
+    ]);
+    pdfTutup(doc, 'Surat-Masuk-' + s.nomor_surat.replace(/[^a-z0-9]/gi, '-') + '.pdf');
+}
+
+/* ---- Surat Keluar ---- */
+var _skCache = [];
+function bukaSuratKeluar() {
+    document.getElementById('surat-keluar-screen').style.display = 'flex';
+    muatSuratKeluar();
+}
+function tutupSuratKeluar() { document.getElementById('surat-keluar-screen').style.display = 'none'; }
+
+async function muatSuratKeluar() {
+    try {
+        const { data, error } = await supabaseClient.from('surat_keluar').select('*').order('created_at', { ascending: false });
+        if (error) { alert('ERROR SUPABASE (surat keluar): ' + error.message); return; }
+        _skCache = data || [];
+        document.getElementById('skTotalSurat').textContent = _skCache.length;
+        var rekap = {};
+        _skCache.forEach(function (s) { rekap[s.jenis_surat] = (rekap[s.jenis_surat] || 0) + 1; });
+        var html = '';
+        Object.keys(rekap).forEach(function (j) {
+            html += '<div class="ledger-row" style="border-bottom:1px solid var(--line);"><span class="left-part"><i class="ph ph-caret-right"></i> ' + j + '</span><span class="amt">' + rekap[j] + '</span></div>';
+        });
+        document.getElementById('skRekapJenis').innerHTML = html || '<div style="padding:8px; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada surat keluar.</div>';
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+async function noSuratOtomatis(kodeJenis) {
+    try {
+        const { count } = await supabaseClient.from('surat_keluar').select('id', { count: 'exact', head: true }).eq('jenis_surat', 'Surat Undangan');
+        var urut = (count || 0) + 1;
+        var romawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date().getMonth()];
+        return String(urut).padStart(3, '0') + '/' + kodeJenis + '/REMASFA/' + romawi + '/' + new Date().getFullYear();
+    } catch (e) { return '001/' + kodeJenis + '/REMASFA'; }
+}
+
+/* ---- Generate Surat Undangan ---- */
+async function bukaGenerateSuratUndangan() {
+    document.getElementById('suKop').value = 'remasfa';
+    document.getElementById('suNamaAcara').value = '';
+    document.getElementById('suDalamRangka').value = '';
+    document.getElementById('suTanggal').value = '2026-09-01';
+    document.getElementById('suJam').value = '';
+    document.getElementById('suTempat').value = '';
+    document.querySelectorAll('#surat-undangan-screen .tandai-status-choice .tandai-status-btn').forEach(function (b) { b.classList.remove('aktif-hijau'); });
+    document.getElementById('suPengesahanRows').innerHTML = '';
+    document.getElementById('suNomor').value = 'Memuat nomor otomatis...';
+    var nomor = await noSuratOtomatis('Und');
+    document.getElementById('suNomor').value = nomor;
+    document.getElementById('surat-undangan-screen').style.display = 'flex';
+}
+function tutupGenerateSuratUndangan() { document.getElementById('surat-undangan-screen').style.display = 'none'; }
+
+function suPilihJumlahPengesahan(el) {
+    document.querySelectorAll('#surat-undangan-screen .tandai-status-choice .tandai-status-btn').forEach(function (b) { b.classList.remove('aktif-hijau'); });
+    el.classList.add('aktif-hijau');
+    var jumlah = parseInt(el.getAttribute('data-jumlah'));
+    var huruf = ['A', 'B', 'C'];
+    var html = '';
+    for (var i = 0; i < jumlah; i++) {
+        html += '<div class="ct-field" style="margin-bottom:0;"><label>' + huruf[i] + '</label>' +
+            '<input type="text" class="su-pengesahan-nama" placeholder="Nama...">' +
+            '<input type="text" class="su-pengesahan-jabatan" placeholder="Jabatan..." style="margin-top:6px;"></div>';
+    }
+    document.getElementById('suPengesahanRows').innerHTML = html;
+}
+
+function pdfSuratUndanganKop(doc, kopKey) {
+    var w = doc.internal.pageSize.getWidth();
+    var cx = w / 2;
+    doc.setTextColor(0, 0, 0);
+    var judul2 = 'BIRO ANGGARAN DAN KEUANGAN';
+    if (kopKey === 'ramadhan') judul2 = 'PANITIA HARI BESAR ISLAM RAMADHAN';
+    else if (kopKey === 'upz') judul2 = 'UNIT PENGUMPUL ZAKAT (UPZ)';
+
+    doc.setFont('times', 'bold'); doc.setFontSize(14);
+    doc.text('MASJID FADHLILLAH ROGOITAN', cx, 46, { align: 'center' });
+    doc.setFont('times', 'bold'); doc.setFontSize(12);
+    doc.text(judul2, cx, 62, { align: 'center' });
+    doc.setFont('times', 'normal'); doc.setFontSize(11);
+    doc.text('Sekretariat: Jalan Selarong, Rogoitan, Pendowoharjo, Sewon, Bantul', cx, 77, { align: 'center' });
+    doc.text('Daerah Istimewa Yogyakarta. E-mail: remasfa.rogoitan@gmail.com', cx, 91, { align: 'center' });
+    doc.setDrawColor(0, 0, 0); doc.setLineWidth(1.4);
+    doc.line(34, 102, w - 34, 102);
+    doc.setLineWidth(0.6);
+    doc.line(34, 105, w - 34, 105);
+    return 130;
+}
+
+async function simpanGenerateSuratUndangan() {
+    try {
+        var kop = document.getElementById('suKop').value;
+        var nomor = document.getElementById('suNomor').value;
+        var namaAcara = document.getElementById('suNamaAcara').value.trim();
+        var dalamRangka = document.getElementById('suDalamRangka').value.trim();
+        var tanggal = document.getElementById('suTanggal').value;
+        var jam = document.getElementById('suJam').value.trim();
+        var tempat = document.getElementById('suTempat').value.trim();
+        if (!namaAcara || !tanggal || !jam || !tempat) { alert('Nama Acara, Tanggal, Jam, dan Tempat wajib diisi'); return; }
+
+        var namaRows = document.querySelectorAll('#suPengesahanRows .su-pengesahan-nama');
+        var jabatanRows = document.querySelectorAll('#suPengesahanRows .su-pengesahan-jabatan');
+        if (namaRows.length === 0) { alert('Pilih jumlah pengesahan (1/2/3 orang) terlebih dahulu'); return; }
+        var pengesahan = [];
+        for (var i = 0; i < namaRows.length; i++) {
+            var nm = namaRows[i].value.trim(), jb = jabatanRows[i].value.trim();
+            if (!nm || !jb) { alert('Lengkapi nama & jabatan seluruh pengesahan'); return; }
+            pengesahan.push({ nama: nm, jabatan: jb });
+        }
+
+        var doc = pdfBaru();
+        var w = doc.internal.pageSize.getWidth();
+        var y = pdfSuratUndanganKop(doc, kop);
+
+        doc.setFont('times', 'normal'); doc.setFontSize(11);
+        doc.text('Nomor: ' + nomor, 34, y); y += 16;
+        doc.text('Perihal: Undangan ' + namaAcara, 34, y); y += 30;
+
+        var bulanID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        var dTgl = new Date(tanggal + 'T00:00:00');
+        doc.setFont('times', 'bold'); doc.setFontSize(12);
+        doc.text('UNDANGAN', w / 2, y, { align: 'center' }); y += 10;
+        doc.setDrawColor(0,0,0); doc.setLineWidth(0.6); doc.line(w/2 - 40, y, w/2 + 40, y); y += 24;
+
+        doc.setFont('times', 'normal'); doc.setFontSize(11);
+        var isiLines = doc.splitTextToSize('Dalam rangka ' + (dalamRangka || namaAcara) + ', kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada:', w - 68);
+        doc.text(isiLines, 34, y); y += isiLines.length * 16 + 10;
+
+        var detailBody = [['Acara', namaAcara], ['Hari/Tanggal', dTgl.getDate() + ' ' + bulanID[dTgl.getMonth()] + ' ' + dTgl.getFullYear()], ['Waktu', jam], ['Tempat', tempat]];
+        y = pdfTabel(doc, y, ['Uraian', 'Keterangan'], detailBody, { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 130 } } }) + 20;
+
+        doc.setFont('times', 'normal'); doc.setFontSize(11);
+        var penutupLines = doc.splitTextToSize('Demikian undangan ini kami sampaikan. Atas perhatian dan kehadirannya kami ucapkan terima kasih.', w - 68);
+        doc.text(penutupLines, 34, y); y += penutupLines.length * 16 + 30;
+
+        if (pengesahan.length === 1) {
+            var x1 = w - 34 - 160;
+            doc.setFont('times', 'normal');
+            doc.text('Mengetahui,', x1, y);
+            doc.text(pengesahan[0].jabatan, x1, y + 14);
+            doc.setFont('times', 'bold'); doc.text(pengesahan[0].nama, x1, y + 70);
+        } else if (pengesahan.length === 2) {
+            doc.setFont('times', 'normal');
+            doc.text(pengesahan[0].jabatan, 34, y);
+            doc.text(pengesahan[1].jabatan, w - 34 - 160, y);
+            doc.setFont('times', 'bold');
+            doc.text(pengesahan[0].nama, 34, y + 70);
+            doc.text(pengesahan[1].nama, w - 34 - 160, y + 70);
+        } else {
+            doc.setFont('times', 'normal');
+            doc.text(pengesahan[0].jabatan, 34, y);
+            doc.text(pengesahan[1].jabatan, w - 34 - 160, y);
+            doc.setFont('times', 'bold');
+            doc.text(pengesahan[0].nama, 34, y + 70);
+            doc.text(pengesahan[1].nama, w - 34 - 160, y + 70);
+            y += 100;
+            doc.setFont('times', 'normal');
+            doc.text(pengesahan[2].jabatan, w / 2 - 60, y);
+            doc.setFont('times', 'bold');
+            doc.text(pengesahan[2].nama, w / 2 - 60, y + 70);
+        }
+
+        var fname = 'Surat-Undangan-' + namaAcara.replace(/[^a-z0-9]/gi, '-') + '-' + Date.now() + '.pdf';
+        var blob = doc.output('blob');
+        var pathUp = 'surat-keluar/' + Date.now() + '.pdf';
+        var up = await supabaseClient.storage.from('dokumen-surat').upload(pathUp, blob, { contentType: 'application/pdf' });
+        var fileUrl = null;
+        if (!up.error) fileUrl = supabaseClient.storage.from('dokumen-surat').getPublicUrl(pathUp).data.publicUrl;
+
+        var res = await supabaseClient.from('surat_keluar').insert({
+            nomor_surat: nomor, jenis_surat: 'Surat Undangan', perihal: 'Undangan ' + namaAcara,
+            kop: kop, data: { namaAcara: namaAcara, dalamRangka: dalamRangka, tanggal: tanggal, jam: jam, tempat: tempat, pengesahan: pengesahan },
+            file_url: fileUrl
+        });
+        if (res.error) { alert('ERROR SUPABASE (simpan surat keluar): ' + res.error.message); }
+
+        doc.save(fname);
+        alert('Surat undangan berhasil dibuat dan diarsipkan');
+        tutupGenerateSuratUndangan();
+        await muatSuratKeluar();
     } catch (e) {
         alert('ERROR SISTEM: ' + e.message);
     }
