@@ -1769,6 +1769,84 @@
         .guest-donasi-amount { position: relative; font-size: 1.4rem; font-weight: 700; color: #FFFFFF; margin-top: 6px; letter-spacing: -0.3px; }
         .guest-donasi-sub { position: relative; font-size: 0.64rem; color: rgba(255,255,255,0.85); margin-top: 4px; font-weight: 600; }
 
+        /* ---- Sekretaris: Banner Profil ---- */
+        .sek-profile-banner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            padding: 26px 20px 46px;
+            background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
+            box-shadow: 0 14px 30px rgba(0,0,0,0.28);
+            margin-bottom: -40px;
+        }
+        .sek-profile-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -60%;
+            width: 40%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
+            transform: skewX(-20deg);
+            animation: guestShineSweep 3.5s ease-in-out infinite;
+        }
+        .sek-profile-banner-decor {
+            position: absolute;
+            font-size: 6rem;
+            color: rgba(255,255,255,0.09);
+            right: -10px; top: -16px;
+            animation: guestFloat 6s ease-in-out infinite;
+        }
+        .sek-profile-banner-label {
+            position: relative;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.85);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .sek-profile-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #4ADE80;
+            animation: guestPulseRing 1.8s infinite;
+        }
+        .sek-profile-banner-sub {
+            position: relative;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-top: 6px;
+        }
+        .sek-profile-banner-stats {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .sek-profile-banner-stat {
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 14px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        .sek-profile-banner-stat-val { font-size: 1.05rem; font-weight: 700; color: #FFFFFF; }
+        .sek-profile-banner-stat-lbl { font-size: 0.6rem; font-weight: 600; color: rgba(255,255,255,0.8); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .sek-profile-card {
+            position: relative;
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--line);
+            padding: 0 16px 20px;
+            display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 20px;
+        }
+        .sek-profile-avatar {
+            margin-top: -40px;
+            border: 4px solid #FFFFFF;
+        }
+
         /* ---- Cutoff bulanan Buku Besar ---- */
         .bb-row-cutoff { background: rgba(0, 0, 0, 0.08); }
         .bb-row-cutoff .bb-ket { color: var(--maroon); font-weight: 700; }
@@ -2779,7 +2857,7 @@
                     <!-- Menu Pelaporan Khusus -->
                     <div>
                         <div class="ledger-head">
-                            <div class="ledger-title">Menu Pelaporan Khusus</div>
+                            <div class="ledger-title">Menu Laporan Khusus</div>
                         </div>
                         <div class="menu-grid">
                             <div class="menu-item" id="menuRekBank" onclick="bukaRekBank()">
@@ -2973,6 +3051,10 @@
                             <div class="menu-item" onclick="bukaTutupBukuScreen()">
                                 <div class="menu-icon-box utama"><i class="ph ph-lock-key"></i></div>
                                 <div class="menu-label">Tutup Buku</div>
+                            </div>
+                            <div class="menu-item" onclick="bukaRiwayatTutupBukuScreen()">
+                                <div class="menu-icon-box utama"><i class="ph ph-clock-counter-clockwise"></i></div>
+                                <div class="menu-label">Riwayat Tutup Buku</div>
                             </div>
                         </div>
                     </div>
@@ -5460,12 +5542,46 @@
         <div class="ct-body">
             <div class="pf-danger-box">
                 <div class="pf-danger-title"><i class="ph ph-warning-octagon"></i> Zona Berbahaya</div>
-                <div class="pf-danger-text"><strong>Tutup Buku Periode Berjalan</strong><br>Sistem akan membuat 1 jurnal penutup yang menolkan seluruh akun <strong>Pendapatan dan Beban berbasis jurnal</strong> ke Aset Neto sesuai klasifikasi terikat/tidak terikat. Akun riil (Kas, Piutang, Persediaan, Peralatan, Utang, Aset Neto) <strong>tidak direset</strong> dan seluruh riwayat jurnal tetap tersimpan untuk keperluan audit. Akun virtual (Pendapatan Iuran, Pendapatan Lainnya, HPP, Diskon Pembelian, Utang Vendor) yang dihitung otomatis dari modul Iuran/Penjualan <strong>tidak ikut ditutup</strong>. Proses ini <strong>tidak dapat dibatalkan otomatis</strong>.</div>
-                <button class="pf-danger-btn" onclick="tutupBukuTahunan()"><i class="ph ph-lock-key"></i> Tutup Buku & Reset Periode Baru</button>
+                <div class="pf-danger-text"><strong>Tutup Buku Periode Berjalan</strong><br>Sistem akan (1) membuat 1 jurnal penutup yang menolkan akun Pendapatan &amp; Beban berbasis jurnal ke Aset Neto, (2) mengarsipkan produk yang sudah habis terjual dari daftar Penjualan aktif (data tidak dihapus), (3) menandai batas periode baru. <strong>Tidak ada data yang dihapus</strong> — seluruh riwayat jurnal, produk, dan iuran tetap tersimpan dan dapat dibuka kembali lewat menu Riwayat Tutup Buku di Profil.</div>
+                <button class="pf-danger-btn" onclick="tutupBukuTahunan()"><i class="ph ph-lock-key"></i> Tutup Buku Periode Ini</button>
+            </div>
+
+            <div class="pf-danger-box" style="margin-top:14px;">
+                <div class="pf-danger-title"><i class="ph ph-arrow-counter-clockwise"></i> Batalkan Tutup Buku Terakhir</div>
+                <div class="pf-danger-text">Membatalkan penutupan buku yang <strong>paling baru</strong> saja. Jurnal penutupnya akan dihapus dan produk yang diarsipkan otomatis diaktifkan kembali. Transaksi baru yang sudah sempat dicatat setelah tutup buku tersebut <strong>tidak akan dihapus</strong> — hanya dikembalikan ke periode sebelumnya.</div>
+                <button class="pf-danger-btn" onclick="batalkanTutupBukuTerakhir()"><i class="ph ph-arrow-counter-clockwise"></i> Batalkan Tutup Buku Terakhir</button>
             </div>
         </div>
     </div>
 
+    <!-- ================= LAYAR RIWAYAT TUTUP BUKU ================= -->
+    <div id="riwayat-tutup-buku-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupRiwayatTutupBukuScreen()"></i>
+                <div class="ct-header-title">Riwayat Tutup Buku</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div id="riwayatTutupBukuList" style="display:flex; flex-direction:column; gap:10px;">
+                <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat riwayat...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= LAYAR DETAIL RIWAYAT TUTUP BUKU ================= -->
+    <div id="riwayat-tutup-buku-detail-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:31;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupRiwayatTutupBukuDetailScreen()"></i>
+                <div class="ct-header-title" id="riwayatTutupBukuDetailTitle">Detail Periode</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body" id="riwayatTutupBukuDetailBody">
+            <div style="padding:30px; text-align:center; color:var(--text-gray); font-size:0.8rem;">Memuat laporan...</div>
+        </div>
     </div>
 
     <!-- ================= SECRETARY DASHBOARD (Sekretaris) ================= -->
@@ -5483,8 +5599,17 @@
             </div>
         </div>
         <div class="app-body" style="padding-bottom:30px;">
-            <div class="profile-hero">
-                <div class="avatar-circle" id="sekAvatarCircle">
+            <div class="sek-profile-banner">
+                <i class="ph-fill ph-identification-badge sek-profile-banner-decor"></i>
+                <div class="sek-profile-banner-label"><span class="sek-profile-dot"></span> KESEKRETARIATAN REMASFA</div>
+                <div class="sek-profile-banner-sub">Periode Kepengurusan 2026/2027</div>
+                <div class="sek-profile-banner-stats">
+                    <div class="sek-profile-banner-stat"><div class="sek-profile-banner-stat-val" id="sekStatSuratMasuk">0</div><div class="sek-profile-banner-stat-lbl">Surat Masuk</div></div>
+                    <div class="sek-profile-banner-stat"><div class="sek-profile-banner-stat-val" id="sekStatSuratKeluar">0</div><div class="sek-profile-banner-stat-lbl">Surat Keluar</div></div>
+                </div>
+            </div>
+            <div class="sek-profile-card">
+                <div class="avatar-circle sek-profile-avatar" id="sekAvatarCircle">
                     SK
                     <div class="avatar-edit-btn" onclick="document.getElementById('profilFotoInput').click()"><i class="ph-fill ph-camera"></i></div>
                 </div>
@@ -5495,10 +5620,6 @@
             <button class="ct-submit-btn" onclick="bukaModalUbahProfil()"><i class="ph ph-user-gear"></i> Ubah Profil Saya</button>
 
             <div class="ledger-head" style="margin-top:20px;"><div class="ledger-title">Daftar Buku Agenda REMASFA</div></div>
-            <div class="stat-row">
-                <div class="stat-box out"><div class="stat-icon"><i class="ph ph-arrow-up-right"></i></div><div class="stat-label">Jumlah Surat Keluar</div><div class="stat-amount" id="sekStatSuratKeluar">0</div></div>
-                <div class="stat-box in"><div class="stat-icon"><i class="ph ph-arrow-down-left"></i></div><div class="stat-label">Jumlah Surat Masuk</div><div class="stat-amount" id="sekStatSuratMasuk">0</div></div>
-            </div>
 
             <div class="ledger-head" style="margin-top:10px;"><div class="ledger-title">Menu Utama</div></div>
             <div class="menu-grid">
@@ -5690,6 +5811,8 @@
 
             <button class="ct-submit-btn" style="margin-top:14px;" onclick="simpanGenerateSuratUndangan()"><i class="ph ph-file-pdf"></i> Buat &amp; Unduh Surat Undangan</button>
         </div>
+    </div>
+
     </div>
 
     <!-- Script Javascript -->
@@ -6047,6 +6170,8 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         var _currentUser = null;
         var _catatDariRiwayat = false;
+        var _periodeAktifId = null;
+        var _periodeListCache = [];
 
         // ===== Toggle Lihat/Sembunyikan Password di Halaman Login =====
         function toggleLihatPassword() {
@@ -6154,8 +6279,9 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
                 setTimeout(function () {
                     trans.classList.remove('show');
-                    setTimeout(function () {
+                    setTimeout(async function () {
                         trans.style.display = 'none';
+                        await muatPeriodeAktif();
                         if (_currentUser.dashboard_type === 'sekretaris') {
                             document.getElementById('secretary-dashboard-screen').style.display = 'flex';
                             renderSekretarisProfil();
@@ -6364,9 +6490,10 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         var cekUv = await supabaseClient.from('utang_vendor').select('id').eq('jurnal_id', jurnalId);
         var cekUa = await supabaseClient.from('utang_anggota').select('id').eq('jurnal_id', jurnalId);
         var cekPa = await supabaseClient.from('piutang_anggota').select('id').eq('jurnal_id', jurnalId);
-        var adaKaitan = (cekPrl.data && cekPrl.data.length) || (cekUv.data && cekUv.data.length) || (cekUa.data && cekUa.data.length) || (cekPa.data && cekPa.data.length);
+        var cekInfaq = await supabaseClient.from('infaq_harian').select('id').eq('jurnal_id', jurnalId);
+        var adaKaitan = (cekPrl.data && cekPrl.data.length) || (cekUv.data && cekUv.data.length) || (cekUa.data && cekUa.data.length) || (cekPa.data && cekPa.data.length) || (cekInfaq.data && cekInfaq.data.length);
         if (adaKaitan) {
-            alert('Perhatian: jurnal ini terkait data di modul Peralatan dan/atau Utang Piutang. Perubahan nominal di sini TIDAK otomatis mengubah data di modul tersebut — cek & sesuaikan manual di menu Peralatan / Utang Piutang setelah menyimpan.');
+            alert('Perhatian: jurnal ini terkait data di modul Peralatan, Utang Piutang, dan/atau Infaq Harian. Perubahan nominal di sini TIDAK otomatis mengubah data di modul tersebut — cek & sesuaikan manual di menu terkait setelah menyimpan.');
         }
     } catch (e) { /* abaikan jika gagal cek, jangan blokir proses edit */ }
 
@@ -6893,7 +7020,8 @@ keterangan = keteranganField
                         bendahara: bendahara,
                         keterangan: keterangan,
                         proker_id: prokerSelectVal ? parseInt(prokerSelectVal) : null,
-                        proker_rab_id: prokerRabId
+                        proker_rab_id: prokerRabId,
+                        periode_id: _periodeAktifId
                     })
                     .select()
                     .single();
@@ -7527,6 +7655,36 @@ async function updateJurnal(jurnalId, jenis) {
 
                 if (opnameRes.error) { alert('ERROR SUPABASE (simpan opname): ' + opnameRes.error.message); return; }
                 var opnameId = opnameRes.data.id;
+
+                // FIX: sebelumnya rekomendasi jurnal koreksi HANYA tersimpan sebagai catatan
+                // JSON dan TIDAK PERNAH benar-benar diposting ke jurnal_transaksi, sehingga
+                // selisih kas hasil cash opname tidak pernah tercermin di Buku Besar/Laporan
+                // Keuangan. Posting otomatis di sini agar saldo benar-benar terkoreksi.
+                if (_pendingRekomOpnameRows && _pendingRekomOpnameRows.length > 0) {
+                    var kodeKoreksi = 'JU-KOR-' + new Date(tanggal).getFullYear() + '-' + String(Date.now()).slice(-6);
+                    var jrKoreksi = await supabaseClient.from('jurnal_transaksi').insert({
+                        kode: kodeKoreksi, tanggal: tanggal, jenis: 'umum', bendahara: bendahara,
+                        keterangan: 'Jurnal Koreksi Cash Opname - ' + kasObj.nama + (keterangan ? (' (' + keterangan + ')') : '')
+                    }).select().single();
+                    if (jrKoreksi.error) { alert('ERROR SUPABASE (jurnal koreksi opname): ' + jrKoreksi.error.message); return; }
+
+                    var detailKoreksi = [];
+                    _pendingRekomOpnameRows.forEach(function (r) {
+                        var parts = r.nama_akun.split(' \u2014 ');
+                        var noAkunRow = parts[0];
+                        var kasCocok = (window._akunKasCache || []).find(function (a) { return a.no_akun === noAkunRow; });
+                        var coaCocok = (window._coaAkunCache || []).find(function (a) { return a.no_akun === noAkunRow; });
+                        detailKoreksi.push({
+                            jurnal_id: jrKoreksi.data.id,
+                            akun_kas_id: kasCocok ? kasCocok.id : null,
+                            coa_akun_id: coaCocok ? coaCocok.id : null,
+                            debit: r.debit || 0,
+                            kredit: r.kredit || 0
+                        });
+                    });
+                    var drKoreksi = await supabaseClient.from('jurnal_detail').insert(detailKoreksi);
+                    if (drKoreksi.error) { alert('ERROR SUPABASE (detail jurnal koreksi opname): ' + drKoreksi.error.message); return; }
+                }
 
                 var pecahanRows = [];
                 document.querySelectorAll('#coPecahanRows .co-table-row').forEach(function (row) {
@@ -8162,16 +8320,24 @@ async function updateJurnal(jurnalId, jenis) {
                     });
                     if (!realisasiPerProker[trx.proker_id]) realisasiPerProker[trx.proker_id] = { perRab: {}, perRabTrx: {}, nonRab: [], total: 0, debitAkun: {} };
                     var rp = realisasiPerProker[trx.proker_id];
-                    rp.total += nominalKas;
 
-                    var trxInfo = { id: trx.id, kode: trx.kode, tgl: trx.tanggal, ket: trx.keterangan, nominal: nominalKas, bendahara: trx.bendahara, debitAkunList: debitAkunList };
+                    // FIX: Realisasi Anggaran Belanja hanya boleh mengakumulasi PENGELUARAN
+                    // kas (nominalKas > 0). Transaksi Penerimaan yang ditandai ke proker/pos
+                    // RAB yang sama tidak boleh dinetkan, karena akan mengecilkan (bahkan bisa
+                    // membuat negatif) persentase realisasi terhadap RAB.
+                    var nominalRealisasi = nominalKas > 0 ? nominalKas : 0;
+                    rp.total += nominalRealisasi;
 
-                    if (trx.proker_rab_id) {
-                        rp.perRab[trx.proker_rab_id] = (rp.perRab[trx.proker_rab_id] || 0) + nominalKas;
-                        if (!rp.perRabTrx[trx.proker_rab_id]) rp.perRabTrx[trx.proker_rab_id] = [];
-                        rp.perRabTrx[trx.proker_rab_id].push(trxInfo);
-                    } else {
-                        rp.nonRab.push(trxInfo);
+                    var trxInfo = { id: trx.id, kode: trx.kode, tgl: trx.tanggal, ket: trx.keterangan, nominal: nominalRealisasi, bendahara: trx.bendahara, debitAkunList: debitAkunList };
+
+                    if (nominalRealisasi > 0) {
+                        if (trx.proker_rab_id) {
+                            rp.perRab[trx.proker_rab_id] = (rp.perRab[trx.proker_rab_id] || 0) + nominalRealisasi;
+                            if (!rp.perRabTrx[trx.proker_rab_id]) rp.perRabTrx[trx.proker_rab_id] = [];
+                            rp.perRabTrx[trx.proker_rab_id].push(trxInfo);
+                        } else {
+                            rp.nonRab.push(trxInfo);
+                        }
                     }
 
                     debitAkunList.forEach(function (a) {
@@ -8976,7 +9142,7 @@ async function updateJurnal(jurnalId, jenis) {
 
                 var konsepRes = await supabaseClient
                     .from('iuran_konsep')
-                    .insert({ nama_kegiatan: nama, kas_penampung_id: kasId ? parseInt(kasId) : null })
+                    .insert({ nama_kegiatan: nama, kas_penampung_id: kasId ? parseInt(kasId) : null, periode_id: _periodeAktifId })
                     .select()
                     .single();
                 if (konsepRes.error) { alert('ERROR SUPABASE (iuran konsep): ' + konsepRes.error.message); return; }
@@ -9142,6 +9308,7 @@ async function updateJurnal(jurnalId, jenis) {
                 const { data, error } = await supabaseClient
                     .from('produk')
                     .select('id, nama, harga_jual, harga_beli, total_modal_vendor, kas_penampung_id, akun_kas(nama), produk_pembeli(id, nama, qty, produk_pembayaran(id, tanggal, nominal)), produk_biaya(id, keterangan, nominal, kas_id), produk_vendor_bayar(id, tanggal, nominal, kas_id, status)')
+                    .eq('status_arsip', false)
                     .order('id', { ascending: true });
                 if (error) { alert('ERROR SUPABASE (produk): ' + error.message); return; }
 
@@ -9201,7 +9368,8 @@ async function updateJurnal(jurnalId, jenis) {
 
                 var res = await supabaseClient.from('produk').insert({
                     nama: nama, harga_jual: hargaJual, harga_beli: hargaBeli, total_modal_vendor: totalModalVendor,
-                    kas_penampung_id: kasId ? parseInt(kasId) : null
+                    kas_penampung_id: kasId ? parseInt(kasId) : null,
+                    periode_id: _periodeAktifId
                 });
                 if (res.error) { alert('ERROR SUPABASE (simpan produk): ' + res.error.message); return; }
 
@@ -10087,8 +10255,6 @@ async function updateJurnal(jurnalId, jenis) {
                     mutasiCoa[m.coa_akun_id] = (mutasiCoa[m.coa_akun_id] || 0) + ((parseFloat(m.debit) || 0) - (parseFloat(m.kredit) || 0));
                 });
 
-                var VIRTUAL_EXCLUDE = ['Pendapatan Iuran', 'Pendapatan Lainnya', 'Harga Pokok Penjualan', 'Diskon Pembelian Merchandise', 'Utang Kepada Vendor'];
-
                 const plotRes = await supabaseClient.from('plotting_akun_pendapatan').select('*');
                 var plotMap = {};
                 (plotRes.data || []).forEach(function (p) { plotMap[p.coa_akun_id] = p.pembatasan; });
@@ -10099,7 +10265,6 @@ async function updateJurnal(jurnalId, jenis) {
 
                 var detailRows = [];
                 (window._coaAkunCache || []).forEach(function (c) {
-                    if (VIRTUAL_EXCLUDE.indexOf(c.nama) !== -1) return;
                     var net = mutasiCoa[c.id] || 0;
 
                     if (c.tipe === 'pendapatan') {
@@ -10208,7 +10373,7 @@ async function updateJurnal(jurnalId, jenis) {
                 var rekap = {
                     kasIuran: kasIuran, kasPenjualanMasuk: kasPenjualanMasuk, kasPenjualanKeluar: kasPenjualanKeluar,
                     piutangIuran: totalTargetIuran - totalDibayarIuran,
-                    pendapatanIuran: totalTargetIuran,
+                    pendapatanIuran: totalDibayarIuran,
                     piutangPenjualan: totalTagihanJual - totalDibayarJual,
                     pendapatanPenjualan: totalTagihanJual,
                     hpp: totalHpp,
@@ -10761,6 +10926,15 @@ async function hapusJurnal(jurnalId) {
         var delNota = await supabaseClient.from('jurnal_nota').delete().eq('jurnal_id', jurnalId);
         if (delNota.error) { alert('ERROR SUPABASE (hapus nota): ' + delNota.error.message); return; }
 
+        // FIX: putuskan rujukan di menu Infaq Harian juga, agar statistik Tunai/QRIS
+        // tidak terus menampilkan setoran yang jurnalnya sudah dihapus (orphan reference).
+        var infaqTerkait = await supabaseClient.from('infaq_harian').select('id').eq('jurnal_id', jurnalId);
+        if (infaqTerkait.error) { alert('ERROR SUPABASE (cek infaq terkait): ' + infaqTerkait.error.message); return; }
+        if ((infaqTerkait.data || []).length > 0) {
+            var delInfaqTerkait = await supabaseClient.from('infaq_harian').delete().eq('jurnal_id', jurnalId);
+            if (delInfaqTerkait.error) { alert('ERROR SUPABASE (hapus data infaq terkait): ' + delInfaqTerkait.error.message); return; }
+        }
+
         // FIX: sinkronkan modul Peralatan saat jurnal terkait dihapus.
         // (a) Jurnal ini MENCATAT pembelian peralatan -> hapus juga data peralatannya.
         var prlBeli = await supabaseClient.from('peralatan').select('id').eq('jurnal_id', jurnalId);
@@ -10816,6 +10990,9 @@ async function hapusJurnal(jurnalId) {
         if (document.getElementById('utang-piutang-screen') && document.getElementById('utang-piutang-screen').style.display === 'flex') {
             await muatUtangPiutang();
             renderRincianAkunUP();
+        }
+        if (document.getElementById('infaq-screen') && document.getElementById('infaq-screen').style.display === 'flex' && typeof muatInfaqHarian === 'function') {
+            await muatInfaqHarian();
         }
 
     } catch (e) {
@@ -11916,6 +12093,7 @@ function unduhRiwayatTransaksi() {
                 });
 
                 var asetCoa = [], kewajibanCoa = [], pendapatanCoa = [], bebanCoa = [];
+                var asetNetoManualTT = 0, asetNetoManualT = 0;
                 (coaRes.data || []).forEach(function (c) {
                     var net = mutasiCoa[c.id] || 0;
                     if (c.nama === 'Piutang Kepada Anggota') net += rekap.piutangIuran + rekap.piutangPenjualan;
@@ -11930,6 +12108,14 @@ function unduhRiwayatTransaksi() {
                     else if (c.tipe === 'kewajiban') kewajibanCoa.push({ nama: c.nama, saldo: -net });
                     else if (c.tipe === 'pendapatan') pendapatanCoa.push({ nama: c.nama, saldo: -net, pembatasan: plotMap[c.id] || 'Tidak Terikat' });
                     else if (c.tipe === 'beban') bebanCoa.push({ nama: c.nama, saldo: net });
+                    else if (c.tipe === 'aset_neto') {
+                        var saldoNeto = -net;
+                        if (c.nama === 'Aset Netto Terikat Sementara' || c.nama === 'Aset Netto Terikat Permanen') {
+                            asetNetoManualT += saldoNeto;
+                        } else {
+                            asetNetoManualTT += saldoNeto;
+                        }
+                    }
                 });
 
                 var akunDkForLap = (kasRes.data || []).find(function (a) { return a.no_akun === '1-10006' || a.nama === 'Kas Dana Kebajikan'; });
@@ -11946,6 +12132,14 @@ function unduhRiwayatTransaksi() {
                     var pendapatanLainnyaItem = pendapatanCoa.find(function (p) { return p.nama === 'Pendapatan Lainnya'; });
                     if (pendapatanLainnyaItem) pendapatanLainnyaItem.saldo -= dkTotalSumber;
                 }
+                // FIX: penyaluran Dana Kebajikan yang dijurnal lewat akun Beban Lainnya
+                // jangan ikut mengurangi Aset Neto Tidak Terikat — dananya sudah dikurangi
+                // lewat dkSaldoNetto di atas. Tanpa ini, satu transaksi penyaluran
+                // mengurangi total Aset Neto dua kali (merusak Aset = Liabilitas + Aset Neto).
+                if (dkTotalPenggunaan > 0) {
+                    var bebanLainnyaItemDk = bebanCoa.find(function (b) { return b.nama === 'Beban Lainnya'; });
+                    if (bebanLainnyaItemDk) bebanLainnyaItemDk.saldo -= dkTotalPenggunaan;
+                }
 
                 var totalKas = kasList.reduce(function (s, k) { return s + k.saldo; }, 0);
                 var totalAsetCoa = asetCoa.reduce(function (s, k) { return s + k.saldo; }, 0);
@@ -11959,8 +12153,10 @@ function unduhRiwayatTransaksi() {
                 var totalPendapatan = totalPendapatanTT + totalPendapatanT;
                 var totalBeban = bebanCoa.reduce(function (s, b) { return s + b.saldo; }, 0);
 
-                var surplusTT = totalPendapatanTT - totalBeban;
-                var surplusT = totalPendapatanT + dkSaldoNetto;
+                var aktivitasTT = totalPendapatanTT - totalBeban;
+                var aktivitasT = totalPendapatanT + dkSaldoNetto;
+                var surplusTT = aktivitasTT + asetNetoManualTT;
+                var surplusT = aktivitasT + asetNetoManualT;
                 var totalAsetNeto = surplusTT + surplusT;
 
                 // Akun dengan saldo 0 disembunyikan dari tampilan laporan (total tetap dihitung dari data lengkap di atas)
@@ -11979,7 +12175,9 @@ function unduhRiwayatTransaksi() {
                     pendapatanT: pendapatanT, totalPendapatanT: totalPendapatanT, totalPendapatan: totalPendapatan,
                     bebanCoa: bebanCoa, totalBeban: totalBeban,
                     surplusTT: surplusTT, surplusT: surplusT, totalAsetNeto: totalAsetNeto,
-                    danaKebajikanNonHalal: dkSaldoNetto
+                    danaKebajikanNonHalal: dkSaldoNetto,
+                    saldoAwalTT: asetNetoManualTT, saldoAwalT: asetNetoManualT,
+                    aktivitasTT: aktivitasTT, aktivitasT: aktivitasT
                 };
             } catch (e) {
                 alert('ERROR SISTEM: ' + e.message);
@@ -12041,13 +12239,16 @@ function unduhRiwayatTransaksi() {
             var html = '<div class="lp-report-box">' +
                 '<div class="lp-report-header"><div class="lp-report-title">LAPORAN PERUBAHAN ASET NETO</div><div class="lp-report-sub">Remaja Masjid Fadhlillah &middot; Per ' + tanggalLaporanHariIni() + '</div></div>';
 
+            var saldoAwalTT = d.saldoAwalTT || 0;
+            var saldoAwalT = d.saldoAwalT || 0;
             var dkNominal = d.danaKebajikanNonHalal || 0;
-            var terikatSemProgram = d.surplusT - dkNominal;
+            var aktivitasTT = d.aktivitasTT || 0;
+            var aktivitasTMurni = (d.aktivitasT || 0) - dkNominal;
 
             html += '<div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;">' +
                 '<span>Uraian</span><span>Tdk Terikat</span><span>Terikat Sem.</span><span>Total</span></div>';
-            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Saldo Awal</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">Rp 0</span></div>';
-            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Surplus/(Defisit) Berjalan (Program/Donasi)</span><span style="font-size:0.72rem;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(terikatSemProgram) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusTT + terikatSemProgram) + '</span></div>';
+            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Saldo Awal</span><span style="font-size:0.72rem;">' + fmtRp(saldoAwalTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(saldoAwalT) + '</span><span style="font-size:0.72rem;">' + fmtRp(saldoAwalTT + saldoAwalT) + '</span></div>';
+            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Surplus/(Defisit) Berjalan (Program/Donasi)</span><span style="font-size:0.72rem;">' + fmtRp(aktivitasTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(aktivitasTMurni) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(aktivitasTT + aktivitasTMurni) + '</span></div>';
             html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Dana Kebajikan (Non-Halal)</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">' + fmtRp(dkNominal) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(dkNominal) + '</span></div>';
             html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr; background:var(--paper-soft);"><span style="font-size:0.72rem; font-weight:700;">Saldo Akhir</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusT) + '</span><span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">' + fmtRp(d.totalAsetNeto) + '</span></div>';
             html += '</div></div>';
@@ -12076,7 +12277,7 @@ function unduhRiwayatTransaksi() {
             if (d.bebanCoa.length === 0) html += '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
             html += '<div class="lp-line"><span>TOTAL BEBAN</span><span>' + fmtRp(-d.totalBeban) + '</span></div>';
 
-            html += '<div class="lp-line lp-final"><span>SURPLUS / (DEFISIT) TAHUN BERJALAN</span><span>' + fmtRp(d.totalAsetNeto) + '</span></div>';
+            html += '<div class="lp-line lp-final"><span>SURPLUS / (DEFISIT) TAHUN BERJALAN</span><span>' + fmtRp(d.totalPendapatan - d.totalBeban) + '</span></div>';
             html += '</div>';
             return html;
         }
@@ -12283,7 +12484,7 @@ function unduhRiwayatTransaksi() {
             doc.line(34, y, doc.internal.pageSize.getWidth() - 34, y);
             doc.setFont('times', 'bold'); doc.setFontSize(10); doc.setTextColor(0,0,0);
             doc.text('SURPLUS / (DEFISIT) TAHUN BERJALAN', 34, y + 16);
-            doc.text(fmtRp(data.totalAsetNeto), doc.internal.pageSize.getWidth() - 34, y + 16, { align: 'right' });
+            doc.text(fmtRp(data.totalPendapatan - data.totalBeban), doc.internal.pageSize.getWidth() - 34, y + 16, { align: 'right' });
 
             pdfTutup(doc, 'Laporan-Aktivitas-' + Date.now() + '.pdf');
         }
@@ -12294,11 +12495,14 @@ function unduhRiwayatTransaksi() {
             if (!data) return;
             var doc = pdfBaru();
             var y = pdfKop(doc, 'LAPORAN PERUBAHAN ASET NETO', 'Per ' + tanggalLaporanHariIni());
+            var saldoAwalTTPdf = data.saldoAwalTT || 0;
+            var saldoAwalTPdf = data.saldoAwalT || 0;
             var dkNominalPdf = data.danaKebajikanNonHalal || 0;
-            var terikatSemProgramPdf = data.surplusT - dkNominalPdf;
+            var aktivitasTTPdf = data.aktivitasTT || 0;
+            var aktivitasTMurniPdf = (data.aktivitasT || 0) - dkNominalPdf;
             var body = [
-                ['Saldo Awal', 'Rp 0', 'Rp 0', 'Rp 0'],
-                ['Surplus/(Defisit) Berjalan (Program/Donasi)', fmtRp(data.surplusTT), fmtRp(terikatSemProgramPdf), fmtRp(data.surplusTT + terikatSemProgramPdf)],
+                ['Saldo Awal', fmtRp(saldoAwalTTPdf), fmtRp(saldoAwalTPdf), fmtRp(saldoAwalTTPdf + saldoAwalTPdf)],
+                ['Surplus/(Defisit) Berjalan (Program/Donasi)', fmtRp(aktivitasTTPdf), fmtRp(aktivitasTMurniPdf), fmtRp(aktivitasTTPdf + aktivitasTMurniPdf)],
                 ['Dana Kebajikan (Non-Halal)', 'Rp 0', fmtRp(dkNominalPdf), fmtRp(dkNominalPdf)],
                 ['Saldo Akhir', fmtRp(data.surplusTT), fmtRp(data.surplusT), fmtRp(data.totalAsetNeto)]
             ];
@@ -12789,7 +12993,7 @@ function unduhRiwayatTransaksi() {
             var bebBody = data.bebanCoa.map(function (b) { return [b.nama, fmtRp(b.saldo)]; });
             y = pdfTabel(doc, y, ['Beban', 'Jumlah (Rp)'], bebBody.length ? bebBody : [['Nihil','-']], { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 10;
             doc.setFont('times','bold'); doc.setFontSize(9.5); doc.setTextColor(0,0,0);
-            doc.text('Surplus / (Defisit) Tahun Berjalan: ' + fmtRp(data.totalAsetNeto), 34, y);
+            doc.text('Surplus / (Defisit) Tahun Berjalan: ' + fmtRp(data.totalPendapatan - data.totalBeban), 34, y);
 
             doc.addPage();
             y = pdfKop(doc, 'LAPORAN KEUANGAN TAHUNAN', 'Gabungan \u00b7 Per ' + tanggalLaporanHariIni());
@@ -15422,7 +15626,7 @@ function renderCalkScreen() {
         '<div class="calk-sub-title">2.7 Aset Tetap dan Penyusutan</div>' +
         '<div class="ct-field" style="margin-bottom:8px;"><label>Kebijakan penyusutan</label><select id="calkPilihDisusutkan">' +
         '<option value="tidak"' + (_calkData.pilihan.asetTetapDisusutkan !== 'ya' ? ' selected' : '') + '>Tidak disusutkan (unit kerja ad-hoc / masa tugas singkat)</option>' +
-        '<option value="ya"' + (_calkData.pilihan.asetTetapDisusutkan === 'ya' ? ' selected' : '') + '>Disusutkan dengan metode garis lurus</option>' +
+        '<option value="ya"' + (_calkData.pilihan.asetTetapDisusutkan === 'ya' ? ' selected' : '') + ' disabled>Disusutkan dengan metode garis lurus (BELUM didukung sistem — jangan pilih sampai fitur penyusutan otomatis tersedia)</option>' +
         '</select></div>' +
         '<textarea class="calk-narrative" data-key="aset_tetap_penyusutan" rows="4">' + calkEsc(calkTeks('aset_tetap_penyusutan') || 'Aset tetap diakui dan dicatat berdasarkan biaya perolehan sebesar jumlah kas yang dikeluarkan hingga aset siap digunakan. Kebijakan penyusutan mengikuti pilihan pada dropdown di atas.') + '</textarea>' +
 
@@ -18946,6 +19150,322 @@ async function simpanGenerateSuratUndangan() {
         alert('ERROR SISTEM: ' + e.message);
     }
 }
+</script>
+<script>
+/* =========================================================================
+   RIWAYAT TUTUP BUKU — non-destructive periode marker
+   Overrides the old tutupBukuTahunan(); nothing is ever deleted.
+   ========================================================================= */
+
+async function muatPeriodeAktif() {
+    try {
+        const { data, error } = await supabaseClient.from('periode_akuntansi').select('*').order('id', { ascending: false }).limit(1).single();
+        if (error) { console.error('muatPeriodeAktif:', error.message); return; }
+        _periodeAktifId = data.id;
+    } catch (e) { /* diamkan */ }
+}
+
+async function tutupBukuTahunan() {
+    var namaPeriode = prompt('Nama Program Kerja / Periode yang ditutup (contoh: Ramadhan Fest 2026):');
+    if (namaPeriode === null) return;
+    if (!namaPeriode.trim()) { alert('Nama periode wajib diisi'); return; }
+
+    var ok = await siasfaConfirm(
+        'Tindakan ini akan: (1) membuat 1 jurnal penutup yang menolkan akun Pendapatan & Beban berbasis jurnal ke Aset Neto, (2) mengarsipkan produk yang sudah habis terjual dari menu Penjualan (data tetap tersimpan, bisa dibuka lagi di Riwayat Tutup Buku), (3) menandai batas periode baru. TIDAK ADA DATA YANG DIHAPUS. Lanjutkan?',
+        'Tutup Buku Periode: ' + namaPeriode,
+        { danger: true }
+    );
+    if (!ok) return;
+
+    try {
+        if (!window._coaAkunCache) await loadDataFormTransaksi();
+
+        const mutasiRes = await supabaseClient.from('jurnal_detail').select('coa_akun_id, debit, kredit');
+        if (mutasiRes.error) { alert('ERROR SUPABASE (tutup buku): ' + mutasiRes.error.message); return; }
+        var mutasiCoa = {};
+        (mutasiRes.data || []).forEach(function (m) {
+            if (!m.coa_akun_id) return;
+            mutasiCoa[m.coa_akun_id] = (mutasiCoa[m.coa_akun_id] || 0) + ((parseFloat(m.debit) || 0) - (parseFloat(m.kredit) || 0));
+        });
+
+        var VIRTUAL_EXCLUDE = ['Pendapatan Iuran', 'Pendapatan Lainnya', 'Harga Pokok Penjualan', 'Diskon Pembelian Merchandise', 'Utang Kepada Vendor'];
+
+        const plotRes = await supabaseClient.from('plotting_akun_pendapatan').select('*');
+        var plotMap = {};
+        (plotRes.data || []).forEach(function (p) { plotMap[p.coa_akun_id] = p.pembatasan; });
+
+        var akunNetoTT = (window._coaAkunCache || []).find(function (c) { return c.nama === 'Aset Netto Tidak Terikat'; });
+        var akunNetoTS = (window._coaAkunCache || []).find(function (c) { return c.nama === 'Aset Netto Terikat Sementara'; });
+        if (!akunNetoTT || !akunNetoTS) { alert('Akun "Aset Netto Tidak Terikat" / "Aset Netto Terikat Sementara" tidak ditemukan di COA'); return; }
+
+        var detailRows = [];
+        (window._coaAkunCache || []).forEach(function (c) {
+            if (VIRTUAL_EXCLUDE.indexOf(c.nama) !== -1) return;
+            var net = mutasiCoa[c.id] || 0;
+            if (c.tipe === 'pendapatan') {
+                var saldo = -net;
+                if (Math.round(saldo) === 0) return;
+                var netoTarget = plotMap[c.id] === 'Terikat' ? akunNetoTS : akunNetoTT;
+                if (saldo > 0) { detailRows.push({ coa_akun_id: c.id, debit: saldo, kredit: 0 }); detailRows.push({ coa_akun_id: netoTarget.id, debit: 0, kredit: saldo }); }
+                else { detailRows.push({ coa_akun_id: c.id, debit: 0, kredit: -saldo }); detailRows.push({ coa_akun_id: netoTarget.id, debit: -saldo, kredit: 0 }); }
+            } else if (c.tipe === 'beban') {
+                var saldoB = net;
+                if (Math.round(saldoB) === 0) return;
+                if (saldoB > 0) { detailRows.push({ coa_akun_id: c.id, debit: 0, kredit: saldoB }); detailRows.push({ coa_akun_id: akunNetoTT.id, debit: saldoB, kredit: 0 }); }
+                else { detailRows.push({ coa_akun_id: c.id, debit: -saldoB, kredit: 0 }); detailRows.push({ coa_akun_id: akunNetoTT.id, debit: 0, kredit: -saldoB }); }
+            }
+        });
+
+        var tanggalTutup = new Date().toISOString().slice(0, 10);
+        var jurnalPenutupId = null;
+
+        if (detailRows.length > 0) {
+            var kode = 'TTP-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-6);
+            var jr = await supabaseClient.from('jurnal_transaksi').insert({
+                kode: kode, tanggal: tanggalTutup, jenis: 'umum',
+                bendahara: (_currentUser ? _currentUser.nama : '-'),
+                keterangan: 'Jurnal Penutup Periode "' + namaPeriode + '" - ' + tanggalTutup,
+                periode_id: _periodeAktifId
+            }).select().single();
+            if (jr.error) { alert('ERROR SUPABASE (jurnal penutup): ' + jr.error.message); return; }
+            jurnalPenutupId = jr.data.id;
+            var payload = detailRows.map(function (d) { return Object.assign({ jurnal_id: jr.data.id }, d); });
+            var dr = await supabaseClient.from('jurnal_detail').insert(payload);
+            if (dr.error) { alert('ERROR SUPABASE (detail jurnal penutup): ' + dr.error.message); return; }
+        }
+
+        var produkArsipIds = [];
+        if (typeof produkData !== 'undefined' && produkData && produkData.length) {
+            for (var i = 0; i < produkData.length; i++) {
+                var p = produkData[i];
+                var qtyTerjual = totalQtyTerjual(p);
+                var sisaRp = (p.totalModalVendor || 0) - (qtyTerjual * p.hargaBeli);
+                if (sisaRp <= 0) {
+                    await supabaseClient.from('produk').update({ status_arsip: true }).eq('id', p.id);
+                    produkArsipIds.push(p.id);
+                }
+            }
+        }
+
+        var insPeriode = await supabaseClient.from('periode_akuntansi').insert({
+            nama_periode: namaPeriode, tanggal_tutup: tanggalTutup,
+            ditutup_oleh: (_currentUser ? _currentUser.nama : '-'),
+            jurnal_penutup_id: jurnalPenutupId,
+            produk_arsip_ids: produkArsipIds
+        }).select().single();
+
+        if (insPeriode.error) {
+            // ROLLBACK MANUAL: gagal simpan periode, batalkan jurnal penutup & pengarsipan produk
+            // yang sudah kadung dibuat, supaya tidak ada data yatim (jurnal tanpa periode).
+            if (jurnalPenutupId) {
+                await supabaseClient.from('jurnal_detail').delete().eq('jurnal_id', jurnalPenutupId);
+                await supabaseClient.from('jurnal_transaksi').delete().eq('id', jurnalPenutupId);
+            }
+            for (var j = 0; j < produkArsipIds.length; j++) {
+                await supabaseClient.from('produk').update({ status_arsip: false }).eq('id', produkArsipIds[j]);
+            }
+            alert('ERROR SUPABASE (simpan periode): ' + insPeriode.error.message + '. Jurnal penutup dan pengarsipan produk telah dibatalkan otomatis (rollback), tidak ada data yang tersangkut.');
+            return;
+        }
+        _periodeAktifId = insPeriode.data.id;
+
+        alert('Tutup buku "' + namaPeriode + '" berhasil. Tidak ada data yang dihapus — seluruh riwayat dapat dibuka kembali lewat menu Riwayat Tutup Buku.');
+
+        await muatDataKas();
+        await muatPenjualan();
+        if (document.getElementById('riwayat-screen').style.display === 'flex') { await muatRiwayatDanBukuBesar(); }
+        var tbScreen = document.getElementById('tutup-buku-screen');
+        if (tbScreen) tbScreen.style.display = 'none';
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+/* ---- Batalkan Tutup Buku Terakhir (undo, tanpa hapus data historis) ---- */
+async function batalkanTutupBukuTerakhir() {
+    try {
+        const { data: periodeRows, error: errPeriode } = await supabaseClient
+            .from('periode_akuntansi')
+            .select('*')
+            .order('id', { ascending: false })
+            .limit(2);
+        if (errPeriode) { alert('ERROR SUPABASE (cek periode): ' + errPeriode.message); return; }
+        if (!periodeRows || periodeRows.length === 0) { alert('Belum ada riwayat tutup buku untuk dibatalkan.'); return; }
+
+        var periodeBaru = periodeRows[0];
+        var periodeLama = periodeRows[1] || null;
+
+        var ok = await siasfaConfirm(
+            'Batalkan tutup buku "' + periodeBaru.nama_periode + '" (ditutup ' + formatTanggalID(periodeBaru.tanggal_tutup) + ')? Jurnal penutupnya akan dihapus, produk yang diarsipkan akan dikembalikan aktif, dan seluruh transaksi baru yang sudah dicatat setelah tutup buku ini akan otomatis dikembalikan ke periode sebelumnya. Tidak ada transaksi baru yang dihapus.',
+            'Batalkan Tutup Buku Terakhir',
+            { danger: true }
+        );
+        if (!ok) return;
+
+        if (periodeBaru.jurnal_penutup_id) {
+            await supabaseClient.from('jurnal_detail').delete().eq('jurnal_id', periodeBaru.jurnal_penutup_id);
+            var delJurnal = await supabaseClient.from('jurnal_transaksi').delete().eq('id', periodeBaru.jurnal_penutup_id);
+            if (delJurnal.error) { alert('ERROR SUPABASE (hapus jurnal penutup): ' + delJurnal.error.message); return; }
+        }
+
+        var arsipIds = periodeBaru.produk_arsip_ids || [];
+        for (var i = 0; i < arsipIds.length; i++) {
+            await supabaseClient.from('produk').update({ status_arsip: false }).eq('id', arsipIds[i]);
+        }
+
+        var periodeLamaId = periodeLama ? periodeLama.id : null;
+        await supabaseClient.from('jurnal_transaksi').update({ periode_id: periodeLamaId }).eq('periode_id', periodeBaru.id);
+        await supabaseClient.from('produk').update({ periode_id: periodeLamaId }).eq('periode_id', periodeBaru.id);
+        await supabaseClient.from('iuran_konsep').update({ periode_id: periodeLamaId }).eq('periode_id', periodeBaru.id);
+
+        var delPeriode = await supabaseClient.from('periode_akuntansi').delete().eq('id', periodeBaru.id);
+        if (delPeriode.error) { alert('ERROR SUPABASE (hapus periode): ' + delPeriode.error.message); return; }
+
+        _periodeAktifId = periodeLamaId;
+
+        alert('Tutup buku "' + periodeBaru.nama_periode + '" berhasil dibatalkan. Transaksi yang sudah dicatat setelah tutup buku ini tetap tersimpan dan telah dikembalikan ke periode sebelumnya.');
+
+        await muatDataKas();
+        await muatPenjualan();
+        await muatProgramKerja();
+        if (typeof muatIuranKegiatan === 'function') await muatIuranKegiatan();
+        if (document.getElementById('riwayat-screen').style.display === 'flex') { await muatRiwayatDanBukuBesar(); }
+        if (document.getElementById('riwayat-tutup-buku-screen').style.display === 'flex') { await bukaRiwayatTutupBukuScreen(); }
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+/* ---- Layar Riwayat Tutup Buku ---- */
+async function bukaRiwayatTutupBukuScreen() {
+    document.getElementById('riwayat-tutup-buku-screen').style.display = 'flex';
+    try {
+        const { data, error } = await supabaseClient.from('periode_akuntansi').select('*').order('id', { ascending: false });
+        if (error) { alert('ERROR SUPABASE (riwayat periode): ' + error.message); return; }
+        _periodeListCache = data || [];
+        var html = '';
+        _periodeListCache.forEach(function (p, idx) {
+            var labelSub = idx === _periodeListCache.length - 1 ? 'Periode pertama' : 'Ditutup oleh ' + (p.ditutup_oleh || '-');
+            html += '<div class="pk-arsip-card" style="cursor:pointer;" onclick="bukaDetailRiwayatPeriode(' + p.id + ')">' +
+                '<div class="pk-arsip-title">' + p.nama_periode + '</div>' +
+                '<div class="pk-arsip-sub">' + labelSub + ' &middot; Ditutup ' + formatTanggalID(p.tanggal_tutup) + '</div></div>';
+        });
+        document.getElementById('riwayatTutupBukuList').innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada riwayat tutup buku.</div>';
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+function tutupRiwayatTutupBukuScreen() { document.getElementById('riwayat-tutup-buku-screen').style.display = 'none'; }
+
+async function bukaDetailRiwayatPeriode(periodeId) {
+    document.getElementById('riwayat-tutup-buku-detail-screen').style.display = 'flex';
+    var body = document.getElementById('riwayatTutupBukuDetailBody');
+    body.innerHTML = '<div style="padding:30px; text-align:center; color:var(--text-gray); font-size:0.8rem;">Memuat laporan periode...</div>';
+    try {
+        if (!window._akunKasCache || !window._coaAkunCache) await loadDataFormTransaksi();
+        if (typeof muatPeralatan === 'function') await muatPeralatan();
+        if (typeof muatUtangPiutang === 'function') await muatUtangPiutang();
+
+        var periode = _periodeListCache.find(function (p) { return p.id === periodeId; });
+        if (!periode) {
+            var resP = await supabaseClient.from('periode_akuntansi').select('*').eq('id', periodeId).single();
+            periode = resP.data;
+        }
+        document.getElementById('riwayatTutupBukuDetailTitle').textContent = periode.nama_periode;
+
+        var idxSorted = (_periodeListCache.length ? _periodeListCache : [periode]).slice().sort(function (a, b) { return a.id - b.id; });
+        var posisiIni = idxSorted.findIndex(function (p) { return p.id === periodeId; });
+        var periodeSebelum = posisiIni > 0 ? idxSorted[posisiIni - 1] : null;
+
+        var cutoff = periode.tanggal_tutup;
+        var mulaiAktivitas = periodeSebelum ? periodeSebelum.tanggal_tutup : '1900-01-01';
+
+        const [kasRes, coaRes, mutasiRes, produkPeriodeRes, iuranPeriodeRes] = await Promise.all([
+            supabaseClient.from('akun_kas').select('*'),
+            supabaseClient.from('coa_akun').select('*'),
+            supabaseClient.from('jurnal_detail').select('akun_kas_id, coa_akun_id, debit, kredit, jurnal_transaksi(tanggal)'),
+            supabaseClient.from('produk').select('*').eq('periode_id', periodeId),
+            supabaseClient.from('iuran_konsep').select('*').eq('periode_id', periodeId)
+        ]);
+
+        var mutasiKasKumulatif = {}, mutasiCoaKumulatif = {}, mutasiCoaPeriodeIni = {};
+        (mutasiRes.data || []).forEach(function (m) {
+            var tgl = m.jurnal_transaksi ? m.jurnal_transaksi.tanggal : null;
+            if (!tgl || tgl > cutoff) return;
+            var net = (parseFloat(m.debit) || 0) - (parseFloat(m.kredit) || 0);
+            if (m.akun_kas_id) mutasiKasKumulatif[m.akun_kas_id] = (mutasiKasKumulatif[m.akun_kas_id] || 0) + net;
+            if (m.coa_akun_id) {
+                mutasiCoaKumulatif[m.coa_akun_id] = (mutasiCoaKumulatif[m.coa_akun_id] || 0) + net;
+                if (tgl > mulaiAktivitas) mutasiCoaPeriodeIni[m.coa_akun_id] = (mutasiCoaPeriodeIni[m.coa_akun_id] || 0) + net;
+            }
+        });
+
+        var kasList = (kasRes.data || []).map(function (a) { return { nama: a.nama, saldo: (parseFloat(a.saldo_awal) || 0) + (mutasiKasKumulatif[a.id] || 0) }; }).filter(function (k) { return k.saldo !== 0; });
+        var totalKas = kasList.reduce(function (s, k) { return s + k.saldo; }, 0);
+
+        var asetCoa = [], kewajibanCoa = [], pendapatanCoa = [], bebanCoa = [];
+        (coaRes.data || []).forEach(function (c) {
+            var netKum = mutasiCoaKumulatif[c.id] || 0;
+            var netPeriode = mutasiCoaPeriodeIni[c.id] || 0;
+            if (c.tipe === 'aset' && Math.round(netKum) !== 0) asetCoa.push({ nama: c.nama, saldo: netKum });
+            else if (c.tipe === 'kewajiban' && Math.round(netKum) !== 0) kewajibanCoa.push({ nama: c.nama, saldo: -netKum });
+            else if (c.tipe === 'pendapatan' && Math.round(netPeriode) !== 0) pendapatanCoa.push({ nama: c.nama, saldo: -netPeriode });
+            else if (c.tipe === 'beban' && Math.round(netPeriode) !== 0) bebanCoa.push({ nama: c.nama, saldo: netPeriode });
+        });
+        var totalAsetCoa = asetCoa.reduce(function (s, a) { return s + a.saldo; }, 0);
+        var totalKewajiban = kewajibanCoa.reduce(function (s, k) { return s + k.saldo; }, 0);
+        var totalPendapatan = pendapatanCoa.reduce(function (s, p) { return s + p.saldo; }, 0);
+        var totalBeban = bebanCoa.reduce(function (s, b) { return s + b.saldo; }, 0);
+
+        function barisLp(items) {
+            if (!items.length) return '<div class="lp-sub-item"><span>Nihil</span><span>-</span></div>';
+            return items.map(function (x) { return '<div class="lp-sub-item"><span>' + x.nama + '</span><span>' + fmtRp(x.saldo) + '</span></div>'; }).join('');
+        }
+
+        var htmlLaporan = '<div class="lp-report-box"><div class="lp-report-header"><div class="lp-report-title">LAPORAN POSISI KEUANGAN</div><div class="lp-report-sub">Per ' + formatTanggalID(cutoff) + '</div></div>' +
+            '<div class="lp-line first"><span>Kas &amp; Setara Kas</span><span>' + fmtRp(totalKas) + '</span></div>' + barisLp(kasList) +
+            '<div class="lp-line"><span>Aset Lainnya</span><span>' + fmtRp(totalAsetCoa) + '</span></div>' + barisLp(asetCoa) +
+            '<div class="lp-line" style="font-weight:700;"><span>TOTAL ASET</span><span>' + fmtRp(totalKas + totalAsetCoa) + '</span></div>' +
+            '<div class="lp-line" style="margin-top:6px;"><span>Kewajiban</span><span>' + fmtRp(totalKewajiban) + '</span></div>' + barisLp(kewajibanCoa) +
+            '</div>' +
+
+            '<div class="lp-report-box" style="margin-top:14px;"><div class="lp-report-header"><div class="lp-report-title">LAPORAN AKTIVITAS PERIODE INI</div><div class="lp-report-sub">' + formatTanggalID(mulaiAktivitas === '1900-01-01' ? cutoff : mulaiAktivitas) + ' s.d. ' + formatTanggalID(cutoff) + '</div></div>' +
+            '<div class="lp-line first"><span>Pendapatan</span><span>' + fmtRp(totalPendapatan) + '</span></div>' + barisLp(pendapatanCoa) +
+            '<div class="lp-line"><span>Beban</span><span>' + fmtRp(-totalBeban) + '</span></div>' + barisLp(bebanCoa) +
+            '<div class="lp-line lp-final"><span>Surplus/(Defisit) Berbasis Jurnal</span><span>' + fmtRp(totalPendapatan - totalBeban) + '</span></div>' +
+            '<div style="font-size:0.66rem; color:var(--text-gray); margin-top:8px;">Catatan: Pendapatan Iuran, Pendapatan Lainnya, HPP, dan Utang Vendor dari modul Iuran/Penjualan mengikuti data saat ini, bukan titik waktu historis, karena modul tersebut belum menyimpan snapshot per periode.</div>' +
+            '</div>';
+
+        var aktifProduk = produkPeriodeRes.data || [];
+        var htmlInventory = '<div class="lp-report-box" style="margin-top:14px;"><div class="lp-report-header"><div class="lp-report-title">INVENTORY, PENJUALAN &amp; HPP</div><div class="lp-report-sub">Produk dibuat pada periode ini</div></div>';
+        if (aktifProduk.length === 0) htmlInventory += '<div class="lp-sub-item"><span>Tidak ada produk pada periode ini</span><span>-</span></div>';
+        aktifProduk.forEach(function (p) {
+            htmlInventory += '<div class="lp-sub-item"><span>' + p.nama + (p.status_arsip ? ' (Habis Terjual)' : ' (Masih Ada Stok)') + '</span><span>Modal Rp ' + Math.round(p.total_modal_vendor || 0).toLocaleString('id-ID') + '</span></div>';
+        });
+        htmlInventory += '</div>';
+
+        var iuranPeriode = iuranPeriodeRes.data || [];
+        var htmlIuran = '<div class="lp-report-box" style="margin-top:14px;"><div class="lp-report-header"><div class="lp-report-title">DAFTAR IURAN-IURAN</div><div class="lp-report-sub">Konsep iuran dibuat pada periode ini</div></div>';
+        if (iuranPeriode.length === 0) htmlIuran += '<div class="lp-sub-item"><span>Tidak ada konsep iuran pada periode ini</span><span>-</span></div>';
+        iuranPeriode.forEach(function (k) { htmlIuran += '<div class="lp-sub-item"><span>' + k.nama_kegiatan + '</span><span>-</span></div>'; });
+        htmlIuran += '</div>';
+
+        var htmlAset = '<div class="lp-report-box" style="margin-top:14px;"><div class="lp-report-header"><div class="lp-report-title">DAFTAR ASET TETAP</div><div class="lp-report-sub">Status saat ini (bukan titik waktu historis)</div></div>';
+        (peralatanCache || []).forEach(function (p) { htmlAset += '<div class="lp-sub-item"><span>' + p.nama + ' (' + p.status + ')</span><span>Rp ' + Math.round(p.nilaiBuku).toLocaleString('id-ID') + '</span></div>'; });
+        if (!peralatanCache || peralatanCache.length === 0) htmlAset += '<div class="lp-sub-item"><span>Belum ada aset tetap</span><span>-</span></div>';
+        htmlAset += '</div>';
+
+        var htmlAging = '<div class="lp-report-box" style="margin-top:14px;"><div class="lp-report-header"><div class="lp-report-title">AGING UTANG &amp; PIUTANG</div><div class="lp-report-sub">Daftar berjalan saat ini (Utang Piutang tidak dibatasi periode)</div></div>';
+        (upUtangCache || []).forEach(function (u) { htmlAging += '<div class="lp-sub-item"><span>' + u.nama + '</span><span>Rp ' + Math.round(u.sisa).toLocaleString('id-ID') + '</span></div>'; });
+        (upPiutangCache || []).forEach(function (p) { htmlAging += '<div class="lp-sub-item"><span>' + p.nama + ' (Piutang)</span><span>Rp ' + Math.round(p.sisa).toLocaleString('id-ID') + '</span></div>'; });
+        if ((!upUtangCache || upUtangCache.length === 0) && (!upPiutangCache || upPiutangCache.length === 0)) htmlAging += '<div class="lp-sub-item"><span>Tidak ada utang/piutang berjalan</span><span>-</span></div>';
+        htmlAging += '</div>';
+
+        body.innerHTML = htmlLaporan + htmlInventory + htmlIuran + htmlAset + htmlAging +
+            '<div class="guest-intro-box" style="margin-top:14px;"><i class="ph ph-info"></i>Untuk CALK lengkap, buka menu Laporan &rarr; CALK (belum dipisah per periode).</div>';
+    } catch (e) {
+        body.innerHTML = '<div style="padding:20px; text-align:center; color:var(--maroon); font-size:0.8rem;">Gagal memuat: ' + e.message + '</div>';
+    }
+}
+function tutupRiwayatTutupBukuDetailScreen() { document.getElementById('riwayat-tutup-buku-detail-screen').style.display = 'none'; }
 </script>
 </body>
 </html>
