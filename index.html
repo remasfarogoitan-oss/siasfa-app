@@ -2540,6 +2540,43 @@
     transform: translate(-50%, -44px);
 }
 .siasfa-pull-indicator.siasfa-pull-ready { color: #16A34A; }
+
+/* ====== Inventaris Sekretaris ====== */
+.inv-hero {
+    display:flex; align-items:center;
+    border-radius:20px; padding:18px 16px;
+    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+    box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+}
+.inv-hero-stat { flex:1; text-align:center; }
+.inv-hero-stat-icon { width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; margin:0 auto 8px; color:#FFFFFF; font-size:1.05rem; }
+.inv-hero-stat-label { font-size:0.62rem; font-weight:700; color:rgba(255,255,255,0.75); text-transform:uppercase; letter-spacing:0.4px; }
+.inv-hero-stat-value { font-size:1.05rem; font-weight:700; color:#FFFFFF; margin-top:4px; }
+.inv-hero-divider { width:1px; height:40px; background:rgba(255,255,255,0.25); margin:0 14px; }
+
+.inv-item-card { display:flex; align-items:center; gap:12px; border:1px solid var(--line); border-radius:16px; padding:12px 14px; background:#FFFFFF; box-shadow:0 3px 10px rgba(0,0,0,0.04); }
+.inv-item-badge { width:30px; height:30px; min-width:30px; border-radius:9px; background:var(--paper-soft); color:var(--maroon); display:flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:800; }
+.inv-item-icon { width:42px; height:42px; min-width:42px; border-radius:50%; background:linear-gradient(135deg, rgba(184,19,55,0.12), rgba(255,122,92,0.12)); color:var(--maroon); display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+.inv-item-mid { flex:1; min-width:0; }
+.inv-item-nama { font-size:0.82rem; font-weight:700; color:var(--text-dark); }
+.inv-item-sub { font-size:0.66rem; color:var(--text-gray); margin-top:2px; }
+.inv-item-right { text-align:right; }
+.inv-item-harga { font-size:0.82rem; font-weight:700; color:var(--maroon); }
+.inv-item-qty { font-size:0.62rem; color:var(--text-gray); margin-top:2px; font-weight:600; }
+
+/* ====== Database Dokumen ====== */
+.dok-kabinet-card {
+    display:flex; align-items:center; gap:12px;
+    border:1px solid var(--line); border-radius:16px;
+    padding:13px 14px; background:#FFFFFF; cursor:pointer;
+    box-shadow:0 3px 10px rgba(0,0,0,0.04);
+    transition: transform 0.15s ease;
+}
+.dok-kabinet-card:active { transform: scale(0.97); }
+.dok-kabinet-icon { width:42px; height:42px; min-width:42px; border-radius:50%; background:linear-gradient(135deg, var(--grad-start), var(--grad-end)); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 6px 14px rgba(0,0,0,0.22); }
+.dok-kabinet-mid { flex:1; min-width:0; }
+.dok-kabinet-nama { font-size:0.84rem; font-weight:700; color:var(--text-dark); }
+.dok-kabinet-sub { font-size:0.66rem; color:var(--text-gray); margin-top:2px; }
 </style>
 </head>
 <body>
@@ -5632,8 +5669,8 @@
             <div class="menu-grid">
                 <div class="menu-item" onclick="siasfaNotify('Menu Database Anggota sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-users-three"></i></div><div class="menu-label">Anggota</div></div>
                 <div class="menu-item" onclick="siasfaNotify('Menu Database Jamaah sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-mosque"></i></div><div class="menu-label">Jamaah</div></div>
-                <div class="menu-item" onclick="siasfaNotify('Menu Database Inventaris sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-toolbox"></i></div><div class="menu-label">Inventaris</div></div>
-                <div class="menu-item" onclick="siasfaNotify('Menu Database Dokumen sedang dalam pengembangan.','info')"><div class="menu-icon-box"><i class="ph ph-folder-open"></i></div><div class="menu-label">Dokumen</div></div>
+                <div class="menu-item" onclick="bukaInventarisSekretaris()"><div class="menu-icon-box"><i class="ph ph-toolbox"></i></div><div class="menu-label">Inventaris</div></div>
+                <div class="menu-item" onclick="bukaDatabaseDokumen()"><div class="menu-icon-box"><i class="ph ph-folder-open"></i></div><div class="menu-label">Dokumen</div></div>
             </div>
 
             <div class="ledger-head" style="margin-top:14px;"><div class="ledger-title">Menu Program Kerja</div></div>
@@ -5810,6 +5847,82 @@
             <div id="suPengesahanRows" style="display:flex; flex-direction:column; gap:12px;"></div>
 
             <button class="ct-submit-btn" style="margin-top:14px;" onclick="simpanGenerateSuratUndangan()"><i class="ph ph-file-pdf"></i> Buat &amp; Unduh Surat Undangan</button>
+        </div>
+    </div>
+
+    <!-- ================= LAYAR INVENTARIS (SEKRETARIS) ================= -->
+    <div id="inventaris-sekretaris-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:33;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupInventarisSekretaris()"></i>
+                <div class="ct-header-title">Inventaris</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="inv-hero">
+                <div class="inv-hero-stat">
+                    <div class="inv-hero-stat-icon"><i class="ph ph-package"></i></div>
+                    <div class="inv-hero-stat-label">Total Item</div>
+                    <div class="inv-hero-stat-value" id="invStatTotalItem">0</div>
+                </div>
+                <div class="inv-hero-divider"></div>
+                <div class="inv-hero-stat">
+                    <div class="inv-hero-stat-icon"><i class="ph ph-coins"></i></div>
+                    <div class="inv-hero-stat-label">Total Perolehan</div>
+                    <div class="inv-hero-stat-value" id="invStatTotalPerolehan">Rp 0</div>
+                </div>
+            </div>
+
+            <div class="guest-intro-box">
+                <i class="ph ph-info"></i>Sistem ini hanya menyajikan seluruh daftar aset tetap yang dibeli dengan menggunakan Dana Kas selama rangkaian kegiatan berlangsung.
+            </div>
+
+            <div class="search-box">
+                <i class="ph ph-magnifying-glass"></i>
+                <input type="text" id="invSearchInput" placeholder="Cari nama aset tetap..." oninput="renderInventarisSekretaris()">
+            </div>
+
+            <div id="invItemList" style="display:flex; flex-direction:column; gap:10px;">
+                <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data aset tetap...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= LAYAR DATABASE DOKUMEN (SEKRETARIS) ================= -->
+    <div id="database-dokumen-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:33;">
+        <div class="ct-header">
+            <div class="ct-header-top">
+                <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDatabaseDokumen()"></i>
+                <div class="ct-header-title">Database Dokumen</div>
+                <div style="width:22px;"></div>
+            </div>
+        </div>
+        <div class="ct-body">
+            <div class="ledger-head"><div class="ledger-title">Arsip Dokumen Proker Kabinet</div></div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="dok-kabinet-card" onclick="window.open('https://drive.google.com/drive/folders/1IfvckrScBKjjlA85bpQKi-fEK67OCuPM?usp=sharing','_blank')">
+                    <div class="dok-kabinet-icon"><i class="ph ph-folder-open"></i></div>
+                    <div class="dok-kabinet-mid"><div class="dok-kabinet-nama">Kabinet Satria</div><div class="dok-kabinet-sub">Buka folder Google Drive</div></div>
+                    <i class="ph ph-arrow-square-out" style="color:var(--text-gray); font-size:1.1rem;"></i>
+                </div>
+                <div class="dok-kabinet-card" onclick="window.open('https://drive.google.com/drive/folders/1pr4HXQmFA2AFn_inCtDoTJ6NOlr1aIWx?usp=sharing','_blank')">
+                    <div class="dok-kabinet-icon"><i class="ph ph-folder-open"></i></div>
+                    <div class="dok-kabinet-mid"><div class="dok-kabinet-nama">Kabinet Fitri</div><div class="dok-kabinet-sub">Buka folder Google Drive</div></div>
+                    <i class="ph ph-arrow-square-out" style="color:var(--text-gray); font-size:1.1rem;"></i>
+                </div>
+                <div class="dok-kabinet-card" onclick="window.open('https://drive.google.com/drive/folders/1ThJiw7DfhmTzKrAabxIcR-itZTbJUiLH?usp=sharing','_blank')">
+                    <div class="dok-kabinet-icon"><i class="ph ph-folder-open"></i></div>
+                    <div class="dok-kabinet-mid"><div class="dok-kabinet-nama">Kabinet Sidiq</div><div class="dok-kabinet-sub">Buka folder Google Drive</div></div>
+                    <i class="ph ph-arrow-square-out" style="color:var(--text-gray); font-size:1.1rem;"></i>
+                </div>
+            </div>
+
+            <div class="ledger-head" style="margin-top:18px;"><div class="ledger-title">Arsip Standar, SOP, AD/ART, &amp; Kode Etik</div></div>
+            <div class="report-row" style="opacity:0.55; cursor:default;">
+                <div class="report-icon"><i class="ph ph-file-text"></i></div>
+                <div><div class="report-name">Standar, SOP, AD/ART &amp; Kode Etik</div><div class="report-sub">Menyusul</div></div>
+            </div>
         </div>
     </div>
 
@@ -19466,6 +19579,66 @@ async function bukaDetailRiwayatPeriode(periodeId) {
     }
 }
 function tutupRiwayatTutupBukuDetailScreen() { document.getElementById('riwayat-tutup-buku-detail-screen').style.display = 'none'; }
+</script>
+
+<script>
+/* =========================================================================
+   SEKRETARIS — INVENTARIS & DATABASE DOKUMEN
+   ========================================================================= */
+
+/* ---------- Inventaris ---------- */
+async function bukaInventarisSekretaris() {
+    document.getElementById('inventaris-sekretaris-screen').style.display = 'flex';
+    document.getElementById('invItemList').innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data aset tetap...</div>';
+    try {
+        if (!window._akunKasCache || !window._coaAkunCache) { await loadDataFormTransaksi(); }
+        await muatPeralatan();
+        renderInventarisSekretaris();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+function tutupInventarisSekretaris() {
+    document.getElementById('inventaris-sekretaris-screen').style.display = 'none';
+}
+function invIconUntukNama(nama) {
+    var n = (nama || '').toLowerCase();
+    if (n.indexOf('dapur') !== -1) return 'ph-cooking-pot';
+    if (n.indexOf('dekorasi') !== -1) return 'ph-sparkle';
+    if (n.indexOf('umum') !== -1) return 'ph-toolbox';
+    return 'ph-package';
+}
+function renderInventarisSekretaris() {
+    var keyword = (document.getElementById('invSearchInput') ? document.getElementById('invSearchInput').value : '').toLowerCase();
+    var aktif = (peralatanCache || []).filter(function (p) {
+        return p.status === 'Aktif' && (!keyword || p.nama.toLowerCase().indexOf(keyword) !== -1);
+    });
+
+    var totalItem = aktif.reduce(function (s, p) { return s + (p.qty || 0); }, 0);
+    var totalPerolehan = aktif.reduce(function (s, p) { return s + (p.nilaiBuku || 0); }, 0);
+
+    document.getElementById('invStatTotalItem').textContent = totalItem;
+    document.getElementById('invStatTotalPerolehan').textContent = 'Rp ' + Math.round(totalPerolehan).toLocaleString('id-ID');
+
+    var html = '';
+    aktif.forEach(function (p, i) {
+        html += '<div class="inv-item-card">' +
+            '<div class="inv-item-badge">' + String(i + 1).padStart(2, '0') + '</div>' +
+            '<div class="inv-item-icon"><i class="ph ' + invIconUntukNama(p.nama) + '"></i></div>' +
+            '<div class="inv-item-mid"><div class="inv-item-nama">' + p.nama + '</div><div class="inv-item-sub">Diperoleh ' + formatTanggalID(p.tanggal) + '</div></div>' +
+            '<div class="inv-item-right"><div class="inv-item-harga">Rp ' + Math.round(p.nilaiBuku).toLocaleString('id-ID') + '</div><div class="inv-item-qty">' + p.qty + ' unit</div></div>' +
+            '</div>';
+    });
+    document.getElementById('invItemList').innerHTML = html || '<div style="padding:20px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada aset tetap yang cocok.</div>';
+}
+
+/* ---------- Database Dokumen ---------- */
+function bukaDatabaseDokumen() {
+    document.getElementById('database-dokumen-screen').style.display = 'flex';
+}
+function tutupDatabaseDokumen() {
+    document.getElementById('database-dokumen-screen').style.display = 'none';
+}
 </script>
 </body>
 </html>
