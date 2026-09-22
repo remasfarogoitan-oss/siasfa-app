@@ -31,6 +31,9 @@
             --line: #EEE3E6;
             --paper-soft: #FBF8F9;
             --bg-outer: #E5E7EB;
+            --guest-teal: #B81337;
+            --guest-teal-deep: #7A0E26;
+            --guest-gold: #FF7A5C;
         }
 
         * {
@@ -72,6 +75,12 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
+            /* PATCH: menjadikan .mobile-app sebagai containing block untuk
+               semua elemen position:fixed di dalamnya (modal, toast, dsb),
+               supaya popup-popup itu ikut terkurung di lebar mobile 400px
+               dan tidak melebar mengikuti lebar layar desktop. */
+            transform: translateZ(0);
+            isolation: isolate;
 
             @media (min-width: 401px) {
                 height: 90vh;
@@ -112,6 +121,9 @@
         .white-sheet {
             background-color: #FFFFFF;
             flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 40px 40px 0 0;
             padding: 45px 30px 20px;
             display: flex;
@@ -499,6 +511,11 @@
             background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
             color: #FFFFFF;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+        }
+        .menu-icon-box.layanan-jamaah {
+            background: linear-gradient(135deg, #2563EB, #1E3A8A);
+            color: #FFFFFF;
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
         }
         .menu-label { font-size: var(--fs-xs); font-weight: 600; color: var(--text-dark); }
 #penugasan-detail-screen .menu-item.active .menu-icon-box { background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color:#FFFFFF; }
@@ -930,7 +947,7 @@
         .siasfa-select-display:active { opacity: 0.85; }
 
         .siasfa-select-panel-overlay {
-            position: fixed; inset: 0; z-index: 99985;
+            position: absolute; inset: 0; z-index: 99985;
             background: rgba(0,0,0,0.55);
             display: flex; align-items: flex-end; justify-content: center;
             animation: siasfaSelectFade 0.15s ease;
@@ -1717,7 +1734,7 @@
         .guest-hero-card::before { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent); transform: skewX(-20deg); animation: guestShineSweep 3.5s ease-in-out infinite; }
         .guest-hero-decor { position: absolute; font-size: 6rem; color: rgba(255,255,255,0.08); right: -14px; top: -18px; animation: guestFloat 6s ease-in-out infinite; }
         .guest-hero-label { position: relative; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 6px; }
-        .guest-hero-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ADE80; animation: guestPulseRing 1.8s infinite; }
+        .guest-hero-dot { width: 6px; height: 6px; border-radius: 50%; background: #FF7A5C; animation: guestPulseRing 1.8s infinite; }
         .guest-hero-amount { position: relative; font-size: 1.8rem; font-weight: 700; color: #FFFFFF; margin-top: 6px; letter-spacing: -0.5px; }
         .guest-hero-sub { position: relative; font-size: 0.7rem; color: rgba(255,255,255,0.65); margin-top: 2px; font-weight: 500; }
 
@@ -1748,9 +1765,9 @@
         .guest-proker-sub { font-size: 0.66rem; color: var(--text-gray); margin-top: 3px; font-weight: 500; }
         .guest-proker-dl { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--maroon); color: var(--maroon); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: transparent; flex-shrink: 0; pointer-events: none; }
 
-        .guest-audit-note { display: flex; gap: 10px; background: linear-gradient(135deg, rgba(217,118,6,0.09), rgba(217,118,6,0.04)); border: 1px solid rgba(217,118,6,0.3); border-radius: 16px; padding: 13px 15px; align-items: flex-start; }
-        .guest-audit-note i { color: #D97706; font-size: 1.15rem; margin-top: 1px; }
-        .guest-audit-note span { font-size: 0.72rem; color: #92400E; font-weight: 600; line-height: 1.5; }
+        .guest-audit-note { display: flex; gap: 10px; background: linear-gradient(135deg, rgba(255,122,92,0.12), rgba(158,42,30,0.05)); border: 1px solid rgba(255,122,92,0.35); border-radius: 16px; padding: 13px 15px; align-items: flex-start; }
+        .guest-audit-note i { color: var(--coral-end); font-size: 1.15rem; margin-top: 1px; }
+        .guest-audit-note span { font-size: 0.72rem; color: var(--coral-end); font-weight: 600; line-height: 1.5; }
 
         .guest-wbs-card { position: relative; overflow: hidden; border-radius: 20px; padding: 18px; background: linear-gradient(135deg, var(--maroon-deep), var(--text-dark)); cursor: pointer; box-shadow: 0 12px 26px rgba(0,0,0,0.28); transition: transform 0.15s ease; }
         .guest-wbs-card:active { transform: scale(0.98); }
@@ -1767,8 +1784,29 @@
         .guest-donasi-card::after { content: ''; position: absolute; top: -30%; right: -8%; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.12); }
         .guest-donasi-label { position: relative; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 6px; }
         .guest-donasi-amount { position: relative; font-size: 1.4rem; font-weight: 700; color: #FFFFFF; margin-top: 6px; letter-spacing: -0.3px; }
-        .guest-donasi-sub { position: relative; font-size: 0.64rem; color: rgba(255,255,255,0.85); margin-top: 4px; font-weight: 600; }
+            .guest-donasi-sub { position:relative; font-size:0.64rem; color:rgba(255,255,255,0.85); margin-top:4px; font-weight:600; }
 
+        .jm-profile-banner { position:relative; overflow:hidden; border-radius:22px; padding:18px 16px; background:linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%); box-shadow:0 14px 30px rgba(0,0,0,0.28); display:flex; align-items:center; gap:14px; }
+        .jm-profile-banner::before { content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(120deg, transparent, rgba(255,255,255,0.16), transparent); transform:skewX(-20deg); animation:guestShineSweep 4s ease-in-out infinite; }
+        .jm-profile-avatar { position:relative; width:58px; height:58px; min-width:58px; border-radius:50%; background:rgba(255,255,255,0.16); border:2px solid rgba(255,255,255,0.5); display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-weight:700; font-size:1.2rem; overflow:hidden; }
+        .jm-profile-mid { position:relative; flex:1; min-width:0; }
+        .jm-profile-row { display:flex; gap:6px; font-size:0.68rem; color:rgba(255,255,255,0.85); font-weight:500; margin-top:3px; }
+        .jm-profile-row b { color:#FFFFFF; font-weight:700; }
+        .jm-profile-nama { font-size:0.92rem; font-weight:700; color:#FFFFFF; line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .jm-profile-edit-btn { position:relative; width:30px; height:30px; min-width:30px; border-radius:50%; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.4); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:0.85rem; cursor:pointer; }
+        .jm-welcome-text { font-size:0.8rem; color:var(--text-gray); font-weight:500; }
+        .jm-welcome-text strong { color:var(--text-dark); font-weight:700; }
+        .jm-menu-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+        .jm-menu-item { display:flex; flex-direction:column; align-items:center; gap:8px; padding:12px 4px; border-radius:16px; background:#FFFFFF; border:1px solid var(--line); cursor:pointer; box-shadow:0 3px 10px rgba(0,0,0,0.04); transition:transform 0.15s ease; }
+        .jm-menu-item:active { transform:scale(0.95); }
+        .jm-menu-icon { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, var(--grad-start), var(--grad-end)); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:1.15rem; box-shadow:0 6px 14px rgba(0,0,0,0.22); }
+        .jm-menu-label { font-size:0.66rem; font-weight:700; color:var(--text-dark); text-align:center; line-height:1.25; }
+        .jm-donasi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .jm-donasi-box { border-radius:16px; padding:13px 14px; color:#FFFFFF; background:linear-gradient(135deg, var(--maroon), var(--maroon-deep)); box-shadow:0 6px 14px rgba(0,0,0,0.2); }
+        .jm-donasi-box.full { grid-column:1/-1; }
+        .jm-donasi-box .l { font-size:0.6rem; font-weight:700; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.3px; }
+        .jm-donasi-box .v { font-size:1.05rem; font-weight:700; margin-top:4px; }
+        .jm-donasi-subrow { display:flex; justify-content:space-between; font-size:0.72rem; font-weight:600; margin-top:4px; color:rgba(255,255,255,0.9); }
         /* ---- Sekretaris: Banner Profil ---- */
         .sek-profile-banner {
             position: relative;
@@ -2006,7 +2044,7 @@
    ========================================================= */
 
 .siasfa-toast-wrap {
-    position: fixed;
+    position: absolute;
     top: 18px;
     left: 50%;
     transform: translateX(-50%);
@@ -2141,7 +2179,7 @@
    ========================================================= */
 
 .siasfa-jurnal-detail-overlay {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 99990;
     display: flex;
@@ -2323,7 +2361,7 @@
    ========================================================= */
 
 .siasfa-confirm-overlay {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 100000;
     display: flex;
@@ -2577,6 +2615,242 @@
 .dok-kabinet-mid { flex:1; min-width:0; }
 .dok-kabinet-nama { font-size:0.84rem; font-weight:700; color:var(--text-dark); }
 .dok-kabinet-sub { font-size:0.66rem; color:var(--text-gray); margin-top:2px; }
+
+/* ====== Gate Jamaah (Cek/Daftar via WhatsApp) ====== */
+.jg-info-text { font-size:0.78rem; color:var(--text-gray); font-weight:500; text-align:center; margin:8px 0 18px; line-height:1.55; }
+.jg-found-card {
+    display:flex; align-items:center; gap:12px;
+    background: rgba(22,163,74,0.08);
+    border: 1px solid rgba(22,163,74,0.3);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+.jg-found-card i { font-size:1.8rem; color:#16A34A; flex:0 0 auto; }
+.jg-found-card div { font-size:0.82rem; color:var(--text-dark); font-weight:500; line-height:1.4; }
+.jg-found-card strong { color:#16A34A; font-size:0.98rem; }
+
+/* ====== Formulir Donasi — Style Kertas dengan Checkbox (REDESIGN) ====== */
+.dr-paper-box {
+    border-radius: 24px;
+    border: none;
+    padding: 22px 18px;
+    background: linear-gradient(180deg, #FFFFFF 0%, var(--paper-soft) 100%);
+    box-shadow: 0 10px 28px rgba(184,19,55,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+}
+.dr-paper-box::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255,122,92,0.12), rgba(184,19,55,0.08));
+}
+.dr-paper-header { text-align:center; margin-bottom:18px; padding-bottom:14px; border-bottom:2px dashed rgba(184,19,55,0.25); position:relative; z-index:1; }
+.dr-paper-eyebrow { font-family:'Newsreader', serif; font-size:0.66rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--coral-end); }
+.dr-paper-title { font-family:'Newsreader', serif; font-size:1.15rem; font-weight:700; background:linear-gradient(135deg, var(--grad-start), var(--coral-end)); -webkit-background-clip:text; background-clip:text; color:transparent; margin-top:6px; line-height:1.4; }
+.dr-paper-sub { font-size:0.7rem; color:var(--text-gray); font-style:italic; margin-top:6px; }
+
+.dr-check-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; position:relative; z-index:1; min-width:0; }
+.dr-check-col-title { display:flex; align-items:center; gap:6px; font-size:0.74rem; font-weight:800; color:var(--text-dark); margin-bottom:10px; }
+.dr-check-col-letter { width:24px; height:24px; min-width:24px; border-radius:8px; background:linear-gradient(135deg, var(--grad-start), var(--grad-end)); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:800; box-shadow:0 4px 10px rgba(184,19,55,0.3); }
+
+.dr-check-item { display:flex; align-items:center; gap:7px; padding:8px 6px; cursor:pointer; border-radius:12px; border:1.5px solid transparent; transition:all 0.2s ease; margin-bottom:2px; }
+.dr-check-item:active { transform:scale(0.97); }
+.dr-check-item[data-group="takjil"]:hover { background:rgba(255,122,92,0.08); }
+.dr-check-item[data-group="uang"]:hover { background:rgba(22,163,74,0.08); }
+.dr-check-item[data-group="teh"]:hover, .dr-check-item[data-group="gula"]:hover, .dr-check-item[data-group="barang-lainnya"]:hover { background:rgba(37,99,235,0.08); }
+.dr-check-item-inline { justify-content: space-between; }
+.dr-check-item-inline .dr-check-label { flex: 0 0 auto; }
+.dr-inline-input { flex: 1; min-width: 0; max-width: 70px; margin-left: auto; border: 1.5px solid var(--border-gray); border-radius: 8px; padding: 6px 6px; font-size: 0.7rem; color: var(--text-dark); outline: none; background: #FFFFFF; }
+.dr-inline-input:focus { border-color: var(--maroon); }
+
+.dr-check-box { width:18px; height:18px; min-width:18px; border-radius:6px; border:1.5px solid var(--border-gray); display:flex; align-items:center; justify-content:center; transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1); background:#FFFFFF; }
+.dr-check-item[data-group="takjil"].active { border-color:rgba(255,122,92,0.4); background:rgba(255,122,92,0.06); }
+.dr-check-item[data-group="takjil"].active .dr-check-box { background:linear-gradient(135deg, var(--coral-start), var(--coral-end)); border-color:var(--coral-end); animation:drCheckPop 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 4px 10px rgba(255,122,92,0.35); }
+.dr-check-item[data-group="uang"].active { border-color:rgba(22,163,74,0.4); background:rgba(22,163,74,0.06); }
+.dr-check-item[data-group="uang"].active .dr-check-box { background:linear-gradient(135deg, #16A34A, #14532D); border-color:#14532D; animation:drCheckPop 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 4px 10px rgba(22,163,74,0.35); }
+.dr-check-item[data-group="teh"].active, .dr-check-item[data-group="gula"].active, .dr-check-item[data-group="barang-lainnya"].active { border-color:rgba(37,99,235,0.4); background:rgba(37,99,235,0.06); }
+.dr-check-item[data-group="teh"].active .dr-check-box, .dr-check-item[data-group="gula"].active .dr-check-box, .dr-check-item[data-group="barang-lainnya"].active .dr-check-box { background:linear-gradient(135deg, #2563EB, #1E3A8A); border-color:#1E3A8A; animation:drCheckPop 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 4px 10px rgba(37,99,235,0.35); }
+
+.dr-check-box i { font-size:0.76rem; color:#FFFFFF; opacity:0; transform:scale(0.4) rotate(-20deg); transition:all 0.25s ease; }
+.dr-check-item.active .dr-check-box i { opacity:1; transform:scale(1) rotate(0deg); }
+.dr-check-label { font-size:0.68rem; color:var(--text-dark); font-weight:600; line-height:1.3; word-break:break-word; }
+.dr-check-item.active .dr-check-label { font-weight:700; }
+@keyframes drCheckPop { 0% { transform:scale(0.7) rotate(-8deg); } 55% { transform:scale(1.2) rotate(4deg); } 100% { transform:scale(1) rotate(0deg); } }
+
+.dr-check-lainnya-input { margin:4px 0 10px 34px; animation:guestFadeUp 0.3s ease; }
+.dr-check-lainnya-input input { border-radius:12px; border:1.5px solid var(--border-gray); padding:10px 12px; font-size:0.82rem; transition:border-color 0.2s ease; }
+.dr-check-lainnya-input input:focus { border-color:var(--maroon); outline:none; box-shadow:0 0 0 3px rgba(184,19,55,0.1); }
+
+.dr-rekom-box { margin-top:20px; border:none; border-radius:18px; padding:16px; text-align:center; background:linear-gradient(135deg, rgba(255,122,92,0.1), rgba(184,19,55,0.06)); animation:guestFadeUp 0.3s ease; box-shadow:inset 0 0 0 1.5px rgba(184,19,55,0.2); }
+.dr-rekom-title { font-size:0.7rem; font-weight:800; color:var(--maroon); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; }
+.dr-barang-lain-block { margin-top:20px; padding-top:18px; border-top:2px dashed rgba(37,99,235,0.25); }
+
+/* ====== Donasi Ramadhan — Redesain Hero & Tab (Jamaah) ====== */
+.dr-hero-card {
+    position: relative;
+    overflow: visible;
+    border-radius: 22px;
+    padding: 22px 18px 24px;
+    background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.28);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: auto;
+    flex-shrink: 0;
+}
+.dr-hero-card::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+}
+.dr-hero-top { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
+.dr-hero-avatar {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+}
+.dr-hero-info { min-width: 0; }
+.dr-hero-eyebrow { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+.dr-hero-name { font-size: 1rem; font-weight: 800; color: #FFFFFF; margin-top: 2px; line-height: 1.3; }
+.dr-hero-desc { font-size: 0.72rem; color: rgba(255,255,255,0.85); line-height: 1.55; position: relative; z-index: 1; }
+.dr-hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: relative; z-index: 1; }
+.dr-hero-stat { background: rgba(255,255,255,0.14); border-radius: 14px; padding: 10px; text-align: center; }
+.dr-hero-stat-val { font-size: 0.98rem; font-weight: 800; color: #FFFFFF; }
+.dr-hero-stat-lbl { font-size: 0.58rem; font-weight: 600; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+.dr-tabs-wrap { display: flex; background: var(--paper-soft); border-radius: 14px; padding: 4px; gap: 4px; }
+.dr-tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 6px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-gray);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: inherit;
+}
+.dr-tab-btn.active { background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); color: #FFFFFF; box-shadow: 0 4px 10px rgba(0,0,0,0.18); }
+.dr-subpage { display: none; flex-direction: column; gap: 18px; }
+.dr-subpage.active { display: flex; }
+
+.dr-riwayat-summary { display: flex; gap: 10px; }
+.dr-riwayat-summary-box {
+    flex: 1;
+    border-radius: 16px;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, var(--coral-start), var(--coral-end));
+    color: #FFFFFF;
+    box-shadow: 0 6px 14px rgba(255,122,92,0.28);
+}
+.dr-riwayat-summary-box .l { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: rgba(255,255,255,0.85); }
+.dr-riwayat-summary-box .v { font-size: 1rem; font-weight: 800; margin-top: 3px; }
+.dr-status-grid { display: flex; gap: 10px; }
+.dr-status-box { flex: 1; border-radius: 16px; padding: 12px 14px; color: #FFFFFF; }
+.dr-status-box.belum { background: linear-gradient(135deg, #D97706, #92400E); box-shadow: 0 6px 14px rgba(217,118,6,0.28); }
+.dr-status-box.sudah { background: linear-gradient(135deg, #16A34A, #14532D); box-shadow: 0 6px 14px rgba(22,163,74,0.28); }
+.dr-status-box .l { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: rgba(255,255,255,0.85); }
+.dr-status-box .v { font-size: 1rem; font-weight: 800; margin-top: 3px; }
+.dr-add-new-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px;
+    border-radius: 16px;
+    border: 1.5px dashed var(--maroon);
+    background: rgba(184,19,55,0.05);
+    color: var(--maroon);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+#donasi-ramadhan-screen .pay-status-badge.lunas { background: rgba(184,19,55,0.12); color: var(--maroon); }
+#donasi-ramadhan-screen .pay-status-badge.belum { background: rgba(255,122,92,0.16); color: var(--coral-end); }
+
+.dr-section-block { display:flex; flex-direction:column; gap:0; }
+.dr-section-heading { display:flex; align-items:center; gap:10px; font-size:0.85rem; font-weight:800; color:var(--text-dark); margin-bottom:14px; }
+.dr-section-num { display:flex; align-items:center; justify-content:center; width:26px; height:26px; min-width:26px; border-radius:8px; background:linear-gradient(135deg, var(--grad-start), var(--grad-end)); color:#FFFFFF; font-size:0.76rem; font-weight:800; }
+
+.dr-jenis-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin-bottom:6px; }
+.dr-jenis-tile { position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; padding:16px 8px; border-radius:16px; border:1.5px solid var(--line); background:#FFFFFF; cursor:pointer; transition:transform 0.15s ease, border-color 0.15s ease, background 0.15s ease; }
+.dr-jenis-tile:active { transform:scale(0.96); }
+.dr-jenis-tile.active { border-color:var(--maroon); background:rgba(184,19,55,0.05); box-shadow:0 4px 12px rgba(184,19,55,0.12); }
+.dr-jenis-icon { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.25rem; color:#FFFFFF; box-shadow:0 6px 14px rgba(0,0,0,0.18); }
+.dr-jenis-icon-uang { background:linear-gradient(135deg,#16A34A,#14532D); }
+.dr-jenis-icon-takjil { background:linear-gradient(135deg,var(--coral-start),var(--coral-end)); }
+.dr-jenis-icon-pokok { background:linear-gradient(135deg,#D97706,#92400E); }
+.dr-jenis-icon-barang { background:linear-gradient(135deg,#2563EB,#1E3A8A); }
+.dr-jenis-label { font-size:0.78rem; font-weight:700; color:var(--text-dark); }
+.dr-jenis-check { position:absolute; top:8px; right:8px; font-size:1.1rem; color:var(--line); }
+.dr-jenis-tile.active .dr-jenis-check { color:#16A34A; }
+
+.dr-section-panel { max-height:0; overflow:hidden; opacity:0; transition:max-height 0.35s ease, opacity 0.3s ease, margin 0.35s ease; margin-top:0; }
+.dr-section-panel.open { max-height:900px; opacity:1; margin-top:14px; }
+.dr-section-card { border-radius:16px; padding:16px; border:1.5px solid var(--line); background:var(--paper-soft); }
+.dr-section-card-title { display:flex; align-items:center; gap:8px; font-size:0.8rem; font-weight:800; color:var(--text-dark); margin-bottom:12px; }
+.dr-section-card-uang { border-color:rgba(22,163,74,0.3); background:rgba(22,163,74,0.05); }
+.dr-section-card-uang .dr-section-card-title i { color:#16A34A; }
+.dr-section-card-takjil { border-color:rgba(255,122,92,0.35); background:rgba(255,122,92,0.06); }
+.dr-section-card-takjil .dr-section-card-title i { color:var(--coral-end); }
+.dr-section-card-pokok { border-color:rgba(217,118,6,0.3); background:rgba(217,118,6,0.06); }
+.dr-section-card-pokok .dr-section-card-title i { color:#D97706; }
+.dr-section-card-barang { border-color:rgba(37,99,235,0.3); background:rgba(37,99,235,0.06); }
+.dr-section-card-barang .dr-section-card-title i { color:#2563EB; }
+
+/* ===== Tombol Konfirmasi Bayar Donasi (custom, lebih besar & menarik) ===== */
+.dr-konfirmasi-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.dr-konfirmasi-btn:active { transform: scale(0.97); }
+.dr-konfirmasi-btn-primary {
+    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+    color: #FFFFFF;
+    box-shadow: 0 10px 24px rgba(184,19,55,0.35);
+}
+.dr-konfirmasi-btn-secondary {
+    background: #FFFFFF;
+    color: var(--text-dark);
+    border: 2px solid var(--border-gray);
+    font-weight: 700;
+}
+.dr-konfirmasi-btn-secondary:active { background: var(--paper-soft); }
 </style>
 </head>
 <body>
@@ -2608,6 +2882,7 @@
                 <button type="submit" class="btn-signin">SIGN IN</button>
 
                 <div class="bottom-area" style="margin-top: 30px;">
+                    <a href="#" style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:0.76rem; color:var(--text-gray); font-weight:600; margin-bottom:16px; text-decoration:none;" onclick="event.preventDefault(); kembaliKeGateJamaah();"><i class="ph ph-arrow-left"></i>Kembali ke Masuk Sebagai Jamaah</a>
                     <div class="copyright-text">&copy; Steering Committee Remasfa 2026</div>
                     <div class="home-indicator"></div>
                 </div>
@@ -2641,6 +2916,65 @@
             </div>
         </div>
 
+        <!-- ================= LAYAR GATE JAMAAH (Cek/Daftar via WhatsApp) — REDESAIN ================= -->
+        <div id="jamaah-gate-screen" style="display:flex; flex-direction:column; height:100%; background:linear-gradient(180deg, var(--grad-start) 0%, var(--grad-end) 60%); position:relative; overflow:hidden;">
+            <i class="ph-fill ph-mosque" style="position:absolute; top:-34px; right:-34px; font-size:9.5rem; color:rgba(255,255,255,0.08); transform:rotate(-6deg);"></i>
+
+            <div style="padding:52px 26px 22px; position:relative;">
+                <div style="width:56px; height:56px; border-radius:18px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; margin-bottom:18px;">
+                    <i class="ph-fill ph-mosque" style="font-size:1.7rem; color:#FFFFFF;"></i>
+                </div>
+                <div style="font-size:0.68rem; font-weight:800; letter-spacing:1.5px; color:rgba(255,255,255,0.72); text-transform:uppercase;">FADHLILLAH-KU</div>
+                <h1 style="color:#FFFFFF; font-size:1.65rem; font-weight:700; line-height:1.3; margin-top:6px;">Assalamu'alaikum,<br><span style="font-weight:500; opacity:0.85; font-size:1.1rem;">Jamaah Masjid Fadhlillah</span></h1>
+            </div>
+
+            <div class="white-sheet" style="border-radius:32px 32px 0 0; position:relative; padding-top:34px;">
+                <div class="input-group">
+                    <label>Nomor WhatsApp</label>
+                    <input type="tel" id="jamaahWaInput" placeholder="08xx-xxxx-xxxx" inputmode="numeric" autocomplete="tel" oninput="jamaahOnInputWa()">
+                    <i class="ph ph-whatsapp-logo"></i>
+                    <div id="jamaahWaError" style="display:none; color:var(--maroon); font-size:0.66rem; font-weight:600; margin-top:6px;">Nomor WhatsApp harus diawali dengan 08</div>
+                </div>
+
+                <div id="jamaahStatusArea" style="margin-top:16px;"></div>
+
+                <div class="bottom-area">
+                    <div class="copyright-text">&copy; Steering Committee Remasfa 2026</div>
+                    <a href="#" style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:0.76rem; color:var(--text-gray); font-weight:600; margin-bottom:16px; text-decoration:none;" onclick="event.preventDefault(); jamaahBukaLoginPanitia();"><i class="ph ph-user-gear"></i>Masuk sebagai Panitia</a>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL SET PASSWORD JAMAAH ================= -->
+        <div id="jamaah-password-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99993; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Buat / Ubah Password</div>
+                    <i class="ph ph-x" onclick="tutupModalSetPasswordJamaah()"></i>
+                </div>
+                <div class="co-modal-body">
+                    <div class="un-note-text">Password ini opsional, memudahkan Anda masuk lebih cepat. Nomor WhatsApp tetap cara utama untuk masuk.</div>
+                    <div class="ct-field"><label>Password Baru</label><input type="password" id="jmPasswordBaru" placeholder="Minimal 6 karakter..."></div>
+                    <div class="ct-field" style="margin-bottom:0;"><label>Konfirmasi Password</label><input type="password" id="jmPasswordKonfirmasi" placeholder="Ulangi password..."></div>
+                    <button class="ct-submit-btn" style="margin-top:16px;" onclick="simpanPasswordJamaah()"><i class="ph ph-floppy-disk"></i> Simpan Password</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL QRIS INFAQ (JAMAAH) ================= -->
+        <div id="infaq-qris-jamaah-overlay" style="display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99993; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Infaq Harian via QRIS</div>
+                    <i class="ph ph-x" onclick="tutupQrisInfaqJamaah()"></i>
+                </div>
+                <div class="co-modal-body" style="align-items:center; text-align:center;">
+                    <div id="infaqQrisJamaahArea"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- ================= LAYAR TRANSISI (tidak diubah) ================= -->
         <div id="transition-screen">
             <div class="transition-badge"><i class="ph-fill ph-mosque"></i></div>
@@ -2649,101 +2983,337 @@
             <div class="transition-loader"><span></span><span></span><span></span></div>
         </div>
 
-        <!-- ================= LAYAR DASHBOARD TAMU (PUBLIK) — REDESAIN ================= -->
-        <div id="guest-dashboard-screen" style="display:flex; flex-direction:column; height:100%; background:#FFFFFF;">
+               <!-- ================= LAYAR DASHBOARD TAMU (PUBLIK) — REDESAIN v2 (header/tab/footer) ================= -->
+        <div id="guest-dashboard-screen" style="display:none; flex-direction:column; height:100%; background:#FFFFFF;">
 
             <div class="app-header-wrap">
                 <div style="display:flex; align-items:center; justify-content:space-between;">
-                    <div>
-                        <div class="header-simple-title">Selamat Datang,</div>
-                        <div class="header-simple-sub" style="color:#FFFFFF; opacity:0.95; font-weight:700; font-size:0.95rem;">Jamaah Masjid Fadhlillah</div>
+                    <div class="app-topbar-left">
+                        <div class="brand-mark" style="background:rgba(255,255,255,0.16); border-color:rgba(255,255,255,0.6);"><i class="ph-fill ph-mosque" style="font-size:1.05rem;"></i></div>
+                        <div>
+                            <div class="app-title">FADHLILLAH-KU</div>
+                            <div class="app-subtitle">Aplikasi Terintegrasi Jamaah Fadhlillah</div>
+                        </div>
                     </div>
-                    <div class="header-icon-circle" onclick="keluarTamu()"><i class="ph ph-sign-in"></i></div>
+                    <div class="header-icon-circle" onclick="keluarTamu()"><i class="ph ph-sign-out"></i></div>
                 </div>
             </div>
 
-            <div class="app-body" id="guest-app-body" style="padding-bottom:30px; display:flex; flex-direction:column; gap:26px;">
+            <div class="app-body" id="guest-app-body">
 
-                <div class="guest-intro-box guest-reveal">
-                    <i class="ph ph-shield-check"></i>Kami menjunjung tinggi <strong style="color:var(--text-dark);">transparansi</strong> dan <strong style="color:var(--text-dark);">akuntabilitas</strong> dalam pengelolaan dana umat. Pantau posisi kas, laporan keuangan, dan realisasi program kerja REMASFA secara terbuka di sini.
+                <!-- ===== TAB: DASHBOARD ===== -->
+                <div class="tab-page active" id="guest-page-dashboard">
+
+                    <div class="jm-profile-banner guest-reveal" style="align-items:flex-start; gap:16px; padding:22px 18px;">
+                        <i class="ph-fill ph-mosque" style="position:absolute; right:-16px; bottom:-20px; font-size:6rem; color:rgba(255,255,255,0.07); transform:rotate(-8deg);"></i>
+                        <div style="position:relative;">
+                            <div class="jm-profile-avatar" id="jmProfileAvatar" style="width:64px; height:64px; font-size:1.4rem; border:2.5px solid rgba(255,255,255,0.65); box-shadow:0 8px 18px rgba(0,0,0,0.25); overflow:hidden;">?</div>
+                            <div onclick="document.getElementById('jmFotoInput').click()" style="position:absolute; right:-2px; bottom:-2px; width:24px; height:24px; border-radius:50%; background:#FFFFFF; color:var(--maroon); border:2px solid #FFFFFF; display:flex; align-items:center; justify-content:center; font-size:0.7rem; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.18);"><i class="ph-fill ph-camera"></i></div>
+                            <input type="file" id="jmFotoInput" accept="image/*" hidden onchange="uploadFotoProfilJamaah(this)">
+                        </div>
+                        <div class="jm-profile-mid">
+                            <div style="display:inline-flex; align-items:center; gap:5px; font-size:0.62rem; font-weight:800; letter-spacing:0.5px; text-transform:uppercase; color:#FFFFFF; background:rgba(255,255,255,0.18); padding:3px 10px; border-radius:20px; margin-bottom:8px;"><span class="sek-profile-dot" style="background:#FF7A5C;"></span> Jamaah Terdaftar</div>
+                            <div class="jm-profile-nama" id="jmProfileNama" style="font-size:1.05rem;">-</div>
+                            <div class="jm-profile-row" style="margin-top:6px;"><i class="ph ph-whatsapp-logo" style="font-size:0.9rem;"></i> <span id="jmProfileWa">-</span></div>
+                        </div>
+                        <div class="jm-profile-edit-btn" onclick="bukaModalEditProfilJamaah()"><i class="ph ph-pencil-simple"></i></div>
+                    </div>
+
+                    <div class="guest-reveal">
+                        <div class="guest-section-title"><i class="ph ph-squares-four" style="background:linear-gradient(135deg, var(--guest-teal), var(--guest-teal-deep));"></i> Layanan Jamaah</div>
+                        <div class="jm-menu-grid">
+                            <div class="jm-menu-item" onclick="bukaDonasiRamadhanScreen()"><div class="jm-menu-icon" style="background:linear-gradient(135deg, var(--coral-start), var(--coral-end));"><i class="ph ph-hand-heart"></i></div><div class="jm-menu-label">Donasi Ramadhan</div></div>
+                            <div class="jm-menu-item" onclick="bukaQrisInfaqJamaah()"><div class="jm-menu-icon" style="background:linear-gradient(135deg, var(--guest-teal), var(--guest-teal-deep));"><i class="ph ph-coins"></i></div><div class="jm-menu-label">Infaq Harian</div></div>
+                            <div class="jm-menu-item" onclick="jamaahMenuBelumTersedia('Informasi Kegiatan')"><div class="jm-menu-icon" style="background:linear-gradient(135deg, var(--guest-teal), var(--guest-teal-deep));"><i class="ph ph-megaphone"></i></div><div class="jm-menu-label">Informasi Kegiatan</div></div>
+                            <div class="jm-menu-item" onclick="jamaahMenuBelumTersedia('Pendaftaran Zakat')"><div class="jm-menu-icon" style="background:linear-gradient(135deg, var(--coral-start), var(--coral-end));"><i class="ph ph-hand-coins"></i></div><div class="jm-menu-label">Pendaftaran Zakat</div></div>
+                            <div class="jm-menu-item" onclick="bukaWBS()"><div class="jm-menu-icon"><i class="ph ph-flag"></i></div><div class="jm-menu-label">Pengaduan (WBS)</div></div>
+                        </div>
+                    </div>
+
+                    <div class="guest-reveal">
+                        <div class="guest-section-title"><i class="ph ph-hand-heart"></i> Transparansi Penerimaan Donasi</div>
+                        <div style="font-size:0.68rem; color:var(--text-gray); font-weight:600; margin:-10px 0 12px;">Per <span id="jmDonasiTanggal">-</span></div>
+                        <div class="jm-donasi-grid">
+                            <div class="jm-donasi-box full"><div class="l">Donasi Berwujud Uang</div><div class="v" id="jmDonasiUang">Rp -</div></div>
+                            <div class="jm-donasi-box"><div class="l">Donasi Takjil</div><div class="v" id="jmDonasiTakjil">- Porsi</div></div>
+                            <div class="jm-donasi-box"><div class="l">Donasi Barang</div>
+                                <div class="jm-donasi-subrow"><span>Gula</span><span id="jmDonasiGula">- Kg</span></div>
+                                <div class="jm-donasi-subrow"><span>Teh</span><span id="jmDonasiTeh">- Pcs</span></div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="guest-hero-card guest-reveal">
-                    <i class="ph-fill ph-mosque guest-hero-decor"></i>
-                    <div class="guest-hero-eyebrow"><span class="guest-hero-dot"></span> POSISI KAS &amp; SETARA KAS</div>
-                    <div class="guest-hero-date" id="guestCashPerTanggal">Per 1 September 2026</div>
-                    <div class="guest-hero-amount cash-amount">Rp -</div>
-                    <div class="guest-hero-sub">Diperbarui otomatis setiap ada transaksi tercatat</div>
-                    <div id="guestDetailKas" style="position:relative; margin-top:14px; display:flex; flex-direction:column;"></div>
+                <!-- ===== TAB: LAPORAN KEUANGAN ===== -->
+                <div class="tab-page" id="guest-page-laporan">
+
+                    <div class="guest-hero-card guest-reveal" >
+                        <i class="ph-fill ph-mosque guest-hero-decor"></i>
+                        <div class="guest-hero-eyebrow"><span class="guest-hero-dot"></span> POSISI KAS &amp; SETARA KAS</div>
+                        <div class="guest-hero-date" id="guestCashPerTanggal">Per 1 September 2026</div>
+                        <div class="guest-hero-amount cash-amount">Rp -</div>
+                        <div class="guest-hero-sub">Diperbarui otomatis setiap ada transaksi tercatat</div>
+                        <div id="guestDetailKas" style="position:relative; margin-top:14px; display:flex; flex-direction:column;"></div>
+                    </div>
+
+                    <div class="guest-stat-strip guest-reveal" >
+                        <div class="guest-stat-pill"><i class="ph ph-file-text"></i><div class="v">5</div><div class="l">Laporan Keuangan</div></div>
+                        <div class="guest-stat-pill"><i class="ph ph-folder-open"></i><div class="v" id="guestStatProkerAktif">-</div><div class="l">Proker Aktif</div></div>
+                        <div class="guest-stat-pill"><i class="ph ph-clock-clockwise"></i><div class="v">Hari Ini</div><div class="l">Update Terakhir</div></div>
+                    </div>
+
+                    <div class="guest-donasi-card guest-reveal" >
+                        <div class="guest-donasi-label"><i class="ph ph-hand-heart"></i> Pendapatan Donasi/Proposal</div>
+                        <div class="guest-donasi-amount" id="guestPendapatanDonasiAmount">Rp -</div>
+                        <div class="guest-donasi-sub">Saldo akhir buku besar &middot; akun [4-40000]</div>
+                    </div>
+
+                    <div class="guest-reveal">
+                        <div class="guest-section-title"><i class="ph ph-scales"></i> Transparansi Pengelolaan Keuangan</div>
+                        <div class="guest-report-grid" >
+                            <div class="guest-report-card" onclick="unduhLaporan('Laporan Posisi Keuangan')">
+                                <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                                <div class="guest-report-icon"><i class="ph ph-scales"></i></div>
+                                <div class="guest-report-name">Laporan Posisi Keuangan</div>
+                                <div class="guest-report-sub">PDF &middot; Hari ini</div>
+                            </div>
+                            <div class="guest-report-card" onclick="unduhLaporan('Laporan Aktivitas')">
+                                <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                                <div class="guest-report-icon"><i class="ph ph-chart-line-up"></i></div>
+                                <div class="guest-report-name">Laporan Aktivitas</div>
+                                <div class="guest-report-sub">PDF &middot; Hari ini</div>
+                            </div>
+                            <div class="guest-report-card" onclick="unduhLaporan('Laporan Perubahan Aset Netto')">
+                                <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                                <div class="guest-report-icon"><i class="ph ph-arrows-clockwise"></i></div>
+                                <div class="guest-report-name">Perubahan Aset Netto</div>
+                                <div class="guest-report-sub">PDF &middot; Hari ini</div>
+                            </div>
+                            <div class="guest-report-card" onclick="unduhLaporan('Laporan Arus Kas')">
+                                <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                                <div class="guest-report-icon"><i class="ph ph-wallet"></i></div>
+                                <div class="guest-report-name">Laporan Arus Kas</div>
+                                <div class="guest-report-sub">PDF &middot; Hari ini</div>
+                            </div>
+                            <div class="guest-report-card" onclick="unduhCalkPdfTamu()" style="grid-column: 1 / -1;">
+                                <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
+                                <div class="guest-report-icon"><i class="ph ph-notepad"></i></div>
+                                <div class="guest-report-name">Catatan atas Laporan Keuangan (CALK)</div>
+                                <div class="guest-report-sub">PDF &middot; Hari ini</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guest-reveal">
+                        <div class="guest-section-title"><i class="ph ph-folder-open"></i> Laporan Program Kerja</div>
+                        <div id="guestProkerList" >
+                            <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat program kerja...</div>
+                        </div>
+                    </div>
+
+                    <div class="guest-audit-note guest-reveal">
+                        <i class="ph ph-info"></i>
+                        <span>Seluruh laporan di atas bersifat <strong>unaudited</strong> (belum diaudit). Laporan hasil audit akan dipublikasikan setelah seluruh rangkaian program kerja berakhir.</span>
+                    </div>
+
                 </div>
 
-                <div class="guest-stat-strip guest-reveal">
-                    <div class="guest-stat-pill"><i class="ph ph-file-text"></i><div class="v">5</div><div class="l">Laporan Keuangan</div></div>
-                    <div class="guest-stat-pill"><i class="ph ph-folder-open"></i><div class="v" id="guestStatProkerAktif">-</div><div class="l">Proker Aktif</div></div>
-                    <div class="guest-stat-pill"><i class="ph ph-clock-clockwise"></i><div class="v">Hari Ini</div><div class="l">Update Terakhir</div></div>
+                <!-- ===== TAB: PROFIL ===== -->
+                <div class="tab-page" id="guest-page-profil">
+
+                    <div class="profile-hero">
+                        <div class="avatar-circle" id="jmProfilTabAvatar" style="overflow:hidden; cursor:pointer;" onclick="document.getElementById('jmFotoInput').click()">?</div>
+                        <div class="profile-name" id="jmProfilTabNama">-</div>
+                        <div class="profile-role">Jamaah Masjid Fadhlillah</div>
+                    </div>
+
+                    <div>
+                        <div class="info-row">
+                            <div class="info-icon"><i class="ph ph-whatsapp-logo"></i></div>
+                            <div><div class="info-label">Nomor WhatsApp</div><div class="info-value" id="jmProfilTabWa">-</div></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-icon"><i class="ph ph-envelope-simple"></i></div>
+                            <div><div class="info-label">Email</div><div class="info-value" id="jmProfilTabEmail">-</div></div>
+                        </div>
+                        <div class="info-row" style="border-bottom:none;">
+                            <div class="info-icon"><i class="ph ph-map-pin"></i></div>
+                            <div><div class="info-label">Alamat</div><div class="info-value" id="jmProfilTabAlamat">-</div></div>
+                        </div>
+                    </div>
+
+                    <button class="ct-submit-btn" onclick="bukaModalEditProfilJamaah()"><i class="ph ph-user-gear"></i> Ubah Profil</button>
+
+                    <div class="ledger-head" style="margin-top:20px;"><div class="ledger-title">Setting Aplikasi</div></div>
+                    <div class="menu-grid">
+                         <div class="menu-item" onclick="bukaModalSetPasswordJamaah()">
+                            <div class="menu-icon-box utama"><i class="ph ph-lock-key"></i></div>
+                            <div class="menu-label">Buat Password</div>
+                        </div>
+                    </div>
+
+                    <button class="btn-logout" onclick="keluarTamu()" style="margin-top:20px;"><i class="ph ph-sign-out"></i> Keluar</button>
+
                 </div>
 
-                <div class="guest-donasi-card guest-reveal">
-                    <div class="guest-donasi-label"><i class="ph ph-hand-heart"></i> Pendapatan Donasi/Proposal</div>
-                    <div class="guest-donasi-amount" id="guestPendapatanDonasiAmount">Rp -</div>
-                    <div class="guest-donasi-sub">Saldo akhir buku besar &middot; akun [4-40000]</div>
+            </div>
+
+            <div class="app-bottom-wrap">
+                <div class="app-bottom-nav">
+                    <div class="nav-item active" id="guest-nav-dashboard" onclick="switchGuestTab('dashboard')"><i class="ph-fill ph-house"></i>DASHBOARD</div>
+                    <div class="nav-item" id="guest-nav-laporan" onclick="switchGuestTab('laporan')"><i class="ph ph-chart-bar"></i>LAPORAN KEUANGAN</div>
+                    <div class="nav-item" id="guest-nav-profil" onclick="switchGuestTab('profil')"><i class="ph ph-user"></i>PROFIL</div>
+                </div>
+            </div>
+        </div>
+
+                <!-- ================= LAYAR DONASI RAMADHAN (JAMAAH) ================= -->
+        <div id="donasi-ramadhan-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:40;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDonasiRamadhanScreen()"></i>
+                    <div class="ct-header-title">Donasi Ramadhan</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body">
+
+                <div class="dr-tabs-wrap">
+                    <button type="button" class="dr-tab-btn active" id="drtab-formulir" onclick="switchDrTab('formulir')"><i class="ph ph-note-pencil"></i> Formulir Baru</button>
+                    <button type="button" class="dr-tab-btn" id="drtab-riwayat" onclick="switchDrTab('riwayat')"><i class="ph ph-clock-counter-clockwise"></i> Riwayat Saya</button>
                 </div>
 
-                <div class="guest-reveal">
-                    <div class="guest-section-title"><i class="ph ph-scales"></i> Laporan Keuangan</div>
-                    <div class="guest-report-grid">
-                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Posisi Keuangan')">
-                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
-                            <div class="guest-report-icon"><i class="ph ph-scales"></i></div>
-                            <div class="guest-report-name">Laporan Posisi Keuangan</div>
-                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
+                <div class="dr-subpage active" id="drpage-formulir">
+
+                    <div class="dr-paper-box">
+                        <div class="dr-paper-header">
+                            <div class="dr-paper-eyebrow">Formulir Donasi</div>
+                            <div class="dr-paper-title">Ramadhan Masjid Fadhlillah 1448 H</div>
+                            <div class="dr-paper-sub">Sodaqoh yang ingin disalurkan</div>
                         </div>
-                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Aktivitas')">
-                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
-                            <div class="guest-report-icon"><i class="ph ph-chart-line-up"></i></div>
-                            <div class="guest-report-name">Laporan Aktivitas</div>
-                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
+
+                        <div class="calk-row-flat" style="margin-bottom:16px;">
+                            <div class="ct-field" style="margin-bottom:0;"><label>Nama</label><input type="text" id="drNamaInput" placeholder="Nama lengkap..."></div>
+                            <div class="ct-field" style="margin-bottom:0;"><label>Nomor</label><input type="text" id="drNomorInput" placeholder="08xx-xxxx-xxxx"></div>
                         </div>
-                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Perubahan Aset Netto')">
-                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
-                            <div class="guest-report-icon"><i class="ph ph-arrows-clockwise"></i></div>
-                            <div class="guest-report-name">Perubahan Aset Netto</div>
-                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
+
+                                                    <div class="dr-check-grid">
+                                <div>
+                                    <div class="dr-check-col-title"><span class="dr-check-col-letter">A</span> Donasi Takjil</div>
+                                    <div class="dr-check-item" data-group="takjil" data-val="100" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">100 Porsi</div></div>
+                                    <div class="dr-check-item" data-group="takjil" data-val="75" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">75 Porsi</div></div>
+                                    <div class="dr-check-item" data-group="takjil" data-val="50" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">50 Porsi</div></div>
+                                    <div class="dr-check-item" data-group="takjil" data-val="25" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">25 Porsi</div></div>
+                                    <div class="dr-check-item dr-check-item-inline" data-group="takjil" data-val="lainnya" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Lainnya</div><input type="number" id="drTakjilLainnyaInput" class="dr-inline-input" placeholder="Porsi" onclick="event.stopPropagation()"></div>
+                                </div>
+                                <div>
+                                    <div class="dr-check-col-title"><span class="dr-check-col-letter">B</span> Donasi Uang</div>
+                                    <div class="dr-check-item" data-group="uang" data-val="1250000" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp1.250.000</div></div>
+                                    <div class="dr-check-item" data-group="uang" data-val="1000000" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp1.000.000</div></div>
+                                    <div class="dr-check-item" data-group="uang" data-val="750000" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp750.000</div></div>
+                                    <div class="dr-check-item dr-check-item-inline" data-group="uang" data-val="lainnya" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp.</div><input type="number" id="drUangLainnyaInput" class="dr-inline-input" placeholder="Nominal" onclick="event.stopPropagation()"></div>
+                                    <div id="drUangJenisWrap" style="display:none; margin:2px 0 8px 30px;">
+                                        <div class="tandai-status-choice">
+                                            <div class="tandai-status-btn" data-val="Tunai" onclick="drPilihJenisUang(this)">Tunai</div>
+                                            <div class="tandai-status-btn" data-val="Transfer" onclick="drPilihJenisUang(this)">Transfer</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dr-barang-lain-block">
+                                <div class="dr-check-col-title"><span class="dr-check-col-letter">C</span> Donasi Barang Lain</div>
+                                <div class="dr-check-item dr-check-item-inline" data-group="teh" data-val="teh" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Teh</div><input type="number" id="drTehInput" class="dr-inline-input" placeholder="Pcs" onclick="event.stopPropagation()"></div>
+
+                                <div class="dr-check-item dr-check-item-inline" data-group="gula" data-val="gula" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Gula</div><input type="number" id="drGulaInput" class="dr-inline-input" placeholder="Kg" onclick="event.stopPropagation()"></div>
+
+                                <div class="dr-check-item" data-group="barang-lainnya" data-val="lainnya" onclick="drCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Lainnya</div></div>
+                                <div class="dr-check-lainnya-input" id="drBarangLainnyaWrap" style="display:none;">
+                                    <div class="ct-table-wrap">
+                                        <div class="ct-table-head" style="grid-template-columns:1.5fr 0.8fr 20px;"><span>Nama Barang</span><span>Jumlah</span><span></span></div>
+                                        <div id="drBarangRows"></div>
+                                    </div>
+                                    <div class="ct-add-row" onclick="drTambahBarang()"><i class="ph ph-plus-circle"></i> Tambah Barang</div>
+                                </div>
+                            </div>
+
+                            <div class="dr-rekom-box" id="drTakjilTanggalWrap" style="display:none;">
+                                <div class="dr-rekom-title">Rekomendasi Tanggal Bagi Takjil</div>
+                                <input type="date" id="drTakjilTanggalInput" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none;">
+                                <div style="font-size:0.6rem; color:var(--text-gray); margin-top:8px; font-style:italic;">(Hanya sebagai pertimbangan panitia, tulis tanggal Masehi bukan tanggal Ramadhan)</div>
+                            </div>
                         </div>
-                        <div class="guest-report-card" onclick="unduhLaporan('Laporan Arus Kas')">
-                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
-                            <div class="guest-report-icon"><i class="ph ph-wallet"></i></div>
-                            <div class="guest-report-name">Laporan Arus Kas</div>
-                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
-                        </div>
-                        <div class="guest-report-card" onclick="unduhCalkPdfTamu()" style="grid-column: 1 / -1;">
-                            <button class="guest-report-dl"><i class="ph ph-download-simple"></i></button>
-                            <div class="guest-report-icon"><i class="ph ph-notepad"></i></div>
-                            <div class="guest-report-name">Catatan atas Laporan Keuangan (CALK)</div>
-                            <div class="guest-report-sub">PDF &middot; Hari ini</div>
-                        </div>
+
+                    <button class="ct-submit-btn" style="margin-top:20px;" onclick="drKirimDonasi()"><i class="ph ph-paper-plane-tilt"></i> Kirim Donasi</button>
+
+                </div>
+
+                <div class="dr-subpage" id="drpage-riwayat">
+
+                    <div class="dr-riwayat-summary">
+                        <div class="dr-riwayat-summary-box"><div class="l">Jumlah Riwayat Formulir</div><div class="v" id="drStatJumlah">0</div></div>
+                        <div class="dr-riwayat-summary-box"><div class="l">Total Uang</div><div class="v" id="drSumUang">Rp 0</div></div>
+                    </div>
+
+                    <div class="dr-status-grid">
+                        <div class="dr-status-box belum"><div class="l">Donasi Belum Disetor</div><div class="v" id="drBelumDisetor">Rp 0</div></div>
+                        <div class="dr-status-box sudah"><div class="l">Donasi Sudah Disetor</div><div class="v" id="drSudahDisetor">Rp 0</div></div>
+                    </div>
+
+                    <div class="ledger-head" style="margin-top:4px;"><div class="ledger-title">Riwayat Donasi Saya</div></div>
+                    <div id="drRiwayatList"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat riwayat donasi...</div></div>
+
+                    <div class="dr-add-new-btn" onclick="switchDrTab('formulir')"><i class="ph ph-plus-circle"></i> Isi Donasi Baru</div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= MODAL KONFIRMASI BAYAR SEKARANG (DONASI UANG - TRANSFER) ================= -->
+        <div id="dr-konfirmasi-bayar-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(10,7,14,0.6); z-index:99995; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(6px);">
+            <div class="siasfa-confirm-card" style="width:100%;">
+                <div class="siasfa-confirm-icon"><i class="ph ph-bank"></i></div>
+                <div class="siasfa-confirm-title">Konfirmasi Pembayaran</div>
+                <div class="siasfa-confirm-message">Apakah Anda akan melakukan pembayaran donasi uang sejumlah <strong id="drKonfirmasiNominal" style="color:var(--maroon);">Rp 0</strong> sekarang?</div>
+
+                <div style="background:var(--paper-soft); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:16px; text-align:left;">
+                    <div style="font-size:0.62rem; font-weight:700; color:var(--text-gray); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:8px;">Rekening Tujuan Transfer</div>
+                    <div style="font-size:0.8rem; color:var(--text-dark); font-weight:600; margin-bottom:4px;">Bank: Seabank</div>
+                    <div style="font-size:0.8rem; color:var(--text-dark); font-weight:600; margin-bottom:4px;">Nama: Ani Fatih Muyassaroh</div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px;">
+                        <div style="font-size:0.95rem; color:var(--maroon); font-weight:800; letter-spacing:0.5px;">9014 3981 5961</div>
+                        <button type="button" onclick="drSalinRekening()" style="border:1.5px solid var(--maroon); background:#FFFFFF; color:var(--maroon); border-radius:10px; padding:6px 10px; font-size:0.66rem; font-weight:700; cursor:pointer; white-space:nowrap;"><i class="ph ph-copy"></i> Salin</button>
                     </div>
                 </div>
 
-                <div class="guest-reveal">
-                    <div class="guest-section-title"><i class="ph ph-folder-open"></i> Laporan Program Kerja</div>
-                    <div id="guestProkerList">
-                        <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat program kerja...</div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <button type="button" class="dr-konfirmasi-btn dr-konfirmasi-btn-primary" onclick="drKonfirmasiBayarSekarang()"><i class="ph ph-check-circle" style="font-size:1.1rem;"></i> Ya, Saya Bayar Sekarang</button>
+                    <button type="button" class="dr-konfirmasi-btn dr-konfirmasi-btn-secondary" onclick="drKonfirmasiBayarNanti()"><i class="ph ph-clock" style="font-size:1.1rem;"></i> Saya Akan Bayar Nanti</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL BAYAR SEKARANG (DONASI UANG) ================= -->
+        <div id="dr-bayar-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99994; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Bayar Sekarang</div>
+                    <i class="ph ph-x" onclick="tutupModalBayarDonasi()"></i>
+                </div>
+                <div class="co-modal-body">
+                    <div class="un-note-text">Silakan transfer sesuai nominal donasi, lalu unggah bukti transfer di bawah ini. Tim keuangan akan memverifikasi penerimaan donasi Anda.</div>
+                    <div class="ct-field" style="margin-bottom:0;">
+                        <div class="ct-field-label-row"><label>Upload Bukti Transfer</label></div>
+                        <label class="ct-upload-zone" id="drBuktiUploadZone">
+                            <input type="file" id="drBuktiFile" accept="image/*,.pdf" hidden onchange="ctUpdateUploadLabel(this,'drBuktiUploadZone')">
+                            <div class="ct-upload-icon"><i class="ph ph-upload-simple"></i></div>
+                            <div class="ct-upload-text"><span class="ct-upload-title">Tap untuk pilih file bukti</span><span class="ct-upload-sub">PNG, JPG, atau PDF</span></div>
+                        </label>
                     </div>
+                    <button class="ct-submit-btn" style="margin-top:14px;" onclick="drSimpanBuktiBayar()"><i class="ph ph-check-circle"></i> Kirim Bukti Pembayaran</button>
                 </div>
-
-                <div class="guest-audit-note guest-reveal">
-                    <i class="ph ph-info"></i>
-                    <span>Seluruh laporan di atas bersifat <strong>unaudited</strong> (belum diaudit). Laporan hasil audit akan dipublikasikan setelah seluruh rangkaian program kerja berakhir.</span>
-                </div>
-
-                <div class="guest-wbs-card guest-reveal" onclick="bukaWBS()">
-                    <div class="guest-wbs-icon"><i class="ph ph-megaphone-simple"></i></div>
-                    <div class="guest-wbs-title">Pelaporan Whistleblowing System</div>
-                    <div class="guest-wbs-text">Temukan indikasi penyalahgunaan dana? Laporkan kepada kami. Setiap laporan ditindaklanjuti secara rahasia dan bertanggung jawab.</div>
-                    <button class="guest-wbs-btn"><i class="ph ph-flag"></i> Buat Laporan</button>
-                </div>
-
             </div>
         </div>
 
@@ -2880,10 +3450,7 @@
                                 <div class="menu-icon-box"><i class="ph ph-handshake"></i></div>
                                 <div class="menu-label">Utang Piutang</div>
                             </div>
-                            <div class="menu-item" id="menuWbsData" style="display:none;" onclick="bukaWbsData()">
-                                <div class="menu-icon-box"><i class="ph ph-flag"></i></div>
-                                <div class="menu-label">WBS Data</div>
-                            </div>
+ 
                             <div class="menu-item" id="menuPemeriksaan" style="display:none;" onclick="bukaPemeriksaan()">
                                 <div class="menu-icon-box"><i class="ph ph-check-square"></i></div>
                                 <div class="menu-label">Pemeriksaan</div>
@@ -2908,6 +3475,27 @@
                             <div class="menu-item" id="menuDanaKebajikan" onclick="bukaDanaKebajikan()">
                                 <div class="menu-icon-box"><i class="ph ph-heart"></i></div>
                                 <div class="menu-label">Dana Kebajikan</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Menu Layanan Jamaah -->
+                    <div>
+                        <div class="ledger-head">
+                            <div class="ledger-title">Menu Layanan Jamaah</div>
+                        </div>
+                        <div class="menu-grid">
+                            <div class="menu-item" id="menuDonasiJamaahAdmin" onclick="bukaDonasiJamaahAdmin()">
+                                <div class="menu-icon-box layanan-jamaah"><i class="ph ph-hand-heart"></i></div>
+                                <div class="menu-label">Donasi</div>
+                            </div>
+                            <div class="menu-item" id="menuZakatJamaahAdmin" onclick="siasfaNotify('Fitur Zakat sedang dalam pengembangan.','info')">
+                                <div class="menu-icon-box layanan-jamaah"><i class="ph ph-hand-coins"></i></div>
+                                <div class="menu-label">Zakat</div>
+                            </div>
+                            <div class="menu-item" id="menuWbsJamaahAdmin" onclick="bukaWbsData()">
+                                <div class="menu-icon-box layanan-jamaah"><i class="ph ph-flag"></i></div>
+                                <div class="menu-label">WBS</div>
                             </div>
                         </div>
                     </div>
@@ -4488,6 +5076,21 @@
                 </div>
 
                 <div>
+                    <div class="rb-section-label">QRIS Infaq untuk Jamaah</div>
+                    <div id="infaqQrisPreviewWrap" style="display:none; margin-bottom:10px; text-align:center;">
+                        <img id="infaqQrisPreviewImg" src="" style="max-width:220px; width:100%; border-radius:16px; border:1px solid var(--line); box-shadow:0 6px 14px rgba(0,0,0,0.08);">
+                    </div>
+                    <label class="ct-upload-zone" id="infaqQrisUploadZone">
+                        <input type="file" id="infaqQrisFile" accept="image/*" hidden onchange="uploadQrisInfaq(this)">
+                        <div class="ct-upload-icon"><i class="ph ph-qr-code"></i></div>
+                        <div class="ct-upload-text">
+                            <span class="ct-upload-title" id="infaqQrisUploadLabel">Tap untuk upload foto QRIS Infaq</span>
+                            <span class="ct-upload-sub">Foto ini akan tampil di Dashboard Jamaah. Upload baru akan menggantikan yang lama.</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div>
                     <div class="ledger-head"><div class="ledger-title">Tren Infaq Harian</div></div>
                     <div style="position:relative; height:200px;">
                         <canvas id="chartInfaqTren"></canvas>
@@ -5258,6 +5861,44 @@
                 <div id="wbsDataList" style="display:flex; flex-direction:column; gap:12px;">
                     <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat laporan...</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ================= LAYAR DONASI JAMAAH (ADMIN) ================= -->
+        <div id="donasi-jamaah-admin-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDonasiJamaahAdmin()"></i>
+                    <div class="ct-header-title">Donasi Jamaah</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body">
+                <div class="ip-stat-row">
+                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-note-pencil"></i></div><div class="ip-stat-label">Jumlah Formulir</div><div class="ip-stat-value" id="djaStatJumlah">0</div></div>
+                    <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-coins"></i></div><div class="ip-stat-label">Total Donasi Uang</div><div class="ip-stat-value" id="djaStatTotalUang">Rp 0</div></div>
+                </div>
+                <div class="ip-stat-box full" style="margin-top:-2px;"><div class="ip-stat-icon"><i class="ph ph-hourglass"></i></div><div class="ip-stat-label">Menunggu Verifikasi Bukti Transfer</div><div class="ip-stat-value" id="djaStatMenunggu">0</div></div>
+
+                <div class="search-box">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" id="djaSearchInput" placeholder="Cari nama / nomor WhatsApp..." oninput="renderDonasiJamaahAdminList()">
+                </div>
+
+                <div id="djaList" style="display:flex; flex-direction:column; gap:10px;">
+                    <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data donasi jamaah...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL DETAIL DONASI JAMAAH (ADMIN) ================= -->
+        <div id="dja-detail-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99993; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title" id="djaDetailTitle">Detail Formulir Donasi</div>
+                    <i class="ph ph-x" onclick="tutupDetailDonasiJamaahAdmin()"></i>
+                </div>
+                <div class="co-modal-body" id="djaDetailBody"></div>
             </div>
         </div>
 
@@ -10068,6 +10709,7 @@ async function updateJurnal(jurnalId, jenis) {
             document.getElementById('infaq-screen').style.display = 'flex';
             if (!window._akunKasCache || !window._coaAkunCache) { await loadDataFormTransaksi(); }
             await muatInfaqHarian();
+            await muatQrisInfaq();
         }
         function tutupInfaq() { document.getElementById('infaq-screen').style.display = 'none'; }
 
@@ -10276,6 +10918,65 @@ async function updateJurnal(jurnalId, jenis) {
             document.getElementById('infaqStatTunai').textContent = 'Rp ' + totalTunai.toLocaleString('id-ID');
             document.getElementById('infaqStatQris').textContent = 'Rp ' + totalQris.toLocaleString('id-ID');
             document.getElementById('infaqStatTotal').textContent = 'Rp ' + (totalTunai + totalQris).toLocaleString('id-ID');
+        }
+
+        // ===== QRIS Infaq (upload oleh bendahara, tampil untuk jamaah) =====
+        async function muatQrisInfaq() {
+            try {
+                const { data, error } = await supabaseClient.from('infaq_qris_setting').select('*').eq('id', 1).maybeSingle();
+                var wrap = document.getElementById('infaqQrisPreviewWrap');
+                var img = document.getElementById('infaqQrisPreviewImg');
+                var label = document.getElementById('infaqQrisUploadLabel');
+                if (!error && data && data.qris_url) {
+                    if (img) img.src = data.qris_url;
+                    if (wrap) wrap.style.display = 'block';
+                    if (label) label.textContent = 'Ganti Foto QRIS Infaq';
+                } else {
+                    if (wrap) wrap.style.display = 'none';
+                    if (label) label.textContent = 'Tap untuk upload foto QRIS Infaq';
+                }
+            } catch (e) { /* diamkan */ }
+        }
+        async function uploadQrisInfaq(input) {
+            var file = input.files[0];
+            if (!file) return;
+            try {
+                var ext = file.name.split('.').pop();
+                var path = 'qris-infaq/qris-' + Date.now() + '.' + ext;
+                var up = await supabaseClient.storage.from('bukti-transaksi').upload(path, file);
+                if (up.error) { alert('ERROR UPLOAD QRIS: ' + up.error.message); return; }
+                var url = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
+                var res = await supabaseClient.from('infaq_qris_setting').upsert({ id: 1, qris_url: url, updated_at: new Date().toISOString() });
+                if (res.error) { alert('ERROR SUPABASE (simpan QRIS): ' + res.error.message + '. Pastikan tabel infaq_qris_setting sudah dibuat.'); return; }
+                alert('Foto QRIS Infaq berhasil diperbarui');
+                await muatQrisInfaq();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            } finally {
+                input.value = '';
+            }
+        }
+
+        // ===== QRIS Infaq: modal untuk Jamaah =====
+        async function bukaQrisInfaqJamaah() {
+            var area = document.getElementById('infaqQrisJamaahArea');
+            area.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.8rem;">Memuat QRIS...</div>';
+            document.getElementById('infaq-qris-jamaah-overlay').style.display = 'flex';
+            try {
+                const { data, error } = await supabaseClient.from('infaq_qris_setting').select('*').eq('id', 1).maybeSingle();
+                if (!error && data && data.qris_url) {
+                    area.innerHTML =
+                        '<img src="' + data.qris_url + '" style="max-width:260px; width:100%; border-radius:18px; border:1px solid var(--line); box-shadow:0 8px 20px rgba(0,0,0,0.12); margin-bottom:14px;">' +
+                        '<div style="font-size:0.8rem; color:var(--text-dark); font-weight:600; line-height:1.6;">Scan QRIS di atas menggunakan aplikasi e-wallet/mobile banking untuk menyalurkan infaq harian Anda.<br><span style="color:var(--text-gray); font-weight:500;">Jazakumullahu khairan atas kepeduliannya.</span></div>';
+                } else {
+                    area.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-gray); font-size:0.8rem;">QRIS Infaq belum diunggah oleh bendahara.</div>';
+                }
+            } catch (e) {
+                area.innerHTML = '<div style="padding:20px; text-align:center; color:var(--maroon); font-size:0.8rem;">Gagal memuat QRIS: ' + e.message + '</div>';
+            }
+        }
+        function tutupQrisInfaqJamaah() {
+            document.getElementById('infaq-qris-jamaah-overlay').style.display = 'none';
         }
 
         // ===== Profil: Plotting Akun & Tutup Buku =====
@@ -11763,13 +12464,12 @@ function unduhRiwayatTransaksi() {
 
         function keluarTamu() {
             var guest = document.getElementById('guest-dashboard-screen');
-            var login = document.getElementById('login-screen');
+            var gate = document.getElementById('jamaah-gate-screen');
 
             guest.style.display = 'none';
             guest.classList.remove('screen-in');
 
-            login.style.display = 'flex';
-            login.classList.remove('screen-out');
+            gate.style.display = 'flex';
         }
 
         // ===== Guest: Saldo Akun Pendapatan Donasi/Proposal (real, dari buku besar) =====
@@ -18880,31 +19580,363 @@ async function hapusCoa() {
 
 <script>
 /* =========================================================================
-   SIASFA — GUEST MODE SEBAGAI HALAMAN DEFAULT
-   Dashboard tamu langsung tampil saat aplikasi dibuka, tanpa perlu menekan
-   tombol "Masuk sebagai tamu" (tombol tersebut sudah dihapus dari layar login).
+   SIASFA — GATE JAMAAH SEBAGAI HALAMAN DEFAULT
+   Jamaah masuk cukup dengan Nomor WhatsApp (tanpa akun/password). Jika nomor
+   sudah terdaftar, langsung "MASUK". Jika belum, lengkapi Nama & Alamat sekali
+   saja lalu otomatis tersimpan sebagai data jamaah dan masuk ke Dashboard Tamu.
+   Panitia tetap login lewat login-screen seperti biasa via tombol di bawah.
    ========================================================================= */
-(function inisialisasiGuestDashboardDefault() {
-    function jalankan() {
-        try {
+
+var _jamaahAktif = null;
+var _jamaahWaTimer = null;
+var _jamaahCheckToken = 0;
+
+var JAMAAH_DAFTAR_ALAMAT = ['Rogoitan', 'Banyon', 'Pendowo', 'Pulutan', 'Perum. Pendowo Asri', 'Perum. Pendowo Indah', 'Banyon Baru', 'Diro', 'Kalangan'];
+
+function jamaahNormalisasiWa(v) {
+    return String(v || '').replace(/[^0-9]/g, '');
+}
+
+        function jamaahOnInputWa() {
+            clearTimeout(_jamaahWaTimer);
+            var area = document.getElementById('jamaahStatusArea');
+            var el = document.getElementById('jamaahWaInput');
+            var errEl = document.getElementById('jamaahWaError');
+            if (!el || !area) return;
+            var wa = jamaahNormalisasiWa(el.value);
+
+            if (wa.length > 0 && wa.indexOf('08') !== 0) {
+                if (errEl) errEl.style.display = 'block';
+                area.innerHTML = '';
+                _jamaahAktif = null;
+                return;
+            }
+            if (errEl) errEl.style.display = 'none';
+
+            if (wa.length < 9) {
+                area.innerHTML = '';
+                _jamaahAktif = null;
+                return;
+            }
+            area.innerHTML = '<div class="jg-info-text"><i class="ph ph-circle-notch siasfa-spin"></i> Memeriksa nomor...</div>';
+            _jamaahWaTimer = setTimeout(function () { jamaahCekNomor(wa); }, 550);
+        }
+
+async function jamaahCekNomor(wa) {
+    var myToken = ++_jamaahCheckToken;
+    var area = document.getElementById('jamaahStatusArea');
+    try {
+        var res = await supabaseClient.from('data_jamaah').select('*').eq('nomor_whatsapp', wa).maybeSingle();
+        if (myToken !== _jamaahCheckToken || !area) return;
+
+        if (res.error) {
+            area.innerHTML = '<div class="jg-info-text" style="color:var(--maroon);">Gagal memeriksa nomor, coba lagi.</div>';
+            return;
+        }
+
+        if (res.data) {
+            _jamaahAktif = res.data;
+            area.innerHTML =
+                '<div class="jg-found-card"><i class="ph-fill ph-check-circle"></i><div>Selamat datang kembali,<br><strong>' + calkEsc(res.data.nama) + '</strong></div></div>' +
+                '<button type="button" class="btn-signin" onclick="jamaahLanjutkanTerdaftar()">MASUK</button>';
+        } else {
+            _jamaahAktif = null;
+            area.innerHTML =
+                '<div class="jg-info-text">Nomor belum terdaftar. Lengkapi data diri sebentar ya, cukup sekali saja \uD83D\uDE42</div>' +
+                '<div class="input-group"><label>Nama Lengkap</label><input type="text" id="jamaahNamaInput" placeholder="Nama lengkap..."></div>' +
+                '<div class="input-group"><label>Alamat</label><select id="jamaahAlamatSelect" onchange="jamaahToggleAlamatLainnya()" style="width:100%; border:none; border-bottom:1px solid var(--border-gray); padding:5px 0 10px; font-size:0.95rem; color:var(--text-dark); outline:none; background:transparent;"><option value="">-- Pilih Alamat --</option>' +
+                JAMAAH_DAFTAR_ALAMAT.map(function (a) { return '<option>' + a + '</option>'; }).join('') +
+                '<option value="LAINNYA">Lainnya</option></select></div>' +
+                '<div class="input-group" id="jamaahAlamatLainnyaWrap" style="display:none;"><label>Sebutkan Alamat</label><input type="text" id="jamaahAlamatLainnyaInput" placeholder="Alamat lengkap..."></div>' +
+                '<button type="button" class="btn-signin" onclick="jamaahDaftarBaru()">DAFTAR &amp; MASUK</button>';
+        }
+    } catch (e) {
+        if (area) area.innerHTML = '<div class="jg-info-text" style="color:var(--maroon);">ERROR: ' + e.message + '</div>';
+    }
+}
+
+function jamaahToggleAlamatLainnya() {
+    var sel = document.getElementById('jamaahAlamatSelect');
+    var wrap = document.getElementById('jamaahAlamatLainnyaWrap');
+    if (sel && wrap) wrap.style.display = sel.value === 'LAINNYA' ? 'block' : 'none';
+}
+
+async function jamaahLanjutkanTerdaftar() {
+    if (!_jamaahAktif) return;
+    try {
+        await supabaseClient.from('data_jamaah').update({ last_login_at: new Date().toISOString() }).eq('id', _jamaahAktif.id);
+    } catch (e) { /* diamkan, non-fatal */ }
+    bukaGuestDashboardSetelahGate();
+}
+
+async function jamaahDaftarBaru() {
+    var waEl = document.getElementById('jamaahWaInput');
+    var namaEl = document.getElementById('jamaahNamaInput');
+    var alamatSel = document.getElementById('jamaahAlamatSelect');
+    if (!waEl || !namaEl || !alamatSel) return;
+
+    var wa = jamaahNormalisasiWa(waEl.value);
+    var nama = namaEl.value.trim();
+    var alamatVal = alamatSel.value;
+    if (alamatVal === 'LAINNYA') {
+        var lain = document.getElementById('jamaahAlamatLainnyaInput');
+        alamatVal = lain ? lain.value.trim() : '';
+    }
+
+    if (wa.length < 9 || wa.indexOf('08') !== 0) { alert('Nomor WhatsApp tidak valid, harus diawali angka 08'); return; }
+    if (!nama) { alert('Nama lengkap wajib diisi'); return; }
+    if (!alamatVal) { alert('Alamat wajib dipilih/diisi'); return; }
+
+    try {
+        var res = await supabaseClient.from('data_jamaah')
+            .insert({ nomor_whatsapp: wa, nama: nama, alamat: alamatVal, last_login_at: new Date().toISOString() })
+            .select().single();
+
+        if (res.error) {
+            if (String(res.error.message).toLowerCase().indexOf('duplicate') !== -1) {
+                alert('Nomor ini ternyata sudah terdaftar. Coba periksa ulang nomornya.');
+                jamaahOnInputWa();
+            } else {
+                alert('ERROR SUPABASE (daftar jamaah): ' + res.error.message);
+            }
+            return;
+        }
+
+        _jamaahAktif = res.data;
+        bukaGuestDashboardSetelahGate();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+        function jamaahBukaLoginPanitia() {
+            var gate = document.getElementById('jamaah-gate-screen');
+            var login = document.getElementById('login-screen');
+            if (gate) gate.style.display = 'none';
+            if (login) {
+                login.style.display = 'flex';
+                login.classList.remove('screen-out');
+            }
+        }
+        function kembaliKeGateJamaah() {
+            var gate = document.getElementById('jamaah-gate-screen');
+            var login = document.getElementById('login-screen');
+            if (login) login.style.display = 'none';
+            if (gate) {
+                gate.style.display = 'flex';
+                gate.classList.remove('screen-out');
+            }
+        }
+
+function bukaModalSetPasswordJamaah() {
+    document.getElementById('jmPasswordBaru').value = '';
+    document.getElementById('jmPasswordKonfirmasi').value = '';
+    document.getElementById('jamaah-password-overlay').style.display = 'flex';
+}
+function tutupModalSetPasswordJamaah() {
+    document.getElementById('jamaah-password-overlay').style.display = 'none';
+}
+async function simpanPasswordJamaah() {
+    if (!_jamaahAktif) return;
+    var p1 = document.getElementById('jmPasswordBaru').value;
+    var p2 = document.getElementById('jmPasswordKonfirmasi').value;
+    if (!p1 || p1.length < 6) { alert('Password minimal 6 karakter'); return; }
+    if (p1 !== p2) { alert('Konfirmasi password tidak cocok'); return; }
+    try {
+        var hash = await sha256Hex(p1);
+        var res = await supabaseClient.from('data_jamaah').update({ password_hash: hash }).eq('id', _jamaahAktif.id);
+        if (res.error) { alert('ERROR SUPABASE (simpan password): ' + res.error.message); return; }
+        _jamaahAktif.password_hash = hash;
+        alert('Password berhasil disimpan');
+        tutupModalSetPasswordJamaah();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+function bukaGuestDashboardSetelahGate() {
+    var gate = document.getElementById('jamaah-gate-screen');
+    var trans = document.getElementById('transition-screen');
+    var guest = document.getElementById('guest-dashboard-screen');
+
+    gate.style.display = 'none';
+    trans.style.display = 'flex';
+    requestAnimationFrame(function () { trans.classList.add('show'); });
+
+    setTimeout(function () {
+        trans.classList.remove('show');
+        setTimeout(function () {
+            trans.style.display = 'none';
+
             var bulanPanjang = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             var now = new Date();
             var elTgl = document.getElementById('guestCashPerTanggal');
             if (elTgl) elTgl.textContent = 'Per ' + now.getDate() + ' ' + bulanPanjang[now.getMonth()] + ' ' + now.getFullYear();
+            var elDonasiTgl = document.getElementById('jmDonasiTanggal');
+            if (elDonasiTgl) elDonasiTgl.textContent = now.getDate() + ' ' + bulanPanjang[now.getMonth()] + ' ' + now.getFullYear();
 
+            guest.style.display = 'flex';
+            guest.classList.add('screen-in');
+
+            renderJamaahProfil();
+            muatTransparansiDonasiRamadhan();
             if (typeof muatDataKas === 'function') muatDataKas();
             if (typeof renderGuestPendapatanDonasi === 'function') renderGuestPendapatanDonasi();
             if (typeof muatProgramKerja === 'function' && typeof renderGuestProkerList === 'function') {
                 muatProgramKerja().then(renderGuestProkerList);
             }
-        } catch (e) { /* diamkan, non-fatal saat load awal */ }
+        }, 300);
+    }, 1200);
+}
+
+/* ===== Profil Jamaah & Transparansi Donasi Ramadhan ===== */
+function jamaahInisial(nama) {
+    if (!nama) return '?';
+    var parts = nama.trim().split(/\s+/);
+    var ini = parts[0].charAt(0);
+    if (parts.length > 1) ini += parts[1].charAt(0);
+    return ini.toUpperCase();
+}
+function renderJamaahProfil() {
+    if (!_jamaahAktif) return;
+    var elAvatar = document.getElementById('jmProfileAvatar');
+    var elNama = document.getElementById('jmProfileNama');
+    var elWa = document.getElementById('jmProfileWa');
+    var elAlamat = document.getElementById('jmProfileAlamat');
+    var elWelcome = document.getElementById('jmWelcomeNama');
+    if (elAvatar) elAvatar.innerHTML = _jamaahAktif.foto_url ? '<img src="' + _jamaahAktif.foto_url + '" style="width:100%;height:100%;object-fit:cover;">' : jamaahInisial(_jamaahAktif.nama);
+    if (elNama) elNama.textContent = _jamaahAktif.nama || '-';
+    if (elWa) elWa.textContent = _jamaahAktif.nomor_whatsapp || '-';
+    if (elAlamat) elAlamat.textContent = _jamaahAktif.alamat || '-';
+    if (elWelcome) elWelcome.textContent = (_jamaahAktif.nama || 'Jamaah');
+    guestRenderProfilTab();
+}
+async function uploadFotoProfilJamaah(input) {
+    if (!_jamaahAktif) return;
+    var file = input.files[0];
+    if (!file) return;
+    try {
+        var ext = file.name.split('.').pop();
+        var path = 'jamaah-' + _jamaahAktif.id + '-' + Date.now() + '.' + ext;
+        var up = await supabaseClient.storage.from('foto-profil').upload(path, file, { upsert: true });
+        if (up.error) { alert('ERROR UPLOAD FOTO: ' + up.error.message); return; }
+        var publicUrl = supabaseClient.storage.from('foto-profil').getPublicUrl(path).data.publicUrl;
+        var res = await supabaseClient.from('data_jamaah').update({ foto_url: publicUrl }).eq('id', _jamaahAktif.id);
+        if (res.error) { alert('ERROR SUPABASE (simpan foto): ' + res.error.message); return; }
+        _jamaahAktif.foto_url = publicUrl;
+        renderJamaahProfil();
+        alert('Foto profil berhasil diperbarui');
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    } finally {
+        input.value = '';
     }
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', jalankan);
-    } else {
-        jalankan();
+}
+
+function switchGuestTab(tab) {
+    document.querySelectorAll('#guest-dashboard-screen .tab-page').forEach(function (el) { el.classList.remove('active'); });
+    document.querySelectorAll('#guest-dashboard-screen .app-bottom-nav .nav-item').forEach(function (el) { el.classList.remove('active'); });
+    document.getElementById('guest-page-' + tab).classList.add('active');
+    document.getElementById('guest-nav-' + tab).classList.add('active');
+    var body = document.getElementById('guest-app-body');
+    if (body) body.scrollTop = 0;
+    if (tab === 'profil') { guestRenderProfilTab(); }
+}
+
+function guestRenderProfilTab() {
+    if (!_jamaahAktif) return;
+    var elAvatar = document.getElementById('jmProfilTabAvatar');
+    var elNama = document.getElementById('jmProfilTabNama');
+    var elWa = document.getElementById('jmProfilTabWa');
+    var elEmail = document.getElementById('jmProfilTabEmail');
+    var elAlamat = document.getElementById('jmProfilTabAlamat');
+    if (elAvatar) elAvatar.innerHTML = _jamaahAktif.foto_url ? '<img src="' + _jamaahAktif.foto_url + '" style="width:100%;height:100%;object-fit:cover;">' : jamaahInisial(_jamaahAktif.nama);
+    if (elNama) elNama.textContent = _jamaahAktif.nama || '-';
+    if (elWa) elWa.textContent = _jamaahAktif.nomor_whatsapp || '-';
+    if (elEmail) elEmail.textContent = _jamaahAktif.email || '-';
+    if (elAlamat) elAlamat.textContent = _jamaahAktif.alamat || '-';
+}
+
+async function muatTransparansiDonasiRamadhan() {
+    try {
+        const [uangRes, takjilRes, barangRes] = await Promise.all([
+            supabaseClient.from('donasi_uang_tunai').select('nominal'),
+            supabaseClient.from('donasi_takjil').select('jumlah_porsi'),
+            supabaseClient.from('donasi_barang').select('jenis, kuantitas')
+        ]);
+
+        var totalUang = (uangRes.data || []).reduce(function (s, r) { return s + (parseFloat(r.nominal) || 0); }, 0);
+        var totalTakjil = (takjilRes.data || []).reduce(function (s, r) { return s + (parseFloat(r.jumlah_porsi) || 0); }, 0);
+        var totalGula = 0, totalTeh = 0;
+        (barangRes.data || []).forEach(function (r) {
+            var jenis = (r.jenis || '').toLowerCase();
+            var qty = parseFloat(r.kuantitas) || 0;
+            if (jenis.indexOf('gula') !== -1) totalGula += qty;
+            else if (jenis.indexOf('teh') !== -1) totalTeh += qty;
+        });
+
+        var elUang = document.getElementById('jmDonasiUang');
+        var elTakjil = document.getElementById('jmDonasiTakjil');
+        var elGula = document.getElementById('jmDonasiGula');
+        var elTeh = document.getElementById('jmDonasiTeh');
+        if (elUang) elUang.textContent = 'Rp ' + Math.round(totalUang).toLocaleString('id-ID');
+        if (elTakjil) elTakjil.textContent = totalTakjil.toLocaleString('id-ID') + ' Porsi';
+        if (elGula) elGula.textContent = totalGula.toLocaleString('id-ID') + ' Kg';
+        if (elTeh) elTeh.textContent = totalTeh.toLocaleString('id-ID') + ' Pcs';
+    } catch (e) {
+        console.error('muatTransparansiDonasiRamadhan:', e.message);
     }
-})();
+}
+
+function jamaahMenuBelumTersedia(nama) {
+    if (typeof siasfaNotify === 'function') siasfaNotify('Fitur ' + nama + ' sedang dalam pengembangan.', 'info');
+    else alert('Fitur ' + nama + ' sedang dalam pengembangan.');
+}
+
+function bukaModalEditProfilJamaah() {
+    if (!_jamaahAktif) return;
+    var overlay = document.createElement('div');
+    overlay.className = 'siasfa-confirm-overlay';
+    overlay.innerHTML =
+        '<div class="siasfa-confirm-card" style="width:100%; text-align:left;">' +
+            '<div class="siasfa-confirm-title" style="margin-bottom:14px;">Ubah Profil Saya</div>' +
+            '<div class="ct-field"><label>Nama Lengkap</label><input type="text" id="jmEditNama" value="' + (_jamaahAktif.nama || '').replace(/"/g, '&quot;') + '"></div>' +
+            '<div class="ct-field" style="margin-bottom:0;"><label>Alamat</label><select id="jmEditAlamat" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; background:#FFFFFF;">' +
+                JAMAAH_DAFTAR_ALAMAT.map(function (a) { return '<option' + (a === _jamaahAktif.alamat ? ' selected' : '') + '>' + a + '</option>'; }).join('') +
+                '<option value="LAINNYA"' + (JAMAAH_DAFTAR_ALAMAT.indexOf(_jamaahAktif.alamat) === -1 ? ' selected' : '') + '>Lainnya</option></select></div>' +
+            '<div class="ct-field" id="jmEditAlamatLainnyaWrap" style="margin-top:10px; margin-bottom:0; display:' + (JAMAAH_DAFTAR_ALAMAT.indexOf(_jamaahAktif.alamat) === -1 ? 'block' : 'none') + ';"><label>Sebutkan Alamat</label><input type="text" id="jmEditAlamatLainnya" value="' + (JAMAAH_DAFTAR_ALAMAT.indexOf(_jamaahAktif.alamat) === -1 ? (_jamaahAktif.alamat || '').replace(/"/g, '&quot;') : '') + '"></div>' +
+            '<div class="siasfa-confirm-actions" style="margin-top:18px;">' +
+                '<button type="button" class="siasfa-confirm-btn siasfa-confirm-cancel">Batal</button>' +
+                '<button type="button" class="siasfa-confirm-btn siasfa-confirm-ok">Simpan</button>' +
+            '</div>' +
+        '</div>';
+    document.body.appendChild(overlay);
+
+    var selAlamat = overlay.querySelector('#jmEditAlamat');
+    selAlamat.addEventListener('change', function () {
+        overlay.querySelector('#jmEditAlamatLainnyaWrap').style.display = selAlamat.value === 'LAINNYA' ? 'block' : 'none';
+    });
+
+    overlay.querySelector('.siasfa-confirm-cancel').addEventListener('click', function () { overlay.remove(); });
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+    overlay.querySelector('.siasfa-confirm-ok').addEventListener('click', async function () {
+        var namaBaru = overlay.querySelector('#jmEditNama').value.trim();
+        var alamatBaru = selAlamat.value === 'LAINNYA' ? overlay.querySelector('#jmEditAlamatLainnya').value.trim() : selAlamat.value;
+        if (!namaBaru) { alert('Nama lengkap wajib diisi'); return; }
+        if (!alamatBaru) { alert('Alamat wajib diisi'); return; }
+        try {
+            var res = await supabaseClient.from('data_jamaah').update({ nama: namaBaru, alamat: alamatBaru }).eq('id', _jamaahAktif.id);
+            if (res.error) { alert('ERROR SUPABASE (update profil): ' + res.error.message); return; }
+            _jamaahAktif.nama = namaBaru;
+            _jamaahAktif.alamat = alamatBaru;
+            renderJamaahProfil();
+            overlay.remove();
+            alert('Profil berhasil diperbarui');
+        } catch (e) {
+            alert('ERROR SISTEM: ' + e.message);
+        }
+    });
+}
 </script>
 
 <script>
@@ -19638,6 +20670,464 @@ function bukaDatabaseDokumen() {
 }
 function tutupDatabaseDokumen() {
     document.getElementById('database-dokumen-screen').style.display = 'none';
+}
+</script>
+<script>
+/* ============ DONASI RAMADHAN (Jamaah) ============ */
+var _drUangJenis = '';
+var _drRiwayatCache = [];
+var _drAktifDonasiIdBayar = null;
+
+function bukaDonasiRamadhanScreen() {
+    if (!_jamaahAktif) { alert('Data jamaah tidak ditemukan, silakan masuk ulang.'); return; }
+    drResetForm();
+    document.getElementById('drNamaInput').value = _jamaahAktif.nama || '';
+    document.getElementById('drNomorInput').value = _jamaahAktif.nomor_whatsapp || '';
+    document.getElementById('donasi-ramadhan-screen').style.display = 'flex';
+    switchDrTab('formulir');
+    muatRiwayatDonasiJamaah();
+}
+function tutupDonasiRamadhanScreen() {
+    document.getElementById('donasi-ramadhan-screen').style.display = 'none';
+}
+function switchDrTab(tab) {
+    document.querySelectorAll('#donasi-ramadhan-screen .dr-tab-btn').forEach(function (el) { el.classList.remove('active'); });
+    document.querySelectorAll('#donasi-ramadhan-screen .dr-subpage').forEach(function (el) { el.classList.remove('active'); });
+    var btn = document.getElementById('drtab-' + tab);
+    var page = document.getElementById('drpage-' + tab);
+    if (btn) btn.classList.add('active');
+    if (page) page.classList.add('active');
+    var body = document.querySelector('#donasi-ramadhan-screen .ct-body');
+    if (body) body.scrollTop = 0;
+}
+
+        function drResetForm() {
+            _drUangJenis = '';
+            document.querySelectorAll('.dr-check-item').forEach(function (b) { b.classList.remove('active'); });
+            document.getElementById('drUangJenisWrap').style.display = 'none';
+            document.getElementById('drUangLainnyaInput').value = '';
+            document.getElementById('drTakjilTanggalWrap').style.display = 'none';
+            document.getElementById('drTakjilLainnyaInput').value = '';
+            document.getElementById('drTakjilTanggalInput').value = '';
+            document.getElementById('drBarangLainnyaWrap').style.display = 'none';
+            document.getElementById('drGulaInput').value = '';
+            document.getElementById('drTehInput').value = '';
+            document.getElementById('drBarangRows').innerHTML = '';
+            drTambahBarang();
+        }
+
+        function drCheckToggle(el) {
+            var group = el.getAttribute('data-group');
+            var val = el.getAttribute('data-val');
+
+            if (group === 'takjil' || group === 'uang') {
+                var wasActive = el.classList.contains('active');
+                document.querySelectorAll('.dr-check-item[data-group="' + group + '"]').forEach(function (item) { item.classList.remove('active'); });
+                if (!wasActive) el.classList.add('active');
+
+                if (group === 'takjil') {
+                    var aktifTakjil = document.querySelector('.dr-check-item[data-group="takjil"].active');
+                    document.getElementById('drTakjilTanggalWrap').style.display = aktifTakjil ? 'block' : 'none';
+                }
+                if (group === 'uang') {
+                    var aktifUang = document.querySelector('.dr-check-item[data-group="uang"].active');
+                    document.getElementById('drUangJenisWrap').style.display = aktifUang ? 'block' : 'none';
+                }
+            } else {
+                el.classList.toggle('active');
+                var isActive = el.classList.contains('active');
+                if (group === 'barang-lainnya') document.getElementById('drBarangLainnyaWrap').style.display = isActive ? 'block' : 'none';
+            }
+        }
+
+        function drPilihJenisUang(el) {
+            document.querySelectorAll('#drUangJenisWrap .tandai-status-btn').forEach(function (b) { b.classList.remove('aktif-hijau'); });
+            el.classList.add('aktif-hijau');
+            _drUangJenis = el.getAttribute('data-val');
+        }
+function drTambahBarang() {
+    document.getElementById('drBarangRows').insertAdjacentHTML('beforeend',
+        '<div class="ct-table-row" style="grid-template-columns:1.5fr 0.8fr 20px;">' +
+        '<input type="text" class="dr-barang-nama" placeholder="Nama barang...">' +
+        '<input type="number" class="dr-barang-jumlah" placeholder="0">' +
+        '<i class="ph ph-x-circle ct-row-del" onclick="drHapusBarang(this)"></i></div>');
+}
+function drHapusBarang(el) {
+    var row = el.closest('.ct-table-row');
+    if (document.querySelectorAll('#drBarangRows .ct-table-row').length <= 1) { row.querySelectorAll('input').forEach(function (i) { i.value = ''; }); return; }
+    row.remove();
+}
+
+async function drKirimDonasi() {
+    try {
+        var namaDonatur = document.getElementById('drNamaInput').value.trim();
+        var nomorDonatur = document.getElementById('drNomorInput').value.trim();
+        if (!namaDonatur) { alert('Nama wajib diisi'); return; }
+        if (!nomorDonatur) { alert('Nomor WhatsApp wajib diisi'); return; }
+
+        var uangAktif = document.querySelector('.dr-check-item[data-group="uang"].active');
+        var uangNominal = 0;
+        if (uangAktif) {
+            uangNominal = uangAktif.getAttribute('data-val') === 'lainnya' ? (parseRupiah(document.getElementById('drUangLainnyaInput').value) || 0) : parseInt(uangAktif.getAttribute('data-val'));
+        }
+        if (uangNominal > 0 && !_drUangJenis) { alert('Pilih Tunai atau Transfer untuk Donasi Uang'); return; }
+
+        var takjilAktif = document.querySelector('.dr-check-item[data-group="takjil"].active');
+        var takjilPorsi = 0, takjilTanggal = null;
+        if (takjilAktif) {
+            takjilPorsi = takjilAktif.getAttribute('data-val') === 'lainnya' ? (parseInt(document.getElementById('drTakjilLainnyaInput').value) || 0) : parseInt(takjilAktif.getAttribute('data-val'));
+            takjilTanggal = document.getElementById('drTakjilTanggalInput').value || null;
+        }
+
+        var gula = parseFloat(document.getElementById('drGulaInput').value) || 0;
+        var teh = parseFloat(document.getElementById('drTehInput').value) || 0;
+
+        var barangRows = [];
+        document.querySelectorAll('#drBarangRows .ct-table-row').forEach(function (row) {
+            var nama = row.querySelector('.dr-barang-nama').value.trim();
+            var jumlah = parseFloat(row.querySelector('.dr-barang-jumlah').value) || 0;
+            if (nama && jumlah > 0) barangRows.push({ nama: nama, jumlah: jumlah });
+        });
+
+        if (uangNominal <= 0 && takjilPorsi <= 0 && gula <= 0 && teh <= 0 && barangRows.length === 0) {
+            alert('Isi minimal satu jenis donasi terlebih dahulu'); return;
+        }
+
+        var insDonasi = await supabaseClient.from('donasi_ramadhan').insert({
+            nama_donatur: namaDonatur, jamaah_id: _jamaahAktif ? _jamaahAktif.id : null,
+            sumber: 'Online', nomor_whatsapp: nomorDonatur
+        }).select().single();
+        if (insDonasi.error) { alert('ERROR SUPABASE (donasi): ' + insDonasi.error.message); return; }
+        var donasiId = insDonasi.data.id;
+
+        var _drUangTunaiId = null;
+        if (uangNominal > 0) {
+            var r1 = await supabaseClient.from('donasi_uang_tunai').insert({ donasi_id: donasiId, nominal: uangNominal, jenis_penyerahan: _drUangJenis, status: 'Menunggu' }).select().single();
+            if (r1.error) { alert('ERROR SUPABASE (donasi uang): ' + r1.error.message); return; }
+            _drUangTunaiId = r1.data.id;
+        }
+        if (takjilPorsi > 0) {
+            if (takjilTanggal) {
+                var cekJadwalTakjil = await supabaseClient.from('takjil_jadwal').select('id').eq('tanggal', takjilTanggal).maybeSingle();
+                if (!cekJadwalTakjil.data) {
+                    var insJadwalTakjil = await supabaseClient.from('takjil_jadwal').insert({ tanggal: takjilTanggal });
+                    if (insJadwalTakjil.error) { alert('ERROR SUPABASE (jadwal takjil): ' + insJadwalTakjil.error.message); return; }
+                }
+            }
+            var r2 = await supabaseClient.from('donasi_takjil').insert({ donasi_id: donasiId, jumlah_porsi: takjilPorsi, tanggal_jadwal: takjilTanggal, status: 'Dijadwalkan' });
+            if (r2.error) { alert('ERROR SUPABASE (donasi takjil): ' + r2.error.message); return; }
+        }
+        var barangPayload = [];
+        if (gula > 0) barangPayload.push({ donasi_id: donasiId, jenis: 'Gula', kuantitas: gula, satuan: 'Kg' });
+        if (teh > 0) barangPayload.push({ donasi_id: donasiId, jenis: 'Teh', kuantitas: teh, satuan: 'Pcs' });
+        barangRows.forEach(function (b) { barangPayload.push({ donasi_id: donasiId, jenis: b.nama, kuantitas: b.jumlah, satuan: 'Pcs' }); });
+        if (barangPayload.length > 0) {
+            var r3 = await supabaseClient.from('donasi_barang').insert(barangPayload);
+            if (r3.error) { alert('ERROR SUPABASE (donasi barang): ' + r3.error.message); return; }
+        }
+
+                if (uangNominal > 0 && _drUangJenis === 'Transfer' && _drUangTunaiId) {
+            drResetForm();
+            await muatRiwayatDonasiJamaah();
+            bukaKonfirmasiBayarDonasi(_drUangTunaiId, uangNominal);
+        } else {
+            alert('Jazakumullahu khairan! Donasi Anda berhasil dikirim. Terima kasih atas kepedulian Anda menjaga amanah dana umat.');
+            drResetForm();
+            await muatRiwayatDonasiJamaah();
+        }
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+async function muatRiwayatDonasiJamaah() {
+    if (!_jamaahAktif) return;
+    try {
+        const { data, error } = await supabaseClient
+            .from('donasi_ramadhan')
+            .select('*, donasi_uang_tunai(*), donasi_takjil(*), donasi_barang(*)')
+            .eq('jamaah_id', _jamaahAktif.id)
+            .order('created_at', { ascending: false });
+        if (error) { alert('ERROR SUPABASE (riwayat donasi): ' + error.message); return; }
+        _drRiwayatCache = data || [];
+        renderRiwayatDonasiJamaah();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+function renderRiwayatDonasiJamaah() {
+    var wrap = document.getElementById('drRiwayatList');
+
+    var _drTotalUangSemua = 0, _drTotalBelumSetor = 0, _drTotalSudahSetor = 0;
+    _drRiwayatCache.forEach(function (d) {
+        (d.donasi_uang_tunai || []).forEach(function (u) {
+            var nominal = parseFloat(u.nominal) || 0;
+            _drTotalUangSemua += nominal;
+            var lunas = (u.status === 'Diterima' || u.status === 'Terverifikasi');
+            if (lunas) { _drTotalSudahSetor += nominal; } else { _drTotalBelumSetor += nominal; }
+        });
+    });
+    var elStatJumlah = document.getElementById('drStatJumlah');
+    if (elStatJumlah) elStatJumlah.textContent = _drRiwayatCache.length;
+    var elSumJumlah = document.getElementById('drSumJumlah');
+    if (elSumJumlah) elSumJumlah.textContent = _drRiwayatCache.length + ' Kali';
+    var elStatUang = document.getElementById('drStatTotalUang');
+    if (elStatUang) elStatUang.textContent = 'Rp ' + Math.round(_drTotalUangSemua).toLocaleString('id-ID');
+    var elSumUang = document.getElementById('drSumUang');
+    if (elSumUang) elSumUang.textContent = 'Rp ' + Math.round(_drTotalUangSemua).toLocaleString('id-ID');
+    var elBelum = document.getElementById('drBelumDisetor');
+    if (elBelum) elBelum.textContent = 'Rp ' + Math.round(_drTotalBelumSetor).toLocaleString('id-ID');
+    var elSudah = document.getElementById('drSudahDisetor');
+    if (elSudah) elSudah.textContent = 'Rp ' + Math.round(_drTotalSudahSetor).toLocaleString('id-ID');
+
+    if (_drRiwayatCache.length === 0) {
+        wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada riwayat donasi.</div>';
+        return;
+    }
+    var html = '';
+    _drRiwayatCache.forEach(function (d) {
+        var items = '';
+        (d.donasi_uang_tunai || []).forEach(function (u) {
+            var lunas = u.status === 'Diterima' || u.status === 'Terverifikasi';
+            items += '<div class="lp-sub-item"><span>Donasi Uang (' + u.jenis_penyerahan + ')</span><span>Rp ' + Math.round(u.nominal).toLocaleString('id-ID') + '</span></div>';
+            if (!lunas && u.jenis_penyerahan === 'Transfer') {
+                items += '<div style="margin:4px 0 8px;"><button class="pay-status-badge belum" style="border:none; cursor:pointer;" onclick="bukaModalBayarDonasi(' + u.id + ')">Bayar Sekarang</button></div>';
+            } else {
+                items += '<div style="margin:4px 0 8px;"><span class="pay-status-badge ' + (lunas ? 'lunas' : 'belum') + '">' + u.status + '</span></div>';
+            }
+        });
+        (d.donasi_takjil || []).forEach(function (t) {
+            items += '<div class="lp-sub-item"><span>Donasi Takjil (Jadwal: ' + (t.tanggal_jadwal ? formatTanggalID(t.tanggal_jadwal) : '-') + ')</span><span>' + t.jumlah_porsi + ' Porsi</span></div>';
+        });
+        (d.donasi_barang || []).forEach(function (b) {
+            items += '<div class="lp-sub-item"><span>Donasi ' + b.jenis + '</span><span>' + b.kuantitas + ' ' + (b.satuan || '') + '</span></div>';
+        });
+
+        html += '<div class="report-row" style="align-items:flex-start; flex-direction:column; gap:8px; cursor:default;">' +
+            '<div style="display:flex; align-items:center; gap:10px; width:100%;">' +
+            '<div class="report-icon"><i class="ph ph-hand-heart"></i></div>' +
+            '<div style="flex:1;"><div class="report-name">Donasi ' + formatTanggalID(d.created_at.slice(0, 10)) + '</div><div class="report-sub">Kode: DR-' + d.id + '</div></div>' +
+            '<button class="report-dl-btn" onclick="unduhKwitansiDonasi(' + d.id + ')"><i class="ph ph-download-simple"></i></button>' +
+            '</div>' +
+            '<div style="width:100%; padding-left:2px;">' + items + '</div>' +
+            '</div>';
+    });
+    wrap.innerHTML = html;
+}
+
+function bukaModalBayarDonasi(uangId) {
+    _drAktifDonasiIdBayar = uangId;
+    document.getElementById('drBuktiFile').value = '';
+    document.getElementById('drBuktiUploadZone').classList.remove('has-file');
+    document.getElementById('dr-bayar-overlay').style.display = 'flex';
+}
+function tutupModalBayarDonasi() { document.getElementById('dr-bayar-overlay').style.display = 'none'; }
+
+function bukaKonfirmasiBayarDonasi(uangTunaiId, nominal) {
+    _drAktifDonasiIdBayar = uangTunaiId;
+    var elNominal = document.getElementById('drKonfirmasiNominal');
+    if (elNominal) elNominal.textContent = 'Rp ' + Math.round(nominal || 0).toLocaleString('id-ID');
+    document.getElementById('dr-konfirmasi-bayar-overlay').style.display = 'flex';
+}
+function tutupKonfirmasiBayarDonasi() {
+    document.getElementById('dr-konfirmasi-bayar-overlay').style.display = 'none';
+}
+function drKonfirmasiBayarNanti() {
+    tutupKonfirmasiBayarDonasi();
+    alert('Jazakumullahu khairan! Donasi Anda berhasil dicatat. Silakan lakukan pembayaran kapan saja melalui menu Riwayat Saya.');
+}
+function drKonfirmasiBayarSekarang() {
+    tutupKonfirmasiBayarDonasi();
+    document.getElementById('drBuktiFile').value = '';
+    document.getElementById('drBuktiUploadZone').classList.remove('has-file');
+    document.getElementById('dr-bayar-overlay').style.display = 'flex';
+}
+async function drSalinRekening() {
+    var nomor = '901439815961';
+    try {
+        await navigator.clipboard.writeText(nomor);
+        if (typeof siasfaNotify === 'function') siasfaNotify('Nomor rekening berhasil disalin', 'success');
+        else alert('Nomor rekening berhasil disalin');
+    } catch (e) {
+        alert('Nomor Rekening: ' + nomor);
+    }
+}
+
+async function drSimpanBuktiBayar() {
+    if (!_drAktifDonasiIdBayar) return;
+    var file = document.getElementById('drBuktiFile').files[0];
+    if (!file) { alert('Pilih file bukti transfer terlebih dahulu'); return; }
+    try {
+        var ext = file.name.split('.').pop();
+        var path = 'donasi-bukti/' + _drAktifDonasiIdBayar + '-' + Date.now() + '.' + ext;
+        var up = await supabaseClient.storage.from('bukti-transaksi').upload(path, file);
+        if (up.error) { alert('ERROR UPLOAD: ' + up.error.message); return; }
+        var url = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
+        var res = await supabaseClient.from('donasi_uang_tunai').update({ status: 'Menunggu Verifikasi', bukti_url: url }).eq('id', _drAktifDonasiIdBayar);
+        if (res.error) { alert('ERROR SUPABASE (simpan bukti): ' + res.error.message); return; }
+        alert('Bukti transfer berhasil dikirim, menunggu verifikasi tim keuangan. Jazakumullahu khairan!');
+        tutupModalBayarDonasi();
+        await muatRiwayatDonasiJamaah();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+function unduhKwitansiDonasi(donasiId) {
+    var d = _drRiwayatCache.find(function (x) { return x.id === donasiId; });
+    if (!d) return;
+    var doc = pdfBaru();
+    var y = pdfKop(doc, 'KWITANSI PENERIMAAN DONASI RAMADHAN', 'Kode: DR-' + d.id + ' \u00b7 ' + formatTanggalID(d.created_at.slice(0, 10)));
+    doc.setFont('times', 'normal'); doc.setFontSize(11);
+    doc.text('Telah diterima donasi Ramadhan dari:', 34, y); y += 18;
+    doc.setFont('times', 'bold'); doc.text(d.nama_donatur, 34, y); y += 26;
+
+    var body = [];
+    (d.donasi_uang_tunai || []).forEach(function (u) { body.push(['Uang (' + u.jenis_penyerahan + ')', fmtRp(u.nominal)]); });
+    (d.donasi_takjil || []).forEach(function (t) { body.push(['Takjil', t.jumlah_porsi + ' Porsi']); });
+    (d.donasi_barang || []).forEach(function (b) { body.push([b.jenis, b.kuantitas + ' ' + (b.satuan || '')]); });
+    if (body.length === 0) body = [['-', '-']];
+    pdfTabel(doc, y, ['Jenis Donasi', 'Jumlah'], body, { columnStyles: { 1: { halign: 'right' } } });
+
+    doc.setFont('times', 'italic'); doc.setFontSize(10);
+    doc.text('Jazakumullahu khairan atas kepedulian dan keikhlasan Bapak/Ibu.', 34, doc.internal.pageSize.getHeight() - 70);
+
+    pdfTutup(doc, 'Kwitansi-Donasi-DR-' + d.id + '.pdf');
+}
+
+/* ============ DONASI JAMAAH — ADMIN (Menu Layanan Jamaah) ============ */
+var _djaCache = [];
+
+async function bukaDonasiJamaahAdmin() {
+    document.getElementById('donasi-jamaah-admin-screen').style.display = 'flex';
+    document.getElementById('djaList').innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data donasi jamaah...</div>';
+    try {
+        const { data, error } = await supabaseClient
+            .from('donasi_ramadhan')
+            .select('*, donasi_uang_tunai(*), donasi_takjil(*), donasi_barang(*)')
+            .order('created_at', { ascending: false });
+        if (error) { alert('ERROR SUPABASE (donasi jamaah): ' + error.message); return; }
+        _djaCache = data || [];
+        renderDonasiJamaahAdminList();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+function tutupDonasiJamaahAdmin() {
+    document.getElementById('donasi-jamaah-admin-screen').style.display = 'none';
+}
+
+function renderDonasiJamaahAdminList() {
+    var keyword = (document.getElementById('djaSearchInput') ? document.getElementById('djaSearchInput').value : '').toLowerCase();
+    var totalUang = 0, totalMenunggu = 0;
+    _djaCache.forEach(function (d) {
+        (d.donasi_uang_tunai || []).forEach(function (u) {
+            totalUang += parseFloat(u.nominal) || 0;
+            if (u.status !== 'Diterima' && u.status !== 'Terverifikasi') totalMenunggu++;
+        });
+    });
+    document.getElementById('djaStatJumlah').textContent = _djaCache.length;
+    document.getElementById('djaStatTotalUang').textContent = 'Rp ' + Math.round(totalUang).toLocaleString('id-ID');
+    document.getElementById('djaStatMenunggu').textContent = totalMenunggu;
+
+    var daftar = _djaCache.filter(function (d) {
+        var gab = ((d.nama_donatur || '') + ' ' + (d.nomor_whatsapp || '')).toLowerCase();
+        return !keyword || gab.indexOf(keyword) !== -1;
+    });
+
+    if (daftar.length === 0) {
+        document.getElementById('djaList').innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Tidak ada data donasi.</div>';
+        return;
+    }
+
+    var html = '';
+    daftar.forEach(function (d) {
+        var totalUangIni = (d.donasi_uang_tunai || []).reduce(function (s, u) { return s + (parseFloat(u.nominal) || 0); }, 0);
+        var adaMenunggu = (d.donasi_uang_tunai || []).some(function (u) { return u.status !== 'Diterima' && u.status !== 'Terverifikasi'; });
+        var ringkasJenis = [];
+        if (totalUangIni > 0) ringkasJenis.push('Uang Rp ' + Math.round(totalUangIni).toLocaleString('id-ID'));
+        (d.donasi_takjil || []).forEach(function (t) { ringkasJenis.push('Takjil ' + t.jumlah_porsi + ' Porsi'); });
+        (d.donasi_barang || []).forEach(function (b) { ringkasJenis.push(b.jenis + ' ' + b.kuantitas + (b.satuan ? (' ' + b.satuan) : '')); });
+
+        html += '<div class="report-row" style="cursor:pointer;" onclick="bukaDetailDonasiJamaahAdmin(' + d.id + ')">' +
+            '<div class="report-icon"><i class="ph ph-hand-heart"></i></div>' +
+            '<div><div class="report-name">' + d.nama_donatur + (adaMenunggu ? ' <span class="pay-status-badge belum" style="margin-left:4px;">Perlu Verifikasi</span>' : '') + '</div>' +
+            '<div class="report-sub">' + (d.nomor_whatsapp || '-') + ' &middot; ' + formatTanggalID(d.created_at.slice(0, 10)) + '</div>' +
+            '<div class="report-sub">' + (ringkasJenis.join(', ') || 'Belum ada rincian') + '</div></div>' +
+            '<i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i></div>';
+    });
+    document.getElementById('djaList').innerHTML = html;
+}
+
+function bukaDetailDonasiJamaahAdmin(id) {
+    var d = _djaCache.find(function (x) { return x.id === id; });
+    if (!d) return;
+    document.getElementById('djaDetailTitle').textContent = 'Donasi: ' + d.nama_donatur;
+
+    var html = '<div class="kkp-info-box">' +
+        '<div class="kkp-info-label">Nama Donatur</div><div class="kkp-info-value">' + d.nama_donatur + '</div>' +
+        '<div class="kkp-info-label">Nomor WhatsApp</div><div class="kkp-info-value">' + (d.nomor_whatsapp || '-') + '</div>' +
+        '<div class="kkp-info-label">Tanggal Formulir</div><div class="kkp-info-value">' + formatTanggalID(d.created_at.slice(0, 10)) + '</div>' +
+        '</div>';
+
+    html += '<div class="ledger-head"><div class="ledger-title" style="font-size:0.8rem;">Donasi Uang</div></div>';
+    if ((d.donasi_uang_tunai || []).length === 0) {
+        html += '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.76rem;">Tidak ada donasi uang.</div>';
+    } else {
+        d.donasi_uang_tunai.forEach(function (u) {
+            var lunas = u.status === 'Diterima' || u.status === 'Terverifikasi';
+            html += '<div class="report-row"><div class="report-icon"><i class="ph ph-money"></i></div>' +
+                '<div><div class="report-name">Rp ' + Math.round(u.nominal).toLocaleString('id-ID') + ' (' + u.jenis_penyerahan + ')</div>' +
+                '<div class="report-sub">Status: ' + u.status + '</div>' +
+                (u.bukti_url ? '<a href="' + u.bukti_url + '" target="_blank" style="font-size:0.72rem; color:var(--maroon); font-weight:700;"><i class="ph ph-eye"></i> Lihat Bukti Transfer</a>' : '<div class="report-sub" style="color:var(--text-gray);">Belum ada bukti diunggah</div>') +
+                '</div>' +
+                (!lunas ? '<button class="report-dl-btn" style="margin-left:auto;" onclick="djaVerifikasiUang(' + u.id + ', ' + id + ')"><i class="ph ph-check"></i></button>' : '') +
+                '</div>';
+        });
+    }
+
+    html += '<div class="ledger-head"><div class="ledger-title" style="font-size:0.8rem;">Donasi Takjil</div></div>';
+    if ((d.donasi_takjil || []).length === 0) {
+        html += '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.76rem;">Tidak ada donasi takjil.</div>';
+    } else {
+        d.donasi_takjil.forEach(function (t) {
+            html += '<div class="lp-sub-item"><span>' + t.jumlah_porsi + ' Porsi (Jadwal: ' + (t.tanggal_jadwal ? formatTanggalID(t.tanggal_jadwal) : '-') + ')</span><span>' + t.status + '</span></div>';
+        });
+    }
+
+    html += '<div class="ledger-head"><div class="ledger-title" style="font-size:0.8rem;">Donasi Barang</div></div>';
+    if ((d.donasi_barang || []).length === 0) {
+        html += '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.76rem;">Tidak ada donasi barang.</div>';
+    } else {
+        d.donasi_barang.forEach(function (b) {
+            html += '<div class="lp-sub-item"><span>' + b.jenis + '</span><span>' + b.kuantitas + ' ' + (b.satuan || '') + '</span></div>';
+        });
+    }
+
+    html += '<button class="co-btn-secondary" style="margin-top:14px;" onclick="unduhKwitansiDonasiAdmin(' + id + ')"><i class="ph ph-download-simple"></i> Unduh Kwitansi</button>';
+
+    document.getElementById('djaDetailBody').innerHTML = html;
+    document.getElementById('dja-detail-overlay').style.display = 'flex';
+}
+function tutupDetailDonasiJamaahAdmin() {
+    document.getElementById('dja-detail-overlay').style.display = 'none';
+}
+
+async function djaVerifikasiUang(uangId, donasiId) {
+    if (!await siasfaConfirm('Tandai donasi uang ini sebagai Diterima/Terverifikasi?', 'Verifikasi Donasi')) return;
+    try {
+        var res = await supabaseClient.from('donasi_uang_tunai').update({ status: 'Diterima' }).eq('id', uangId);
+        if (res.error) { alert('ERROR SUPABASE (verifikasi donasi): ' + res.error.message); return; }
+        alert('Donasi berhasil diverifikasi');
+        await bukaDonasiJamaahAdmin();
+        bukaDetailDonasiJamaahAdmin(donasiId);
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+function unduhKwitansiDonasiAdmin(donasiId) {
+    var d = _djaCache.find(function (x) { return x.id === donasiId; });
+    if (!d) return;
+    _drRiwayatCache = _djaCache;
+    unduhKwitansiDonasi(donasiId);
 }
 </script>
 </body>
