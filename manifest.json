@@ -1,6 +1,13 @@
-"start_url": ".",
-"icons": [
-  { "src": "icon-192-baru.png", "sizes": "192x192", "type": "image/png" },
-  { "src": "icon-512-baru.png", "sizes": "512x512", "type": "image/png" },
-  { "src": "icon-512-baru.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-]
+{
+  "name": "SIASFA - REMASFA 2026",
+  "short_name": "SIASFA",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#B81337",
+  "icons": [
+    { "src": "icon-192-baru.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512-baru.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512-baru.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
