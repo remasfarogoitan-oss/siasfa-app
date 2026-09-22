@@ -2040,6 +2040,17 @@
 .temuan-rekap-box.full { grid-column:1/-1; background:linear-gradient(135deg, var(--coral-start), var(--coral-end)); box-shadow:0 6px 14px rgba(255,122,92,0.28); }
 .temuan-rekap-label { font-size:0.62rem; font-weight:700; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.3px; }
 .temuan-rekap-value { font-size:1.05rem; font-weight:700; margin-top:4px; }
+
+.kkp-stat-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:4px; }
+.kkp-stat-grid.two-col { grid-template-columns:repeat(2, 1fr); }
+.kkp-stat-card { border-radius:14px; padding:12px 8px; color:#FFFFFF; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.14); }
+.kkp-stat-card.c-total { background:linear-gradient(135deg, var(--grad-start), var(--grad-end)); }
+.kkp-stat-card.c-ok { background:linear-gradient(135deg, #16A34A, #14532D); }
+.kkp-stat-card.c-warn { background:linear-gradient(135deg, #D97706, #92400E); }
+.kkp-stat-card.c-danger { background:linear-gradient(135deg, var(--coral-start), var(--coral-end)); }
+.kkp-stat-icon { width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:0.75rem; margin:0 auto 6px; }
+.kkp-stat-label { font-size:0.58rem; font-weight:700; color:rgba(255,255,255,0.85); text-transform:uppercase; letter-spacing:0.3px; line-height:1.3; min-height:22px; display:flex; align-items:center; justify-content:center; }
+.kkp-stat-value { font-size:0.95rem; font-weight:800; margin-top:4px; }
     /* =========================================================
    SISTEM NOTIFIKASI SIASFA
    Semua alert() diarahkan ke popup aplikasi sendiri
@@ -4175,11 +4186,9 @@
                     <div id="unTop3List" style="display:flex; flex-direction:column; gap:10px;"></div>
                 </div>
 
-                <div class="un-note-text">Daftar transaksi di bawah hanya menampilkan transaksi yang <strong>belum memiliki nota sama sekali</strong>. Pilih transaksi lalu lampirkan file nota &mdash; jika ingin melampirkan lebih dari satu file untuk transaksi yang sama, upload dulu satu file lalu buka kembali menu Upload Nota.</div>
+                 <div class="un-note-text">Daftar transaksi di bawah hanya menampilkan transaksi yang <strong>belum memiliki nota sama sekali</strong>. Pilih satu transaksi, lalu lampirkan file nota &mdash; boleh lebih dari satu file untuk transaksi yang sama dengan tombol "Tambah Nota Lainnya" di bawah kotak upload.</div>
 
                 <div id="unItemList" style="display:flex; flex-direction:column; gap:14px;"></div>
-
-                <div class="un-add-btn" onclick="tambahUploadNota()"><i class="ph ph-plus-circle"></i> Upload Nota Lagi</div>
 
                 <button class="ct-submit-btn" onclick="simpanUploadNota()"><i class="ph ph-cloud-arrow-up"></i> Upload & Simpan ke Drive</button>
             </div>
@@ -5725,15 +5734,15 @@
             </div>
 
             <div class="ct-subpage" id="pdpage-prosedur" style="margin-top:14px;">
-                <div class="ip-stat-row">
-                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-book-open"></i></div><div class="ip-stat-label">Jumlah Transaksi</div><div class="ip-stat-value" id="kkpTrxStatTotal">0</div></div>
-                    <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-check-circle"></i></div><div class="ip-stat-label">Sudah Diperiksa</div><div class="ip-stat-value" id="kkpTrxStatPeriksa">0</div></div>
+                <div class="kkp-stat-grid">
+                    <div class="kkp-stat-card c-total"><div class="kkp-stat-icon"><i class="ph ph-book-open"></i></div><div class="kkp-stat-label">Jumlah<br>Transaksi</div><div class="kkp-stat-value" id="kkpTrxStatTotal">0</div></div>
+                    <div class="kkp-stat-card c-ok"><div class="kkp-stat-icon"><i class="ph ph-check-circle"></i></div><div class="kkp-stat-label">Sudah<br>Diperiksa</div><div class="kkp-stat-value" id="kkpTrxStatPeriksa">0</div></div>
+                    <div class="kkp-stat-card c-warn"><div class="kkp-stat-icon"><i class="ph ph-hourglass"></i></div><div class="kkp-stat-label">Belum<br>Diperiksa</div><div class="kkp-stat-value" id="kkpTrxStatBelum">0</div></div>
                 </div>
-                <div class="ip-stat-box full" style="margin-top:8px;"><div class="ip-stat-icon"><i class="ph ph-hourglass"></i></div><div class="ip-stat-label">Belum Diperiksa</div><div class="ip-stat-value" id="kkpTrxStatBelum">0</div></div>
 
-                <div class="temuan-rekap-grid" style="margin-top:14px;">
-                    <div class="temuan-rekap-box"><div class="temuan-rekap-label">Temuan Kelemahan Pengendalian</div><div class="temuan-rekap-value" id="kkpTrxTemuanKelemahan">0</div></div>
-                    <div class="temuan-rekap-box full"><div class="temuan-rekap-label">Temuan Salah Saji (Net)</div><div class="temuan-rekap-value" id="kkpTrxTemuanSalahSaji">Rp 0</div></div>
+                <div class="kkp-stat-grid two-col" style="margin-top:10px;">
+                    <div class="kkp-stat-card c-warn"><div class="kkp-stat-icon"><i class="ph ph-flag"></i></div><div class="kkp-stat-label">Temuan Kelemahan<br>Pengendalian</div><div class="kkp-stat-value" id="kkpTrxTemuanKelemahan">0</div></div>
+                    <div class="kkp-stat-card c-danger"><div class="kkp-stat-icon"><i class="ph ph-currency-circle-dollar"></i></div><div class="kkp-stat-label">Temuan Salah<br>Saji (Net)</div><div class="kkp-stat-value" id="kkpTrxTemuanSalahSaji">Rp 0</div></div>
                 </div>
 
                 <div class="ct-field" style="margin-top:14px; margin-bottom:0;">
@@ -5768,7 +5777,11 @@
             </div>
 
             <div class="ct-subpage" id="pdpage-opini" style="margin-top:14px;">
-                <div class="ct-field"><label>Jenis Opini</label><select id="pdOpiniJenis"><option>Sesuai</option><option>Sesuai dengan Catatan</option><option>Tidak Sesuai</option></select></div>
+                <div class="calk-sub-title" style="margin-top:0;">Rekap Materialitas &amp; Skoring Pemeriksaan</div>
+                <div id="pdOpiniRekapWrap"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat rekap skor...</div></div>
+
+                <div class="calk-sub-title">Kesimpulan Opini</div>
+                <div class="ct-field"><label>Jenis Opini</label><select id="pdOpiniJenis"><option>Sangat Memadai</option><option>Memadai dengan Paragraf Penekanan</option><option>Memadai dengan Pengecualian Khusus</option><option>Tidak Memadai</option><option>Tidak Dapat Disimpulkan</option></select></div>
                 <div class="ct-field"><label>Narasi Opini</label><textarea id="pdOpiniNarasi" rows="6" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;"></textarea></div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                     <div class="ct-field" style="margin-bottom:0;"><label>Disusun Oleh</label><input type="text" id="pdOpiniPenyusun"></div>
@@ -8717,26 +8730,57 @@ async function updateJurnal(jurnalId, jenis) {
                 '<div class="un-item-card">' +
                 '<div class="ct-field"><label>Pilih Transaksi</label><select class="un-trx-select">' + optTransaksiTanpaNota() + '</select></div>' +
                 '<div class="ct-field" style="margin-bottom:0;"><label>File Nota (PNG/JPG/PDF)</label>' +
-                '<label class="ct-upload-zone"><input type="file" class="un-file-input" hidden accept="image/*,.pdf"><i class="ph ph-upload-simple"></i><span class="un-file-label">Tap untuk pilih file nota</span></label></div></div>';
-            bindUnFileLabels();
-        }
-
-        function tambahUploadNota() {
-            document.getElementById('unItemList').insertAdjacentHTML('beforeend',
-                '<div class="un-item-card"><i class="ph ph-x-circle un-item-remove" onclick="hapusUploadNota(this)"></i>' +
-                '<div class="ct-field"><label>Pilih Transaksi</label><select class="un-trx-select">' + optTransaksiTanpaNota() + '</select></div>' +
-                '<div class="ct-field" style="margin-bottom:0;"><label>File Nota (PNG/JPG/PDF)</label>' +
-                '<label class="ct-upload-zone"><input type="file" class="un-file-input" hidden accept="image/*,.pdf"><i class="ph ph-upload-simple"></i><span class="un-file-label">Tap untuk pilih file nota</span></label></div></div>');
+                '<label class="ct-upload-zone"><input type="file" class="un-file-input" hidden accept="image/*,.pdf" multiple><div class="ct-upload-icon"><i class="ph ph-upload-simple"></i></div><div class="ct-upload-text"><span class="ct-upload-title un-file-label">Tap untuk pilih file nota</span><span class="ct-upload-sub">PNG, JPG, atau PDF &middot; bisa lebih dari satu</span></div></label>' +
+                '<div class="un-file-chips" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;"></div>' +
+                '<div class="ct-add-row un-tambah-nota-lain" style="margin-top:10px;"><i class="ph ph-plus-circle"></i> Tambah Nota Lainnya</div>' +
+                '</div></div>';
             bindUnFileLabels();
         }
 
         function bindUnFileLabels() {
-            document.querySelectorAll('#unItemList .un-file-input').forEach(function (input) {
-                if (input.dataset.bound) return;
+            document.querySelectorAll('#unItemList .un-item-card').forEach(function (card) {
+                var input = card.querySelector('.un-file-input');
+                if (!input || input.dataset.bound) return;
                 input.dataset.bound = '1';
+                input._filesArr = [];
+
                 input.addEventListener('change', function () {
-                    var label = input.closest('.ct-upload-zone').querySelector('.un-file-label');
-                    label.textContent = input.files[0] ? input.files[0].name : 'Tap untuk pilih file nota';
+                    Array.from(input.files || []).forEach(function (f) { input._filesArr.push(f); });
+                    unSyncInputFiles(input);
+                    unRenderChips(card, input);
+                });
+
+                var tambahBtn = card.querySelector('.un-tambah-nota-lain');
+                if (tambahBtn) {
+                    tambahBtn.addEventListener('click', function () { input.click(); });
+                }
+            });
+        }
+
+        function unSyncInputFiles(input) {
+            try {
+                var dt = new DataTransfer();
+                (input._filesArr || []).forEach(function (f) { dt.items.add(f); });
+                input.files = dt.files;
+            } catch (e) { /* fallback: beberapa browser lama tidak dukung DataTransfer */ }
+        }
+
+        function unRenderChips(card, input) {
+            var wrap = card.querySelector('.un-file-chips');
+            var label = card.querySelector('.un-file-label');
+            var files = input._filesArr || [];
+            label.textContent = files.length === 0 ? 'Tap untuk pilih file nota' : (files.length + ' file dipilih');
+            card.querySelector('.ct-upload-zone').classList.toggle('has-file', files.length > 0);
+            wrap.innerHTML = files.map(function (f) {
+                return '<span style="display:inline-flex; align-items:center; gap:5px; background:var(--paper-soft); border:1px solid var(--line); border-radius:20px; padding:5px 10px; font-size:0.68rem; color:var(--text-dark); font-weight:600;">' +
+                    '<i class="ph ph-paperclip"></i>' + f.name.substring(0, 22) +
+                    '<i class="ph ph-x-circle un-file-remove-icon" style="cursor:pointer; color:var(--maroon);"></i></span>';
+            }).join('');
+            wrap.querySelectorAll('.un-file-remove-icon').forEach(function (icon, idx) {
+                icon.addEventListener('click', function () {
+                    files.splice(idx, 1);
+                    unSyncInputFiles(input);
+                    unRenderChips(card, input);
                 });
             });
         }
@@ -8754,27 +8798,30 @@ async function updateJurnal(jurnalId, jenis) {
                     var card = cards[i];
                     var trxId = card.querySelector('.un-trx-select').value;
                     var fileInput = card.querySelector('.un-file-input');
-                    var file = fileInput.files[0];
+                    var files = (fileInput && fileInput._filesArr) || [];
 
-                    if (!trxId || !file) { dilewati++; continue; }
+                    if (!trxId || files.length === 0) { dilewati++; continue; }
 
-                    var ext = file.name.split('.').pop();
-                    var path = 'nota/' + trxId + '-' + Date.now() + '-' + Math.floor(Math.random() * 10000) + '.' + ext;
+                    for (var j = 0; j < files.length; j++) {
+                        var file = files[j];
+                        var ext = file.name.split('.').pop();
+                        var path = 'nota/' + trxId + '-' + Date.now() + '-' + Math.floor(Math.random() * 10000) + '.' + ext;
 
-                    var uploadRes = await supabaseClient.storage.from('bukti-transaksi').upload(path, file);
-                    if (uploadRes.error) { alert('ERROR UPLOAD: ' + uploadRes.error.message); continue; }
+                        var uploadRes = await supabaseClient.storage.from('bukti-transaksi').upload(path, file);
+                        if (uploadRes.error) { alert('ERROR UPLOAD: ' + uploadRes.error.message); continue; }
 
-                    var publicUrl = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
+                        var publicUrl = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
 
-                    var insertRes = await supabaseClient.from('jurnal_nota').insert({ jurnal_id: parseInt(trxId), file_url: publicUrl });
-                    if (insertRes.error) { alert('ERROR SUPABASE (simpan nota): ' + insertRes.error.message); continue; }
+                        var insertRes = await supabaseClient.from('jurnal_nota').insert({ jurnal_id: parseInt(trxId), file_url: publicUrl });
+                        if (insertRes.error) { alert('ERROR SUPABASE (simpan nota): ' + insertRes.error.message); continue; }
 
-                    berhasil++;
+                        berhasil++;
+                    }
                 }
 
                 if (berhasil === 0) { alert('Tidak ada nota yang diupload. Pastikan transaksi & file sudah dipilih.'); return; }
 
-                alert(berhasil + ' nota berhasil diupload' + (dilewati > 0 ? ', ' + dilewati + ' dilewati (belum lengkap)' : ''));
+                alert(berhasil + ' nota berhasil diupload' + (dilewati > 0 ? ', ' + dilewati + ' transaksi dilewati (belum lengkap)' : ''));
                 tutupUploadNota();
                 if (typeof muatRiwayatDanBukuBesar === 'function') { await muatRiwayatDanBukuBesar(); }
 
@@ -11835,14 +11882,22 @@ function unduhRiwayatTransaksi() {
                 });
                 var nomShow = netKas !== 0 ? Math.abs(netKas) : totalNominal;
                 var jenisLabel = trx.jenis === 'penerimaan' ? 'Penerimaan' : (trx.jenis === 'pengeluaran' ? 'Pengeluaran' : 'Jurnal Umum');
-                return [trx.kode, formatTanggalID(trx.tanggal), trx.keterangan, trx.bendahara || '-', jenisLabel, (netKas < 0 ? '(' : '') + 'Rp ' + nomShow.toLocaleString('id-ID') + (netKas < 0 ? ')' : '')];
+                var ayatJurnal = (trx.jurnal_detail || []).map(function (d) {
+                    var akun = d.akun_kas || d.coa_akun;
+                    var namaAkun = akun ? akun.nama : '-';
+                    var debit = parseFloat(d.debit) || 0, kredit = parseFloat(d.kredit) || 0;
+                    var nominalAkun = debit > 0 ? debit : kredit;
+                    var sisi = debit > 0 ? 'D' : 'K';
+                    return namaAkun + ' (' + sisi + ') Rp ' + nominalAkun.toLocaleString('id-ID');
+                }).join('\n');
+                return [trx.kode, formatTanggalID(trx.tanggal), trx.keterangan, trx.bendahara || '-', jenisLabel, ayatJurnal, (netKas < 0 ? '(' : '') + 'Rp ' + nomShow.toLocaleString('id-ID') + (netKas < 0 ? ')' : '')];
             });
 
-            var doc = pdfBaru();
+            var doc = pdfBaru('landscape');
             var y = pdfKop(doc, 'RIWAYAT TRANSAKSI', 'Per ' + tanggalLaporanHariIni() + ' \u00b7 ' + body.length + ' transaksi');
-            pdfTabel(doc, y + 4, ['Kode', 'Tanggal', 'Keterangan', 'Bendahara', 'Jenis', 'Nominal (Rp)'], body, {
-                styles: { font: 'times', fontSize: 7, cellPadding: 4, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5 },
-                columnStyles: { 5: { halign: 'right' } }
+            pdfTabel(doc, y + 4, ['Kode', 'Tanggal', 'Keterangan', 'Bendahara', 'Jenis', 'Ayat Jurnal', 'Nominal (Rp)'], body, {
+                styles: { font: 'times', fontSize: 7, cellPadding: 4, textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.5, valign: 'top' },
+                columnStyles: { 5: { cellWidth: 190 }, 6: { halign: 'right' } }
             });
             pdfTutup(doc, 'Riwayat-Transaksi-' + Date.now() + '.pdf');
         }
@@ -13140,8 +13195,8 @@ function unduhRiwayatTransaksi() {
         // ====================================================================
         // ===== SIASFA PDF ENGINE — desain kop surat & tabel profesional =====
         // ====================================================================
-        function pdfBaru() {
-            var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+        function pdfBaru(orientation) {
+            var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4', orientation: orientation === 'landscape' ? 'landscape' : 'portrait' });
             doc.setLineHeightFactor(1.5);
             doc.setFont('times', 'normal');
             doc.setFontSize(12);
@@ -17389,7 +17444,7 @@ function renderTemuanSementara() {
     list.forEach(function (t) {
         var cls = t.status === 'Selesai Dikoreksi' ? 'status-selesai' : (t.status === 'Ditolak Manajemen' ? 'status-ditolak' : '');
         html += '<div class="temuan-card ' + cls + '" onclick="bukaModalTemuan(' + t.id + ')">' +
-            '<div class="temuan-top"><span class="temuan-area">' + t.area + '</span><span class="temuan-nilai">Rp ' + Math.round(parseFloat(t.nilai_salah_saji) || 0).toLocaleString('id-ID') + '</span></div>' +
+            '<div class="temuan-top"><span class="temuan-area">' + t.area + (t.sumber && t.sumber !== 'manual' ? ' <span class="calk-autobadge" style="margin-left:4px;"><i class="ph ph-robot"></i> Otomatis</span>' : '') + '</span><span class="temuan-nilai">Rp ' + Math.round(parseFloat(t.nilai_salah_saji) || 0).toLocaleString('id-ID') + '</span></div>' +
             '<div class="temuan-uraian">' + t.uraian_temuan + '</div>' +
             '<div class="temuan-meta-row"><span class="temuan-chip">' + (t.arah || '-') + '</span><span class="temuan-chip">' + (t.kategori || '-') + '</span><span class="temuan-chip">' + (t.status || 'Sementara') + '</span></div>' +
             (t.rekomendasi ? '<div style="font-size:0.7rem; color:var(--text-gray);"><strong>Rekomendasi:</strong> ' + t.rekomendasi + '</div>' : '') +
@@ -18013,105 +18068,7 @@ async function simpanKkpAsetNeto() {
 }
 </script>
 
-<script>
-(function () {
-    function toastRefreshMulai() { /* silent: no toast, spinner icon sudah cukup */ }
-    function toastRefreshSelesai() { /* silent */ }
-
-    var SIASFA_REFRESH_MAP = {
-        'riwayat-screen': function () { return muatRiwayatDanBukuBesar(); },
-        'infaq-screen': function () { return muatInfaqHarian(); },
-        'penjualan-screen': function () { return muatPenjualan(); },
-        'programkerja-screen': function () { return muatProgramKerja(); },
-        'iuran-screen': function () { return muatIuranKegiatan(); },
-        'upload-nota-screen': async function () { await muatTransaksiTanpaNota(); await muatStatistikUploadNota(); },
-        'rekbank-screen': function () { return muatRekBank(); },
-        'utang-piutang-screen': async function () { await muatUtangPiutang(); renderRincianAkunUP(); },
-        'peralatan-screen': function () { return muatPeralatan(); },
-        'cashopname-screen': function () { return muatCashOpname(); },
-        'wbs-data-screen': function () { return muatWbsData(); }
-    };
-
-    async function siasfaRefreshDashboardBeranda() {
-        await muatDataKas();
-        await muatProgramKerja();
-        await muatStatMasukKeluar();
-        if (typeof renderBebanPieChart === 'function') renderBebanPieChart();
-        if (typeof muatBannerTandaiSaya === 'function') await muatBannerTandaiSaya();
-    }
-
-    async function siasfaRefreshCurrentScreen(rootEl) {
-        try {
-            if (rootEl.id === 'app-body') {
-                var activeTab = rootEl.querySelector('.tab-page.active');
-                if (!activeTab) return;
-                if (activeTab.id === 'page-beranda') {
-                    await siasfaRefreshDashboardBeranda();
-                } else if (activeTab.id === 'page-laporan') {
-                    var activeSub = document.querySelector('#page-laporan .laporan-subpage.active');
-                    if (activeSub && activeSub.id === 'lpage-realisasi' && typeof renderProkerReportList === 'function') {
-                        await renderProkerReportList();
-                    }
-                } else if (activeTab.id === 'page-profil') {
-                    if (typeof muatPlottingAkun === 'function') await muatPlottingAkun();
-                    if (typeof renderProfilUser === 'function') renderProfilUser();
-                }
-                return;
-            }
-            if (rootEl.id === 'guest-app-body') {
-                await muatDataKas();
-                if (typeof renderGuestPendapatanDonasi === 'function') await renderGuestPendapatanDonasi();
-                await muatProgramKerja();
-                if (typeof renderGuestProkerList === 'function') renderGuestProkerList();
-                return;
-            }
-            var screenEl = rootEl.closest('[id$="-screen"]');
-            if (!screenEl) return;
-            var fn = SIASFA_REFRESH_MAP[screenEl.id];
-            if (fn) await fn();
-        } catch (e) {
-            console.error('Gagal refresh:', e);
-        }
-    }
-
-    function siasfaAttachPullRefresh() {
-        var containers = document.querySelectorAll('.app-body, .ct-body');
-        containers.forEach(function (el) {
-            if (el.dataset.siasfaRefreshBound) return;
-            el.dataset.siasfaRefreshBound = '1';
-            var lock = false;
-            el.addEventListener('scroll', function () {
-                if (lock) return;
-                if (el.scrollHeight <= el.clientHeight + 20) return;
-                var atBottom = (el.scrollTop + el.clientHeight) >= (el.scrollHeight - 6);
-                if (!atBottom) return;
-                lock = true;
-                toastRefreshMulai();
-                siasfaRefreshCurrentScreen(el).then(function () {
-                    toastRefreshSelesai();
-                }).finally(function () {
-                    setTimeout(function () { lock = false; }, 1200);
-                });
-            }, { passive: true });
-        });
-    }
-
-    window.siasfaRefreshBerandaManual = function (btnEl) {
-        var icon = btnEl ? btnEl.querySelector('i') : null;
-        if (icon) icon.classList.add('siasfa-spin');
-        toastRefreshMulai();
-        siasfaRefreshDashboardBeranda().then(function () {
-            toastRefreshSelesai();
-        }).catch(function (e) {
-            if (typeof siasfaNotify === 'function') siasfaNotify('Gagal memperbarui data: ' + e.message, 'error');
-        }).finally(function () {
-            if (icon) setTimeout(function () { icon.classList.remove('siasfa-spin'); }, 400);
-        });
-    };
-
-    siasfaAttachPullRefresh();
-})();
-</script>
+ 
 
 <script>
 (function () {
@@ -18406,6 +18363,8 @@ function switchPdTab(tab) {
     document.getElementById('pdtab-' + tab).classList.add('active');
     document.getElementById('pdpage-' + tab).classList.add('active');
     if (tab === 'prosedur') { pdSiapkanKkpTransaksi(); }
+    if (tab === 'temuan') { muatTemuanSementara(); }
+    if (tab === 'opini') { pdRenderRekapOpini(); }
 }
 async function pdToggleSelesai() {
     if (!_pdAktifPenugasanId) return;
@@ -18657,6 +18616,179 @@ async function pdSimpanOpini() {
         if (res.error) { alert('ERROR SUPABASE (simpan opini): ' + res.error.message); return; }
         alert('Opini berhasil disimpan');
     } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+/* =========================================================================
+   SKORING OPINI OTOMATIS (A–F) — OM / PM / TM otomatis dari Materialitas
+   ========================================================================= */
+function pdSkorLabel(v) {
+    var map = { 1: 'Sangat Rendah / Baik', 2: 'Rendah', 3: 'Sedang', 4: 'Tinggi', 5: 'Sangat Tinggi / Buruk' };
+    return map[v] || '-';
+}
+function pdIcqSkorToTingkat(skor) {
+    if (skor === null || skor === undefined) return null;
+    if (skor <= 60) return 1;
+    if (skor <= 75) return 2;
+    if (skor <= 90) return 3;
+    if (skor <= 105) return 4;
+    return 5;
+}
+function pdRasioKeSkor(rasio) {
+    if (rasio <= 0.25) return 1;
+    if (rasio <= 0.5) return 2;
+    if (rasio <= 0.75) return 3;
+    if (rasio <= 1.0) return 4;
+    return 5;
+}
+
+// B = Tingkat Pervasif Salah Saji: total salah saji substantif dibandingkan PM.
+// C = Salah Saji Tidak Dikoreksi: total temuan substantif yang BELUM "Sesuai Rekomendasi"
+//     dibandingkan bertingkat terhadap TM -> PM -> OM.
+async function pdHitungRekapSkorOpini() {
+    var p = _pdAktifPenugasanData || {};
+    var nilaiDasar = parseFloat(p.materialitas_nilai_dasar) || 0;
+    var persen = parseFloat(p.materialitas_persen) || 0;
+    var om = nilaiDasar * persen / 100;
+    var pm = om * 0.75;   // Performance Materiality = 75% OM (konvensi umum)
+    var tm = om * 0.05;   // Clearly Trivial Threshold = 5% OM (konvensi umum)
+
+    var skorA = pdIcqSkorToTingkat(p.icq_skor);
+
+    var totalSalahSaji = 0, totalTidakDikoreksi = 0;
+    try {
+        const { data } = await supabaseClient.from('audit_temuan').select('nilai_salah_saji, status_tindak_lanjut, kategori').eq('penugasan_id', _pdAktifPenugasanId).eq('kategori', 'Salah Saji Substantif');
+        (data || []).forEach(function (t) {
+            var n = parseFloat(t.nilai_salah_saji) || 0;
+            totalSalahSaji += n;
+            if (t.status_tindak_lanjut !== 'Tindak Lanjut Sesuai Rekomendasi') totalTidakDikoreksi += n;
+        });
+    } catch (e) { /* diamkan */ }
+
+    var skorB = pm > 0 ? pdRasioKeSkor(totalSalahSaji / pm) : null;
+
+    var skorC = null;
+    if (om > 0) {
+        if (totalTidakDikoreksi <= tm) skorC = 1;
+        else if (totalTidakDikoreksi <= tm * 2) skorC = 2;
+        else if (totalTidakDikoreksi <= pm) skorC = 3;
+        else if (totalTidakDikoreksi <= om) skorC = 4;
+        else skorC = 5;
+    }
+
+    return {
+        om: om, pm: pm, tm: tm,
+        totalSalahSaji: totalSalahSaji, totalTidakDikoreksi: totalTidakDikoreksi,
+        skorA: skorA, skorB: skorB, skorC: skorC,
+        skorD: p.skor_d || null, skorE: p.skor_e || null, skorF: p.skor_f || null
+    };
+}
+
+function pdOpiniDariTotalSkor(total, lengkap) {
+    if (!lengkap) return null;
+    if (total <= 10) return 'Sangat Memadai';
+    if (total <= 15) return 'Memadai dengan Paragraf Penekanan';
+    if (total <= 21) return 'Memadai dengan Pengecualian Khusus';
+    if (total <= 27) return 'Tidak Memadai';
+    return 'Tidak Dapat Disimpulkan';
+}
+
+function pdBarisSkor(kode, label, skor, otomatis, catatan) {
+    var skorTxt = (skor === null || skor === undefined)
+        ? '<span style="color:var(--text-gray); font-weight:600;">Belum Diisi</span>'
+        : ('<strong>' + skor + '</strong> &middot; ' + pdSkorLabel(skor));
+    var aksi = otomatis
+        ? '<span class="calk-autobadge"><i class="ph ph-database"></i> Otomatis</span>'
+        : '<span class="ct-add-row" style="margin:0; font-size:0.72rem;" onclick="pdBukaPilihSkorManual(\'' + kode + '\')"><i class="ph ph-pencil-simple"></i> Isi</span>';
+    return '<div class="report-row" style="cursor:default;">' +
+        '<div class="report-icon"><i class="ph ph-gauge"></i></div>' +
+        '<div><div class="report-name">' + label + '</div><div class="report-sub">' + skorTxt + (catatan ? ' &middot; ' + catatan : '') + '</div></div>' +
+        '<div style="margin-left:auto;">' + aksi + '</div></div>';
+}
+
+async function pdRenderRekapOpini() {
+    var wrap = document.getElementById('pdOpiniRekapWrap');
+    if (!wrap || !_pdAktifPenugasanId) return;
+    wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Menghitung materialitas dan skor...</div>';
+
+    var r = await pdHitungRekapSkorOpini();
+    window._pdOpiniRekapCache = r;
+
+    var skorList = [r.skorA, r.skorB, r.skorC, r.skorD, r.skorE, r.skorF];
+    var lengkap = skorList.every(function (s) { return s !== null && s !== undefined; });
+    var totalSkor = skorList.reduce(function (s, v) { return s + (v || 0); }, 0);
+    var opiniSaran = pdOpiniDariTotalSkor(totalSkor, lengkap);
+
+    var html = '<div class="kkp-info-box">' +
+        '<div class="calk-row-flat">' +
+        '<div><div class="kkp-info-label">Overall Materiality (OM)</div><div class="kkp-info-value">Rp ' + Math.round(r.om).toLocaleString('id-ID') + '</div></div>' +
+        '<div><div class="kkp-info-label">Performance Materiality (PM = 75% OM)</div><div class="kkp-info-value">Rp ' + Math.round(r.pm).toLocaleString('id-ID') + '</div></div>' +
+        '</div>' +
+        '<div class="kkp-info-label" style="margin-top:8px;">Clearly Trivial Threshold (TM = 5% OM)</div>' +
+        '<div class="kkp-info-value">Rp ' + Math.round(r.tm).toLocaleString('id-ID') + '</div>' +
+        (r.om === 0 ? '<div style="font-size:0.68rem; color:var(--maroon); margin-top:6px;"><i class="ph ph-warning-circle"></i> Materialitas belum diatur/masih Rp 0. Isi dahulu di bagian "Penentuan Materialitas" di atas.</div>' : '') +
+        '</div>' +
+        '<div class="calk-hint" style="margin:10px 0 4px;">Total Salah Saji Substantif: Rp ' + Math.round(r.totalSalahSaji).toLocaleString('id-ID') + ' &middot; Belum Dikoreksi: Rp ' + Math.round(r.totalTidakDikoreksi).toLocaleString('id-ID') + '</div>' +
+        pdBarisSkor('a', 'A. Skor Penilaian Risiko ICQ', r.skorA, true) +
+        pdBarisSkor('b', 'B. Skor Tingkat Pervasif Salah Saji', r.skorB, true) +
+        pdBarisSkor('c', 'C. Skor Salah Saji Yang Tidak Dikoreksi', r.skorC, true) +
+        pdBarisSkor('d', 'D. Skor Kepatuhan SAK dan Fraud', r.skorD, false, _pdAktifPenugasanData.skor_d_catatan) +
+        pdBarisSkor('e', 'E. Skor Going Concern', r.skorE, false, _pdAktifPenugasanData.skor_e_catatan) +
+        pdBarisSkor('f', 'F. Skor Kooperatif, Pembatasan Akses, dll', r.skorF, false, _pdAktifPenugasanData.skor_f_catatan) +
+        '<div id="pdSkorManualForm" style="display:none;"></div>' +
+        '<div class="ct-total-box" style="margin-top:10px;"><div><span>Total Skor (dari 30)</span><strong class="' + (lengkap ? 'ok' : 'bad') + '">' + totalSkor + (lengkap ? '' : ' (belum lengkap)') + '</strong></div></div>' +
+        (opiniSaran
+            ? '<div class="pj-status ok" style="margin-top:6px;"><i class="ph ph-lightbulb"></i> Saran Opini: ' + opiniSaran + '</div>' +
+              '<div class="ct-add-row" onclick="pdTerapkanSaranOpini(\'' + opiniSaran + '\')"><i class="ph ph-check-circle"></i> Terapkan Saran ke Jenis Opini</div>'
+            : '<div class="calk-hint">Lengkapi skor D, E, dan F untuk mendapatkan saran opini otomatis.</div>');
+
+    wrap.innerHTML = html;
+}
+
+function pdBukaPilihSkorManual(kode) {
+    var form = document.getElementById('pdSkorManualForm');
+    var existingCatatan = _pdAktifPenugasanData['skor_' + kode + '_catatan'] || '';
+    var existingSkor = _pdAktifPenugasanData['skor_' + kode] || null;
+    var label = { d: 'Kepatuhan SAK dan Fraud', e: 'Going Concern', f: 'Kooperatif, Pembatasan Akses, dll' }[kode];
+    form.style.display = 'block';
+    form.innerHTML = '<div class="calk-block" style="margin-top:10px;">' +
+        '<div class="calk-sub-title">Isi Skor ' + label + '</div>' +
+        '<div class="tandai-status-choice" style="flex-wrap:wrap;">' +
+        [1, 2, 3, 4, 5].map(function (v) {
+            return '<div class="tandai-status-btn' + (existingSkor === v ? ' aktif-hijau' : '') + '" data-v="' + v + '" onclick="pdPilihNilaiSkorManual(this,' + v + ')">' + v + '</div>';
+        }).join('') +
+        '</div>' +
+        '<div class="calk-hint">1 = Sangat Rendah/Baik &middot; 5 = Sangat Tinggi/Buruk</div>' +
+        '<textarea class="calk-narrative" id="pdSkorManualCatatan" rows="2" placeholder="Catatan/justifikasi (opsional)...">' + calkEsc(existingCatatan) + '</textarea>' +
+        '<button class="ct-submit-btn" style="margin-top:10px;" onclick="pdSimpanSkorManual(\'' + kode + '\')"><i class="ph ph-floppy-disk"></i> Simpan Skor ' + label + '</button>' +
+        '</div>';
+    form.dataset.nilai = existingSkor || '';
+}
+function pdPilihNilaiSkorManual(el, v) {
+    el.closest('.tandai-status-choice').querySelectorAll('.tandai-status-btn').forEach(function (b) { b.classList.remove('aktif-hijau'); });
+    el.classList.add('aktif-hijau');
+    document.getElementById('pdSkorManualForm').dataset.nilai = v;
+}
+async function pdSimpanSkorManual(kode) {
+    var form = document.getElementById('pdSkorManualForm');
+    var nilai = parseInt(form.dataset.nilai) || null;
+    if (!nilai) { alert('Pilih nilai skor 1-5 terlebih dahulu'); return; }
+    var catatan = document.getElementById('pdSkorManualCatatan').value.trim();
+    var payload = {};
+    payload['skor_' + kode] = nilai;
+    payload['skor_' + kode + '_catatan'] = catatan;
+    try {
+        var res = await supabaseClient.from('audit_penugasan').update(payload).eq('id', _pdAktifPenugasanId);
+        if (res.error) { alert('ERROR SUPABASE (simpan skor): ' + res.error.message); return; }
+        Object.assign(_pdAktifPenugasanData, payload);
+        alert('Skor berhasil disimpan');
+        document.getElementById('pdSkorManualForm').style.display = 'none';
+        await pdRenderRekapOpini();
+    } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+function pdTerapkanSaranOpini(saran) {
+    document.getElementById('pdOpiniJenis').value = saran;
+    if (typeof siasfaNotify === 'function') siasfaNotify('Saran opini "' + saran + '" diterapkan ke Jenis Opini', 'success');
+    else alert('Saran opini "' + saran + '" diterapkan ke Jenis Opini');
 }
 async function pdSimpanLai() {
     try {
@@ -19227,22 +19359,31 @@ function pdPilihKesimpulanTrx(status) {
         return;
     }
     btnSesuai.style.display = 'none';
-    var kategoriOpts = status === 'Dokumen Tidak Lengkap'
-        ? ['Tidak Ditemukan Bukti', 'Bukti Tidak Lengkap', 'Bukti Diragukan Keabsahannya', 'Kelemahan Pengendalian & SOP']
-        : ['Lebih Saji', 'Kurang Saji'];
-
-    if (status === 'Dokumen Tidak Lengkap') document.getElementById('kkpTrxBtnDokumen').classList.add('aktif-merah');
-    else document.getElementById('kkpTrxBtnSalahSaji').classList.add('aktif-merah');
-
     var saved = _kkpTrxStatusMap[_kkpTrxAktifJurnalId] || {};
-    formWrap.style.display = 'flex';
-    formWrap.innerHTML =
-        '<div class="ct-field"><label>Kategori Kesalahan</label><select id="kkpTrxKategori">' + kategoriOpts.map(function (k) { return '<option' + (saved.kategori_kesalahan === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select></div>' +
-        '<div class="ct-field"><label>Uraian Temuan</label><textarea id="kkpTrxUraian" rows="3" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;">' + (saved.uraian_temuan || '') + '</textarea></div>' +
-        '<div class="ct-field"><label>Rekomendasi</label><textarea id="kkpTrxRekomendasi" rows="3" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;">' + (saved.rekomendasi || '') + '</textarea></div>' +
-        '<div class="ct-field"><label>Dicatat Oleh</label><select id="kkpTrxDicatatOleh"></select></div>' +
-        '<div class="ct-field" style="margin-bottom:0;"><label>Tanggal</label><input type="date" id="kkpTrxTanggal" value="' + (saved.tanggal || '2026-09-01') + '"></div>' +
-        '<button class="ct-submit-btn" style="margin-top:6px;" onclick="simpanTemuanTrx(\'' + status + '\')"><i class="ph ph-floppy-disk"></i> Simpan Temuan</button>';
+
+    if (status === 'Dokumen Tidak Lengkap') {
+        document.getElementById('kkpTrxBtnDokumen').classList.add('aktif-merah');
+        var kategoriOptsDok = ['Tidak Ditemukan Bukti', 'Bukti Tidak Lengkap', 'Bukti Diragukan Keabsahannya', 'Kelemahan Pengendalian & SOP'];
+        formWrap.style.display = 'flex';
+        formWrap.innerHTML =
+            '<div class="un-note-text"><i class="ph ph-info"></i> Uraian temuan kelemahan pengendalian dibuat otomatis dan direkap jadi satu temuan gabungan di menu Temuan &mdash; tidak perlu diketik manual.</div>' +
+            '<div class="ct-field"><label>Kategori Kelemahan</label><select id="kkpTrxKategori">' + kategoriOptsDok.map(function (k) { return '<option' + (saved.kategori_kesalahan === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select></div>' +
+            '<div class="ct-field"><label>Catatan Tambahan (Opsional)</label><textarea id="kkpTrxUraian" rows="2" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;">' + (saved.uraian_temuan || '') + '</textarea></div>' +
+            '<div class="ct-field"><label>Dicatat Oleh</label><select id="kkpTrxDicatatOleh"></select></div>' +
+            '<div class="ct-field" style="margin-bottom:0;"><label>Tanggal</label><input type="date" id="kkpTrxTanggal" value="' + (saved.tanggal || '2026-09-01') + '"></div>' +
+            '<button class="ct-submit-btn" style="margin-top:6px;" onclick="simpanTemuanTrx(\'' + status + '\')"><i class="ph ph-floppy-disk"></i> Simpan Temuan</button>';
+    } else {
+        document.getElementById('kkpTrxBtnSalahSaji').classList.add('aktif-merah');
+        var kategoriOpts = ['Lebih Saji', 'Kurang Saji'];
+        formWrap.style.display = 'flex';
+        formWrap.innerHTML =
+            '<div class="ct-field"><label>Kategori Kesalahan</label><select id="kkpTrxKategori">' + kategoriOpts.map(function (k) { return '<option' + (saved.kategori_kesalahan === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select></div>' +
+            '<div class="ct-field"><label>Uraian Temuan</label><textarea id="kkpTrxUraian" rows="3" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;">' + (saved.uraian_temuan || '') + '</textarea></div>' +
+            '<div class="ct-field"><label>Rekomendasi</label><textarea id="kkpTrxRekomendasi" rows="3" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;">' + (saved.rekomendasi || '') + '</textarea></div>' +
+            '<div class="ct-field"><label>Dicatat Oleh</label><select id="kkpTrxDicatatOleh"></select></div>' +
+            '<div class="ct-field" style="margin-bottom:0;"><label>Tanggal</label><input type="date" id="kkpTrxTanggal" value="' + (saved.tanggal || '2026-09-01') + '"></div>' +
+            '<button class="ct-submit-btn" style="margin-top:6px;" onclick="simpanTemuanTrx(\'' + status + '\')"><i class="ph ph-floppy-disk"></i> Simpan Temuan</button>';
+    }
 
     var selDicatat = document.getElementById('kkpTrxDicatatOleh');
     selDicatat.innerHTML = (window._usersCache || []).map(function (u) { return '<option value="' + (u.nama || '') + '">' + (u.nama || '-') + '</option>'; }).join('');
@@ -19255,6 +19396,7 @@ async function simpanKesimpulanSesuai() {
         var payload = { penugasan_id: _pdAktifPenugasanId, jurnal_id: _kkpTrxAktifJurnalId, status: 'Sesuai', kategori_kesalahan: null, uraian_temuan: null, rekomendasi: null, dicatat_oleh: (_currentUser ? _currentUser.nama : '-'), tanggal: new Date().toISOString().slice(0, 10), updated_at: new Date().toISOString() };
         var res = await supabaseClient.from('audit_kkp_transaksi').upsert(payload, { onConflict: 'penugasan_id,jurnal_id' });
         if (res.error) { alert('ERROR SUPABASE (simpan kesimpulan): ' + res.error.message); return; }
+        await syncTemuanDariKkpTransaksi('Sesuai', _kkpTrxAktifJurnalId, null, null, null, null, null, 0);
         alert('Transaksi ditandai Sesuai');
         tutupKkpTrxDetail();
     } catch (e) { alert('ERROR SISTEM: ' + e.message); }
@@ -19263,19 +19405,123 @@ async function simpanKesimpulanSesuai() {
 async function simpanTemuanTrx(status) {
     try {
         var kategori = document.getElementById('kkpTrxKategori').value;
-        var uraian = document.getElementById('kkpTrxUraian').value.trim();
-        var rekomendasi = document.getElementById('kkpTrxRekomendasi').value.trim();
+        var uraianInput = document.getElementById('kkpTrxUraian').value.trim();
+        var rekomendasiEl = document.getElementById('kkpTrxRekomendasi');
+        var rekomendasi = rekomendasiEl ? rekomendasiEl.value.trim() : '';
         var dicatat = document.getElementById('kkpTrxDicatatOleh').value;
         var tanggal = document.getElementById('kkpTrxTanggal').value;
-        if (!uraian) { alert('Uraian temuan wajib diisi'); return; }
+
+        var trxInfo = _kkpTrxCache.find(function (t) { return String(t.id) === String(_kkpTrxAktifJurnalId); });
+        var nominal = trxInfo ? trxInfo.nominal : 0;
+
+        var uraian = uraianInput;
+        if (status === 'Dokumen Tidak Lengkap') {
+            uraian = uraianInput || ('Bukti pendukung untuk transaksi "' + (trxInfo ? trxInfo.keterangan : '-') + '" (' + kategori + ').');
+        } else if (!uraian) {
+            alert('Uraian temuan wajib diisi'); return;
+        }
 
         var payload = { penugasan_id: _pdAktifPenugasanId, jurnal_id: _kkpTrxAktifJurnalId, status: status, kategori_kesalahan: kategori, uraian_temuan: uraian, rekomendasi: rekomendasi, dicatat_oleh: dicatat, tanggal: tanggal, updated_at: new Date().toISOString() };
         var res = await supabaseClient.from('audit_kkp_transaksi').upsert(payload, { onConflict: 'penugasan_id,jurnal_id' });
         if (res.error) { alert('ERROR SUPABASE (simpan temuan): ' + res.error.message); return; }
 
-        alert('Temuan berhasil disimpan');
+        await syncTemuanDariKkpTransaksi(status, _kkpTrxAktifJurnalId, kategori, uraian, rekomendasi, dicatat, tanggal, nominal);
+
+        alert('Temuan berhasil disimpan dan otomatis tercatat di menu Temuan');
         tutupKkpTrxDetail();
     } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+}
+
+async function syncTemuanDariKkpTransaksi(status, jurnalId, kategori, uraian, rekomendasi, dicatat, tanggal, nominal) {
+    try {
+        if (status === 'Salah Saji Substantif') {
+            var payload = {
+                penugasan_id: _pdAktifPenugasanId,
+                jurnal_id: jurnalId,
+                sumber: 'kkp_substantif',
+                area: 'Kertas Kerja Transaksi',
+                uraian_temuan: uraian,
+                nilai_salah_saji: nominal,
+                arah: kategori === 'Kurang Saji' ? 'Kurang Saji (Understatement)' : 'Lebih Saji (Overstatement)',
+                kategori: 'Salah Saji Substantif',
+                rekomendasi: rekomendasi,
+                status: 'Sementara',
+                status_tindak_lanjut: 'Belum Ditindaklanjuti',
+                dicatat_oleh: dicatat,
+                tanggal: tanggal
+            };
+            var existingSubs = await supabaseClient.from('audit_temuan').select('id').eq('penugasan_id', _pdAktifPenugasanId).eq('jurnal_id', jurnalId).eq('sumber', 'kkp_substantif').maybeSingle();
+            if (existingSubs.data) {
+                await supabaseClient.from('audit_temuan').update(payload).eq('id', existingSubs.data.id);
+            } else {
+                await supabaseClient.from('audit_temuan').insert(payload);
+            }
+        } else {
+            await supabaseClient.from('audit_temuan').delete().eq('penugasan_id', _pdAktifPenugasanId).eq('jurnal_id', jurnalId).eq('sumber', 'kkp_substantif');
+        }
+        await rekapTemuanKelemahanPengendalian();
+    } catch (e) {
+        console.error('syncTemuanDariKkpTransaksi:', e.message);
+    }
+}
+
+async function rekapTemuanKelemahanPengendalian() {
+    try {
+        const { data, error } = await supabaseClient.from('audit_kkp_transaksi').select('*').eq('penugasan_id', _pdAktifPenugasanId).eq('status', 'Dokumen Tidak Lengkap');
+        if (error) return;
+        var daftar = data || [];
+        var totalTransaksi = daftar.length;
+
+        var existing = await supabaseClient.from('audit_temuan').select('id').eq('penugasan_id', _pdAktifPenugasanId).eq('sumber', 'kkp_kelemahan_agregat').maybeSingle();
+
+        if (totalTransaksi === 0) {
+            if (existing.data) await supabaseClient.from('audit_temuan').delete().eq('id', existing.data.id);
+            return;
+        }
+
+        var rincianKategori = {};
+        daftar.forEach(function (d) { var k = d.kategori_kesalahan || 'Lainnya'; rincianKategori[k] = (rincianKategori[k] || 0) + 1; });
+        var rincianTxt = Object.keys(rincianKategori).map(function (k) { return k + ' (' + rincianKategori[k] + ' transaksi)'; }).join(', ');
+
+        // Hitung total nilai (Rp) transaksi yang ditandai kelemahan dokumen,
+        // diambil dari nominal kas pada jurnal_detail masing-masing jurnal_id.
+        var jurnalIds = daftar.map(function (d) { return d.jurnal_id; }).filter(function (id) { return id; });
+        var totalNilai = 0;
+        if (jurnalIds.length > 0) {
+            const { data: detailData } = await supabaseClient.from('jurnal_detail').select('jurnal_id, debit, kredit, akun_kas_id').in('jurnal_id', jurnalIds);
+            var nominalPerJurnal = {};
+            (detailData || []).forEach(function (d) {
+                if (!d.akun_kas_id) return;
+                var nominal = Math.abs((parseFloat(d.debit) || 0) - (parseFloat(d.kredit) || 0));
+                nominalPerJurnal[d.jurnal_id] = (nominalPerJurnal[d.jurnal_id] || 0) + nominal;
+            });
+            jurnalIds.forEach(function (id) { totalNilai += (nominalPerJurnal[id] || 0); });
+        }
+
+        var payload = {
+            penugasan_id: _pdAktifPenugasanId,
+            jurnal_id: null,
+            sumber: 'kkp_kelemahan_agregat',
+            area: 'Kertas Kerja Transaksi',
+            uraian_temuan: 'Ditemukan ' + totalTransaksi + ' transaksi dengan nilai Rp' + Math.round(totalNilai).toLocaleString('id-ID') + ' yang tidak disertai bukti dokumen pendukung untuk menilai asersi keterjadian atas transaksi tersebut. Rincian kategori: ' + rincianTxt + '.',
+            nilai_salah_saji: Math.round(totalNilai),
+            arah: 'Non-Nilai (Kelemahan Pengendalian)',
+            kategori: 'Kelemahan Pengendalian Internal',
+            rekomendasi: 'Tingkatkan kepatuhan pengumpulan dan pengarsipan bukti transaksi sesuai SOP.',
+            status: 'Sementara',
+            status_tindak_lanjut: 'Belum Ditindaklanjuti',
+            dicatat_oleh: (_currentUser ? _currentUser.nama : '-'),
+            tanggal: new Date().toISOString().slice(0, 10)
+        };
+
+        if (existing.data) {
+            await supabaseClient.from('audit_temuan').update(payload).eq('id', existing.data.id);
+        } else {
+            await supabaseClient.from('audit_temuan').insert(payload);
+        }
+    } catch (e) {
+        console.error('rekapTemuanKelemahanPengendalian:', e.message);
+    }
 }
 </script>
 
