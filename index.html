@@ -1809,6 +1809,38 @@
         .jm-donasi-box .l { font-size:0.6rem; font-weight:700; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.3px; }
         .jm-donasi-box .v { font-size:1.05rem; font-weight:700; margin-top:4px; }
         .jm-donasi-subrow { display:flex; justify-content:space-between; font-size:0.72rem; font-weight:600; margin-top:4px; color:rgba(255,255,255,0.9); }
+        .dja-stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .dja-stat-card { border:1px solid var(--line); border-radius:16px; padding:14px; background:#FFFFFF; box-shadow:0 3px 10px rgba(0,0,0,0.04); }
+        .dja-stat-title { display:flex; align-items:center; gap:6px; font-size:0.74rem; font-weight:800; color:var(--maroon); margin-bottom:10px; }
+        .dja-stat-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-top:1px dashed var(--line); font-size:0.76rem; color:var(--text-dark); font-weight:600; }
+        .dja-stat-row:first-of-type { border-top:none; }
+        .dja-stat-row strong { color:var(--maroon); font-size:0.82rem; }
+        .dja-barang-card { border:1px solid var(--line); border-radius:16px; padding:14px; background:linear-gradient(135deg, rgba(184,19,55,0.05), rgba(255,122,92,0.05)); }
+        .dja-barang-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px; }
+        .dja-barang-item { text-align:center; background:#FFFFFF; border:1px solid var(--line); border-radius:12px; padding:10px 6px; }
+        .dja-barang-item .v { font-size:1rem; font-weight:800; color:var(--maroon); }
+        .dja-barang-item .l { font-size:0.62rem; color:var(--text-gray); font-weight:600; margin-top:2px; }
+.dbd-card { border:1px solid var(--line); border-radius:16px; padding:14px; background:#FFFFFF; box-shadow:0 3px 10px rgba(0,0,0,0.04); display:flex; flex-direction:column; gap:10px; }
+.dbd-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.dbd-nama { font-size:0.85rem; font-weight:800; color:var(--text-dark); }
+.dbd-sub { font-size:0.68rem; color:var(--text-gray); margin-top:3px; }
+.dbd-wujud-badge { font-size:0.6rem; font-weight:700; padding:4px 10px; border-radius:10px; white-space:nowrap; background:var(--paper-soft); color:var(--maroon); }
+.dbd-nominal { font-size:1.02rem; font-weight:800; color:var(--maroon); }
+.dbd-jadwal { font-size:0.7rem; color:var(--text-gray); background:var(--paper-soft); border-radius:10px; padding:6px 10px; }
+.dbd-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.dbd-btn { flex:1; min-width:100px; padding:9px 10px; border-radius:10px; font-size:0.7rem; font-weight:700; text-align:center; cursor:pointer; border:none; display:flex; align-items:center; justify-content:center; gap:5px; }
+.dbd-btn-primary { background:linear-gradient(135deg, var(--grad-start), var(--grad-end)); color:#FFFFFF; }
+.dbd-btn-secondary { background:var(--paper-soft); color:var(--text-dark); border:1px solid var(--line); }
+.dbd-btn-danger { background:rgba(220,38,38,0.1); color:#DC2626; }
+.dbd-lunas-tag { display:inline-flex; align-items:center; gap:4px; font-size:0.62rem; font-weight:800; color:#16A34A; background:rgba(22,163,74,0.12); padding:4px 10px; border-radius:10px; }
+.dja-tren-card { border-radius:16px; padding:14px 16px; background:linear-gradient(135deg, rgba(184,19,55,0.06), rgba(255,122,92,0.05)); border:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
+.dja-tren-top { display:flex; align-items:center; justify-content:space-between; }
+.dja-tren-tahun { font-size:0.95rem; font-weight:800; color:var(--maroon); }
+.dja-tren-uang { font-size:0.85rem; font-weight:800; color:var(--text-dark); }
+.dja-tren-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.dja-tren-metric { background:#FFFFFF; border:1px solid var(--line); border-radius:10px; padding:8px 6px; text-align:center; }
+.dja-tren-metric .v { font-size:0.8rem; font-weight:800; color:var(--maroon); }
+.dja-tren-metric .l { font-size:0.58rem; color:var(--text-gray); font-weight:700; margin-top:2px; text-transform:uppercase; }
         /* ---- Sekretaris: Banner Profil ---- */
         .sek-profile-banner {
             position: relative;
@@ -4109,6 +4141,16 @@
                             <span>Saldo Buku</span>
                             <input type="number" id="coSaldoBuku" placeholder="0" oninput="hitungSelisih()" readonly>
                         </div>
+                        <div class="co-analysis-row" style="align-items:flex-start; flex-direction:column; gap:8px;">
+                            <span style="display:flex; align-items:center; gap:6px;">Tarik Saldo Kas Lain <span class="ct-tag-optional">Opsional</span></span>
+                            <select id="coKasLainSelect" onchange="perbaruiKasLainOpname()" style="width:100%; border:1px solid var(--border-gray); border-radius:8px; padding:8px 10px; font-size:0.78rem; color:var(--text-dark); outline:none; background:#FFFFFF;">
+                                <option value="">— Tidak ada —</option>
+                            </select>
+                        </div>
+                        <div class="co-analysis-row" id="coKasLainRow" style="display:none;">
+                            <span>Saldo Kas Lain (Dikurangi)</span>
+                            <strong id="coKasLainValue">Rp 0</strong>
+                        </div>
                         <div class="co-analysis-row">
                             <span>Fisik + Bank</span>
                             <strong id="coFisikBank">Rp 0</strong>
@@ -4502,6 +4544,13 @@
                         <i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i>
                     </div>
                 </div>
+
+                <div class="pf-danger-box" style="margin-top:6px;">
+                    <div class="pf-danger-title"><i class="ph ph-warning-octagon"></i> Zona Berbahaya</div>
+                    <div class="pf-danger-text">Buka kembali proker yang sudah ditutup, atau hapus permanen proker ini beserta RAB dan rencana penerimaannya (jurnal transaksi yang sudah tercatat TIDAK ikut terhapus).</div>
+                    <button class="co-btn-secondary" id="bpBukaKembaliBtn" style="display:none; margin-bottom:10px;" onclick="bukaKembaliProker()"><i class="ph ph-lock-key-open"></i> Buka Kembali Proker</button>
+                    <button class="pf-danger-btn" onclick="hapusProkerLangsung()"><i class="ph ph-trash"></i> Hapus Proker Ini</button>
+                </div>
             </div>
         </div>
 
@@ -4788,7 +4837,7 @@
                 <div class="ct-header-top">
                     <i class="ph ph-arrow-left ct-back-btn" onclick="tutupIuranDetail()"></i>
                     <div class="ct-header-title" id="idKonsepTitle">Iuran Kegiatan</div>
-                    <div style="width:22px;"></div>
+                    <i class="ph ph-trash" style="font-size:1.05rem; color:#FFFFFF; cursor:pointer;" onclick="hapusKonsepIuranLangsung()"></i>
                 </div>
             </div>
             <div class="ct-body">
@@ -5303,7 +5352,7 @@
                 <div>
                     <div class="ledger-head"><div class="ledger-title">Daftar Peralatan</div></div>
                     <div class="ip-table-wrap">
-                        <div class="ip-table-head" style="grid-template-columns:0.9fr 1.3fr 0.4fr 0.9fr;"><span>Tgl Perolehan</span><span>Nama Peralatan</span><span>QTY</span><span>Nilai Buku</span></div>
+                        <div class="ip-table-head" style="grid-template-columns:0.9fr 1.3fr 0.4fr 0.9fr 24px;"><span>Tgl Perolehan</span><span>Nama Peralatan</span><span>QTY</span><span>Nilai Buku</span><span></span></div>
                         <div id="prlRows"></div>
                     </div>
                 </div>
@@ -5881,30 +5930,224 @@
             </div>
         </div>
 
-        <!-- ================= LAYAR DONASI JAMAAH (ADMIN) ================= -->
+        <!-- ================= LAYAR DONASI JAMAAH (ADMIN) — DATABASE DONASI JAMAAH ================= -->
         <div id="donasi-jamaah-admin-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:30;">
             <div class="ct-header">
                 <div class="ct-header-top">
                     <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDonasiJamaahAdmin()"></i>
-                    <div class="ct-header-title">Donasi Jamaah</div>
+                    <div class="ct-header-title">Database Donasi Jamaah</div>
                     <div style="width:22px;"></div>
                 </div>
             </div>
             <div class="ct-body">
-                <div class="ip-stat-row">
-                    <div class="ip-stat-box"><div class="ip-stat-icon"><i class="ph ph-note-pencil"></i></div><div class="ip-stat-label">Jumlah Formulir</div><div class="ip-stat-value" id="djaStatJumlah">0</div></div>
-                    <div class="ip-stat-box pendapatan"><div class="ip-stat-icon"><i class="ph ph-coins"></i></div><div class="ip-stat-label">Total Donasi Uang</div><div class="ip-stat-value" id="djaStatTotalUang">Rp 0</div></div>
-                </div>
-                <div class="ip-stat-box full" style="margin-top:-2px;"><div class="ip-stat-icon"><i class="ph ph-hourglass"></i></div><div class="ip-stat-label">Menunggu Verifikasi Bukti Transfer</div><div class="ip-stat-value" id="djaStatMenunggu">0</div></div>
 
+                <div class="guest-hero-card" style="padding:20px 18px; overflow:hidden;">
+                    <i class="ph-fill ph-hand-heart guest-hero-decor" style="font-size:4.2rem; right:-8px; top:-10px;"></i>
+                    <div style="position:relative; z-index:1; padding-right:64px;">
+                        <div class="guest-hero-eyebrow" style="white-space:normal; line-height:1.5;"><span class="guest-hero-dot"></span> DATABASE DONASI JAMAAH</div>
+                        <div class="guest-hero-date" style="white-space:normal; line-height:1.4; margin-top:4px;">MASJID FADHLILLAH ROGOITAN</div>
+                        <div style="font-size:0.66rem; color:rgba(255,255,255,0.7); font-weight:600; margin-top:8px;">Update Terakhir: <span id="djaUpdateTerakhir">-</span></div>
+                    </div>
+                </div>
+
+                <div class="dja-stat-grid">
+                    <div class="dja-stat-card">
+                        <div class="dja-stat-title"><i class="ph ph-note-pencil"></i> Jumlah Formulir Diterima</div>
+                        <div class="dja-stat-row"><span>Online</span><strong id="djaFormOnline">0</strong></div>
+                        <div class="dja-stat-row"><span>Hasil Rekap</span><strong id="djaFormRekap">0</strong></div>
+                    </div>
+                    <div class="dja-stat-card">
+                        <div class="dja-stat-title"><i class="ph ph-coins"></i> Progres Donasi Uang</div>
+                        <div class="dja-stat-row"><span>Uang</span><strong id="djaProgresUang">Rp 0</strong></div>
+                        <div class="dja-stat-row"><span>Disetor</span><strong id="djaProgresDisetor">Rp 0</strong></div>
+                    </div>
+                </div>
+
+                <div class="dja-barang-card">
+                    <div class="dja-stat-title"><i class="ph ph-package"></i> Donasi Berwujud Barang</div>
+                    <div class="dja-barang-row">
+                        <div class="dja-barang-item"><div class="v" id="djaTakjilTotal">0</div><div class="l">Takjil (Porsi)</div></div>
+                        <div class="dja-barang-item"><div class="v" id="djaGulaTotal">0</div><div class="l">Gula (Kg)</div></div>
+                        <div class="dja-barang-item"><div class="v" id="djaTehTotal">0</div><div class="l">Teh (Pcs)</div></div>
+                    </div>
+                    <div class="ledger-link" style="text-align:center; margin-top:10px;" onclick="bukaRekapDonasiLainnya()">Lihat Rekap Donasi Lainnya</div>
+                </div>
+
+                <div class="guest-section-title"><i class="ph ph-squares-four"></i> Menu Kelola Donasi</div>
+                <div class="jm-menu-grid">
+                    <div class="jm-menu-item" onclick="bukaDjaRekapFormulir()"><div class="jm-menu-icon"><i class="ph ph-note-pencil"></i></div><div class="jm-menu-label">Rekap Formulir</div></div>
+                    <div class="jm-menu-item" onclick="bukaDjaDatabaseDonasi()"><div class="jm-menu-icon"><i class="ph ph-database"></i></div><div class="jm-menu-label">Database Donasi</div></div>
+                    <div class="jm-menu-item" onclick="bukaDjaManajemenTakjil()"><div class="jm-menu-icon"><i class="ph ph-cooking-pot"></i></div><div class="jm-menu-label">Manajemen Takjil</div></div>
+                    <div class="jm-menu-item" onclick="bukaDjaLaporanDonasi()"><div class="jm-menu-icon"><i class="ph ph-file-text"></i></div><div class="jm-menu-label">Laporan Donasi</div></div>
+                </div>
+
+                <div class="ledger-head" style="margin-top:6px;"><div class="ledger-title">Tren Donasi 3 Tahun Terakhir</div></div>
+                <div style="position:relative; height:220px;">
+                    <canvas id="chartTrenDonasiJamaah"></canvas>
+                </div>
+                <div id="djaTrenLegend" style="display:flex; flex-direction:column; gap:8px; margin-top:14px;"></div>
+
+            </div>
+        </div>
+
+        <!-- Sub-screen: Rekap Formulir -->
+        <div id="dja-rekap-formulir-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:31;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDjaRekapFormulir()"></i>
+                    <div class="ct-header-title">Rekap Formulir Donasi</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body">
+                <div class="ip-stat-box full"><div class="ip-stat-icon"><i class="ph ph-note-pencil"></i></div><div class="ip-stat-label">Total Formulir Diterima</div><div class="ip-stat-value" id="djaFormTotalGabungan">0</div></div>
+
+                <div class="laporan-tabs">
+                    <button class="laporan-tab-btn active" id="rfktab-online" onclick="switchRekapFormulirTab('online')">Rekap Formulir Online</button>
+                    <button class="laporan-tab-btn" id="rfktab-manual" onclick="switchRekapFormulirTab('manual')">Rekap Formulir Manual</button>
+                </div>
+
+                <div class="laporan-subpage active" id="rfkpage-online">
+                    <div class="ip-stat-box full"><div class="ip-stat-icon"><i class="ph ph-hourglass"></i></div><div class="ip-stat-label">Menunggu Verifikasi Bukti Transfer</div><div class="ip-stat-value" id="djaStatMenunggu">0</div></div>
+                    <div class="search-box">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <input type="text" id="djaSearchInput" placeholder="Cari nama / nomor WhatsApp..." oninput="renderDonasiJamaahAdminList()">
+                    </div>
+                    <select id="djaFilterJenis" onchange="renderDonasiJamaahAdminList()" style="width:100%; border:1px solid var(--line); border-radius:14px; padding:11px 14px; font-size:0.78rem; color:var(--text-dark); background:#FFFFFF; outline:none;">
+                        <option value="">Semua Jenis Donasi</option>
+                        <option value="uang">Donasi Uang</option>
+                        <option value="takjil">Donasi Takjil</option>
+                        <option value="barang">Donasi Barang (Gula/Teh/Lainnya)</option>
+                    </select>
+                    <div id="djaList" style="display:flex; flex-direction:column; gap:10px;">
+                        <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data donasi jamaah...</div>
+                    </div>
+                </div>
+
+                <div class="laporan-subpage" id="rfkpage-manual">
+                    <div class="un-note-text">Gunakan formulir ini untuk memasukkan formulir donasi cetak/manual ke sistem. Foto formulir cetak <strong>wajib dilampirkan</strong> agar dapat saling cross-check dan diarsipkan.</div>
+
+                    <div class="dr-paper-box">
+                        <div class="calk-row-flat" style="margin-bottom:16px;">
+                            <div class="ct-field" style="margin-bottom:0;"><label>Nama Donatur</label><input type="text" id="dmNamaInput" placeholder="Nama lengkap..."></div>
+                            <div class="ct-field" style="margin-bottom:0;"><label>Nomor WA</label><input type="text" id="dmNomorInput" placeholder="08xx-xxxx-xxxx"></div>
+                        </div>
+
+                        <div class="dr-check-grid">
+                            <div>
+                                <div class="dr-check-col-title"><span class="dr-check-col-letter">A</span> Donasi Takjil</div>
+                                <div class="dr-check-item" data-group="takjil" data-val="100" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">100 Porsi</div></div>
+                                <div class="dr-check-item" data-group="takjil" data-val="75" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">75 Porsi</div></div>
+                                <div class="dr-check-item" data-group="takjil" data-val="50" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">50 Porsi</div></div>
+                                <div class="dr-check-item" data-group="takjil" data-val="25" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">25 Porsi</div></div>
+                                <div class="dr-check-item dr-check-item-inline" data-group="takjil" data-val="lainnya" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Lainnya</div><input type="number" id="dmTakjilLainnyaInput" class="dr-inline-input" placeholder="Porsi" onclick="event.stopPropagation()"></div>
+                            </div>
+                            <div>
+                                <div class="dr-check-col-title"><span class="dr-check-col-letter">B</span> Donasi Uang</div>
+                                <div class="dr-check-item" data-group="uang" data-val="1250000" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp1.250.000</div></div>
+                                <div class="dr-check-item" data-group="uang" data-val="1000000" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp1.000.000</div></div>
+                                <div class="dr-check-item" data-group="uang" data-val="750000" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp750.000</div></div>
+                                <div class="dr-check-item dr-check-item-inline" data-group="uang" data-val="lainnya" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Rp.</div><input type="number" id="dmUangLainnyaInput" class="dr-inline-input" placeholder="Nominal" onclick="event.stopPropagation()"></div>
+                                <div id="dmUangJenisWrap" style="display:none; margin:2px 0 8px 30px;">
+                                    <div class="tandai-status-choice">
+                                        <div class="tandai-status-btn" data-val="Tunai" onclick="dmPilihJenisUang(this)">Tunai</div>
+                                        <div class="tandai-status-btn" data-val="Transfer" onclick="dmPilihJenisUang(this)">Transfer</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dr-barang-lain-block">
+                            <div class="dr-check-col-title"><span class="dr-check-col-letter">C</span> Donasi Barang Lain</div>
+                            <div class="dr-check-item dr-check-item-inline" data-group="teh" data-val="teh" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Teh</div><input type="number" id="dmTehInput" class="dr-inline-input" placeholder="Pcs" onclick="event.stopPropagation()"></div>
+                            <div class="dr-check-item dr-check-item-inline" data-group="gula" data-val="gula" onclick="dmCheckToggle(this)"><div class="dr-check-box"><i class="ph-bold ph-check"></i></div><div class="dr-check-label">Gula</div><input type="number" id="dmGulaInput" class="dr-inline-input" placeholder="Kg" onclick="event.stopPropagation()"></div>
+                        </div>
+
+                        <div class="dr-rekom-box" id="dmTakjilTanggalWrap" style="display:none;">
+                            <div class="dr-rekom-title">Rekomendasi Tanggal Bagi Takjil</div>
+                            <input type="date" id="dmTakjilTanggalInput" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none;">
+                        </div>
+                    </div>
+
+                    <div class="ct-field" style="margin-top:16px;">
+                        <div class="ct-field-label-row"><label>Upload Foto Formulir Cetak</label><span class="ct-tag-optional" style="background:rgba(184,19,55,0.15); color:var(--maroon);">Wajib</span></div>
+                        <label class="ct-upload-zone" id="dmFotoUploadZone">
+                            <input type="file" id="dmFotoFile" accept="image/*" hidden onchange="ctUpdateUploadLabel(this,'dmFotoUploadZone')">
+                            <div class="ct-upload-icon"><i class="ph ph-camera"></i></div>
+                            <div class="ct-upload-text"><span class="ct-upload-title">Tap untuk foto/pilih formulir cetak</span><span class="ct-upload-sub">JPG/PNG &middot; untuk arsip &amp; cross-check</span></div>
+                        </label>
+                    </div>
+
+                    <button class="ct-submit-btn" style="margin-top:16px;" onclick="dmSubmitFormulir()"><i class="ph ph-paper-plane-tilt"></i> Simpan Formulir Manual</button>
+
+                    <div class="ledger-head" style="margin-top:20px;"><div class="ledger-title">Riwayat Input Manual</div></div>
+                    <div id="djaManualRiwayatList"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat riwayat...</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-screen: Database Donasi -->
+        <div id="dja-database-donasi-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:31;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDjaDatabaseDonasi()"></i>
+                    <div class="ct-header-title">Database Donasi</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body">
                 <div class="search-box">
                     <i class="ph ph-magnifying-glass"></i>
-                    <input type="text" id="djaSearchInput" placeholder="Cari nama / nomor WhatsApp..." oninput="renderDonasiJamaahAdminList()">
+                    <input type="text" id="dbdSearchInput" placeholder="Cari nama / nomor WhatsApp..." oninput="renderDatabaseDonasiCards()">
                 </div>
+                <select id="dbdFilterJenis" onchange="renderDatabaseDonasiCards()" style="width:100%; border:1px solid var(--line); border-radius:14px; padding:11px 14px; font-size:0.78rem; color:var(--text-dark); background:#FFFFFF; outline:none;">
+                    <option value="">Semua Jenis Donasi</option>
+                    <option value="uang">Donasi Uang</option>
+                    <option value="takjil">Donasi Takjil</option>
+                    <option value="barang">Donasi Barang (Gula/Teh/Lainnya)</option>
+                </select>
+                <div id="djaDatabaseDonasiBody" style="display:flex; flex-direction:column; gap:12px; margin-top:4px;">
+                    <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat database donatur...</div>
+                </div>
+            </div>
+        </div>
 
-                <div id="djaList" style="display:flex; flex-direction:column; gap:10px;">
-                    <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data donasi jamaah...</div>
+        <!-- Sub-screen: Manajemen Takjil -->
+        <div id="dja-manajemen-takjil-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:31;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDjaManajemenTakjil()"></i>
+                    <div class="ct-header-title">Manajemen Takjil</div>
+                    <div style="width:22px;"></div>
                 </div>
+            </div>
+            <div class="ct-body" id="djaManajemenTakjilBody">
+                <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat jadwal takjil...</div>
+            </div>
+        </div>
+
+        <!-- Sub-screen: Laporan Donasi -->
+        <div id="dja-laporan-donasi-screen" style="display:none; flex-direction:column; position:absolute; top:0; left:0; right:0; bottom:0; background:#FFFFFF; z-index:31;">
+            <div class="ct-header">
+                <div class="ct-header-top">
+                    <i class="ph ph-arrow-left ct-back-btn" onclick="tutupDjaLaporanDonasi()"></i>
+                    <div class="ct-header-title">Laporan Donasi</div>
+                    <div style="width:22px;"></div>
+                </div>
+            </div>
+            <div class="ct-body" id="djaLaporanDonasiBody">
+                <div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat laporan donasi...</div>
+            </div>
+        </div>
+
+        <!-- Modal Rekap Donasi Barang Lainnya -->
+        <div id="dja-rekap-lainnya-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.55); z-index:99993; align-items:flex-end; justify-content:center;">
+            <div class="co-modal">
+                <div class="co-modal-head">
+                    <div class="co-modal-title">Rekap Donasi Barang Lainnya</div>
+                    <i class="ph ph-x" onclick="tutupRekapDonasiLainnya()"></i>
+                </div>
+                <div class="co-modal-body" id="djaRekapLainnyaBody"></div>
             </div>
         </div>
 
@@ -8191,6 +8434,17 @@ async function updateJurnal(jurnalId, jenis) {
                 return '<option value="' + a.id + '">[' + a.no_akun + '] ' + a.nama + '</option>';
             }).join('');
 
+            var kasLainSelect = document.getElementById('coKasLainSelect');
+            if (kasLainSelect) {
+                kasLainSelect.innerHTML = '<option value="">— Tidak ada —</option>' + (window._akunKasCache || []).map(function (a) {
+                    return '<option value="' + a.id + '">[' + a.no_akun + '] ' + a.nama + '</option>';
+                }).join('');
+                kasLainSelect.value = '';
+            }
+            _coKasLainNominal = 0;
+            var kasLainRow = document.getElementById('coKasLainRow');
+            if (kasLainRow) kasLainRow.style.display = 'none';
+
             var bendaharaSelect = document.getElementById('coBendahara');
             bendaharaSelect.innerHTML = '<option value="">— Pilih —</option>' + (window._usersCache || []).map(function (u) {
                 return '<option value="' + (u.nama || '') + '">' + (u.nama || '-') + '</option>';
@@ -8221,6 +8475,7 @@ async function updateJurnal(jurnalId, jenis) {
         var coHistoryCache = [];
         var _pendingRekomOpnameRows = [];
         var _rekomOpnameEditId = null;
+        var _coKasLainNominal = 0;
 
         async function muatCashOpname() {
             try {
@@ -8232,6 +8487,20 @@ async function updateJurnal(jurnalId, jenis) {
                 if (error) { alert('ERROR SUPABASE (cash opname): ' + error.message); return; }
                 coHistoryCache = data || [];
                 renderCoHistory();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        async function hapusCashOpnameLangsung(id) {
+            if (!await siasfaConfirm('Hapus arsip Cash Opname ini secara permanen? Rincian pecahan dan saldo bank yang tersimpan juga akan terhapus. Tindakan ini tidak menghapus jurnal koreksi (jika ada).', 'Hapus Cash Opname', { danger: true })) return;
+            try {
+                await supabaseClient.from('cash_opname_pecahan').delete().eq('opname_id', id);
+                await supabaseClient.from('cash_opname_bank').delete().eq('opname_id', id);
+                var res = await supabaseClient.from('cash_opname').delete().eq('id', id);
+                if (res.error) { alert('ERROR SUPABASE (hapus cash opname): ' + res.error.message); return; }
+                alert('Arsip Cash Opname berhasil dihapus');
+                await muatCashOpname();
             } catch (e) {
                 alert('ERROR SISTEM: ' + e.message);
             }
@@ -8257,12 +8526,14 @@ async function updateJurnal(jurnalId, jenis) {
                 var statusClass = o.status === 'Sesuai' ? 'co-item-ok' : 'co-item-warn';
                 var statusIcon = o.status === 'Sesuai' ? 'ph-check-circle' : 'ph-warning-circle';
                 var fisikBank = (parseFloat(o.total_fisik) || 0) + (parseFloat(o.total_bank) || 0);
-                html += '<div class="co-history-item ' + statusClass + '" style="cursor:pointer;" onclick="bukaDetailOpname(' + o.id + ')">' +
+                html += '<div class="co-history-item ' + statusClass + '" style="cursor:pointer; position:relative;">' +
+                    '<i class="ph ph-trash" style="position:absolute; top:12px; right:12px; color:var(--maroon); font-size:1.05rem; cursor:pointer;" onclick="event.stopPropagation(); hapusCashOpnameLangsung(' + o.id + ')"></i>' +
+                    '<div onclick="bukaDetailOpname(' + o.id + ')">' +
                     '<div class="co-history-top"><span class="co-history-kas">' + (o.akun_kas ? o.akun_kas.nama : '-') + '</span>' +
-                    '<span class="co-history-status"><i class="ph ' + statusIcon + '"></i> ' + o.status + '</span></div>' +
+                    '<span class="co-history-status" style="margin-right:22px;"><i class="ph ' + statusIcon + '"></i> ' + o.status + '</span></div>' +
                     '<div class="co-history-mid">Rp ' + fisikBank.toLocaleString('id-ID') + ' &middot; Diperiksa oleh ' + o.pemeriksa + '</div>' +
                     '<div class="co-history-bottom"><span><i class="ph ph-calendar-blank"></i> ' + formatTanggalID(o.tanggal) + '</span>' +
-                    '<span><i class="ph ph-user-circle"></i> ' + o.bendahara + '</span></div></div>';
+                    '<span><i class="ph ph-user-circle"></i> ' + o.bendahara + '</span></div></div></div>';
             });
             wrap.innerHTML = html;
         }
@@ -8318,14 +8589,30 @@ async function updateJurnal(jurnalId, jenis) {
         }
 
         // ===== Analisis Selisih: Fisik + Bank vs Saldo Buku =====
+        function perbaruiKasLainOpname() {
+            var kasId = document.getElementById('coKasLainSelect').value;
+            var row = document.getElementById('coKasLainRow');
+            if (!kasId) {
+                _coKasLainNominal = 0;
+                if (row) row.style.display = 'none';
+                hitungSelisih();
+                return;
+            }
+            var nominal = (window._saldoKasPerId && window._saldoKasPerId[parseInt(kasId)]) || 0;
+            _coKasLainNominal = nominal;
+            document.getElementById('coKasLainValue').textContent = 'Rp ' + nominal.toLocaleString('id-ID');
+            if (row) row.style.display = 'flex';
+            hitungSelisih();
+        }
         function hitungSelisih() {
             var fisik = getTotalFisik();
             var bank = hitungTotalBank();
             var fisikBank = fisik + bank;
-            document.getElementById('coFisikBank').textContent = 'Rp ' + fisikBank.toLocaleString('id-ID');
+            var fisikBankBersih = fisikBank - (_coKasLainNominal || 0);
+            document.getElementById('coFisikBank').textContent = 'Rp ' + fisikBankBersih.toLocaleString('id-ID') + (_coKasLainNominal ? ' net' : '');
 
             var saldoBuku = parseRupiah(document.getElementById('coSaldoBuku').value) || 0;
-            var selisih = fisikBank - saldoBuku;
+            var selisih = fisikBankBersih - saldoBuku;
             var label = document.getElementById('coSelisihValue');
             var box = document.getElementById('coAnalysisBox');
 
@@ -8504,6 +8791,12 @@ async function updateJurnal(jurnalId, jenis) {
                 '<input type="text" placeholder="Contoh: BSI, BCA...">' +
                 '<input type="number" placeholder="0" oninput="hitungSelisih()">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBankRow(this)"></i></div>';
+
+            var kasLainSelectReset = document.getElementById('coKasLainSelect');
+            if (kasLainSelectReset) kasLainSelectReset.value = '';
+            _coKasLainNominal = 0;
+            var kasLainRowReset = document.getElementById('coKasLainRow');
+            if (kasLainRowReset) kasLainRowReset.style.display = 'none';
 
             _pendingRekomOpnameRows = [];
             hitungFisik();
@@ -9244,8 +9537,41 @@ async function updateJurnal(jurnalId, jenis) {
                 document.getElementById(fid).disabled = !editable;
             });
             document.getElementById('bpTutupNotice').style.display = p.ditutup ? 'block' : 'none';
+            document.getElementById('bpBukaKembaliBtn').style.display = p.ditutup ? 'block' : 'none';
 
             document.getElementById('buku-proker-screen').style.display = 'flex';
+        }
+
+        async function bukaKembaliProker() {
+            if (!prokerAktifId) return;
+            if (!await siasfaConfirm('Buka kembali proker ini? Proker akan bisa diedit lagi (RAB, dokumen, dll).', 'Buka Kembali Proker')) return;
+            try {
+                var res = await supabaseClient.from('program_kerja').update({ ditutup: false }).eq('id', prokerAktifId);
+                if (res.error) { alert('ERROR SUPABASE (buka kembali proker): ' + res.error.message); return; }
+                alert('Proker berhasil dibuka kembali');
+                await muatProgramKerja();
+                bukaBukuProker(prokerAktifId);
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        async function hapusProkerLangsung() {
+            if (!prokerAktifId) return;
+            if (!await siasfaConfirm('Hapus proker ini secara permanen beserta seluruh RAB dan rencana penerimaannya? Jurnal transaksi yang sudah tercatat tetap tersimpan namun tidak akan terkait proker manapun. Tindakan ini tidak dapat dibatalkan.', 'Hapus Proker', { danger: true })) return;
+            try {
+                await supabaseClient.from('proker_rab').delete().eq('proker_id', prokerAktifId);
+                await supabaseClient.from('proker_rencana_penerimaan').delete().eq('proker_id', prokerAktifId);
+                await supabaseClient.from('proker_dokumen').delete().eq('proker_id', prokerAktifId);
+                await supabaseClient.from('jurnal_transaksi').update({ proker_id: null, proker_rab_id: null }).eq('proker_id', prokerAktifId);
+                var res = await supabaseClient.from('program_kerja').delete().eq('id', prokerAktifId);
+                if (res.error) { alert('ERROR SUPABASE (hapus proker): ' + res.error.message); return; }
+                alert('Proker berhasil dihapus');
+                tutupBukuProkerScreen();
+                await muatProgramKerja();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
         function tutupBukuProkerScreen() {
             document.getElementById('buku-proker-screen').style.display = 'none';
@@ -10069,12 +10395,48 @@ async function updateJurnal(jurnalId, jenis) {
                 var dibayar = totalDibayarPeserta(p);
                 var lunas = dibayar >= p.target && p.target > 0;
                 html += '<div class="ip-table-row" style="grid-template-columns:1.1fr 0.7fr 0.8fr 20px;">' +
-                    '<span style="font-size:0.74rem; font-weight:600; color:var(--text-dark);">' + p.nama + '</span>' +
-                    '<span style="font-size:0.72rem; color:var(--text-dark);">Rp ' + p.target.toLocaleString('id-ID') + '</span>' +
+                    '<input type="text" value="' + p.nama.replace(/"/g, '&quot;') + '" style="font-size:0.74rem; font-weight:600; border:1px solid var(--border-gray); border-radius:6px; padding:5px 6px;" onchange="ubahPesertaDetailField(' + i + ',\'nama\',this.value)">' +
+                    '<input type="number" value="' + p.target + '" style="font-size:0.72rem; border:1px solid var(--border-gray); border-radius:6px; padding:5px 6px;" onchange="ubahPesertaDetailField(' + i + ',\'target\',this.value)">' +
                     '<span class="pay-status-badge ' + (lunas ? 'lunas' : 'belum') + '" onclick="bukaPembayaranOverlay(\'iuran\', ' + i + ')">' + (lunas ? 'Lunas' : 'Bayar') + '</span>' +
                     '<i class="ph ph-x-circle ct-row-del" onclick="hapusPesertaDetail(' + i + ')"></i></div>';
             });
             document.getElementById('idPesertaRows').innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada peserta.</div>';
+        }
+
+        async function ubahPesertaDetailField(index, field, value) {
+            var k = getIuran(iuranAktifId);
+            var p = k.peserta[index];
+            if (!p) return;
+            var payload = {};
+            if (field === 'nama') { p.nama = value.trim(); payload.nama = p.nama; }
+            else { p.target = parseRupiah(value) || 0; payload.target = p.target; }
+            try {
+                var res = await supabaseClient.from('iuran_peserta').update(payload).eq('id', p.id);
+                if (res.error) { alert('ERROR SUPABASE (ubah peserta): ' + res.error.message); return; }
+                renderIuranDetail();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        async function hapusKonsepIuranLangsung() {
+            if (!iuranAktifId) return;
+            if (!await siasfaConfirm('Hapus konsep iuran ini beserta seluruh data peserta dan riwayat pembayarannya? Tindakan ini tidak dapat dibatalkan.', 'Hapus Konsep Iuran', { danger: true })) return;
+            try {
+                var k = getIuran(iuranAktifId);
+                for (var i = 0; i < k.peserta.length; i++) {
+                    await supabaseClient.from('iuran_pembayaran').delete().eq('peserta_id', k.peserta[i].id);
+                }
+                await supabaseClient.from('iuran_peserta').delete().eq('iuran_id', iuranAktifId);
+                var res = await supabaseClient.from('iuran_konsep').delete().eq('id', iuranAktifId);
+                if (res.error) { alert('ERROR SUPABASE (hapus konsep iuran): ' + res.error.message); return; }
+                alert('Konsep iuran berhasil dihapus');
+                tutupIuranDetail();
+                await muatIuranKegiatan();
+                await muatDataKas();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         async function hapusPesertaDetail(index) {
@@ -10442,13 +10804,49 @@ async function updateJurnal(jurnalId, jenis) {
                 var tagihan = b.qty * p.hargaJual;
                 var dibayar = totalDibayar(b);
                 var lunas = dibayar >= tagihan && tagihan > 0;
-                html += '<div class="ip-table-row" style="grid-template-columns:1.1fr 0.5fr 0.9fr 0.9fr;">' +
-                    '<span style="font-size:0.74rem; font-weight:600; color:var(--text-dark);">' + b.nama + '</span>' +
-                    '<span style="font-size:0.74rem; color:var(--text-gray);">' + b.qty + '</span>' +
+                html += '<div class="ip-table-row" style="grid-template-columns:1.1fr 0.5fr 0.9fr 0.9fr 20px;">' +
+                    '<input type="text" value="' + b.nama.replace(/"/g, '&quot;') + '" style="font-size:0.72rem; border:1px solid var(--border-gray); border-radius:6px; padding:4px 5px;" onchange="ubahPembeliField(' + i + ',\'nama\',this.value)">' +
+                    '<input type="number" value="' + b.qty + '" style="font-size:0.72rem; border:1px solid var(--border-gray); border-radius:6px; padding:4px 5px;" onchange="ubahPembeliField(' + i + ',\'qty\',this.value)">' +
                     '<span style="font-size:0.72rem; font-weight:600; color:var(--text-dark);">Rp ' + tagihan.toLocaleString('id-ID') + '</span>' +
-                    '<span class="pay-status-badge ' + (lunas ? 'lunas' : 'belum') + '" onclick="bukaPembayaranOverlay(\'' + p.id + '\', ' + i + ')">' + (lunas ? 'Lunas' : 'Bayar') + '</span></div>';
+                    '<span class="pay-status-badge ' + (lunas ? 'lunas' : 'belum') + '" onclick="bukaPembayaranOverlay(\'' + p.id + '\', ' + i + ')">' + (lunas ? 'Lunas' : 'Bayar') + '</span>' +
+                    '<i class="ph ph-x-circle ct-row-del" onclick="hapusPembeliLangsung(' + i + ')"></i></div>';
             });
             wrap.innerHTML = html || '<div style="padding:14px; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada pemesan.</div>';
+        }
+
+        async function ubahPembeliField(index, field, value) {
+            var p = getProduk(produkAktifId);
+            var b = p.pembeli[index];
+            if (!b) return;
+            var payload = {};
+            if (field === 'nama') { b.nama = value.trim(); payload.nama = b.nama; }
+            else { b.qty = parseRupiah(value) || 0; payload.qty = b.qty; }
+            try {
+                var res = await supabaseClient.from('produk_pembeli').update(payload).eq('id', b.id);
+                if (res.error) { alert('ERROR SUPABASE (ubah pemesan): ' + res.error.message); return; }
+                renderPembeliRows();
+                hitungStatPenjualan();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+
+        async function hapusPembeliLangsung(index) {
+            var p = getProduk(produkAktifId);
+            var b = p.pembeli[index];
+            if (!b) return;
+            if (!await siasfaConfirm('Hapus pemesan "' + b.nama + '" beserta seluruh riwayat pembayarannya?', 'Hapus Pemesan', { danger: true })) return;
+            try {
+                await supabaseClient.from('produk_pembayaran').delete().eq('pembeli_id', b.id);
+                var res = await supabaseClient.from('produk_pembeli').delete().eq('id', b.id);
+                if (res.error) { alert('ERROR SUPABASE (hapus pemesan): ' + res.error.message); return; }
+                p.pembeli.splice(index, 1);
+                renderPembeliRows();
+                hitungStatPenjualan();
+                await muatDataKas();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
 
         function bukaModalTambahPembeli() {
@@ -10482,12 +10880,29 @@ async function updateJurnal(jurnalId, jenis) {
             var p = getProduk(produkAktifId);
             var wrap = document.getElementById('pdBiayaRows');
             var html = '';
-            p.biaya.forEach(function (b) {
+            p.biaya.forEach(function (b, i) {
                 html += '<div class="ledger-row" style="border-bottom:1px solid var(--line); color:var(--text-dark);">' +
                     '<span class="left-part" style="color:var(--text-dark);"><i class="ph ph-receipt" style="color:var(--maroon);"></i> ' + b.ket + '</span>' +
-                    '<span class="amt" style="color:var(--maroon);">Rp ' + b.nominal.toLocaleString('id-ID') + '</span></div>';
+                    '<span class="amt" style="color:var(--maroon); display:flex; align-items:center; gap:8px;">Rp ' + b.nominal.toLocaleString('id-ID') +
+                    ' <i class="ph ph-trash" style="font-size:0.95rem; cursor:pointer;" onclick="hapusBiayaProdukLangsung(' + i + ')"></i></span></div>';
             });
             wrap.innerHTML = html || '<div style="padding:10px 0; text-align:center; color:var(--text-gray); font-size:0.74rem;">Belum ada biaya tercatat.</div>';
+        }
+
+        async function hapusBiayaProdukLangsung(index) {
+            var p = getProduk(produkAktifId);
+            var b = p.biaya[index];
+            if (!b) return;
+            if (!await siasfaConfirm('Hapus biaya "' + b.ket + '" sejumlah Rp ' + b.nominal.toLocaleString('id-ID') + '?', 'Hapus Biaya', { danger: true })) return;
+            try {
+                var res = await supabaseClient.from('produk_biaya').delete().eq('id', b.id);
+                if (res.error) { alert('ERROR SUPABASE (hapus biaya): ' + res.error.message); return; }
+                p.biaya.splice(index, 1);
+                renderBiayaRows();
+                await muatDataKas();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
         function bukaModalTambahBiaya() {
             document.getElementById('bcKet').value = '';
@@ -11947,19 +12362,43 @@ function unduhRiwayatTransaksi() {
                 '<div class="nota-info"><div class="nota-ket">' + t.ket + '</div><div class="nota-tgl">' + formatTanggalID(t.tanggal) + '</div><div class="nota-nominal">Rp ' + t.nominal.toLocaleString('id-ID') + '</div></div></div>';
         }
 
+        var _galeriNotaJurnalAktif = null;
         function bukaGaleriNota(jurnalId) {
             var t = _notaJurnalCache.find(function (x) { return String(x.id) === String(jurnalId); });
             if (!t) { alert('Data nota tidak ditemukan'); return; }
+            _galeriNotaJurnalAktif = jurnalId;
             document.getElementById('galeriNotaTitle').textContent = t.ket || 'Bukti Transaksi';
             var gridHtml = '';
-            (t.urls || []).forEach(function (url) {
+            (t.urls || []).forEach(function (url, i) {
                 var isPdf = /\.pdf($|\?)/i.test(url);
-                gridHtml += '<div class="nota-card" onclick="window.open(\'' + url + '\', \'_blank\')" style="cursor:pointer;">' +
-                    '<div class="nota-img">' + (isPdf ? '<i class="ph ph-file-pdf"></i>' : '<img src="' + url + '" style="width:100%; height:100%; object-fit:cover;">') + '</div>' +
+                gridHtml += '<div class="nota-card" style="position:relative;">' +
+                    '<i class="ph ph-x-circle" style="position:absolute; top:6px; right:6px; color:var(--maroon); font-size:1.05rem; background:#FFFFFF; border-radius:50%; cursor:pointer;" onclick="event.stopPropagation(); hapusFileNotaLangsung(\'' + jurnalId + '\', ' + i + ')"></i>' +
+                    '<div class="nota-img" onclick="window.open(\'' + url + '\', \'_blank\')" style="cursor:pointer;">' + (isPdf ? '<i class="ph ph-file-pdf"></i>' : '<img src="' + url + '" style="width:100%; height:100%; object-fit:cover;">') + '</div>' +
                     '<div class="nota-info"><div class="nota-ket">Tap untuk buka</div></div></div>';
             });
             document.getElementById('galeriNotaGrid').innerHTML = gridHtml || '<div style="grid-column:1/-1; text-align:center; color:var(--text-gray); font-size:0.78rem; padding:20px 0;">Belum ada file nota untuk transaksi ini.</div>';
             document.getElementById('galeri-nota-overlay').style.display = 'flex';
+        }
+
+        async function hapusFileNotaLangsung(jurnalId, indexUrl) {
+            if (!await siasfaConfirm('Hapus file bukti nota ini? File yang dihapus tidak dapat dikembalikan.', 'Hapus File Nota', { danger: true })) return;
+            try {
+                var t = _notaJurnalCache.find(function (x) { return String(x.id) === String(jurnalId); });
+                if (!t) return;
+                var url = t.urls[indexUrl];
+                const { data, error } = await supabaseClient.from('jurnal_nota').select('id').eq('jurnal_id', jurnalId).eq('file_url', url);
+                if (error) { alert('ERROR SUPABASE (cari nota): ' + error.message); return; }
+                if (data && data.length > 0) {
+                    var delRes = await supabaseClient.from('jurnal_nota').delete().eq('id', data[0].id);
+                    if (delRes.error) { alert('ERROR SUPABASE (hapus nota): ' + delRes.error.message); return; }
+                }
+                alert('File nota berhasil dihapus');
+                document.getElementById('galeri-nota-overlay').style.display = 'none';
+                await muatNotaRiwayat();
+                if (document.getElementById('upload-nota-screen').style.display === 'flex') { await muatStatistikUploadNota(); await muatTransaksiTanpaNota(); }
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
         }
         function tutupGaleriNota() {
             document.getElementById('galeri-nota-overlay').style.display = 'none';
@@ -15511,15 +15950,16 @@ function renderPeralatan() {
     document.getElementById('prlJumlahItem').textContent = aktif.length;
     document.getElementById('prlLabaRugi').textContent = (totalLabaRugi < 0 ? '(Rp ' + Math.abs(totalLabaRugi).toLocaleString('id-ID') + ')' : 'Rp ' + totalLabaRugi.toLocaleString('id-ID'));
 
-    var html = '';
-    aktif.forEach(function (p) {
-        html += '<div class="ip-table-row" style="grid-template-columns:0.9fr 1.3fr 0.4fr 0.9fr;">' +
-            '<span style="font-size:0.7rem; color:var(--text-gray);">' + formatTanggalID(p.tanggal) + '</span>' +
-            '<span style="font-size:0.74rem; font-weight:600; color:var(--text-dark);">' + p.nama + '</span>' +
-            '<span style="font-size:0.72rem; color:var(--text-dark);">' + p.qty + '</span>' +
-            '<span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">Rp ' + p.nilaiBuku.toLocaleString('id-ID') + '</span></div>';
-    });
-    wrap.innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada peralatan tercatat. Data akan muncul otomatis saat ada jurnal yang mendebit akun peralatan.</div>';
+                var html = '';
+            aktif.forEach(function (p) {
+                html += '<div class="ip-table-row" style="grid-template-columns:0.9fr 1.3fr 0.4fr 0.9fr 24px;">' +
+                    '<span style="font-size:0.7rem; color:var(--text-gray);">' + formatTanggalID(p.tanggal) + '</span>' +
+                    '<span style="font-size:0.74rem; font-weight:600; color:var(--text-dark);">' + p.nama + '</span>' +
+                    '<span style="font-size:0.72rem; color:var(--text-dark);">' + p.qty + '</span>' +
+                    '<span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">Rp ' + p.nilaiBuku.toLocaleString('id-ID') + '</span>' +
+                    '<i class="ph ph-trash" style="color:var(--maroon); cursor:pointer; font-size:1rem;" onclick="event.stopPropagation(); hapusPeralatanLangsung(' + p.id + ')"></i></div>';
+            });
+            wrap.innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada peralatan tercatat. Data akan muncul otomatis saat ada jurnal yang mendebit akun peralatan.</div>';
 
     var htmlArsip = '';
     arsip.forEach(function (p) {
@@ -15530,6 +15970,18 @@ function renderPeralatan() {
             '<span class="pay-status-badge ' + (untung ? 'lunas' : 'belum') + '">' + (untung ? 'Untung' : 'Rugi') + ' Rp ' + Math.abs(p.labaRugi).toLocaleString('id-ID') + '</span></div></div>';
     });
     document.getElementById('prlArsipRows').innerHTML = htmlArsip || '<div style="padding:12px 0; text-align:center; color:var(--text-gray); font-size:0.76rem;">Belum ada pelepasan peralatan.</div>';
+}
+
+async function hapusPeralatanLangsung(id) {
+    if (!await siasfaConfirm('Hapus data peralatan ini dari Daftar Aset Tetap? Tindakan ini tidak menghapus jurnal transaksi terkait, hanya menghapus catatan asetnya dari daftar.', 'Hapus Peralatan', { danger: true })) return;
+    try {
+        var res = await supabaseClient.from('peralatan').delete().eq('id', id);
+        if (res.error) { alert('ERROR SUPABASE (hapus peralatan): ' + res.error.message); return; }
+        alert('Data peralatan berhasil dihapus');
+        await muatPeralatan();
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
 }
 
 /* ---------- REKAP UTANG/PIUTANG: abaikan pembayaran yang lewat jurnal ---------- */
@@ -21139,7 +21591,7 @@ function renderRiwayatDonasiJamaah() {
         (d.donasi_uang_tunai || []).forEach(function (u) {
             var lunas = u.status === 'Diterima' || u.status === 'Terverifikasi';
             items += '<div class="lp-sub-item"><span>Donasi Uang (' + u.jenis_penyerahan + ')</span><span>Rp ' + Math.round(u.nominal).toLocaleString('id-ID') + '</span></div>';
-            if (!lunas && u.jenis_penyerahan === 'Transfer') {
+            if (u.jenis_penyerahan === 'Transfer' && u.status === 'Menunggu') {
                 items += '<div style="margin:4px 0 8px;"><button class="pay-status-badge belum" style="border:none; cursor:pointer;" onclick="bukaModalBayarDonasi(' + u.id + ')">Bayar Sekarang</button></div>';
             } else {
                 items += '<div style="margin:4px 0 8px;"><span class="pay-status-badge ' + (lunas ? 'lunas' : 'belum') + '">' + u.status + '</span></div>';
@@ -21242,30 +21694,410 @@ function unduhKwitansiDonasi(donasiId) {
     pdfTutup(doc, 'Kwitansi-Donasi-DR-' + d.id + '.pdf');
 }
 
-/* ============ DONASI JAMAAH — ADMIN (Menu Layanan Jamaah) ============ */
-var _djaCache = [];
+        /* ============ DONASI JAMAAH — ADMIN (Menu Layanan Jamaah) ============ */
+        var _djaCache = [];
 
-async function bukaDonasiJamaahAdmin() {
-    document.getElementById('donasi-jamaah-admin-screen').style.display = 'flex';
-    document.getElementById('djaList').innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data donasi jamaah...</div>';
-    try {
-        const { data, error } = await supabaseClient
-            .from('donasi_ramadhan')
-            .select('*, donasi_uang_tunai(*), donasi_takjil(*), donasi_barang(*)')
-            .order('created_at', { ascending: false });
-        if (error) { alert('ERROR SUPABASE (donasi jamaah): ' + error.message); return; }
-        _djaCache = data || [];
-        renderDonasiJamaahAdminList();
-    } catch (e) {
-        alert('ERROR SISTEM: ' + e.message);
-    }
-}
-function tutupDonasiJamaahAdmin() {
-    document.getElementById('donasi-jamaah-admin-screen').style.display = 'none';
+        async function bukaDonasiJamaahAdmin() {
+            document.getElementById('donasi-jamaah-admin-screen').style.display = 'flex';
+            document.getElementById('djaList').innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data donasi jamaah...</div>';
+            try {
+                const { data, error } = await supabaseClient
+                    .from('donasi_ramadhan')
+                    .select('*, donasi_uang_tunai(*), donasi_takjil(*), donasi_barang(*)')
+                    .order('created_at', { ascending: false });
+                if (error) { alert('ERROR SUPABASE (donasi jamaah): ' + error.message); return; }
+                _djaCache = data || [];
+                renderDonasiJamaahAdminList();
+                renderDjaDashboardUtama();
+                renderTrenDonasiJamaahChart();
+            } catch (e) {
+                alert('ERROR SISTEM: ' + e.message);
+            }
+        }
+        function tutupDonasiJamaahAdmin() {
+            document.getElementById('donasi-jamaah-admin-screen').style.display = 'none';
+        }
+
+        function renderDjaDashboardUtama() {
+            var totalUangOnline = 0, totalDisetor = 0, jumlahOnline = _djaCache.length;
+            var totalTakjil = 0, totalGula = 0, totalTeh = 0;
+            _djaCache.forEach(function (d) {
+                (d.donasi_uang_tunai || []).forEach(function (u) {
+                    totalUangOnline += parseFloat(u.nominal) || 0;
+                    if (u.status === 'Diterima' || u.status === 'Terverifikasi') totalDisetor += parseFloat(u.nominal) || 0;
+                });
+                (d.donasi_takjil || []).forEach(function (t) { totalTakjil += parseInt(t.jumlah_porsi) || 0; });
+                (d.donasi_barang || []).forEach(function (b) {
+                    var jenis = (b.jenis || '').toLowerCase();
+                    if (jenis.indexOf('gula') !== -1) totalGula += parseFloat(b.kuantitas) || 0;
+                    else if (jenis.indexOf('teh') !== -1) totalTeh += parseFloat(b.kuantitas) || 0;
+                });
+            });
+
+            document.getElementById('djaUpdateTerakhir').textContent = tanggalLaporanHariIni() + ' ' + new Date().toLocaleTimeString('id-ID');
+            document.getElementById('djaFormOnline').textContent = jumlahOnline;
+            document.getElementById('djaFormRekap').textContent = 0;
+            document.getElementById('djaProgresUang').textContent = 'Rp ' + Math.round(totalUangOnline).toLocaleString('id-ID');
+            document.getElementById('djaProgresDisetor').textContent = 'Rp ' + Math.round(totalDisetor).toLocaleString('id-ID');
+            document.getElementById('djaTakjilTotal').textContent = totalTakjil.toLocaleString('id-ID');
+            document.getElementById('djaGulaTotal').textContent = totalGula.toLocaleString('id-ID');
+            document.getElementById('djaTehTotal').textContent = totalTeh.toLocaleString('id-ID');
+        }
+
+        function bukaRekapDonasiLainnya() {
+            var rincian = {};
+            _djaCache.forEach(function (d) {
+                (d.donasi_barang || []).forEach(function (b) {
+                    var jenis = (b.jenis || '').toLowerCase();
+                    if (jenis.indexOf('gula') !== -1 || jenis.indexOf('teh') !== -1) return;
+                    var key = b.jenis + ' \u2014 ' + d.nama_donatur;
+                    rincian[key] = { jenis: b.jenis, nama: d.nama_donatur, kuantitas: (rincian[key] ? rincian[key].kuantitas : 0) + (parseFloat(b.kuantitas) || 0), satuan: b.satuan || '' };
+                });
+            });
+            var rows = Object.keys(rincian).map(function (k) { return rincian[k]; });
+            var html = '<div class="ip-table-wrap"><div class="ip-table-head ip-cols-2"><span>Nama Barang</span><span>Donatur</span></div>';
+            if (rows.length === 0) {
+                html += '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada donasi barang lainnya.</div>';
+            } else {
+                rows.forEach(function (r) {
+                    html += '<div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem; color:var(--text-dark);">' + r.jenis + ' (' + r.kuantitas + ' ' + r.satuan + ')</span><span style="font-size:0.74rem; color:var(--text-gray);">' + r.nama + '</span></div>';
+                });
+            }
+            html += '</div>';
+            document.getElementById('djaRekapLainnyaBody').innerHTML = html;
+            document.getElementById('dja-rekap-lainnya-overlay').style.display = 'flex';
+        }
+        function tutupRekapDonasiLainnya() { document.getElementById('dja-rekap-lainnya-overlay').style.display = 'none'; }
+
+        function bukaDjaRekapFormulir() { document.getElementById('dja-rekap-formulir-screen').style.display = 'flex'; renderDonasiJamaahAdminList(); }
+        function tutupDjaRekapFormulir() { document.getElementById('dja-rekap-formulir-screen').style.display = 'none'; }
+
+                async function bukaDjaDatabaseDonasi() {
+            document.getElementById('dja-database-donasi-screen').style.display = 'flex';
+            renderDatabaseDonasiCards();
+        }
+
+        function dbdWujudBadge(d) {
+            var arr = [];
+            if ((d.donasi_uang_tunai || []).length) arr.push('Uang');
+            if ((d.donasi_takjil || []).length) arr.push('Takjil');
+            if ((d.donasi_barang || []).length) arr.push('Barang');
+            return arr.join(' + ') || '-';
+        }
+
+        function dbdRingkasNilai(d) {
+            var out = [];
+            (d.donasi_uang_tunai || []).forEach(function (u) { out.push('Rp' + Math.round(u.nominal).toLocaleString('id-ID')); });
+            (d.donasi_takjil || []).forEach(function (t) { out.push(t.jumlah_porsi + ' Porsi Takjil'); });
+            var gulaTeh = [];
+            (d.donasi_barang || []).forEach(function (b) {
+                var jenis = (b.jenis || '').toLowerCase();
+                if (jenis.indexOf('gula') !== -1) gulaTeh.push(b.kuantitas + ' Kg Gula');
+                else if (jenis.indexOf('teh') !== -1) gulaTeh.push(b.kuantitas + ' Pcs Teh');
+                else out.push(b.kuantitas + ' ' + (b.satuan || '') + ' ' + b.jenis);
+            });
+            if (gulaTeh.length) out.push(gulaTeh.join(' & '));
+            return out.join(' &middot; ') || 'Belum ada rincian';
+        }
+
+        function renderDatabaseDonasiCards() {
+            var keyword = (document.getElementById('dbdSearchInput') ? document.getElementById('dbdSearchInput').value : '').toLowerCase();
+            var filterJenis = (document.getElementById('dbdFilterJenis') ? document.getElementById('dbdFilterJenis').value : '');
+
+            var daftar = _djaCache.filter(function (d) {
+                var gab = ((d.nama_donatur || '') + ' ' + (d.nomor_whatsapp || '')).toLowerCase();
+                var cocokKeyword = !keyword || gab.indexOf(keyword) !== -1;
+                var cocokJenis = true;
+                if (filterJenis === 'uang') cocokJenis = (d.donasi_uang_tunai || []).length > 0;
+                else if (filterJenis === 'takjil') cocokJenis = (d.donasi_takjil || []).length > 0;
+                else if (filterJenis === 'barang') cocokJenis = (d.donasi_barang || []).length > 0;
+                return cocokKeyword && cocokJenis;
+            });
+
+            if (daftar.length === 0) {
+                document.getElementById('djaDatabaseDonasiBody').innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Tidak ada data donasi yang cocok.</div>';
+                return;
+            }
+
+            var html = '';
+            daftar.forEach(function (d) {
+                var uang = (d.donasi_uang_tunai || [])[0];
+                var takjil = (d.donasi_takjil || [])[0];
+                var lunas = uang && (uang.status === 'Diterima' || uang.status === 'Terverifikasi');
+
+                var actionsHtml = '';
+                if (uang && !lunas) {
+                    var labelBtn = uang.jenis_penyerahan === 'Transfer' ? 'Verifikasi Pembayaran' : 'Terima Pembayaran';
+                    actionsHtml += '<button class="dbd-btn dbd-btn-primary" onclick="event.stopPropagation(); dbdBukaAksiPembayaran(' + d.id + ', ' + uang.id + ')"><i class="ph ph-check-circle"></i> ' + labelBtn + '</button>';
+                }
+                if (takjil) {
+                    actionsHtml += '<button class="dbd-btn dbd-btn-secondary" onclick="event.stopPropagation(); dbdPeriksaPenjadwalan(' + d.id + ', ' + takjil.id + ')"><i class="ph ph-calendar-check"></i> Periksa Penjadwalan</button>';
+                }
+                actionsHtml += '<button class="dbd-btn dbd-btn-secondary" onclick="event.stopPropagation(); bukaDetailDonasiJamaahAdmin(' + d.id + ')"><i class="ph ph-pencil-simple"></i> Edit</button>';
+                actionsHtml += '<button class="dbd-btn dbd-btn-danger" onclick="event.stopPropagation(); dbdHapusDonasi(' + d.id + ')"><i class="ph ph-trash"></i> Hapus</button>';
+                if (d.foto_formulir_url) {
+                    actionsHtml += '<button class="dbd-btn dbd-btn-secondary" onclick="event.stopPropagation(); window.open(\'' + d.foto_formulir_url + '\',\'_blank\')"><i class="ph ph-archive"></i> Lihat Arsip</button>';
+                }
+
+                html += '<div class="dbd-card">' +
+                    '<div class="dbd-card-top">' +
+                    '<div><div class="dbd-nama">' + d.nama_donatur + '</div><div class="dbd-sub">' + (d.nomor_whatsapp || '-') + (d.sumber === 'Manual' ? ' &middot; Input Manual' : '') + '</div></div>' +
+                    '<span class="dbd-wujud-badge">' + dbdWujudBadge(d) + '</span>' +
+                    '</div>' +
+                    '<div class="dbd-nominal">' + dbdRingkasNilai(d) + '</div>' +
+                    (lunas ? '<div><span class="dbd-lunas-tag"><i class="ph-fill ph-check-circle"></i> LUNAS</span></div>' : '') +
+                    (takjil ? '<div class="dbd-jadwal"><i class="ph ph-calendar-blank"></i> Request Jadwal: ' + (takjil.tanggal_jadwal ? formatTanggalID(takjil.tanggal_jadwal) : 'Belum ditentukan') + ' &middot; Status: ' + takjil.status + '</div>' : '') +
+                    '<div class="dbd-actions">' + actionsHtml + '</div>' +
+                    '</div>';
+            });
+            document.getElementById('djaDatabaseDonasiBody').innerHTML = html;
+        }
+
+        function dbdBukaAksiPembayaran(donasiId, uangId) {
+            var d = _djaCache.find(function (x) { return x.id === donasiId; });
+            var uang = d ? (d.donasi_uang_tunai || []).find(function (u) { return u.id === uangId; }) : null;
+            if (!uang) return;
+
+            if (uang.jenis_penyerahan === 'Transfer') {
+                var overlay = document.createElement('div');
+                overlay.className = 'siasfa-confirm-overlay';
+                overlay.innerHTML =
+                    '<div class="siasfa-confirm-card" style="width:100%; text-align:left;">' +
+                    '<div class="siasfa-confirm-title" style="margin-bottom:10px;">Verifikasi Pembayaran</div>' +
+                    (uang.bukti_url
+                        ? '<img src="' + uang.bukti_url + '" style="width:100%; border-radius:12px; margin-bottom:14px;">'
+                        : '<div class="un-note-text" style="margin-bottom:14px;">Belum ada bukti transfer diunggah oleh donatur.</div>') +
+                    '<div class="siasfa-confirm-message">Nominal: <strong>Rp ' + Math.round(uang.nominal).toLocaleString('id-ID') + '</strong>. Tandai sebagai terverifikasi?</div>' +
+                    '<div class="siasfa-confirm-actions" style="margin-top:14px;">' +
+                    '<button type="button" class="siasfa-confirm-btn siasfa-confirm-cancel">Batal</button>' +
+                    '<button type="button" class="siasfa-confirm-btn siasfa-confirm-ok">Verifikasi</button>' +
+                    '</div></div>';
+                document.body.appendChild(overlay);
+                overlay.querySelector('.siasfa-confirm-cancel').addEventListener('click', function () { overlay.remove(); });
+                overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+                overlay.querySelector('.siasfa-confirm-ok').addEventListener('click', async function () {
+                    var res = await supabaseClient.from('donasi_uang_tunai').update({ status: 'Terverifikasi' }).eq('id', uangId);
+                    overlay.remove();
+                    if (res.error) { alert('ERROR SUPABASE: ' + res.error.message); return; }
+                    alert('Pembayaran berhasil diverifikasi');
+                    await bukaDonasiJamaahAdmin();
+                    renderDatabaseDonasiCards();
+                });
+            } else {
+                var overlay2 = document.createElement('div');
+                overlay2.className = 'siasfa-confirm-overlay';
+                overlay2.innerHTML =
+                    '<div class="siasfa-confirm-card" style="width:100%;">' +
+                    '<div class="siasfa-confirm-title">Terima Pembayaran</div>' +
+                    '<div class="siasfa-confirm-message">Pilih cara donatur menyerahkan donasi uang sejumlah Rp ' + Math.round(uang.nominal).toLocaleString('id-ID') + ':</div>' +
+                    '<div class="tandai-status-choice" style="margin-top:14px;">' +
+                    '<div class="tandai-status-btn" id="dbdPilihTunai" onclick="dbdPilihCaraTerima(this,\'Tunai\')">Tunai</div>' +
+                    '<div class="tandai-status-btn" id="dbdPilihTransfer" onclick="dbdPilihCaraTerima(this,\'Transfer\')">Transfer</div>' +
+                    '</div>' +
+                    '<div id="dbdBuktiWrap" style="display:none; margin-top:14px;">' +
+                    '<label class="ct-upload-zone" id="dbdBuktiUploadZone">' +
+                    '<input type="file" id="dbdBuktiFile" accept="image/*" hidden onchange="ctUpdateUploadLabel(this,\'dbdBuktiUploadZone\')">' +
+                    '<div class="ct-upload-icon"><i class="ph ph-upload-simple"></i></div>' +
+                    '<div class="ct-upload-text"><span class="ct-upload-title">Lampirkan bukti transfer</span><span class="ct-upload-sub">PNG/JPG</span></div>' +
+                    '</label></div>' +
+                    '<div class="siasfa-confirm-actions" style="margin-top:14px;">' +
+                    '<button type="button" class="siasfa-confirm-btn siasfa-confirm-cancel">Batal</button>' +
+                    '<button type="button" class="siasfa-confirm-btn siasfa-confirm-ok">Simpan</button>' +
+                    '</div></div>';
+                document.body.appendChild(overlay2);
+                window._dbdCaraTerima = null;
+                overlay2.querySelector('.siasfa-confirm-cancel').addEventListener('click', function () { overlay2.remove(); });
+                overlay2.addEventListener('click', function (e) { if (e.target === overlay2) overlay2.remove(); });
+                overlay2.querySelector('.siasfa-confirm-ok').addEventListener('click', async function () {
+                    if (!window._dbdCaraTerima) { alert('Pilih Tunai atau Transfer terlebih dahulu'); return; }
+                    var payload = { status: 'Diterima', jenis_penyerahan: window._dbdCaraTerima };
+                    if (window._dbdCaraTerima === 'Transfer') {
+                        var file = document.getElementById('dbdBuktiFile').files[0];
+                        if (!file) { alert('Lampirkan bukti transfer terlebih dahulu'); return; }
+                        var ext = file.name.split('.').pop();
+                        var path = 'donasi-bukti/' + uangId + '-' + Date.now() + '.' + ext;
+                        var up = await supabaseClient.storage.from('bukti-transaksi').upload(path, file);
+                        if (up.error) { alert('ERROR UPLOAD: ' + up.error.message); return; }
+                        payload.bukti_url = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
+                        payload.status = 'Terverifikasi';
+                    }
+                    var res = await supabaseClient.from('donasi_uang_tunai').update(payload).eq('id', uangId);
+                    overlay2.remove();
+                    if (res.error) { alert('ERROR SUPABASE: ' + res.error.message); return; }
+                    alert('Pembayaran berhasil dicatat');
+                    await bukaDonasiJamaahAdmin();
+                    renderDatabaseDonasiCards();
+                });
+            }
+        }
+        function dbdPilihCaraTerima(el, val) {
+            document.getElementById('dbdPilihTunai').classList.remove('aktif-hijau');
+            document.getElementById('dbdPilihTransfer').classList.remove('aktif-hijau');
+            el.classList.add('aktif-hijau');
+            window._dbdCaraTerima = val;
+            document.getElementById('dbdBuktiWrap').style.display = val === 'Transfer' ? 'block' : 'none';
+        }
+
+        function dbdPeriksaPenjadwalan(donasiId, takjilId) {
+            var d = _djaCache.find(function (x) { return x.id === donasiId; });
+            var t = d ? (d.donasi_takjil || []).find(function (x) { return x.id === takjilId; }) : null;
+            if (!t) return;
+            var overlay = document.createElement('div');
+            overlay.className = 'siasfa-confirm-overlay';
+            overlay.innerHTML =
+                '<div class="siasfa-confirm-card" style="width:100%; text-align:left;">' +
+                '<div class="siasfa-confirm-title" style="margin-bottom:10px;">Periksa Penjadwalan Takjil</div>' +
+                '<div class="ct-field"><label>Jumlah Porsi</label><input type="text" value="' + t.jumlah_porsi + ' Porsi" disabled></div>' +
+                '<div class="ct-field"><label>Tanggal Jadwal</label><input type="date" id="dbdTakjilTanggal" value="' + (t.tanggal_jadwal || '') + '"></div>' +
+                '<div class="ct-field" style="margin-bottom:0;"><label>Status</label><select id="dbdTakjilStatus">' +
+                ['Dijadwalkan', 'Terkonfirmasi', 'Selesai'].map(function (s) { return '<option' + (t.status === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') +
+                '</select></div>' +
+                '<div class="siasfa-confirm-actions" style="margin-top:14px;">' +
+                '<button type="button" class="siasfa-confirm-btn siasfa-confirm-cancel">Batal</button>' +
+                '<button type="button" class="siasfa-confirm-btn siasfa-confirm-ok">Simpan</button>' +
+                '</div></div>';
+            document.body.appendChild(overlay);
+            overlay.querySelector('.siasfa-confirm-cancel').addEventListener('click', function () { overlay.remove(); });
+            overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+            overlay.querySelector('.siasfa-confirm-ok').addEventListener('click', async function () {
+                var tgl = document.getElementById('dbdTakjilTanggal').value || null;
+                var status = document.getElementById('dbdTakjilStatus').value;
+                var res = await supabaseClient.from('donasi_takjil').update({ tanggal_jadwal: tgl, status: status }).eq('id', takjilId);
+                overlay.remove();
+                if (res.error) { alert('ERROR SUPABASE: ' + res.error.message); return; }
+                alert('Jadwal takjil berhasil diperbarui');
+                await bukaDonasiJamaahAdmin();
+                renderDatabaseDonasiCards();
+            });
+        }
+
+        async function dbdHapusDonasi(donasiId) {
+            if (!await siasfaConfirm('Hapus formulir donasi ini beserta seluruh rincian (uang/takjil/barang)? Tindakan ini tidak dapat dibatalkan.', 'Hapus Donasi', { danger: true })) return;
+            try {
+                await supabaseClient.from('donasi_uang_tunai').delete().eq('donasi_id', donasiId);
+                await supabaseClient.from('donasi_takjil').delete().eq('donasi_id', donasiId);
+                await supabaseClient.from('donasi_barang').delete().eq('donasi_id', donasiId);
+                var res = await supabaseClient.from('donasi_ramadhan').delete().eq('id', donasiId);
+                if (res.error) { alert('ERROR SUPABASE (hapus donasi): ' + res.error.message); return; }
+                alert('Data donasi berhasil dihapus');
+                await bukaDonasiJamaahAdmin();
+                renderDatabaseDonasiCards();
+            } catch (e) { alert('ERROR SISTEM: ' + e.message); }
+        }
+        function tutupDjaDatabaseDonasi() { document.getElementById('dja-database-donasi-screen').style.display = 'none'; }
+
+        async function bukaDjaManajemenTakjil() {
+            document.getElementById('dja-manajemen-takjil-screen').style.display = 'flex';
+            try {
+                const { data, error } = await supabaseClient.from('takjil_jadwal').select('*').order('tanggal', { ascending: true });
+                var body = document.getElementById('djaManajemenTakjilBody');
+                if (error) { body.innerHTML = '<div style="padding:16px; text-align:center; color:var(--maroon); font-size:0.78rem;">Gagal memuat jadwal takjil: ' + error.message + '</div>'; return; }
+                var jadwal = data || [];
+                var html = '<div class="ip-table-wrap"><div class="ip-table-head ip-cols-2"><span>Tanggal</span><span>Target Porsi</span></div>';
+                if (jadwal.length === 0) {
+                    html += '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada jadwal takjil.</div>';
+                } else {
+                    jadwal.forEach(function (j) {
+                        html += '<div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem; color:var(--text-dark);">' + formatTanggalID(j.tanggal) + '</span><span style="font-size:0.74rem; font-weight:700; color:var(--maroon);">' + (j.target_porsi || 0) + ' Porsi</span></div>';
+                    });
+                }
+                html += '</div>';
+                body.innerHTML = html;
+            } catch (e) {
+                document.getElementById('djaManajemenTakjilBody').innerHTML = '<div style="padding:16px; text-align:center; color:var(--maroon); font-size:0.78rem;">ERROR SISTEM: ' + e.message + '</div>';
+            }
+        }
+        function tutupDjaManajemenTakjil() { document.getElementById('dja-manajemen-takjil-screen').style.display = 'none'; }
+
+        function bukaDjaLaporanDonasi() {
+            document.getElementById('dja-laporan-donasi-screen').style.display = 'flex';
+            var totalUang = 0, totalTakjil = 0, totalGula = 0, totalTeh = 0;
+            _djaCache.forEach(function (d) {
+                (d.donasi_uang_tunai || []).forEach(function (u) { totalUang += parseFloat(u.nominal) || 0; });
+                (d.donasi_takjil || []).forEach(function (t) { totalTakjil += parseInt(t.jumlah_porsi) || 0; });
+                (d.donasi_barang || []).forEach(function (b) {
+                    var jenis = (b.jenis || '').toLowerCase();
+                    if (jenis.indexOf('gula') !== -1) totalGula += parseFloat(b.kuantitas) || 0;
+                    else if (jenis.indexOf('teh') !== -1) totalTeh += parseFloat(b.kuantitas) || 0;
+                });
+            });
+            document.getElementById('djaLaporanDonasiBody').innerHTML =
+                '<div class="lp-report-box"><div class="lp-report-header"><div class="lp-report-title">LAPORAN DONASI JAMAAH</div><div class="lp-report-sub">Per ' + tanggalLaporanHariIni() + '</div></div>' +
+                '<div class="lp-line first"><span>Donasi Uang</span><span>Rp ' + Math.round(totalUang).toLocaleString('id-ID') + '</span></div>' +
+                '<div class="lp-line"><span>Donasi Takjil</span><span>' + totalTakjil.toLocaleString('id-ID') + ' Porsi</span></div>' +
+                '<div class="lp-line"><span>Donasi Gula</span><span>' + totalGula.toLocaleString('id-ID') + ' Kg</span></div>' +
+                '<div class="lp-line lp-final"><span>Donasi Teh</span><span>' + totalTeh.toLocaleString('id-ID') + ' Pcs</span></div>' +
+                '</div>';
+        }
+        function tutupDjaLaporanDonasi() { document.getElementById('dja-laporan-donasi-screen').style.display = 'none'; }
+
+        var _chartTrenDonasiInstance = null;
+        function renderTrenDonasiJamaahChart() {
+            var canvas = document.getElementById('chartTrenDonasiJamaah');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            var totalUangTahunIni = 0, totalTakjilTahunIni = 0, totalGulaTahunIni = 0, totalTehTahunIni = 0;
+            _djaCache.forEach(function (d) {
+                (d.donasi_uang_tunai || []).forEach(function (u) { totalUangTahunIni += parseFloat(u.nominal) || 0; });
+                (d.donasi_takjil || []).forEach(function (t) { totalTakjilTahunIni += parseInt(t.jumlah_porsi) || 0; });
+                (d.donasi_barang || []).forEach(function (b) {
+                    var jenis = (b.jenis || '').toLowerCase();
+                    if (jenis.indexOf('gula') !== -1) totalGulaTahunIni += parseFloat(b.kuantitas) || 0;
+                    else if (jenis.indexOf('teh') !== -1) totalTehTahunIni += parseFloat(b.kuantitas) || 0;
+                });
+            });
+
+            var dataTahun = [
+                { tahun: '2025', uang: 28750000, takjil: 1620, gula: 104, teh: 92 },
+                { tahun: '2026', uang: 29395000, takjil: 1530, gula: 170, teh: 235 },
+                { tahun: '2027', uang: totalUangTahunIni, takjil: totalTakjilTahunIni, gula: totalGulaTahunIni, teh: totalTehTahunIni }
+            ];
+
+            if (_chartTrenDonasiInstance) { _chartTrenDonasiInstance.destroy(); }
+            _chartTrenDonasiInstance = new Chart(canvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: dataTahun.map(function (d) { return d.tahun; }),
+                    datasets: [{
+                        label: 'Donasi Uang (Rp)',
+                        data: dataTahun.map(function (d) { return d.uang; }),
+                        backgroundColor: '#B81337'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { ticks: { callback: function (v) { return 'Rp ' + (Number(v) / 1000000).toFixed(0) + 'jt'; } } } }
+                }
+            });
+
+            var legendHtml = '';
+            dataTahun.forEach(function (d) {
+                legendHtml += '<div class="dja-tren-card">' +
+                    '<div class="dja-tren-top"><span class="dja-tren-tahun">' + d.tahun + '</span><span class="dja-tren-uang">Rp ' + Math.round(d.uang).toLocaleString('id-ID') + '</span></div>' +
+                    '<div class="dja-tren-metrics">' +
+                    '<div class="dja-tren-metric"><div class="v">' + Math.round(d.takjil).toLocaleString('id-ID') + '</div><div class="l"><i class="ph ph-cooking-pot"></i> Takjil</div></div>' +
+                    '<div class="dja-tren-metric"><div class="v">' + Math.round(d.gula).toLocaleString('id-ID') + ' Kg</div><div class="l"><i class="ph ph-package"></i> Gula</div></div>' +
+                    '<div class="dja-tren-metric"><div class="v">' + Math.round(d.teh).toLocaleString('id-ID') + ' Pcs</div><div class="l"><i class="ph ph-package"></i> Teh</div></div>' +
+                    '</div></div>';
+            });
+            document.getElementById('djaTrenLegend').innerHTML = legendHtml;
+        }
+
+function switchRekapFormulirTab(tab) {
+    document.querySelectorAll('#dja-rekap-formulir-screen .laporan-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    document.querySelectorAll('#dja-rekap-formulir-screen .laporan-subpage').forEach(function (b) { b.classList.remove('active'); });
+    document.getElementById('rfktab-' + tab).classList.add('active');
+    document.getElementById('rfkpage-' + tab).classList.add('active');
+    if (tab === 'manual') { muatRiwayatFormulirManual(); }
+    var elGab = document.getElementById('djaFormTotalGabungan');
+    if (elGab) elGab.textContent = _djaCache.length;
 }
 
 function renderDonasiJamaahAdminList() {
     var keyword = (document.getElementById('djaSearchInput') ? document.getElementById('djaSearchInput').value : '').toLowerCase();
+    var filterJenis = (document.getElementById('djaFilterJenis') ? document.getElementById('djaFilterJenis').value : '');
     var totalUang = 0, totalMenunggu = 0;
     _djaCache.forEach(function (d) {
         (d.donasi_uang_tunai || []).forEach(function (u) {
@@ -21273,13 +22105,19 @@ function renderDonasiJamaahAdminList() {
             if (u.status !== 'Diterima' && u.status !== 'Terverifikasi') totalMenunggu++;
         });
     });
-    document.getElementById('djaStatJumlah').textContent = _djaCache.length;
-    document.getElementById('djaStatTotalUang').textContent = 'Rp ' + Math.round(totalUang).toLocaleString('id-ID');
-    document.getElementById('djaStatMenunggu').textContent = totalMenunggu;
+    var elDjaStatMenunggu = document.getElementById('djaStatMenunggu');
+    if (elDjaStatMenunggu) elDjaStatMenunggu.textContent = totalMenunggu;
+    var elGab = document.getElementById('djaFormTotalGabungan');
+    if (elGab) elGab.textContent = _djaCache.length;
 
     var daftar = _djaCache.filter(function (d) {
         var gab = ((d.nama_donatur || '') + ' ' + (d.nomor_whatsapp || '')).toLowerCase();
-        return !keyword || gab.indexOf(keyword) !== -1;
+        var cocokKeyword = !keyword || gab.indexOf(keyword) !== -1;
+        var cocokJenis = true;
+        if (filterJenis === 'uang') cocokJenis = (d.donasi_uang_tunai || []).length > 0;
+        else if (filterJenis === 'takjil') cocokJenis = (d.donasi_takjil || []).length > 0;
+        else if (filterJenis === 'barang') cocokJenis = (d.donasi_barang || []).length > 0;
+        return cocokKeyword && cocokJenis;
     });
 
     if (daftar.length === 0) {
@@ -21296,14 +22134,183 @@ function renderDonasiJamaahAdminList() {
         (d.donasi_takjil || []).forEach(function (t) { ringkasJenis.push('Takjil ' + t.jumlah_porsi + ' Porsi'); });
         (d.donasi_barang || []).forEach(function (b) { ringkasJenis.push(b.jenis + ' ' + b.kuantitas + (b.satuan ? (' ' + b.satuan) : '')); });
 
-        html += '<div class="report-row" style="cursor:pointer;" onclick="bukaDetailDonasiJamaahAdmin(' + d.id + ')">' +
+        var jamInput = new Date(d.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+        html += '<div class="report-row" style="cursor:pointer;" onclick="bukaFormulirOnlineReadonly(' + d.id + ')">' +
             '<div class="report-icon"><i class="ph ph-hand-heart"></i></div>' +
             '<div><div class="report-name">' + d.nama_donatur + (adaMenunggu ? ' <span class="pay-status-badge belum" style="margin-left:4px;">Perlu Verifikasi</span>' : '') + '</div>' +
-            '<div class="report-sub">' + (d.nomor_whatsapp || '-') + ' &middot; ' + formatTanggalID(d.created_at.slice(0, 10)) + '</div>' +
+            '<div class="report-sub">' + (d.nomor_whatsapp || '-') + ' &middot; ' + formatTanggalID(d.created_at.slice(0, 10)) + ' &middot; ' + jamInput + ' WIB</div>' +
             '<div class="report-sub">' + (ringkasJenis.join(', ') || 'Belum ada rincian') + '</div></div>' +
             '<i class="ph ph-caret-right" style="margin-left:auto; color:var(--text-gray);"></i></div>';
     });
     document.getElementById('djaList').innerHTML = html;
+}
+
+function bukaFormulirOnlineReadonly(id) {
+    var d = _djaCache.find(function (x) { return x.id === id; });
+    if (!d) return;
+    var waktu = new Date(d.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+    var html = '<div class="kkp-info-box">' +
+        '<div class="kkp-info-label">Nama Donatur</div><div class="kkp-info-value">' + d.nama_donatur + '</div>' +
+        '<div class="kkp-info-label">Nomor WhatsApp</div><div class="kkp-info-value">' + (d.nomor_whatsapp || '-') + '</div>' +
+        '<div class="kkp-info-label">Waktu Pengisian Formulir</div><div class="kkp-info-value">' + waktu + (d.sumber === 'Manual' ? ' (Input Manual oleh ' + (d.dicatat_oleh || '-') + ')' : '') + '</div>' +
+        '</div>';
+
+    html += '<div class="ledger-head"><div class="ledger-title" style="font-size:0.8rem;">Rincian Donasi</div></div>';
+    var adaIsi = false;
+    (d.donasi_uang_tunai || []).forEach(function (u) {
+        adaIsi = true;
+        html += '<div class="lp-sub-item"><span>Donasi Uang (' + u.jenis_penyerahan + ')</span><span>Rp ' + Math.round(u.nominal).toLocaleString('id-ID') + '</span></div>';
+    });
+    (d.donasi_takjil || []).forEach(function (t) {
+        adaIsi = true;
+        html += '<div class="lp-sub-item"><span>Donasi Takjil (Jadwal: ' + (t.tanggal_jadwal ? formatTanggalID(t.tanggal_jadwal) : '-') + ')</span><span>' + t.jumlah_porsi + ' Porsi</span></div>';
+    });
+    (d.donasi_barang || []).forEach(function (b) {
+        adaIsi = true;
+        html += '<div class="lp-sub-item"><span>Donasi ' + b.jenis + '</span><span>' + b.kuantitas + ' ' + (b.satuan || '') + '</span></div>';
+    });
+    if (!adaIsi) html += '<div class="lp-sub-item"><span>Tidak ada rincian donasi</span><span>-</span></div>';
+
+    if (d.foto_formulir_url) {
+        html += '<a href="' + d.foto_formulir_url + '" target="_blank" style="display:inline-block; margin-top:10px; font-size:0.74rem; color:var(--maroon); font-weight:700;"><i class="ph ph-image"></i> Lihat Foto Formulir Cetak</a>';
+    }
+
+    html += '<div class="un-note-text" style="margin-top:12px;"><i class="ph ph-info"></i> Tampilan ini hanya untuk melihat isi formulir. Untuk mengedit, memverifikasi pembayaran, atau menghapus, buka dari menu <strong>Database Donasi</strong>.</div>';
+
+    document.getElementById('djaDetailTitle').textContent = 'Formulir: ' + d.nama_donatur;
+    document.getElementById('djaDetailBody').innerHTML = html;
+    document.getElementById('dja-detail-overlay').style.display = 'flex';
+}
+
+var _dmUangJenis = '';
+
+function dmCheckToggle(el) {
+    var group = el.getAttribute('data-group');
+    if (group === 'takjil' || group === 'uang') {
+        var wasActive = el.classList.contains('active');
+        document.querySelectorAll('#rfkpage-manual .dr-check-item[data-group="' + group + '"]').forEach(function (item) { item.classList.remove('active'); });
+        if (!wasActive) el.classList.add('active');
+        if (group === 'takjil') {
+            var aktifTakjil = document.querySelector('#rfkpage-manual .dr-check-item[data-group="takjil"].active');
+            document.getElementById('dmTakjilTanggalWrap').style.display = aktifTakjil ? 'block' : 'none';
+        }
+        if (group === 'uang') {
+            var aktifUang = document.querySelector('#rfkpage-manual .dr-check-item[data-group="uang"].active');
+            document.getElementById('dmUangJenisWrap').style.display = aktifUang ? 'block' : 'none';
+        }
+    } else {
+        el.classList.toggle('active');
+    }
+}
+function dmPilihJenisUang(el) {
+    document.querySelectorAll('#dmUangJenisWrap .tandai-status-btn').forEach(function (b) { b.classList.remove('aktif-hijau'); });
+    el.classList.add('aktif-hijau');
+    _dmUangJenis = el.getAttribute('data-val');
+}
+
+function dmResetForm() {
+    _dmUangJenis = '';
+    document.querySelectorAll('#rfkpage-manual .dr-check-item').forEach(function (b) { b.classList.remove('active'); });
+    document.getElementById('dmUangJenisWrap').style.display = 'none';
+    document.getElementById('dmTakjilTanggalWrap').style.display = 'none';
+    document.getElementById('dmNamaInput').value = '';
+    document.getElementById('dmNomorInput').value = '';
+    document.getElementById('dmUangLainnyaInput').value = '';
+    document.getElementById('dmTakjilLainnyaInput').value = '';
+    document.getElementById('dmTakjilTanggalInput').value = '';
+    document.getElementById('dmGulaInput').value = '';
+    document.getElementById('dmTehInput').value = '';
+    document.getElementById('dmFotoFile').value = '';
+    document.getElementById('dmFotoUploadZone').classList.remove('has-file');
+}
+
+async function dmSubmitFormulir() {
+    try {
+        var nama = document.getElementById('dmNamaInput').value.trim();
+        var nomor = document.getElementById('dmNomorInput').value.trim();
+        if (!nama) { alert('Nama donatur wajib diisi'); return; }
+        if (!nomor) { alert('Nomor WA wajib diisi'); return; }
+
+        var fotoFile = document.getElementById('dmFotoFile').files[0];
+        if (!fotoFile) { alert('Foto formulir cetak wajib dilampirkan untuk arsip & cross-check'); return; }
+
+        var uangAktif = document.querySelector('#rfkpage-manual .dr-check-item[data-group="uang"].active');
+        var uangNominal = 0;
+        if (uangAktif) {
+            uangNominal = uangAktif.getAttribute('data-val') === 'lainnya' ? (parseRupiah(document.getElementById('dmUangLainnyaInput').value) || 0) : parseInt(uangAktif.getAttribute('data-val'));
+        }
+        if (uangNominal > 0 && !_dmUangJenis) { alert('Pilih Tunai atau Transfer untuk Donasi Uang'); return; }
+
+        var takjilAktif = document.querySelector('#rfkpage-manual .dr-check-item[data-group="takjil"].active');
+        var takjilPorsi = 0, takjilTanggal = null;
+        if (takjilAktif) {
+            takjilPorsi = takjilAktif.getAttribute('data-val') === 'lainnya' ? (parseInt(document.getElementById('dmTakjilLainnyaInput').value) || 0) : parseInt(takjilAktif.getAttribute('data-val'));
+            takjilTanggal = document.getElementById('dmTakjilTanggalInput').value || null;
+        }
+        var gula = parseFloat(document.getElementById('dmGulaInput').value) || 0;
+        var teh = parseFloat(document.getElementById('dmTehInput').value) || 0;
+
+        if (uangNominal <= 0 && takjilPorsi <= 0 && gula <= 0 && teh <= 0) { alert('Isi minimal satu jenis donasi'); return; }
+
+        var ext = fotoFile.name.split('.').pop();
+        var path = 'formulir-manual/' + Date.now() + '.' + ext;
+        var up = await supabaseClient.storage.from('bukti-transaksi').upload(path, fotoFile);
+        if (up.error) { alert('ERROR UPLOAD FOTO FORMULIR: ' + up.error.message); return; }
+        var fotoUrl = supabaseClient.storage.from('bukti-transaksi').getPublicUrl(path).data.publicUrl;
+
+        var insDonasi = await supabaseClient.from('donasi_ramadhan').insert({
+            nama_donatur: nama, nomor_whatsapp: nomor,
+            sumber: 'Manual', dicatat_oleh: (_currentUser ? _currentUser.nama : '-'),
+            foto_formulir_url: fotoUrl
+        }).select().single();
+        if (insDonasi.error) { alert('ERROR SUPABASE (donasi manual): ' + insDonasi.error.message); return; }
+        var donasiId = insDonasi.data.id;
+
+        if (uangNominal > 0) {
+            var r1 = await supabaseClient.from('donasi_uang_tunai').insert({ donasi_id: donasiId, nominal: uangNominal, jenis_penyerahan: _dmUangJenis, status: _dmUangJenis === 'Tunai' ? 'Diterima' : 'Menunggu' });
+            if (r1.error) { alert('ERROR SUPABASE (uang manual): ' + r1.error.message); return; }
+        }
+        if (takjilPorsi > 0) {
+            var r2 = await supabaseClient.from('donasi_takjil').insert({ donasi_id: donasiId, jumlah_porsi: takjilPorsi, tanggal_jadwal: takjilTanggal, status: 'Dijadwalkan' });
+            if (r2.error) { alert('ERROR SUPABASE (takjil manual): ' + r2.error.message); return; }
+        }
+        var barangPayload = [];
+        if (gula > 0) barangPayload.push({ donasi_id: donasiId, jenis: 'Gula', kuantitas: gula, satuan: 'Kg' });
+        if (teh > 0) barangPayload.push({ donasi_id: donasiId, jenis: 'Teh', kuantitas: teh, satuan: 'Pcs' });
+        if (barangPayload.length > 0) {
+            var r3 = await supabaseClient.from('donasi_barang').insert(barangPayload);
+            if (r3.error) { alert('ERROR SUPABASE (barang manual): ' + r3.error.message); return; }
+        }
+
+        alert('Formulir manual berhasil disimpan');
+        dmResetForm();
+        await bukaDonasiJamaahAdmin();
+        switchRekapFormulirTab('manual');
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
+}
+
+async function muatRiwayatFormulirManual() {
+    var wrap = document.getElementById('djaManualRiwayatList');
+    var manualList = _djaCache.filter(function (d) { return d.sumber === 'Manual'; });
+    if (manualList.length === 0) {
+        wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada formulir manual yang diinput.</div>';
+        return;
+    }
+    var html = '';
+    manualList.forEach(function (d) {
+        var waktu = new Date(d.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        html += '<div class="report-row" style="cursor:pointer;" onclick="bukaFormulirOnlineReadonly(' + d.id + ')">' +
+            '<div class="report-icon"><i class="ph ph-note-pencil"></i></div>' +
+            '<div><div class="report-name">' + d.nama_donatur + '</div>' +
+            '<div class="report-sub">Diinput oleh ' + (d.dicatat_oleh || '-') + ' &middot; ' + waktu + '</div></div>' +
+            (d.foto_formulir_url ? '<a href="' + d.foto_formulir_url + '" target="_blank" style="margin-left:auto; font-size:0.7rem; color:var(--maroon); font-weight:700;"><i class="ph ph-image"></i></a>' : '') +
+            '</div>';
+    });
+    wrap.innerHTML = html;
 }
 
 function bukaDetailDonasiJamaahAdmin(id) {
