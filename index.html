@@ -3705,6 +3705,14 @@
                         <button class="co-btn-secondary" style="flex:1;" onclick="bukaModalUbahPassword()"><i class="ph ph-key"></i> Ubah Password</button>
                     </div>
 
+                    <div class="pf-danger-box" id="trainingSesiBox" style="margin-top:6px; border-color:rgba(217,118,6,0.4); background:rgba(217,118,6,0.06);">
+                        <div class="pf-danger-title" style="color:#D97706;"><i class="ph ph-graduation-cap"></i> Sesi Pelatihan Kebendaharaan</div>
+                        <div class="pf-danger-text">Aktifkan sebelum pelatihan dimulai. Semua transaksi yang diinput SETELAH tombol ini diklik akan ditandai sebagai data pelatihan dan bisa dihapus massal begitu pelatihan selesai. <strong>Jangan input data ASLI selama sesi pelatihan berlangsung.</strong></div>
+                        <div id="trainingStatusText" style="font-size:0.72rem; font-weight:700; color:#D97706; margin-bottom:10px;">Status: Memeriksa...</div>
+                        <button class="co-btn-secondary" id="btnAktifkanPelatihan" style="border-color:#D97706; color:#D97706;" onclick="aktifkanSesiPelatihan()"><i class="ph ph-play-circle"></i> Aktifkan Sesi Pelatihan</button>
+                        <button class="pf-danger-btn" id="btnHentikanPelatihan" style="display:none; margin-top:10px;" onclick="hentikanSesiPelatihan()"><i class="ph ph-trash"></i> Hentikan Sesi &amp; Hapus Data Pelatihan</button>
+                    </div>
+
                     <div id="menuPengaturanBlok" style="display:none;">
                         <div class="ledger-head"><div class="ledger-title">Pengaturan</div></div>
                         <div class="menu-grid">
@@ -7310,6 +7318,7 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                             terapkanAksesMenuBerdasarkanJabatan();
                             renderBebanPieChart();
                             muatBannerTandaiSaya();
+                            muatTrainingSession();
                         }
                         if (_currentUser.harus_ganti_password) {
                             setTimeout(function () { document.getElementById('warning-ganti-password-overlay').style.display = 'flex'; }, 400);
@@ -22417,5 +22426,218 @@ function unduhKwitansiDonasiAdmin(donasiId) {
         }
       });
     </script>
+<script>
+/* =========================================================================
+   SIASFA — SESI PELATIHAN (Training Mode)
+   ========================================================================= */
+window._trainingActive = false;
+window._trainingStartedAt = null;
+
+async function muatTrainingSession() {
+    try {
+        const { data, error } = await supabaseClient.from('training_session').select('*').eq('id', 1).maybeSingle();
+        if (error || !data) { window._trainingActive = false; renderTrainingStatus(); return; }
+        window._trainingActive = !!data.is_active;
+        window._trainingStartedAt = data.started_at;
+        renderTrainingStatus();
+    } catch (e) { window._trainingActive = false; renderTrainingStatus(); }
+}
+
+function renderTrainingStatus() {
+    var teksEl = document.getElementById('trainingStatusText');
+    var btnMulai = document.getElementById('btnAktifkanPelatihan');
+    var btnStop = document.getElementById('btnHentikanPelatihan');
+    if (teksEl) {
+        teksEl.textContent = window._trainingActive
+            ? 'Status: AKTIF sejak ' + new Date(window._trainingStartedAt).toLocaleString('id-ID')
+            : 'Status: Tidak Aktif (mode normal)';
+    }
+    if (btnMulai) btnMulai.style.display = window._trainingActive ? 'none' : 'flex';
+    if (btnStop) btnStop.style.display = window._trainingActive ? 'flex' : 'none';
+
+    var oldBanner = document.getElementById('trainingBanner');
+    if (oldBanner) oldBanner.remove();
+    if (window._trainingActive) {
+        var bodyEl = document.getElementById('app-body');
+        if (bodyEl) {
+            var banner = document.createElement('div');
+            banner.id = 'trainingBanner';
+            banner.style.cssText = 'position:sticky; top:-22px; margin:-22px -20px 16px; z-index:50; background:linear-gradient(to right,#D97706,#92400E); color:#fff; text-align:center; font-size:0.68rem; font-weight:800; padding:8px 10px;';
+            banner.innerHTML = '<i class="ph ph-graduation-cap"></i> MODE SESI PELATIHAN AKTIF — data yang diinput sekarang akan dihapus setelah pelatihan selesai';
+            bodyEl.insertBefore(banner, bodyEl.firstChild);
+        }
+    }
+}
+
+async function aktifkanSesiPelatihan() {
+    var ok = await siasfaConfirm(
+        'Aktifkan Sesi Pelatihan? Semua transaksi yang dibuat SETELAH ini akan ditandai sebagai data pelatihan. Jangan input data ASLI selama sesi berlangsung karena akan ikut terhapus.',
+        'Aktifkan Sesi Pelatihan'
+    );
+    if (!ok) return;
+    var now = new Date().toISOString();
+    var res = await supabaseClient.from('training_session').upsert({
+        id: 1, is_active: true, started_at: now, stopped_at: null,
+        diaktifkan_oleh: (_currentUser ? _currentUser.nama : '-')
+    });
+    if (res.error) { alert('ERROR SUPABASE (aktifkan sesi pelatihan): ' + res.error.message + '. Pastikan tabel training_session sudah dibuat.'); return; }
+    window._trainingActive = true;
+    window._trainingStartedAt = now;
+    renderTrainingStatus();
+    alert('Sesi Pelatihan diaktifkan pukul ' + new Date(now).toLocaleTimeString('id-ID') + '. Silakan mulai pelatihan.');
+}
+
+async function hentikanSesiPelatihan() {
+    if (!window._trainingActive) { alert('Sesi pelatihan belum aktif.'); return; }
+    var ok = await siasfaConfirm(
+        'Hentikan sesi pelatihan dan HAPUS PERMANEN seluruh data transaksi yang dibuat sejak ' + new Date(window._trainingStartedAt).toLocaleString('id-ID') + '? Tindakan ini tidak dapat dibatalkan.',
+        'Hentikan & Hapus Data Pelatihan', { danger: true }
+    );
+    if (!ok) return;
+
+    var ketik = prompt('Untuk konfirmasi akhir, ketik persis: HAPUS DATA PELATIHAN');
+    if (ketik !== 'HAPUS DATA PELATIHAN') { alert('Teks konfirmasi tidak cocok, penghapusan dibatalkan.'); return; }
+
+    var mulai = window._trainingStartedAt;
+    try {
+        await bersihkanDataPelatihan(mulai);
+        var res = await supabaseClient.from('training_session').update({
+            is_active: false, stopped_at: new Date().toISOString(),
+            dihentikan_oleh: (_currentUser ? _currentUser.nama : '-')
+        }).eq('id', 1);
+        if (res.error) { alert('ERROR SUPABASE (update status sesi): ' + res.error.message); }
+        window._trainingActive = false;
+        renderTrainingStatus();
+        alert('Sesi pelatihan dihentikan. Data pelatihan pada modul transaksi utama berhasil dibersihkan.\n\nPENTING: Perubahan pada Setting COA, akun kas, dan Daftar User TIDAK dihapus otomatis — periksa manual bila ada akun dummy yang dibuat selama pelatihan.');
+        location.reload();
+    } catch (e) {
+        alert('ERROR SISTEM saat membersihkan data pelatihan: ' + e.message + '\n\nSebagian data mungkin sudah terhapus. Periksa ulang manual sebelum melanjutkan penggunaan aplikasi.');
+    }
+}
+
+async function _idsSejak(table, kolomWaktu, mulai) {
+    var { data, error } = await supabaseClient.from(table).select('id').gte(kolomWaktu, mulai);
+    if (error) throw new Error('Gagal membaca ' + table + ': ' + error.message);
+    return (data || []).map(function (r) { return r.id; });
+}
+async function _hapusIn(table, kolom, ids) {
+    if (!ids || ids.length === 0) return;
+    var { error } = await supabaseClient.from(table).delete().in(kolom, ids);
+    if (error) throw new Error('Gagal hapus ' + table + ': ' + error.message);
+}
+async function _hapusGte(table, kolomWaktu, mulai) {
+    var { error } = await supabaseClient.from(table).delete().gte(kolomWaktu, mulai);
+    if (error) throw new Error('Gagal hapus ' + table + ': ' + error.message);
+}
+
+async function bersihkanDataPelatihan(mulai) {
+    // 1) JURNAL TRANSAKSI & TURUNANNYA
+    var jurnalIds = await _idsSejak('jurnal_transaksi', 'created_at', mulai);
+    if (jurnalIds.length > 0) {
+        var { data: tandaiRows } = await supabaseClient.from('jurnal_tandai').select('id').in('jurnal_id', jurnalIds);
+        var tandaiIds = (tandaiRows || []).map(function (r) { return r.id; });
+        await _hapusIn('jurnal_tandai_rekomendasi', 'tandai_id', tandaiIds);
+        await _hapusIn('jurnal_tandai', 'jurnal_id', jurnalIds);
+        await _hapusIn('jurnal_nota', 'jurnal_id', jurnalIds);
+        await supabaseClient.from('infaq_harian').update({ jurnal_id: null }).in('jurnal_id', jurnalIds);
+        await supabaseClient.from('donasi_uang_tunai').update({ jurnal_id: null }).in('jurnal_id', jurnalIds);
+        await supabaseClient.from('utang_vendor').update({ jurnal_id: null }).in('jurnal_id', jurnalIds);
+        await supabaseClient.from('utang_anggota').update({ jurnal_id: null }).in('jurnal_id', jurnalIds);
+        await supabaseClient.from('piutang_anggota').update({ jurnal_id: null }).in('jurnal_id', jurnalIds);
+        await supabaseClient.from('takjil_pesanan_vendor').update({ jurnal_id: null }).in('jurnal_id', jurnalIds);
+        await supabaseClient.from('peralatan').update({ jurnal_id: null }).in('jurnal_id', jurnalIds);
+        await supabaseClient.from('peralatan').update({ jurnal_keluar_id: null }).in('jurnal_keluar_id', jurnalIds);
+        await _hapusIn('jurnal_detail', 'jurnal_id', jurnalIds);
+        await _hapusIn('jurnal_transaksi', 'id', jurnalIds);
+    }
+
+    // 2) CASH OPNAME
+    var opnameIds = await _idsSejak('cash_opname', 'created_at', mulai);
+    await _hapusIn('cash_opname_pecahan', 'opname_id', opnameIds);
+    await _hapusIn('cash_opname_bank', 'opname_id', opnameIds);
+    await _hapusIn('cash_opname', 'id', opnameIds);
+
+    // 3) DONASI RAMADHAN
+    var donasiIds = await _idsSejak('donasi_ramadhan', 'created_at', mulai);
+    await _hapusIn('donasi_barang', 'donasi_id', donasiIds);
+    await _hapusIn('donasi_takjil', 'donasi_id', donasiIds);
+    await _hapusIn('donasi_uang_tunai', 'donasi_id', donasiIds);
+    await _hapusIn('donasi_ramadhan', 'id', donasiIds);
+
+    // 4) IURAN
+    var iuranIds = await _idsSejak('iuran_konsep', 'created_at', mulai);
+    if (iuranIds.length > 0) {
+        var { data: pesertaRows } = await supabaseClient.from('iuran_peserta').select('id').in('iuran_id', iuranIds);
+        var pesertaIds = (pesertaRows || []).map(function (r) { return r.id; });
+        await _hapusIn('iuran_pembayaran', 'peserta_id', pesertaIds);
+        await _hapusIn('iuran_peserta', 'iuran_id', iuranIds);
+        await _hapusIn('iuran_konsep', 'id', iuranIds);
+    }
+
+    // 5) PENJUALAN / PRODUK
+    var produkIds = await _idsSejak('produk', 'created_at', mulai);
+    if (produkIds.length > 0) {
+        var { data: pembeliRows } = await supabaseClient.from('produk_pembeli').select('id').in('produk_id', produkIds);
+        var pembeliIds = (pembeliRows || []).map(function (r) { return r.id; });
+        await _hapusIn('produk_pembayaran', 'pembeli_id', pembeliIds);
+        await _hapusIn('produk_pembeli', 'produk_id', produkIds);
+        await _hapusIn('produk_biaya', 'produk_id', produkIds);
+        await _hapusIn('produk_vendor_bayar', 'produk_id', produkIds);
+        await _hapusIn('produk', 'id', produkIds);
+    }
+
+    // 6) UTANG & PIUTANG (sisa yang belum terhapus lewat jurnal)
+    await _hapusGte('utang_vendor_pembayaran', 'created_at', mulai);
+    await _hapusGte('utang_anggota_pembayaran', 'created_at', mulai);
+    await _hapusGte('piutang_anggota_pembayaran', 'created_at', mulai);
+    await _hapusGte('utang_vendor', 'created_at', mulai);
+    await _hapusGte('utang_anggota', 'created_at', mulai);
+    await _hapusGte('piutang_anggota', 'created_at', mulai);
+
+    // 7) PROGRAM KERJA
+    var prokerIds = await _idsSejak('program_kerja', 'created_at', mulai);
+    var rabIds = [];
+    if (prokerIds.length > 0) {
+        var { data: rabRows } = await supabaseClient.from('proker_rab').select('id').in('proker_id', prokerIds);
+        rabIds = (rabRows || []).map(function (r) { return r.id; });
+    }
+    await _hapusIn('proker_realisasi', 'proker_rab_id', rabIds);
+    await _hapusIn('proker_rab', 'proker_id', prokerIds);
+    await _hapusIn('proker_rencana_penerimaan', 'proker_id', prokerIds);
+    await _hapusIn('proker_dokumen', 'proker_id', prokerIds);
+    await _hapusIn('program_kerja', 'id', prokerIds);
+
+    // 8) PERALATAN, SURAT, WBS, INFAQ, REKENING BANK, TAKJIL VENDOR, JAMAAH
+    await _hapusGte('peralatan', 'created_at', mulai);
+    await _hapusGte('infaq_harian', 'created_at', mulai);
+    await _hapusGte('rekening_bank_laporan', 'created_at', mulai);
+    await _hapusGte('surat_masuk', 'created_at', mulai);
+    await _hapusGte('surat_keluar', 'created_at', mulai);
+    await _hapusGte('wbs_laporan', 'created_at', mulai);
+    await _hapusGte('takjil_pesanan_vendor', 'created_at', mulai);
+    await _hapusGte('data_jamaah', 'created_at', mulai);
+
+    // 9) TIM & PENUGASAN PEMERIKSAAN
+    var timIds = await _idsSejak('tim_pemeriksa', 'created_at', mulai);
+    await _hapusIn('tim_pemeriksa_anggota', 'tim_id', timIds);
+    await _hapusIn('tim_pemeriksa', 'id', timIds);
+
+    var penugasanIds = await _idsSejak('audit_penugasan', 'created_at', mulai);
+    await _hapusIn('audit_dokumen', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_icq', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_kkp', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_kkp_transaksi', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_kkp_kas', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_kkp_pendapatan', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_kkp_asetneto', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_opini', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_lai', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_temuan', 'penugasan_id', penugasanIds);
+    await _hapusIn('audit_penugasan', 'id', penugasanIds);
+
+    // CATATAN: coa_akun, akun_kas, dan users_siasfa TIDAK dihapus otomatis.
+    // Periksa manual di Setting COA / Daftar User kalau ada akun dummy dibuat saat pelatihan.
+}
+</script>
 </body>
 </html>
