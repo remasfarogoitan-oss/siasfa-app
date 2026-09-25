@@ -4200,7 +4200,7 @@
                     <i class="ph ph-x" onclick="tutupModalRekomOpname()"></i>
                 </div>
                 <div class="co-modal-body">
-                    <div class="un-note-text">Usulkan jurnal koreksi agar saldo kas kembali balance sesuai temuan cash opname ini. Rekomendasi akan tersimpan dan ditampilkan di kertas kerja / PDF.</div>
+                    <div class="un-note-text">Usulkan jurnal koreksi agar saldo kas kembali balance sesuai temuan cash opname ini. Rekomendasi ini <strong>hanya tersimpan sebagai usulan (PAJE)</strong> untuk kertas kerja/PDF dan <strong>TIDAK diposting otomatis</strong> ke jurnal. Bendahara yang menentukan apakah rekomendasi ini akan diinput manual lewat menu Catat Transaksi.</div>
                     <div class="ct-table-wrap">
                         <div class="ct-table-head" style="grid-template-columns:1.5fr 0.8fr 0.8fr 20px;"><span>Nama Akun</span><span>Debit</span><span>Kredit</span><span></span></div>
                         <div id="coRekomRows"></div>
@@ -5754,6 +5754,10 @@
                     <div class="menu-icon-box"><i class="ph ph-flag"></i></div>
                     <div class="menu-label">Temuan</div>
                 </div>
+                <div class="menu-item" id="pdtab-sad" onclick="switchPdTab('sad')">
+                    <div class="menu-icon-box"><i class="ph ph-chart-bar"></i></div>
+                    <div class="menu-label">SAD</div>
+                </div>
                 <div class="menu-item" id="pdtab-opini" onclick="switchPdTab('opini')">
                     <div class="menu-icon-box"><i class="ph ph-scales"></i></div>
                     <div class="menu-label">Opini</div>
@@ -5833,6 +5837,29 @@
                 </div>
             </div>
 
+            <div class="ct-subpage" id="pdpage-sad" style="margin-top:14px;">
+                <div class="un-note-text"><i class="ph ph-info"></i> SAD (Summary of Audit Differences / Ikhtisar Perbedaan Audit) merekap otomatis seluruh temuan berkategori "Salah Saji Substantif" untuk menilai apakah salah saji bersifat pervasif terhadap laporan keuangan secara keseluruhan.</div>
+                <div class="ledger-head" style="margin-top:14px;"><div class="ledger-title">Rincian Salah Saji</div></div>
+                <div class="ip-table-wrap"><div class="ip-table-head" style="grid-template-columns:1.4fr 0.7fr 0.7fr 0.9fr;"><span>Area / Uraian</span><span>Jenis</span><span>Arah</span><span>Nilai</span></div>
+                <div id="sadRows"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data SAD...</div></div>
+                </div>
+                <div class="kkpkas-total-row"><span>Total Salah Saji Belum Dikoreksi</span><strong id="sadTotalBelumKoreksi" class="bad">Rp 0</strong></div>
+                <div class="ledger-head" style="margin-top:14px;"><div class="ledger-title">Ambang Batas Materialitas</div></div>
+                <div class="ip-table-wrap"><div class="ip-table-head ip-cols-2"><span>Uraian</span><span>Nominal</span></div>
+                    <div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem;">Overall Materiality (OM)</span><span id="sadOm" style="font-size:0.74rem; font-weight:700;">Rp 0</span></div>
+                    <div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem;">Performance Materiality (PM)</span><span id="sadPm" style="font-size:0.74rem; font-weight:700;">Rp 0</span></div>
+                    <div class="ip-table-row ip-cols-2"><span style="font-size:0.74rem;">Clearly Trivial Threshold (TM)</span><span id="sadTm" style="font-size:0.74rem; font-weight:700;">Rp 0</span></div>
+                </div>
+                <div id="sadKesimpulanOtomatis" class="pj-status" style="margin-top:10px;"></div>
+                <div class="ledger-head" style="margin-top:14px;"><div class="ledger-title">Kesimpulan Pervasif (Narasi Auditor)</div></div>
+                <textarea id="sadKesimpulanNarasi" rows="4" style="width:100%; border:1px solid var(--border-gray); border-radius:10px; padding:10px 12px; font-size:0.82rem; color:var(--text-dark); outline:none; font-family:inherit; resize:vertical;" placeholder="Tuliskan kesimpulan pervasif berdasarkan pertimbangan profesional (professional judgement)..."></textarea>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                    <div class="ct-field" style="margin-bottom:0;"><label>Disusun Oleh</label><input type="text" id="sadDisusunOleh"></div>
+                    <div class="ct-field" style="margin-bottom:0;"><label>Tanggal</label><input type="date" id="sadTanggal"></div>
+                </div>
+                <button class="ct-submit-btn" style="margin-top:12px;" onclick="pdSimpanSad()"><i class="ph ph-floppy-disk"></i> Simpan SAD</button>
+            </div>
+
             <div class="ct-subpage" id="pdpage-opini" style="margin-top:14px;">
                 <div class="calk-sub-title" style="margin-top:0;">Rekap Materialitas &amp; Skoring Pemeriksaan</div>
                 <div id="pdOpiniRekapWrap"><div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat rekap skor...</div></div>
@@ -5897,7 +5924,8 @@
                         <div class="ct-field" style="margin-bottom:0;"><label>Nilai Salah Saji (Rp)</label><input type="number" id="temuanNilai" placeholder="0"></div>
                         <div class="ct-field" style="margin-bottom:0;"><label>Arah</label><select id="temuanArah"><option>Lebih Saji (Overstatement)</option><option>Kurang Saji (Understatement)</option><option>Non-Nilai (Kelemahan Pengendalian)</option></select></div>
                     </div>
-                    <div class="ct-field" style="margin-top:14px;"><label>Kategori</label><select id="temuanKategori"><option>Salah Saji Substantif</option><option>Kelemahan Pengendalian Internal</option><option>Ketidakpatuhan Kebijakan/SOP</option><option>Ketidaklengkapan Dokumen</option></select></div>
+                    <div class="ct-field" style="margin-top:14px;"><label>Kategori</label><select id="temuanKategori" onchange="temuanToggleJenisSalahSaji()"><option>Salah Saji Substantif</option><option>Kelemahan Pengendalian Internal</option><option>Ketidakpatuhan Kebijakan/SOP</option><option>Ketidaklengkapan Dokumen</option></select></div>
+                    <div class="ct-field" id="temuanJenisSalahSajiWrap" style="display:none;"><label>Jenis Salah Saji (untuk SAD)</label><select id="temuanJenisSalahSaji"><option>Faktual</option><option>Judgmental</option><option>Proyeksi</option></select></div>
                     <div class="ct-field"><label>Rekomendasi</label><input type="text" id="temuanRekomendasi" placeholder="Rekomendasi tindak lanjut..."></div>
                     <div class="ct-field"><label>Status</label><select id="temuanStatus"><option>Sementara</option><option>Dikonfirmasi Manajemen</option><option>Ditolak Manajemen</option><option>Selesai Dikoreksi</option></select></div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -8534,7 +8562,7 @@ async function updateJurnal(jurnalId, jenis) {
             coHistoryCache.forEach(function (o) {
                 var statusClass = o.status === 'Sesuai' ? 'co-item-ok' : 'co-item-warn';
                 var statusIcon = o.status === 'Sesuai' ? 'ph-check-circle' : 'ph-warning-circle';
-                var fisikBank = (parseFloat(o.total_fisik) || 0) + (parseFloat(o.total_bank) || 0);
+                var fisikBank = (parseFloat(o.total_fisik) || 0) + (parseFloat(o.total_bank) || 0) - (parseFloat(o.kas_lain_nominal) || 0);
                 html += '<div class="co-history-item ' + statusClass + '" style="cursor:pointer; position:relative;">' +
                     '<i class="ph ph-trash" style="position:absolute; top:12px; right:12px; color:var(--maroon); font-size:1.05rem; cursor:pointer;" onclick="event.stopPropagation(); hapusCashOpnameLangsung(' + o.id + ')"></i>' +
                     '<div onclick="bukaDetailOpname(' + o.id + ')">' +
@@ -8663,7 +8691,9 @@ async function updateJurnal(jurnalId, jenis) {
             var totalFisik = getTotalFisik();
             var totalBank = hitungTotalBank();
             var saldoBuku = parseRupiah(document.getElementById('coSaldoBuku').value) || 0;
-            var selisihNum = (totalFisik + totalBank) - saldoBuku;
+            var kasLainIdBa = document.getElementById('coKasLainSelect') ? (document.getElementById('coKasLainSelect').value || null) : null;
+            var kasLainNominalBa = _coKasLainNominal || 0;
+            var selisihNum = (totalFisik + totalBank) - kasLainNominalBa - saldoBuku;
 
             var pecahan = [];
             document.querySelectorAll('#coPecahanRows .co-table-row').forEach(function (row) {
@@ -8680,7 +8710,7 @@ async function updateJurnal(jurnalId, jenis) {
             });
 
             _coDetailAktif = {
-                o: { akun_kas: { nama: kasNama }, tanggal: tanggal, pemeriksa: pemeriksa, bendahara: bendahara, total_fisik: totalFisik, total_bank: totalBank, saldo_buku: saldoBuku, selisih: selisihNum, status: status, keterangan: keterangan, rekomendasi_jurnal: (_pendingRekomOpnameRows && _pendingRekomOpnameRows.length) ? _pendingRekomOpnameRows : null },
+                o: { akun_kas: { nama: kasNama }, tanggal: tanggal, pemeriksa: pemeriksa, bendahara: bendahara, total_fisik: totalFisik, total_bank: totalBank, saldo_buku: saldoBuku, kas_lain_id: kasLainIdBa ? parseInt(kasLainIdBa) : null, kas_lain_nominal: kasLainNominalBa, selisih: selisihNum, status: status, keterangan: keterangan, rekomendasi_jurnal: (_pendingRekomOpnameRows && _pendingRekomOpnameRows.length) ? _pendingRekomOpnameRows : null },
                 pecahan: pecahan, bank: bank
             };
             unduhKertasKerjaOpname();
@@ -8706,7 +8736,9 @@ async function updateJurnal(jurnalId, jenis) {
                 var totalFisik = getTotalFisik();
                 var totalBank = hitungTotalBank();
                 var saldoBuku = parseRupiah(document.getElementById('coSaldoBuku').value) || 0;
-                var selisihNum = (totalFisik + totalBank) - saldoBuku;
+                var kasLainId = document.getElementById('coKasLainSelect') ? (document.getElementById('coKasLainSelect').value || null) : null;
+                var kasLainNominal = _coKasLainNominal || 0;
+                var selisihNum = (totalFisik + totalBank) - kasLainNominal - saldoBuku;
                 var keterangan = document.getElementById('coKeterangan').value.trim();
 
                 var opnameRes = await supabaseClient
@@ -8714,6 +8746,7 @@ async function updateJurnal(jurnalId, jenis) {
                     .insert({
                         tanggal: tanggal, pemeriksa: pemeriksa, bendahara: bendahara, kas_id: kasObj.id,
                         total_fisik: totalFisik, total_bank: totalBank, saldo_buku: saldoBuku,
+                        kas_lain_id: kasLainId ? parseInt(kasLainId) : null, kas_lain_nominal: kasLainNominal,
                         selisih: selisihNum, status: status, keterangan: keterangan,
                         rekomendasi_jurnal: (_pendingRekomOpnameRows && _pendingRekomOpnameRows.length) ? _pendingRekomOpnameRows : null
                     })
@@ -8723,35 +8756,10 @@ async function updateJurnal(jurnalId, jenis) {
                 if (opnameRes.error) { alert('ERROR SUPABASE (simpan opname): ' + opnameRes.error.message); return; }
                 var opnameId = opnameRes.data.id;
 
-                // FIX: sebelumnya rekomendasi jurnal koreksi HANYA tersimpan sebagai catatan
-                // JSON dan TIDAK PERNAH benar-benar diposting ke jurnal_transaksi, sehingga
-                // selisih kas hasil cash opname tidak pernah tercermin di Buku Besar/Laporan
-                // Keuangan. Posting otomatis di sini agar saldo benar-benar terkoreksi.
-                if (_pendingRekomOpnameRows && _pendingRekomOpnameRows.length > 0) {
-                    var kodeKoreksi = 'JU-KOR-' + new Date(tanggal).getFullYear() + '-' + String(Date.now()).slice(-6);
-                    var jrKoreksi = await supabaseClient.from('jurnal_transaksi').insert({
-                        kode: kodeKoreksi, tanggal: tanggal, jenis: 'umum', bendahara: bendahara,
-                        keterangan: 'Jurnal Koreksi Cash Opname - ' + kasObj.nama + (keterangan ? (' (' + keterangan + ')') : '')
-                    }).select().single();
-                    if (jrKoreksi.error) { alert('ERROR SUPABASE (jurnal koreksi opname): ' + jrKoreksi.error.message); return; }
-
-                    var detailKoreksi = [];
-                    _pendingRekomOpnameRows.forEach(function (r) {
-                        var parts = r.nama_akun.split(' \u2014 ');
-                        var noAkunRow = parts[0];
-                        var kasCocok = (window._akunKasCache || []).find(function (a) { return a.no_akun === noAkunRow; });
-                        var coaCocok = (window._coaAkunCache || []).find(function (a) { return a.no_akun === noAkunRow; });
-                        detailKoreksi.push({
-                            jurnal_id: jrKoreksi.data.id,
-                            akun_kas_id: kasCocok ? kasCocok.id : null,
-                            coa_akun_id: coaCocok ? coaCocok.id : null,
-                            debit: r.debit || 0,
-                            kredit: r.kredit || 0
-                        });
-                    });
-                    var drKoreksi = await supabaseClient.from('jurnal_detail').insert(detailKoreksi);
-                    if (drKoreksi.error) { alert('ERROR SUPABASE (detail jurnal koreksi opname): ' + drKoreksi.error.message); return; }
-                }
+                // CATATAN: Rekomendasi jurnal koreksi HANYA disimpan sebagai usulan (PAJE) pada
+                // kolom rekomendasi_jurnal di atas. Sistem TIDAK memposting otomatis ke
+                // jurnal_transaksi/jurnal_detail. Bendahara yang menentukan apakah rekomendasi
+                // ini akan dipakai, dengan menginputnya secara manual lewat menu Catat Transaksi.
 
                 var pecahanRows = [];
                 document.querySelectorAll('#coPecahanRows .co-table-row').forEach(function (row) {
@@ -10695,12 +10703,12 @@ async function updateJurnal(jurnalId, jenis) {
                 var status = (dibayarSaatIni + nominal) >= p.totalModalVendor ? 'Lunas' : 'DP';
 
                 var res = await supabaseClient.from('produk_vendor_bayar')
-                    .insert({ produk_id: vendorAktifId, tanggal: tgl, nominal: nominal, kas_id: parseInt(kasId), status: status })
-                    .select()
-                    .single();
+                    .insert({ produk_id: vendorAktifId, tanggal: tgl, nominal: nominal, kas_id: parseInt(kasId), status: status });
                 if (res.error) { alert('ERROR SUPABASE (bayar vendor): ' + res.error.message); return; }
 
-                p.vendorBayar.push({ id: res.data.id, tgl: tgl, nominal: nominal, kasId: parseInt(kasId), status: status });
+                var vendorAktifIdSaatIni = vendorAktifId;
+                await muatPenjualan();
+                vendorAktifId = vendorAktifIdSaatIni;
                 renderVendorRows();
                 document.getElementById('vdNominal').value = '';
                 await muatDataKas();
@@ -10932,13 +10940,12 @@ async function updateJurnal(jurnalId, jenis) {
                 if (!kasId) { alert('Pilih kas untuk membayar biaya ini'); return; }
 
                 var res = await supabaseClient.from('produk_biaya')
-                    .insert({ produk_id: produkAktifId, keterangan: ket, nominal: nominal, kas_id: parseInt(kasId) })
-                    .select()
-                    .single();
+                    .insert({ produk_id: produkAktifId, keterangan: ket, nominal: nominal, kas_id: parseInt(kasId) });
                 if (res.error) { alert('ERROR SUPABASE (simpan biaya): ' + res.error.message); return; }
 
-                var p = getProduk(produkAktifId);
-                p.biaya.push({ id: res.data.id, ket: ket, nominal: nominal, kasId: parseInt(kasId) });
+                var produkAktifIdSaatIni = produkAktifId;
+                await muatPenjualan();
+                produkAktifId = produkAktifIdSaatIni;
                 renderBiayaRows();
                 tutupModalTambahBiaya();
                 await muatDataKas();
@@ -14393,6 +14400,12 @@ function unduhRiwayatTransaksi() {
             var o = d.o;
             var totalFisik = parseFloat(o.total_fisik) || 0;
             var totalBank = parseFloat(o.total_bank) || 0;
+            var kasLainNominal = parseFloat(o.kas_lain_nominal) || 0;
+            var kasLainNama = '-';
+            if (o.kas_lain_id && window._akunKasCache) {
+                var kasLainObj = window._akunKasCache.find(function (a) { return String(a.id) === String(o.kas_lain_id); });
+                if (kasLainObj) kasLainNama = kasLainObj.nama;
+            }
             var statusClass = o.status === 'Sesuai' ? 'co-box-ok' : 'co-box-warn';
 
             var pecahanHtml = '';
@@ -14424,7 +14437,8 @@ function unduhRiwayatTransaksi() {
                 '<div class="ct-field"><label>Saldo Rekening Bank</label>' + bankHtml + '</div>' +
                 '<div class="co-analysis-box ' + statusClass + '"><div class="co-analysis-title"><i class="ph ph-scales"></i> Analisis Selisih</div>' +
                 '<div class="co-analysis-row"><span>Saldo Buku</span><strong>Rp ' + (parseFloat(o.saldo_buku) || 0).toLocaleString('id-ID') + '</strong></div>' +
-                '<div class="co-analysis-row"><span>Fisik + Bank</span><strong>Rp ' + (totalFisik + totalBank).toLocaleString('id-ID') + '</strong></div>' +
+                (kasLainNominal > 0 ? '<div class="co-analysis-row"><span>Saldo Kas Lain (Dikurangi) &mdash; ' + kasLainNama + '</span><strong>Rp ' + kasLainNominal.toLocaleString('id-ID') + '</strong></div>' : '') +
+                '<div class="co-analysis-row"><span>Fisik + Bank' + (kasLainNominal > 0 ? ' (Net)' : '') + '</span><strong>Rp ' + (totalFisik + totalBank - kasLainNominal).toLocaleString('id-ID') + '</strong></div>' +
                 '<div class="co-analysis-row co-analysis-final"><span>Selisih</span><strong>Rp ' + Math.abs(parseFloat(o.selisih) || 0).toLocaleString('id-ID') + ' (' + o.status + ')</strong></div></div>' +
                 (o.keterangan ? '<div class="ct-field" style="margin-bottom:0;"><label>Penjelasan Pemeriksa</label><div class="info-value" style="margin-top:2px; font-weight:500;">' + o.keterangan + '</div></div>' : '') +
                 rekomHtml +
@@ -14461,11 +14475,20 @@ function unduhRiwayatTransaksi() {
             y = pdfTabel(doc, y + 4, ['Nama Bank', 'Saldo (Rp)'], bankBody, { columnStyles: { 1: { halign: 'right' } } }) + 12;
 
             y = pdfSeksi(doc, y, 'ANALISIS SELISIH');
+            var kasLainNominalPdf = parseFloat(o.kas_lain_nominal) || 0;
+            var kasLainNamaPdf = '-';
+            if (o.kas_lain_id && window._akunKasCache) {
+                var kasLainObjPdf = window._akunKasCache.find(function (a) { return String(a.id) === String(o.kas_lain_id); });
+                if (kasLainObjPdf) kasLainNamaPdf = kasLainObjPdf.nama;
+            }
             var analisisBody = [
-                ['Saldo Buku (Sistem)', 'Rp ' + (parseFloat(o.saldo_buku) || 0).toLocaleString('id-ID')],
-                ['Fisik + Bank', 'Rp ' + ((parseFloat(o.total_fisik) || 0) + (parseFloat(o.total_bank) || 0)).toLocaleString('id-ID')],
-                ['Selisih', 'Rp ' + Math.abs(parseFloat(o.selisih) || 0).toLocaleString('id-ID') + ' (' + o.status + ')']
+                ['Saldo Buku (Sistem)', 'Rp ' + (parseFloat(o.saldo_buku) || 0).toLocaleString('id-ID')]
             ];
+            if (kasLainNominalPdf > 0) {
+                analisisBody.push(['Saldo Kas Lain (Dikurangi) - ' + kasLainNamaPdf, 'Rp ' + kasLainNominalPdf.toLocaleString('id-ID')]);
+            }
+            analisisBody.push(['Fisik + Bank' + (kasLainNominalPdf > 0 ? ' (Net)' : ''), 'Rp ' + ((parseFloat(o.total_fisik) || 0) + (parseFloat(o.total_bank) || 0) - kasLainNominalPdf).toLocaleString('id-ID')]);
+            analisisBody.push(['Selisih', 'Rp ' + Math.abs(parseFloat(o.selisih) || 0).toLocaleString('id-ID') + ' (' + o.status + ')']);
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah'], analisisBody, { columnStyles: { 1: { halign: 'right', fontStyle: 'bold' } } }) + 10;
 
             var adaKeterangan = !!o.keterangan;
@@ -16806,7 +16829,7 @@ function bacaTabelDinamis(rowSelector, fields) {
     return out;
 }
 function kumpulkanSemuaCalk() {
-    document.querySelectorAll('.calk-narrative').forEach(function (el) { _calkData.narasi[el.dataset.key] = el.value; });
+    document.querySelectorAll('.calk-narrative').forEach(function (el) { if (el.dataset.key) { _calkData.narasi[el.dataset.key] = el.value; } });
 
     _calkData.header = {
         calkNamaEntitas: valOf('calkNamaEntitas'),
@@ -17915,8 +17938,13 @@ function renderTemuanSementara() {
     wrap.innerHTML = html;
 }
 
-var _temuanAktifId = null;
-function bukaModalTemuan(arg) {
+        var _temuanAktifId = null;
+        function temuanToggleJenisSalahSaji() {
+            var kat = document.getElementById('temuanKategori').value;
+            var wrap = document.getElementById('temuanJenisSalahSajiWrap');
+            if (wrap) wrap.style.display = (kat === 'Salah Saji Substantif') ? 'block' : 'none';
+        }
+        function bukaModalTemuan(arg) {
     var data = null;
     if (arg && typeof arg === 'object') { data = arg; _temuanAktifId = null; }
     else if (arg) { data = (window._temuanCache || []).find(function (t) { return t.id === arg; }); _temuanAktifId = arg; }
@@ -17927,6 +17955,18 @@ function bukaModalTemuan(arg) {
     document.getElementById('temuanNilai').value = data ? (data.nilai_salah_saji || '') : '';
     document.getElementById('temuanArah').value = data ? (data.arah || 'Lebih Saji (Overstatement)') : 'Lebih Saji (Overstatement)';
     document.getElementById('temuanKategori').value = data ? (data.kategori || 'Salah Saji Substantif') : 'Salah Saji Substantif';
+    var elJenisSSInit = document.getElementById('temuanJenisSalahSaji');
+    if (elJenisSSInit) elJenisSSInit.value = data ? (data.jenis_salah_saji || 'Faktual') : 'Faktual';
+    temuanToggleJenisSalahSaji();
+    var elJenisSSInit = document.getElementById('temuanJenisSalahSaji');
+    if (elJenisSSInit) elJenisSSInit.value = data ? (data.jenis_salah_saji || 'Faktual') : 'Faktual';
+    temuanToggleJenisSalahSaji();
+    var elJenisSSInit = document.getElementById('temuanJenisSalahSaji');
+    if (elJenisSSInit) elJenisSSInit.value = data ? (data.jenis_salah_saji || 'Faktual') : 'Faktual';
+    temuanToggleJenisSalahSaji();
+    var elJenisSSInit = document.getElementById('temuanJenisSalahSaji');
+    if (elJenisSSInit) elJenisSSInit.value = data ? (data.jenis_salah_saji || 'Faktual') : 'Faktual';
+    temuanToggleJenisSalahSaji();
     document.getElementById('temuanRekomendasi').value = data ? (data.rekomendasi || '') : '';
     document.getElementById('temuanStatus').value = data ? (data.status || 'Sementara') : 'Sementara';
     document.getElementById('temuanDicatatOleh').value = data ? (data.dicatat_oleh || (_currentUser ? _currentUser.nama : '')) : (_currentUser ? _currentUser.nama : '');
@@ -18825,6 +18865,7 @@ function switchPdTab(tab) {
     document.getElementById('pdpage-' + tab).classList.add('active');
     if (tab === 'prosedur') { pdSiapkanKkpTransaksi(); }
     if (tab === 'temuan') { muatTemuanSementara(); }
+    if (tab === 'sad') { pdRenderSad(); }
     if (tab === 'opini') { pdRenderRekapOpini(); }
 }
 async function pdToggleSelesai() {
@@ -19142,6 +19183,85 @@ async function pdHitungRekapSkorOpini() {
         skorA: skorA, skorB: skorB, skorC: skorC,
         skorD: p.skor_d || null, skorE: p.skor_e || null, skorF: p.skor_f || null
     };
+}
+
+/* =========================================================================
+   SAD — SUMMARY OF AUDIT DIFFERENCES (Ikhtisar Perbedaan Audit)
+   ========================================================================= */
+async function pdRenderSad() {
+    var wrap = document.getElementById('sadRows');
+    if (!wrap || !_pdAktifPenugasanId) return;
+    wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Memuat data SAD...</div>';
+    try {
+        var rekap = await pdHitungRekapSkorOpini();
+
+        const { data, error } = await supabaseClient
+            .from('audit_temuan')
+            .select('*')
+            .eq('penugasan_id', _pdAktifPenugasanId)
+            .eq('kategori', 'Salah Saji Substantif')
+            .order('created_at', { ascending: false });
+        if (error) { wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--maroon); font-size:0.78rem;">ERROR: ' + error.message + '</div>'; return; }
+
+        var rows = data || [];
+        var totalGrossBelumKoreksi = 0;
+        var html = '';
+        rows.forEach(function (t) {
+            var nilai = parseFloat(t.nilai_salah_saji) || 0;
+            var arahKurang = (t.arah || '').indexOf('Kurang') !== -1;
+            var dikoreksi = t.status_tindak_lanjut === 'Tindak Lanjut Sesuai Rekomendasi';
+            if (!dikoreksi) { totalGrossBelumKoreksi += nilai; }
+            html += '<div class="ip-table-row" style="grid-template-columns:1.4fr 0.7fr 0.7fr 0.9fr;">' +
+                '<span style="font-size:0.7rem; color:var(--text-dark);">' + (t.area || '-') + '<br><span style="color:var(--text-gray); font-size:0.62rem;">' + (t.uraian_temuan || '').substring(0, 80) + '</span></span>' +
+                '<span style="font-size:0.66rem; color:var(--text-gray);">' + (t.jenis_salah_saji || 'Faktual') + (dikoreksi ? '<br><span style="color:#16A34A; font-weight:700;">Dikoreksi</span>' : '') + '</span>' +
+                '<span style="font-size:0.66rem; color:var(--text-gray);">' + (arahKurang ? 'Kurang Saji' : 'Lebih Saji') + '</span>' +
+                '<span style="font-size:0.72rem; font-weight:700; color:' + (dikoreksi ? '#16A34A' : 'var(--maroon)') + ';">Rp ' + Math.round(nilai).toLocaleString('id-ID') + '</span></div>';
+        });
+        wrap.innerHTML = html || '<div style="padding:16px; text-align:center; color:var(--text-gray); font-size:0.78rem;">Belum ada temuan berkategori Salah Saji Substantif.</div>';
+
+        document.getElementById('sadTotalBelumKoreksi').textContent = 'Rp ' + Math.round(totalGrossBelumKoreksi).toLocaleString('id-ID');
+        document.getElementById('sadOm').textContent = 'Rp ' + Math.round(rekap.om).toLocaleString('id-ID');
+        document.getElementById('sadPm').textContent = 'Rp ' + Math.round(rekap.pm).toLocaleString('id-ID');
+        document.getElementById('sadTm').textContent = 'Rp ' + Math.round(rekap.tm).toLocaleString('id-ID');
+
+        var kesimpulanEl = document.getElementById('sadKesimpulanOtomatis');
+        if (rekap.om <= 0) {
+            kesimpulanEl.className = 'pj-status bad';
+            kesimpulanEl.innerHTML = '<i class="ph ph-warning-circle"></i> Materialitas belum diatur. Lengkapi dahulu di tab Opini &rarr; Penentuan Materialitas.';
+        } else if (totalGrossBelumKoreksi <= rekap.tm) {
+            kesimpulanEl.className = 'pj-status ok';
+            kesimpulanEl.innerHTML = '<i class="ph ph-check-circle"></i> TIDAK MATERIAL. Total salah saji belum dikoreksi (Rp ' + Math.round(totalGrossBelumKoreksi).toLocaleString('id-ID') + ') berada di bawah Clearly Trivial Threshold.';
+        } else if (totalGrossBelumKoreksi <= rekap.pm) {
+            kesimpulanEl.className = 'pj-status bad';
+            kesimpulanEl.innerHTML = '<i class="ph ph-warning-circle"></i> MATERIAL, NAMUN TIDAK PERVASIF. Salah saji melebihi Clearly Trivial Threshold namun masih di bawah Performance Materiality. Pertimbangkan opini "Memadai dengan Pengecualian Khusus" pada akun/area terkait.';
+        } else {
+            kesimpulanEl.className = 'pj-status bad';
+            kesimpulanEl.innerHTML = '<i class="ph ph-flag"></i> MATERIAL DAN BERPOTENSI PERVASIF. Total salah saji belum dikoreksi (Rp ' + Math.round(totalGrossBelumKoreksi).toLocaleString('id-ID') + ') melebihi Performance Materiality (Rp ' + Math.round(rekap.pm).toLocaleString('id-ID') + '). Pertimbangkan opini "Tidak Memadai" atau "Tidak Dapat Disimpulkan".';
+        }
+
+        document.getElementById('sadKesimpulanNarasi').value = _pdAktifPenugasanData.sad_kesimpulan || '';
+        document.getElementById('sadDisusunOleh').value = _pdAktifPenugasanData.sad_disusun_oleh || (_currentUser ? _currentUser.nama : '');
+        document.getElementById('sadTanggal').value = _pdAktifPenugasanData.sad_tanggal || '';
+    } catch (e) {
+        wrap.innerHTML = '<div style="padding:16px; text-align:center; color:var(--maroon); font-size:0.78rem;">ERROR SISTEM: ' + e.message + '</div>';
+    }
+}
+
+async function pdSimpanSad() {
+    if (!_pdAktifPenugasanId) return;
+    try {
+        var payload = {
+            sad_kesimpulan: document.getElementById('sadKesimpulanNarasi').value.trim(),
+            sad_disusun_oleh: document.getElementById('sadDisusunOleh').value.trim(),
+            sad_tanggal: document.getElementById('sadTanggal').value || null
+        };
+        var res = await supabaseClient.from('audit_penugasan').update(payload).eq('id', _pdAktifPenugasanId);
+        if (res.error) { alert('ERROR SUPABASE (simpan SAD): ' + res.error.message); return; }
+        Object.assign(_pdAktifPenugasanData, payload);
+        alert('SAD (Summary of Audit Differences) berhasil disimpan');
+    } catch (e) {
+        alert('ERROR SISTEM: ' + e.message);
+    }
 }
 
 function pdOpiniDariTotalSkor(total, lengkap) {
@@ -19554,6 +19674,15 @@ function bukaModalTemuan(arg) {
     document.getElementById('temuanNilai').value = data ? (data.nilai_salah_saji || '') : '';
     document.getElementById('temuanArah').value = data ? (data.arah || 'Lebih Saji (Overstatement)') : 'Lebih Saji (Overstatement)';
     document.getElementById('temuanKategori').value = data ? (data.kategori || 'Salah Saji Substantif') : 'Salah Saji Substantif';
+    var elJenisSSInit = document.getElementById('temuanJenisSalahSaji');
+    if (elJenisSSInit) elJenisSSInit.value = data ? (data.jenis_salah_saji || 'Faktual') : 'Faktual';
+    temuanToggleJenisSalahSaji();
+    var elJenisSSInit = document.getElementById('temuanJenisSalahSaji');
+    if (elJenisSSInit) elJenisSSInit.value = data ? (data.jenis_salah_saji || 'Faktual') : 'Faktual';
+    temuanToggleJenisSalahSaji();
+    var elJenisSSInit = document.getElementById('temuanJenisSalahSaji');
+    if (elJenisSSInit) elJenisSSInit.value = data ? (data.jenis_salah_saji || 'Faktual') : 'Faktual';
+    temuanToggleJenisSalahSaji();
     document.getElementById('temuanRekomendasi').value = data ? (data.rekomendasi || '') : '';
     document.getElementById('temuanStatus').value = data ? (data.status || 'Sementara') : 'Sementara';
     document.getElementById('temuanDicatatOleh').value = data ? (data.dicatat_oleh || (_currentUser ? _currentUser.nama : '')) : (_currentUser ? _currentUser.nama : '');
@@ -19573,6 +19702,7 @@ async function simpanTemuan() {
         if (!area || !uraian) { alert('Area dan uraian temuan wajib diisi'); return; }
 
         var elTL = document.getElementById('temuanStatusTL');
+        var elJenisSS = document.getElementById('temuanJenisSalahSaji');
         var payload = {
             penugasan_id: _pdAktifPenugasanId,
             area: area,
@@ -19580,6 +19710,7 @@ async function simpanTemuan() {
             nilai_salah_saji: parseRupiah(document.getElementById('temuanNilai').value) || 0,
             arah: document.getElementById('temuanArah').value,
             kategori: document.getElementById('temuanKategori').value,
+            jenis_salah_saji: elJenisSS ? elJenisSS.value : 'Faktual',
             rekomendasi: document.getElementById('temuanRekomendasi').value.trim(),
             status: document.getElementById('temuanStatus').value,
             status_tindak_lanjut: elTL ? elTL.value : 'Belum Ditindaklanjuti',
