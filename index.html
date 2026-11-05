@@ -3098,7 +3098,7 @@
                     <i class="ph-fill ph-mosque" style="font-size:1.7rem; color:#FFFFFF;"></i>
                 </div>
                 <div style="font-size:0.68rem; font-weight:800; letter-spacing:1.5px; color:rgba(255,255,255,0.72); text-transform:uppercase;">FADHLILLAH-KU</div>
-                <h1 style="color:#FFFFFF; font-size:1.65rem; font-weight:700; line-height:1.3; margin-top:6px;">Assalamu'alaikum,<br><span style="font-weight:500; opacity:0.85; font-size:1.1rem;">Jamaah Masjid Fadhlillah</span></h1>
+                <h1 style="color:#FFFFFF; font-size:1.65rem; font-weight:700; line-height:1.3; margin-top:6px;">Selamat Pagi,<br><span style="font-weight:500; opacity:0.85; font-size:1.1rem;">Jamaah Masjid Fadhlillah</span></h1>
             </div>
 
             <div class="white-sheet" style="border-radius:32px 32px 0 0; position:relative; padding-top:34px;">
@@ -7856,7 +7856,15 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
                 return '<option value="coa:' + c.id + '" title="[' + c.no_akun + '] ' + c.nama + '">' + c.no_akun + ' \u2014 ' + c.nama + '</option>';
             }).join('');
         }
-        function optCoaBebanPlain() {
+        function optCoaDanaKebajikan(jenis) {
+    var kunci = jenis === 'penerimaan' ? /penerimaan.*non[\s-]?halal/i : /penyaluran.*kebajikan/i;
+    return (window._coaAkunCache || []).filter(function (c) {
+        return c.tipe === 'kewajiban' && kunci.test(c.nama || '');
+    }).map(function (c) {
+        return '<option value="coa:' + c.id + '" title="[' + c.no_akun + '] ' + c.nama + '">' + c.no_akun + ' \u2014 ' + c.nama + '</option>';
+    }).join('');
+}
+function optCoaBebanPlain() {
             return (window._coaAkunCache || []).filter(function (c) { return c.tipe === 'beban'; }).map(function (c) {
                 return '<option value="' + c.id + '">' + c.no_akun + ' \u2014 ' + c.nama + '</option>';
             }).join('');
@@ -8300,7 +8308,7 @@ function tutupCatatTransaksi() {
             document.getElementById('penerimaanRows').insertAdjacentHTML('beforeend',
                 '<div class="ct-table-row ct-cols-3">' +
                 '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Pilih Kas</option>' + optKasList() + '</select>' +
-                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Sumber</option>' + optCoaList('pendapatan') + '</select>' +
+                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option value="">Sumber</option>' + optCoaList('pendapatan') + optCoaDanaKebajikan('penerimaan') + '</select>' +
                 '<input type="number" placeholder="0">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
             if (typeof siasfaEnhanceAkunSelects === 'function') siasfaEnhanceAkunSelects();
@@ -8308,7 +8316,7 @@ function tutupCatatTransaksi() {
                 function tambahBarisPengeluaran() {
             document.getElementById('pengeluaranRows').insertAdjacentHTML('beforeend',
                 '<div class="ct-table-row ct-cols-3">' +
-                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this); autoLinkProkerDariAkunBeban(this);"><option>Akun Beban</option>' + optCoaList('beban') + '</select>' +
+                '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this); autoLinkProkerDariAkunBeban(this);"><option>Akun Beban</option>' + optCoaList('beban') + optCoaDanaKebajikan('penyaluran') + '</select>' +
                 '<select class="ct-akun-select" onchange="tandaiAkunTerisi(this)"><option>Akun Kas</option>' + optKasList() + '</select>' +
                 '<input type="number" placeholder="0">' +
                 '<i class="ph ph-x-circle ct-row-del" onclick="hapusBaris(this)"></i></div>');
@@ -13881,6 +13889,7 @@ function unduhRiwayatTransaksi() {
                 var asetNetoManualTT = 0, asetNetoManualT = 0;
                 (coaRes.data || []).forEach(function (c) {
                     var net = mutasiCoa[c.id] || 0;
+                    if (/kebajikan|non[\s-]?halal/i.test(c.nama || '')) return;
                     if (c.nama === 'Piutang Kepada Anggota') net += rekap.piutangIuran + rekap.piutangPenjualan;
                     else if (c.nama === 'Persediaan Merchandise') net += rekap.persediaan;
                     else if (c.nama === 'Utang Kepada Vendor') net += -rekap.utangVendor;
@@ -13915,7 +13924,7 @@ function unduhRiwayatTransaksi() {
                 var dkSaldoNetto = (akunDkForLap ? (parseFloat(akunDkForLap.saldo_awal) || 0) : 0) + dkTotalSumber - dkTotalPenggunaan;
                 if (dkTotalSumber > 0) {
                     var pendapatanLainnyaItem = pendapatanCoa.find(function (p) { return p.nama === 'Pendapatan Lainnya'; });
-                    if (pendapatanLainnyaItem) pendapatanLainnyaItem.saldo -= dkTotalSumber;
+                    /* Dana Kebajikan hanya lewat akun Kewajiban (ISAK 35) - tidak menyentuh Pendapatan/Beban/Aset Neto */
                 }
                 // FIX: penyaluran Dana Kebajikan yang dijurnal lewat akun Beban Lainnya
                 // jangan ikut mengurangi Aset Neto Tidak Terikat — dananya sudah dikurangi
@@ -13923,7 +13932,7 @@ function unduhRiwayatTransaksi() {
                 // mengurangi total Aset Neto dua kali (merusak Aset = Liabilitas + Aset Neto).
                 if (dkTotalPenggunaan > 0) {
                     var bebanLainnyaItemDk = bebanCoa.find(function (b) { return b.nama === 'Beban Lainnya'; });
-                    if (bebanLainnyaItemDk) bebanLainnyaItemDk.saldo -= dkTotalPenggunaan;
+                    /* penyaluran Dana Kebajikan ditangani siasfaKoreksiDkPendapatanBeban */
                 }
 
                 var totalKas = kasList.reduce(function (s, k) { return s + k.saldo; }, 0);
@@ -13939,7 +13948,11 @@ function unduhRiwayatTransaksi() {
                 var totalBeban = bebanCoa.reduce(function (s, b) { return s + b.saldo; }, 0);
 
                 var aktivitasTT = totalPendapatanTT - totalBeban;
-                var aktivitasT = totalPendapatanT + dkSaldoNetto;
+                var aktivitasT = totalPendapatanT;
+                if (Math.round(dkSaldoNetto) !== 0) {
+                    kewajibanCoa.push({ nama: 'Dana Kebajikan - Penerimaan Non-Halal (Belum Disalurkan)', saldo: dkSaldoNetto });
+                    totalKewajiban += dkSaldoNetto;
+                }
                 var surplusTT = aktivitasTT + asetNetoManualTT;
                 var surplusT = aktivitasT + asetNetoManualT;
                 var totalAsetNeto = surplusTT + surplusT;
@@ -14011,8 +14024,8 @@ function unduhRiwayatTransaksi() {
             html += '<div class="lp-line" style="font-weight:600;"><span>Aset Neto</span><span></span></div>';
             html += '<div class="lp-sub-item"><span>Aset Neto Tidak Terikat</span><span>' + fmtRp(d.surplusTT) + '</span></div>';
             html += '<div class="lp-line" style="font-weight:600;"><span>Aset Neto Dengan Pembatasan (Terikat)</span><span></span></div>';
-            html += '<div class="lp-sub-item"><span>Aset Neto Terikat Sementara (Program/Donasi)</span><span>' + fmtRp(d.surplusT - (d.danaKebajikanNonHalal || 0)) + '</span></div>';
-            html += '<div class="lp-sub-item"><span>Dana Kebajikan (Non-Halal)</span><span>' + fmtRp(d.danaKebajikanNonHalal || 0) + '</span></div>';
+            html += '<div class="lp-sub-item"><span>Aset Neto Terikat Sementara (Program/Donasi)</span><span>' + fmtRp(d.surplusT) + '</span></div>';
+            /* Dana Kebajikan disajikan di Kewajiban saja */
             html += '<div class="lp-line"><span>Total Aset Neto</span><span>' + fmtRp(d.totalAsetNeto) + '</span></div>';
 
             html += '<div class="lp-line lp-final"><span>TOTAL LIABILITAS & ASET NETO</span><span>' + fmtRp(d.totalKewajiban + d.totalAsetNeto) + '</span></div>';
@@ -14026,7 +14039,7 @@ function unduhRiwayatTransaksi() {
 
             var saldoAwalTT = d.saldoAwalTT || 0;
             var saldoAwalT = d.saldoAwalT || 0;
-            var dkNominal = d.danaKebajikanNonHalal || 0;
+            var dkNominal = 0;
             var aktivitasTT = d.aktivitasTT || 0;
             var aktivitasTMurni = (d.aktivitasT || 0) - dkNominal;
 
@@ -14034,7 +14047,7 @@ function unduhRiwayatTransaksi() {
                 '<span>Uraian</span><span>Tdk Terikat</span><span>Terikat Sem.</span><span>Total</span></div>';
             html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Saldo Awal</span><span style="font-size:0.72rem;">' + fmtRp(saldoAwalTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(saldoAwalT) + '</span><span style="font-size:0.72rem;">' + fmtRp(saldoAwalTT + saldoAwalT) + '</span></div>';
             html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Surplus/(Defisit) Berjalan (Program/Donasi)</span><span style="font-size:0.72rem;">' + fmtRp(aktivitasTT) + '</span><span style="font-size:0.72rem;">' + fmtRp(aktivitasTMurni) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(aktivitasTT + aktivitasTMurni) + '</span></div>';
-            html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr;"><span style="font-size:0.72rem;">Dana Kebajikan (Non-Halal)</span><span style="font-size:0.72rem;">Rp 0</span><span style="font-size:0.72rem;">' + fmtRp(dkNominal) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(dkNominal) + '</span></div>';
+            /* Dana Kebajikan tidak masuk Laporan Perubahan Aset Neto */
             html += '<div class="ip-table-row" style="grid-template-columns:1.3fr 0.9fr 0.9fr 0.9fr; background:var(--paper-soft);"><span style="font-size:0.72rem; font-weight:700;">Saldo Akhir</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusTT) + '</span><span style="font-size:0.72rem; font-weight:700;">' + fmtRp(d.surplusT) + '</span><span style="font-size:0.72rem; font-weight:700; color:var(--maroon);">' + fmtRp(d.totalAsetNeto) + '</span></div>';
             html += '</div></div>';
             return html;
@@ -14219,8 +14232,8 @@ function unduhRiwayatTransaksi() {
             y = pdfSeksi(doc, y, 'ASET NETO');
             var anBody = [
                 ['Aset Neto Tidak Terikat', fmtRp(data.surplusTT)],
-                ['Aset Neto Terikat Sementara (Program/Donasi)', fmtRp(data.surplusT - (data.danaKebajikanNonHalal || 0))],
-                ['Dana Kebajikan (Non-Halal)', fmtRp(data.danaKebajikanNonHalal || 0)]
+                ['Aset Neto Terikat Sementara (Program/Donasi)', fmtRp(data.surplusT)],
+                /* Dana Kebajikan disajikan di Kewajiban saja */
             ];
             y = pdfTabel(doc, y + 4, ['Uraian', 'Jumlah (Rp)'], anBody, { columnStyles: { 1: { halign: 'right', cellWidth: 130 } } }) + 6;
 
@@ -14282,13 +14295,13 @@ function unduhRiwayatTransaksi() {
             var y = pdfKop(doc, 'LAPORAN PERUBAHAN ASET NETO', 'Per ' + tanggalLaporanHariIni());
             var saldoAwalTTPdf = data.saldoAwalTT || 0;
             var saldoAwalTPdf = data.saldoAwalT || 0;
-            var dkNominalPdf = data.danaKebajikanNonHalal || 0;
+            var dkNominalPdf = 0;
             var aktivitasTTPdf = data.aktivitasTT || 0;
             var aktivitasTMurniPdf = (data.aktivitasT || 0) - dkNominalPdf;
             var body = [
                 ['Saldo Awal', fmtRp(saldoAwalTTPdf), fmtRp(saldoAwalTPdf), fmtRp(saldoAwalTTPdf + saldoAwalTPdf)],
                 ['Surplus/(Defisit) Berjalan (Program/Donasi)', fmtRp(aktivitasTTPdf), fmtRp(aktivitasTMurniPdf), fmtRp(aktivitasTTPdf + aktivitasTMurniPdf)],
-                ['Dana Kebajikan (Non-Halal)', 'Rp 0', fmtRp(dkNominalPdf), fmtRp(dkNominalPdf)],
+                /* Dana Kebajikan tidak masuk Laporan Perubahan Aset Neto */
                 ['Saldo Akhir', fmtRp(data.surplusTT), fmtRp(data.surplusT), fmtRp(data.totalAsetNeto)]
             ];
             pdfTabel(doc, y + 6, ['Uraian', 'Tdk Terikat (Rp)', 'Terikat Sementara (Rp)', 'Total (Rp)'], body, {
@@ -27230,6 +27243,36 @@ bukaGuestDashboardSetelahGate = function () {
     _brAdmin = false;
     jmMuatBanner(); jmMuatKajian(); jmMuatMenuLainnya(); brMuat();
 };
+</script>
+<script>
+/* Koreksi lawan jurnal Kas Dana Kebajikan: kredit ke Pendapatan / debit ke Beban non-DK
+   dikeluarkan dari Aset Neto karena sudah disajikan sebagai Kewajiban (ISAK 35). */
+async function siasfaKoreksiDkPendapatanBeban(akunDk, pendapatanCoa, bebanCoa, coaList) {
+    try {
+        if (!akunDk) return;
+        var r = await supabaseClient.from('jurnal_detail').select('jurnal_id').eq('akun_kas_id', akunDk.id);
+        if (r.error) return;
+        var ids = [];
+        (r.data || []).forEach(function (x) { if (ids.indexOf(x.jurnal_id) === -1) ids.push(x.jurnal_id); });
+        if (!ids.length) return;
+        var d = await supabaseClient.from('jurnal_detail').select('coa_akun_id, debit, kredit').in('jurnal_id', ids).not('coa_akun_id', 'is', null);
+        if (d.error) return;
+        var namaById = {}, tipeById = {};
+        (coaList || []).forEach(function (c) { namaById[c.id] = c.nama; tipeById[c.id] = c.tipe; });
+        (d.data || []).forEach(function (m) {
+            var nama = namaById[m.coa_akun_id];
+            if (!nama || /kebajikan|non[\s-]?halal/i.test(nama)) return;
+            var deb = parseFloat(m.debit) || 0, kre = parseFloat(m.kredit) || 0;
+            if (tipeById[m.coa_akun_id] === 'pendapatan') {
+                var ip = pendapatanCoa.find(function (p) { return p.nama === nama; });
+                if (ip) ip.saldo -= (kre - deb);
+            } else if (tipeById[m.coa_akun_id] === 'beban') {
+                var ib = bebanCoa.find(function (b) { return b.nama === nama; });
+                if (ib) ib.saldo -= (deb - kre);
+            }
+        });
+    } catch (e) { console.error('siasfaKoreksiDkPendapatanBeban:', e.message); }
+}
 </script>
 </body>
 </html>
